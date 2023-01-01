@@ -115,10 +115,14 @@ namespace Genrev.Domain.DataSets
 
                 FiscalYear fy = FiscalYear.GetCurrent(currentDate, fiscalYearMonthEnd);
 
-                var x = currentYTDSales * fy.DaysInYear;
-                var y = x / currentDate.DayOfYear;
+                // OLD Code 
+                //var x = currentYTDSales * fy.DaysInYear;
+                //var y = x / currentDate.DayOfYear;
 
-                return General.FixDollars(y);
+                //return General.FixDollars(y);
+
+                // Duplicate code so calling directly that method.
+                return YearEndSales(currentYTDSales, currentDate, fy);
             }
 
             public static decimal? MonthEndGPP(decimal? sales, decimal? grossProfitDollars, DateTime currentDate) {
@@ -148,8 +152,14 @@ namespace Genrev.Domain.DataSets
 
             public static decimal? YearEndSales(decimal? currentYTDSales, DateTime currentDate, FiscalYear fiscalYear) {
 
-                var x = currentYTDSales * fiscalYear.DaysInYear;
-                var y = x / currentDate.DayOfYear;
+                // Old Code
+                //var x = currentYTDSales * fiscalYear.DaysInYear;
+                //var y = x / currentDate.DayOfYear;
+
+                // New changed code according to the new equations.
+                int dayOfYear = currentDate.DayOfYear - 1;
+                var x = currentYTDSales * (fiscalYear.DaysInYear + 1);
+                var y = x / (dayOfYear < 1 ? 1 : dayOfYear);
 
                 return General.FixDollars(y);
 

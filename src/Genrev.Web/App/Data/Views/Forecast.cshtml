@@ -1,0 +1,79 @@
+﻿@model Genrev.Web.App.Data.Models.Forecast.ForecastVM
+
+<div style="padding: 5px;">
+
+    <h2 id="data-forecast-heading">Forecast</h2>
+
+    <div id="data-forecast-selectors-container">
+
+        <table>
+            <tr>
+                <td style="padding-right: 15px;">
+
+                    @Html.DevExpress().ComboBox(
+                        s => {
+                            s.Name = "ctlYear";
+                            s.Width = 55;
+                            s.Properties.Caption = "Fiscal Year";
+                        }
+                    ).BindList(Model.AvailableYears).Bind(Model.SelectedYear).GetHtml()
+
+                    <div class="spacer-10"></div>
+
+                </td>
+
+                <td>
+
+                    @Html.DevExpress().ComboBox(
+                        s => {
+                            s.Name = "ctlSalesperson";
+                            s.Width = 250;
+
+                            s.Properties.TextField = "DisplayName";
+                            s.Properties.ValueField = "ID";
+                            s.Properties.ValueType = typeof(int);
+                            s.Properties.Columns.Add("DisplayName", "Salesperson");
+                            s.Properties.Caption = "Salesperson";
+
+                            s.PreRender = (sender, e) => {
+                                ComboBox.PreRenderByField(sender, Model.SelectedSalesperson, "ID");
+                            };
+                            
+                            s.ClientVisible = Model.HasDownstreamSalespersons;
+                        }
+                    ).BindList(Model.AvailableSalespersons).Bind(Model.SelectedSalesperson).GetHtml()
+
+                    
+                    <div class="spacer-10"></div>
+                    
+
+                </td>
+
+
+            </tr>
+        </table>
+
+        
+
+
+
+    </div>
+
+    <div id="data-forecast-plan-by-year"></div>
+
+    <div class="spacer-10"></div>
+
+    <div id="data-forecast-detail-by-year"></div>
+    
+</div>
+
+<script type="text/javascript" id="dxss_9we876v93847bn98476b3m94">
+
+    EnsureAppLoaded(function () {
+
+        require(['forecast', 'devex'], function (forecast, devex) {
+            Forecast.Initialize();
+        });
+    });
+
+</script>

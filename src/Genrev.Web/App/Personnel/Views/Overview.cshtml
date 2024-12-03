@@ -1,0 +1,84 @@
+﻿@model Genrev.Web.App.Personnel.Models.OverviewVM
+
+<div class="datacontent-main">
+
+    <h2>Personnel Management</h2>
+
+    <table style="width: 100%;  min-height: 200px;">
+        <tr>
+            <td valign="top" width="350px;">
+                <h3>Current Personnel</h3>
+                @Html.Partial("OverviewGrid", Model.Personnel)
+            </td>
+
+            <td valign="top" style="padding-left: 10px; width: 150px;">
+
+                <h3>Actions</h3>
+
+                @Html.DevExpress().Button(
+                    s => {
+                        s.Name = "PersonnelOverviewAddNewButton";
+                        s.Text = "Add New";
+                        s.Width = 125;
+                    }
+                ).GetHtml()
+                <div class="spacer-5"></div>
+                @Html.DevExpress().Button(
+                    s => {
+                        s.Name = "PersonnelOverviewRemoveSelectedButton";
+                        s.Text = "Remove Selected";
+                        s.Width = 125;
+                    }
+                ).GetHtml()
+
+                <div class="spacer-5"></div>
+                @Html.DevExpress().Button(
+                    s => {
+                        s.Name = "PersonnelOverviewEditAvailability";
+                        s.Text = "Time Management";
+                        s.Width = 125;
+                    }
+                ).GetHtml()
+
+            </td>
+
+            <td valign="top" style="padding-left: 10px;">
+                <h3>Login Information</h3>
+
+                <div id="PersonnelOverviewLoginInfoContainer">
+                    <div id="PersonnelOverviewLoginInfoWithLoginContainer"></div>
+                    <div id="PersonnelOverviewLoginInfoWithoutLoginContainer"></div>
+                </div>
+
+
+            </td>
+
+        </tr>
+    </table>
+
+
+    <h2>Manage Hierarchy</h2>
+    
+    <div id="personnelOverviewReportsToGridContainer"></div>
+
+    @*<h2>Manage Companies</h2>*@
+
+</div>
+
+<script type="text/javascript" id="dxss_90348t5uv958ut39453084">
+    EnsureAppLoaded(function () {
+        require(['personnel', 'devex'], function (personnel, devex) {
+
+            Personnel.Overview.CurrentPersonnel.Initialize();
+            Personnel.Overview.Initialize(
+
+                "personnelmgmtGrid",
+                "personnelOverviewReportsToGridContainer",
+
+                function () {
+                    console.log('Personnel.Overview.Initialize completed');
+                }
+            );
+        });
+    });
+</script>

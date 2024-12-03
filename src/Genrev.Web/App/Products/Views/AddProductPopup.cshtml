@@ -1,0 +1,47 @@
+﻿@model Genrev.Web.App.Products.Models.ProductListItem
+
+
+<h3>Add New Product Group</h3>
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "AddProductSKU";
+        s.Properties.Caption = "SKU";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).GetHtml()
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "AddProductDescription";
+        s.Properties.Caption = "Description";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).GetHtml()
+
+@Html.DevExpress().ComboBox(
+    s => {
+
+        s.Name = "AddProductGroupSelector";
+        s.Properties.TextField = "Name";
+        s.Properties.ValueField = "ID";
+        s.Properties.ValueType = typeof(int);
+        s.Properties.Columns.Add("Name");
+        s.Properties.Caption = "Group";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).BindList(ViewBag.ProductGroupsList).GetHtml()
+
+
+<div class="clearfix spacer-10"></div>
+
+<table style="float: right;">
+    <tr>
+        <td>
+            @Html.DevExpress().Button(s => { s.Name = "productAddNewOkButton"; s.Text = "OK"; }).GetHtml()
+        </td>
+        <td style="padding-left: 5px;">
+            @Html.DevExpress().Button(s => { s.Name = "productAddNewCancelButton"; s.Text = "Cancel"; }).GetHtml()
+        </td>
+    </tr>
+</table>

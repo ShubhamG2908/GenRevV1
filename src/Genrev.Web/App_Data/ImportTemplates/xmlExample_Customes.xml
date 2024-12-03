@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Request>
+	<Customers>
+		<Customer>
+			<ID>C-001</ID>
+			<Name>Globex</Name>
+			<CustomerTypeID>CT-01</CustomerTypeID>
+			<AccountTypeID>AT-01</AccountTypeID>
+			<IndustryTypeID>IT-01</IndustryTypeID>
+			<Address1>123 Main Street, Springfield</Address1>
+		</Customer>
+		<Customer>
+			<ID>C-002</ID>
+			<Name>Initech</Name>
+			<CustomerTypeID>CT-01</CustomerTypeID>
+			<AccountTypeID>AT-01</AccountTypeID>
+			<IndustryTypeID>IT-01</IndustryTypeID>
+			<Address1>321 Main Street, Springfield</Address1>
+		</Customer>
+	</Customers>
+</Request>

@@ -1,0 +1,17 @@
+﻿@model Genrev.Web.App.Customers.Models.MappingVM
+<h2>Mappings</h2>
+
+<table>
+    <tr>
+        <td valign="top">
+            <h3>Personnel</h3>
+            @Html.Partial("MappingsPersonnelGrid", Model.Personnel)
+        </td>
+        <td valign="top" style="padding-left: 20px;">
+            <h3>Assigned Customers</h3>
+            <div id="MappingsCustomersGridContainer"></div>
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript" id="dxss_6546843684674">Customers.Mappings.Init();</script>

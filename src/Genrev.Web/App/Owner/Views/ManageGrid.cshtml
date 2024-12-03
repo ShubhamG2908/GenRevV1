@@ -1,0 +1,41 @@
+﻿@model List<Genrev.Web.App.Owner.Models.AccountListItemVM>
+
+@Html.DevExpress().GridView(
+    s => {
+
+        s.Name = "gvOwnerManageAccounts";
+        s.KeyFieldName = "ID";
+        s.CallbackRouteValues = new { Controller = "Owner", Action = "gvOwnerManageAccountsCallback" };
+
+        s.SettingsBehavior.AllowFocusedRow = true;
+        s.SettingsBehavior.AllowSelectByRowClick = true;
+        s.SettingsBehavior.AllowSelectSingleRowOnly = true;
+        s.SettingsBehavior.AllowSort = true;
+        s.SettingsBehavior.AllowGroup = false;
+        s.Settings.ShowFilterRow = true;
+
+        s.SettingsPager.PageSize = 50;
+
+        s.SettingsLoadingPanel.Mode = GridViewLoadingPanelMode.ShowOnStatusBar;
+
+
+        var col = s.Columns.Add("colStatus");
+        col.FieldName = "Status";
+        col.Caption = "Status";
+
+        col = s.Columns.Add("colCompany");
+        col.FieldName = "Company";
+        col.Caption = "Company";
+
+        col = s.Columns.Add("colEmail");
+        col.FieldName = "Email";
+        col.Caption = "Email";
+
+        col = s.Columns.Add("colEditLink");
+        col.FieldName = "EditLink";
+        col.Caption = "Edit";
+
+
+    }
+).Bind(Model).GetHtml()
+

@@ -1,0 +1,49 @@
+﻿@model Genrev.Web.App.Personnel.Models.EditLoginInfoVM
+with<!-- leave this for the ajax caller to parse -->
+
+<p>This person has a login</p>
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "EditLoginInfoEmail";
+        s.Properties.Caption = "Email";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.EditLoginInfoEmail).GetHtml()
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "EditLoginInfoDisplayName";
+        s.Properties.Caption = "Display Name";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.EditLoginInfoDisplayName).GetHtml()
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "EditLoginInfoPassword";
+        s.Properties.Caption = "Password";
+        s.Properties.CaptionCellStyle.Width = 100;
+        s.Properties.Password = true;
+    }
+).Bind(Model.EditLoginInfoPassword).GetHtml()
+
+<div class="spacer-10"></div>
+
+<div style="margin-left: 72px;">
+    @Html.DevExpress().Button(
+        s => {
+            s.Name = "RemoveLoginInfoSubmitButton";
+            s.Text = "Remove";
+            s.Width = 100;
+        }
+    ).GetHtml()
+
+    @Html.DevExpress().Button(
+        s => {
+            s.Name = "UpdateLoginInfoSubmitButton";
+            s.Text = "Update";
+            s.Width = 100;
+        }
+    ).GetHtml()
+</div>

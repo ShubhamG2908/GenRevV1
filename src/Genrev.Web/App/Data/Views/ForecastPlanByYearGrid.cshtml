@@ -1,0 +1,28 @@
+﻿@model Genrev.Web.App.Data.Models.Forecast.ForecastPlanByYearVM
+
+@Html.DevExpress().GridView(
+    s => {
+
+        s.Name = "ForecastPlanByYearGrid";
+
+        s.CallbackRouteValues = new { Controller = "Data", Action = "ForecastPlanByYearGridCallback" };
+
+
+        var col = s.Columns.Add("colAccountType");
+        col.Caption = "Account Type";
+        col.FieldName = "AccountType";
+
+        col = s.Columns.Add("colPlanned");
+        col.Caption = "Planned Calls";
+        col.FieldName = "PlannedCalls";
+
+        col = s.Columns.Add("colGoals");
+        col.Caption = "Goal Count";
+        col.FieldName = "GoalCalls";
+
+        col = s.Columns.Add("colAccountTypeCount");
+        col.Caption = "Account Type Count";
+        col.FieldName = "AccountTypeCount";
+
+    }
+).Bind(Model.Items).GetHtml()

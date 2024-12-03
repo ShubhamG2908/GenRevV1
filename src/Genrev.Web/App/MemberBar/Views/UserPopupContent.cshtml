@@ -1,0 +1,16 @@
+﻿
+
+<div class="dx-popup-content h-user-popup">
+
+    @if (User.IsInRole("SubscriptionProvisioner")) {
+        <div onclick="Shell.Load('/Owner');"><span class="icon"><i class="fa fa-cogs fa-lg"></i></span><p>Manage Subscriptions</p></div>
+    }
+
+    @if (User.IsInRole("admin")) {
+        <div><span class="icon"><i class="fa fa-cogs fa-lg"></i></span><p>Administration</p></div>
+    }
+    
+    <div onclick="window.location.href = '/Preferences/Edit';"><span class="icon"><i class="fa fa-cog fa-lg"></i></span><p>Preferences</p></div>
+    
+    <div><a href="/Account/LogOff"><span class="icon"><i class="fa fa-sign-out fa-lg"></i></span><p>Log Out</p></a></div>
+</div>

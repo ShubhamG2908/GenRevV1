@@ -1,0 +1,4 @@
+CompanyID,ParentID,Full Name,Name,Code,Fiscal Month End
+C-01,,Acme Incorporated,Acme,ACME,12
+C-02,C-01,Acme Incorporated North,Acme North,ACME-N,12
+C-03,C-01,Acme Incorporated South,Acme South,ACME-S,12

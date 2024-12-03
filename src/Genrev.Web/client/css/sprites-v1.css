@@ -1,0 +1,42 @@
+﻿
+.sprite-ico {
+    background-image: url(../Content/sprites-ico-v1.png);
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.sprite-ico-delete-48 {
+    width: 48px;
+    height: 48px;
+    background-position: -5px -5px;
+}
+
+.sprite-ico-info-48 {
+    width: 48px;
+    height: 48px;
+    background-position: -63px -5px;
+}
+
+.sprite-ico-ok-48 {
+    width: 48px;
+    height: 48px;
+    background-position: -121px -5px;
+}
+
+.sprite-ico-question-48 {
+    width: 48px;
+    height: 48px;
+    background-position: -179px -5px;
+}
+
+.sprite-ico-save-48 {
+    width: 48px;
+    height: 48px;
+    background-position: -237px -5px;
+}
+
+.sprite-ico-warning-48 {
+    width: 48px;
+    height: 48px;
+    background-position: -295px -5px;
+}

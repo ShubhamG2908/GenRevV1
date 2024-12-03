@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>GENREV!</title>
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <link href="@Url.Content("~/Client/Css/app-v10.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Client/Css/sprites-v1.css")" rel="stylesheet" type="text/css" />
+        
+    @Html.DevExpress().GetStyleSheets( 
+        new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout }, 
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Editors }, 
+        new StyleSheet { ExtensionSuite = ExtensionSuite.GridView }
+    )
+    @Html.DevExpress().GetScripts( 
+        new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout }, 
+        new Script { ExtensionSuite = ExtensionSuite.GridView }, 
+        new Script { ExtensionSuite = ExtensionSuite.Editors }
+    )
+
+    
+    <script type="text/javascript" src="~/client/scripts/require.v2.2.0.js"></script>
+    <script type="text/javascript">
+
+        function EnsureAppLoaded(callback) {
+
+            // to make sure we don't load in tandem via content page and root page
+            if (window.AppLoading == true) {
+                return;
+            }
+
+            // the content page may request this so root may have already loaded it
+            // if so, run a callback if one was supplied
+            if (window.AppLoaded == true) {
+                if (App.IsCallback(callback)) {
+                    callback();
+                }
+                return;
+            }
+
+            // we're loading...
+            window.AppLoading = true;
+
+            // initialize the app
+            require(['/client/scripts/config.v1.11.js'], function () {
+
+                require([
+                    'genrev',
+                    'userShell',
+                    'charts',
+                    'highcharts',
+                    'devex',
+                    'core',
+                    'deepmerge',
+                    'history'
+                ], function () {
+                    
+
+                    require(['highchartsnodata'], function () {
+
+
+                        App.Initialize();
+
+                        Shell.Initialize(function () {
+
+                            Genrev.ViewAs.Init();
+
+                            // flag that the app is initialized
+                            window.AppLoaded = true;
+                            window.AppLoading = false;
+
+                            // run the callback if we were provided with one
+                            if (App.IsCallback(callback)) {
+                                callback();
+                            }
+
+                        }); // end shell.Initialize
+
+                    })
+
+
+                }); // end require.userShell|DevEx|Core|History
+
+            }); // end require.Config
+
+        }   // end EnsureAppLoaded
+
+    </script>
+
+</head>
+<body>
+    @Html.DevExpress().Splitter(settings => {
+    settings.Name = "MainSplitter";
+    settings.AllowResize = false;
+    settings.Orientation = Orientation.Vertical;
+    settings.FullscreenMode = true;
+    settings.SeparatorVisible = false;
+    settings.Styles.Pane.Border.BorderWidth = Unit.Pixel(0);
+    settings.Styles.Pane.Paddings.Padding = Unit.Pixel(0);
+
+    settings.Panes.Add(pane => {
+        pane.Name = "Header";
+        pane.AutoHeight = true;
+        pane.MinSize = Unit.Pixel(100);
+        pane.PaneStyle.BorderBottom.BorderWidth = Unit.Pixel(1);
+        pane.PaneStyle.CssClass = "headerPane";
+        pane.SetContent(() => {
+            Html.RenderPartial("HeaderPartialView");
+        });
+    });
+
+    settings.Panes.Add(pane => {
+        pane.Name = "Content";
+        pane.PaneStyle.CssClass = "mainContentPane";
+        pane.MinSize = Unit.Pixel(375);
+        pane.PaneStyle.BackColor = System.Drawing.Color.White;
+        pane.PaneStyle.BorderBottom.BorderWidth = Unit.Pixel(1);
+        pane.SetContent(RenderBody().ToHtmlString());
+    });
+
+    settings.Panes.Add(pane => {
+        pane.Name = "Footer";
+        pane.Size = Unit.Pixel(25);
+        pane.PaneStyle.CssClass = "footerPane";
+        pane.SetContent(() => {
+            Html.RenderPartial("FooterPartialView");
+        });
+    });
+}).GetHtml()
+
+    
+
+
+
+    
+
+    @if (User.Identity.IsAuthenticated) {
+        
+        <div id="hidden-component-containers">
+            <div id="memberbar-user-popup-container"></div>
+            <div id="memberbar-feedback-popup-container"></div>
+            <div id="memberbar-viewas-popup-container"></div>
+
+            <div id="app-search-popup-container"></div>
+
+            <div id="app-dialog-alert-popup-container"></div>
+            <div id="app-dialog-confirm-popup-container"></div>
+
+        </div>
+
+        <script>EnsureAppLoaded();</script>
+
+    } else {
+
+        @*<script>
+        // initialize core modules
+        require(['client/scripts/config.v1.4'], function () {
+            require(['core'], function () {
+                App.Initialize();
+            });
+        });
+        </script>*@
+
+    }
+
+</body>
+</html>

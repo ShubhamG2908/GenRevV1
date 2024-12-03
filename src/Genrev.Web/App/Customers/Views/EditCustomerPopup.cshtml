@@ -1,0 +1,127 @@
+﻿@model Genrev.Web.App.Customers.Models.EditCustomerVM
+
+<h3>Edit Customer</h3>
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "EditCustomerName";
+        s.Properties.Caption = "Name";
+        s.Properties.CaptionCellStyle.Width = 100;
+        s.Properties.CaptionStyle.CssClass = "label-required";
+    }
+).Bind(Model.Name).GetHtml()
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "EditCustomerAddress1";
+        s.Properties.Caption = "Address 1";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.Address1).GetHtml()
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "EditCustomerAddress2";
+        s.Properties.Caption = "Address 2";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.Address2).GetHtml()
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "EditCustomerCity";
+        s.Properties.Caption = "City";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.City).GetHtml()
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "EditCustomerState";
+        s.Properties.Caption = "State";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.State).GetHtml()
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "EditCustomerPostalCode";
+        s.Properties.Caption = "Postal/Zip";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.PostalCode).GetHtml()
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "EditCustomerCountry";
+        s.Properties.Caption = "Country";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.Country).GetHtml()
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "EditCustomerPhone";
+        s.Properties.Caption = "Phone";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.Phone).GetHtml()
+
+<div class="spacer-10"></div>
+
+@Html.DevExpress().ComboBox(
+    s => {
+        s.Name = "EditCustomerCustomerType";
+        s.Properties.ValueField = "ID";
+        s.Properties.ValueType = typeof(int);
+        s.Properties.TextField = "Name";
+        s.Properties.Caption = "Type";
+        s.Properties.CaptionCellStyle.Width = 100;
+        s.PreRender = (sender, e) => { Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRender(sender, Model.CustomerTypeCLI); };
+    }
+).BindList(Model.CustomerTypesList).GetHtml()
+
+@Html.DevExpress().ComboBox(
+    s => {
+        s.Name = "EditCustomerIndustry";
+        s.Properties.ValueField = "ID";
+        s.Properties.ValueType = typeof(int);
+        s.Properties.TextField = "Name";
+        s.Properties.Caption = "Industry";
+        s.Properties.CaptionCellStyle.Width = 100;
+        s.PreRender = (sender, e) => { Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRender(sender, Model.IndustryCLI); };
+    }
+).BindList(Model.IndustriesList).GetHtml()
+
+
+@Html.DevExpress().ComboBox(
+    s => {
+        s.Name = "EditCustomerAccountType";
+        s.Properties.ValueField = "ID";
+        s.Properties.ValueType = typeof(int);
+        s.Properties.TextField = "Name";
+        s.Properties.Caption = "Account Type";
+        s.Properties.CaptionCellStyle.Width = 100;
+        s.PreRender = (sender, e) => { Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRender(sender, Model.AccountTypeCLI); };
+    }
+).BindList(Model.AccountTypesList).GetHtml()
+
+<div class="clearfix spacer-10"></div>
+
+
+<div style="float:left;">
+    @Html.DevExpress().Button(s => { s.Name = "CustomerDeleteButton"; s.Text = "Delete"; s.ControlStyle.ForeColor = System.Drawing.Color.Red; }).GetHtml()
+</div>
+
+<table style="float: right;">
+    <tr>
+        <td>
+            @Html.DevExpress().Button(s => { s.Name = "CustomerEditOkButton"; s.Text = "OK"; }).GetHtml()
+        </td>
+        <td style="padding-left: 5px;">
+            @Html.DevExpress().Button(s => { s.Name = "CustomerEditCancelButton"; s.Text = "Cancel"; }).GetHtml()
+        </td>
+    </tr>
+</table>
+
+

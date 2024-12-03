@@ -1,0 +1,226 @@
+﻿
+<div style="padding: 10px;">
+
+    <h2 id="data-import-heading">Data Import</h2>
+
+    <p>Use this area to import new data into GENREV!  Click the <em>description</em> link for each upload for general information, or download the template files to help.</p>
+    @*<p>For detailed documentation, please see our <a href="#">technical documentation topic here</a>.</p>*@
+    <p>Each imported file should be in the CSV format, with the first row containing column headings.  Please refer to the download templates for examples.</p>
+    
+    <hr />
+
+    @using (Html.BeginForm()) {
+        
+
+    @*<div class="dg-row">
+        <h3>Companies</h3>
+        <div class="dg-col-6">
+            @Html.DevExpress().UploadControl(
+                 s => {
+                     s.Name = "uploadCompanies";
+                     s.ShowProgressPanel = false;
+                     s.UploadMode = UploadControlUploadMode.Auto;
+                     s.AutoStartUpload = true;
+                     s.Width = Unit.Percentage(80);
+                     s.CallbackRouteValues = new { Controller = "Data", Action = "UploadCompanies" };
+                     s.ValidationSettings.Assign(Genrev.Web.App.Data.DataUploadValidation.Settings);
+                 }
+             ).GetHtml()
+        </div>
+        <div class="dg-col-6">
+            <a id="template-dl-companies" href="#">Download Companies Template</a>
+        </div>
+    </div>
+    <a data-dym-description-link="companies" href="#"><small>Description</small></a>
+    <div data-dym-description-container="companies" style="display: none;">
+        <p>This is a description for the Companies upload</p>
+    </div>*@
+
+
+
+        <div class="dg-row">
+            <h3>Monthly Data</h3>
+            <div class="dg-col-6">
+                @Html.DevExpress().UploadControl(
+                 s => {
+                     s.Name = "uploadMonthlyData";
+                     s.ShowProgressPanel = false;
+                     s.UploadMode = UploadControlUploadMode.Auto;
+                     s.AutoStartUpload = true;
+                     s.Width = Unit.Percentage(80);
+                     s.CallbackRouteValues = new { Controller = "Data", Action = "UploadMonthlyData" };
+                     s.ValidationSettings.Assign(Genrev.Web.App.Data.DataUploadValidation.Settings);
+                 }
+             ).GetHtml()
+            </div>
+            <div class="dg-col-6">
+                <a id="template-dl-monthlyData" href="#">Download Monthly Data Template</a>
+            </div>
+        </div>
+        <a data-dym-description-link="monthlyData" href="#"><small>Description</small></a>
+        <div data-dym-description-container="monthlyData" style="display: none; max-width: 550px;">
+            <p>Upload your monthly data values here.  This includes breakdown by Customer, Personnel and allows you to set your monthly Sales, GPP and Calls.</p>
+            <p>This will updated existing values and add new values as applicable.  No data will be deleted.</p>
+        </div>
+
+
+        <div class="dg-row">
+            <h3>Personnel</h3>
+            <div class="dg-col-6">
+                @Html.DevExpress().UploadControl(
+                     s => {
+                         s.Name = "uploadPersonnel";
+                         s.ShowProgressPanel = false;
+                         s.UploadMode = UploadControlUploadMode.Auto;
+                         s.AutoStartUpload = true;
+                         s.Width = Unit.Percentage(80);
+                         s.CallbackRouteValues = new { Controller = "Data", Action = "UploadPersonnel" };
+                         s.ValidationSettings.Assign(Genrev.Web.App.Data.DataUploadValidation.Settings);
+                     }
+                 ).GetHtml()
+            </div>
+            <div class="dg-col-6">
+                <a id="template-dl-personnel" href="#">Download Personnel Template</a>
+            </div>
+        </div>
+        <a data-dym-description-link="personnel" href="#"><small>Description</small></a>
+        <div data-dym-description-container="personnel" style="display: none; max-width: 550px;">
+            <p>Upload your master list of personnel here.  This will match all personnel on previously imported IDs. This will update existing personnel with the imported data, and add new personnel if they don't already exist.  No entries will be deleted.</p>
+        </div>
+
+
+
+
+
+
+        <div class="dg-row">
+            <h3>Account Types</h3>
+            <div class="dg-col-6">
+                @Html.DevExpress().UploadControl(
+                     s => {
+                         s.Name = "uploadAccountTypes";
+                         s.ShowProgressPanel = false;
+                         s.UploadMode = UploadControlUploadMode.Auto;
+                         s.AutoStartUpload = true;
+                         s.Width = Unit.Percentage(80);
+                         s.CallbackRouteValues = new { Controller = "Data", Action = "UploadAccountTypes" };
+                         s.ValidationSettings.Assign(Genrev.Web.App.Data.DataUploadValidation.Settings);
+                     }
+                 ).GetHtml()
+            </div>
+            <div class="dg-col-6">
+                <a id="template-dl-accountTypes" href="#">Download AccountTypes Template</a>
+            </div>
+        </div>
+        <a data-dym-description-link="accountTypes" href="#"><small>Description</small></a>
+        <div data-dym-description-container="accountTypes" style="display: none; max-width: 550px;">
+            <p>Upload your master list of account types here.  This will match all types on previously imported IDs. This will update existing types with the imported data, and add new types if they don't already exist.  No entries will be deleted.</p>
+        </div>
+
+        <div class="dg-row">
+            <h3>Customer Types</h3>
+            <div class="dg-col-6">
+                @Html.DevExpress().UploadControl(
+                     s => {
+                         s.Name = "uploadCustomerTypes";
+                         s.ShowProgressPanel = false;
+                         s.UploadMode = UploadControlUploadMode.Auto;
+                         s.AutoStartUpload = true;
+                         s.Width = Unit.Percentage(80);
+                         s.CallbackRouteValues = new { Controller = "Data", Action = "UploadCustomerTypes" };
+                         s.ValidationSettings.Assign(Genrev.Web.App.Data.DataUploadValidation.Settings);
+                     }
+                 ).GetHtml()
+            </div>
+            <div class="dg-col-6">
+                <a id="template-dl-customerTypes" href="#">Download CustomerTypes Template</a>
+            </div>
+        </div>
+        <a data-dym-description-link="customerTypes" href="#"><small>Description</small></a>
+        <div data-dym-description-container="customerTypes" style="display: none; max-width: 550px;">
+            <p>Upload your master list of customer types here.  This will match all customer types on previously imported IDs. This will update existing customer types with the imported data, and add new customer types if they don't already exist.  No entries will be deleted.</p>
+        </div>
+
+        <div class="dg-row">
+            <h3>Industry Types</h3>
+            <div class="dg-col-6">
+                @Html.DevExpress().UploadControl(
+                     s => {
+                         s.Name = "uploadIndustryTypes";
+                         s.ShowProgressPanel = false;
+                         s.UploadMode = UploadControlUploadMode.Auto;
+                         s.AutoStartUpload = true;
+                         s.Width = Unit.Percentage(80);
+                         s.CallbackRouteValues = new { Controller = "Data", Action = "UploadIndustryTypes" };
+                         s.ValidationSettings.Assign(Genrev.Web.App.Data.DataUploadValidation.Settings);
+                     }
+                 ).GetHtml()
+            </div>
+            <div class="dg-col-6">
+                <a id="template-dl-industryTypes" href="#">Download IndustryTypes Template</a>
+            </div>
+        </div>
+        <a data-dym-description-link="industryTypes" href="#"><small>Description</small></a>
+        <div data-dym-description-container="industryTypes" style="display: none; max-width: 550px;">
+            <p>Upload your master list of industry types here.  This will match all industry types on previously imported IDs. This will update existing industry types with the imported data, and add new industry types if they don't already exist.  No entries will be deleted.</p>
+        </div>
+
+        <div class="dg-row">
+            <h3>Customers</h3>
+            <div class="dg-col-6">
+                @Html.DevExpress().UploadControl(
+                     s => {
+                         s.Name = "uploadCustomers";
+                         s.ShowProgressPanel = false;
+                         s.UploadMode = UploadControlUploadMode.Auto;
+                         s.AutoStartUpload = true;
+                         s.Width = Unit.Percentage(80);
+                         s.CallbackRouteValues = new { Controller = "Data", Action = "UploadCustomers" };
+                         s.ValidationSettings.Assign(Genrev.Web.App.Data.DataUploadValidation.Settings);
+                     }
+                 ).GetHtml()
+            </div>
+            <div class="dg-col-6">
+                <a id="template-dl-customers" href="#">Download Customers Template</a>
+            </div>
+        </div>
+        <a data-dym-description-link="customers" href="#"><small>Description</small></a>
+        <div data-dym-description-container="customers" style="display: none; max-width: 550px;">
+            <p>Upload your master list of customers here.  This will match all customers on previously imported IDs. This will update existing customers with the imported data, and add new customers if they don't already exist.  No entries will be deleted.</p>
+            <p>Include your Account Type, Customer Type and Industry Type IDs in the appropriate fields to apply them to the updated or inserted customers.</p>
+        </div>
+
+
+
+
+    }
+
+
+
+    
+
+
+
+</div>
+
+
+
+@Html.DevExpress().LoadingPanel(
+    s => {
+        s.Name = "uploadLoadingPanel";
+        s.Modal = true;
+        s.ContainerElementID = "";
+    }
+).GetHtml()
+
+
+<script type="text/javascript" id="dxss_2348907v673498673948v7m">
+
+    EnsureAppLoaded(function () {
+
+        require(['data', 'devex'], function (data, devex) {
+            Data.Upload.Initialize();
+        });
+    });
+
+</script>

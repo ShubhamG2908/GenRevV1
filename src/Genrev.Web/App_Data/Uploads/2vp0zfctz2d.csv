@@ -1,0 +1,4 @@
+CustomerID,SalespersonID,Period,ActualSales,ActualGPP,ActualCalls
+C-001,P001,1/1/2016,15645,0.28,6
+C-001,P002,1/1/2016,12010,0.19,8
+C-002,P001,1/1/2016,15464,0.22,3

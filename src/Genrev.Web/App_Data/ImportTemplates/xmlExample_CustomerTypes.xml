@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Request>
+	<CustomerTypes>
+		<CustomerType>
+			<ID>CT-001</ID>
+			<Name>Developer</Name>
+		</CustomerType>
+		<CustomerType>
+			<ID>CTT-002</ID>
+			<Name>Municipal</Name>
+		</CustomerType>
+		<CustomerType>
+			<ID>CT-003</ID>
+			<Name>Engineering</Name>
+		</CustomerType>
+	</CustomerTypes>
+</Request>

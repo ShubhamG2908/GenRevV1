@@ -1,0 +1,98 @@
+﻿@model Genrev.Web.App.Preferences.Models.PreferencesVM
+
+
+
+<div style="padding: 10px;">
+
+    <h2 id="data-import-heading">User Preferences</h2>
+
+    <hr />
+
+
+    <div class="dg-row">
+        <h3>Chart Colors</h3>
+        <div class="dg-col-6">
+            <form id="PreferencesEditForm">
+                <div style="padding-bottom:5px;">
+                    @Html.DevExpress().ColorEditFor(
+                m => m.Color0,
+                s =>
+                {
+                    s.Properties.EnableCustomColors = true;
+                    s.Properties.NullText = "Default";
+                }
+            ).GetHtml()
+                </div>
+
+                <div style="padding-bottom:5px;">
+                    @Html.DevExpress().ColorEditFor(
+                m => m.Color1,
+                s =>
+                {
+                    s.Properties.EnableCustomColors = true;
+                    s.Properties.NullText = "Default";
+                }
+            ).GetHtml()
+                </div>
+
+                <div style="padding-bottom:5px;">
+                    @Html.DevExpress().ColorEditFor(
+                m => m.Color2,
+                s =>
+                {
+                    s.Properties.EnableCustomColors = true;
+                    s.Properties.NullText = "Default";
+                }
+            ).GetHtml()
+                </div>
+
+                <div style="padding-bottom:5px;">
+                    @Html.DevExpress().ColorEditFor(
+                m => m.Color3,
+                s =>
+                {
+                    s.Properties.EnableCustomColors = true;
+                    s.Properties.NullText = "Default";
+                }
+            ).GetHtml()
+                </div>
+                </form>
+
+                <div class="datacontent-subsection spacer-10">
+
+                    <div style="width: 170px; text-align: right;">
+                        <table><tr>
+                            <td style="padding-right:5px">
+                            @Html.DevExpress().Button(s =>
+                            {
+                                s.Name = "PreferencesReset";
+                                s.Text = "Reset to Default";
+                            }).GetHtml()
+                            </td>
+                            <td>
+                                @Html.DevExpress().Button(s =>
+                           {
+                               s.Name = "PreferencesSave";
+                               s.Text = "Save";
+                           }).GetHtml()
+                            </td>
+                            </tr></table>
+                        
+                    </div>
+                </div>
+
+</div>
+            </div>
+
+</div>
+
+<!--<script type="text/javascript" src="~/client/scripts/app/preferences.v1.0.js"></script>-->
+
+<script type="text/javascript" id="PreferencesPageScriptsLoad">
+    EnsureAppLoaded(function () {
+
+        require(['preferences', 'devex'], function () {
+            Preferences.Initialize();
+        });
+    });
+</script>

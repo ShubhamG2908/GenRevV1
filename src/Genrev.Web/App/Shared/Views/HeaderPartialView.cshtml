@@ -1,0 +1,24 @@
+<div class="headerTop">
+    <div class="templateTitle">
+        <a id="main-logo-link" href="/Home" class="logolink"></a>
+        @*@Html.ActionLink("Project Title", "Index", "Home", new { @class = "logolink" })*@
+    </div>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+
+
+        @Html.Partial("LoggedOnPartialView")
+
+
+    }
+    else
+    {
+
+        <div class="loginControl">
+            @Html.Partial("LogOnPartialView")
+        </div>
+
+    }
+
+</div>

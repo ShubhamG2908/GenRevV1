@@ -1,0 +1,567 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3C94E702-40CA-47F2-9FED-B701382F839C}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Genrev.Web</RootNamespace>
+    <AssemblyName>Genrev.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <UpgradeBackupLocation />
+    <Use64BitIISExpress />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNetOpenAuth.AspNet, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetOpenAuth.AspNet.4.3.4.13329\lib\net45-full\DotNetOpenAuth.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetOpenAuth.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Consumer, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OpenId.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.RelyingParty.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
+    </Reference>
+    <Reference Include="Dymeng">
+      <HintPath>..\lib\Dymeng.dll</HintPath>
+    </Reference>
+    <Reference Include="Dymeng.Data">
+      <HintPath>..\lib\Dymeng.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Dymeng.Net">
+      <HintPath>..\lib\Dymeng.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Dymeng.Web.Mvc">
+      <HintPath>..\lib\Dymeng.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Dymeng.Web.Mvc.DevExpress">
+      <HintPath>..\lib\Dymeng.Web.Mvc.DevExpress.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebPages.OAuth, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.OAuth.3.2.7\lib\net45\Microsoft.Web.WebPages.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="DevExpress.Data.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.ASPxHtmlEditor.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.ASPxSpellChecker.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.ASPxTreeList.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.ASPxThemes.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.ASPxPivotGrid.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Office.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.SpellChecker.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Charts.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraCharts.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraGauges.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraGauges.v16.1.Presets, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.ASPxGauges.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraCharts.v16.1.Web, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Printing.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Sparkline.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.CodeParser.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraReports.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraReports.v16.1.Web, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraPivotGrid.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.PivotGrid.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraScheduler.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.ASPxScheduler.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Spreadsheet.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.ASPxSpreadsheet.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.RichEdit.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.ASPxRichEdit.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Xpo.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.DataAccess.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Dashboard.v16.1.Core, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.Resources.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Dashboard.v16.1.Web, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Dashboard.v16.1.Web.Mvc5, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.Mvc5.v16.1, Version=16.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="WebMatrix.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.3.2.7\lib\net45\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.3.2.7\lib\net45\WebMatrix.WebData.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="client\content\down-double-16-light.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="client\content\header-separator.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="client\content\loading.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="client\content\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="client\content\sprites-ico-v1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="client\css\app-v10.css" />
+    <Content Include="client\css\sprites-v1.css" />
+    <Content Include="client\scripts\app\analysisOpportunities.v1.0.js" />
+    <Content Include="client\scripts\app\analysisSalesCalls.v1.2.js" />
+    <Content Include="client\scripts\app\analysisActualVsForecast.v1.2.js" />
+    <Content Include="client\scripts\app\charts.v1.2.js" />
+    <Content Include="client\scripts\app\analysisHistoric.v1.0.js" />
+    <Content Include="client\scripts\app\drilldown.v1.0.js" />
+    <Content Include="client\scripts\app\forecastLock.v1.0.js" />
+    <Content Include="client\scripts\app\forecast.v1.0.js" />
+    <Content Include="client\scripts\app\genrev.v1.4.js" />
+    <Content Include="client\scripts\app\dashboard.v1.5.js" />
+    <Content Include="client\scripts\app\data.v1.4.js" />
+    <Content Include="client\scripts\app\owner.v1.0.js" />
+    <Content Include="client\scripts\app\customers.v1.1.js" />
+    <Content Include="client\scripts\app\preferences.v1.0.js" />
+    <Content Include="client\scripts\app\products.v1.0.js" />
+    <Content Include="client\scripts\app\personnel.v1.1.js" />
+    <Content Include="client\scripts\app\subscription.v1.0.js" />
+    <Content Include="client\scripts\app\devex.v1.1.js" />
+    <Content Include="client\scripts\app\test.v1.0.js" />
+    <Content Include="client\scripts\config.v1.11.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="client\scripts\app\core.v1.1.js" />
+    <Content Include="client\scripts\lib\deepMerge.js" />
+    <Content Include="client\scripts\lib\highcharts-nodata.v5.0.0.js" />
+    <Content Include="client\scripts\lib\highcharts.v4.2.6.js" />
+    <Content Include="client\scripts\lib\history.v4.2.7.js" />
+    <Content Include="client\scripts\require.v2.2.0.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="client\scripts\app\userShell.v1.1.js" />
+    <Content Include="App\Sample\Views\Dashboard.cshtml" />
+    <Content Include="App\Sample\Views\Search.cshtml" />
+    <Content Include="App\Subscription\Views\PageBase.cshtml" />
+    <Content Include="App\Subscription\Views\General.cshtml" />
+    <Content Include="App\Subscription\Views\Subscription.cshtml" />
+    <Content Include="App\Subscription\Views\Activity.cshtml" />
+    <Content Include="App\Subscription\Views\Integrations.cshtml" />
+    <Content Include="App\Help\Views\Topic0.cshtml" />
+    <Content Include="App\Help\Views\Topic1.cshtml" />
+    <Content Include="App\Owner\Views\Manage.cshtml" />
+    <Content Include="App\Owner\Views\Overview.cshtml" />
+    <Content Include="App\Owner\Views\PageBase.cshtml" />
+    <Content Include="App\Owner\Views\Create.cshtml" />
+    <Content Include="App\Owner\Views\ManageGrid.cshtml" />
+    <Content Include="App\Personnel\Views\Overview.cshtml" />
+    <Content Include="App\Personnel\Views\OverviewGrid.cshtml" />
+    <Content Include="App\Personnel\Views\ReportsToGrid.cshtml" />
+    <Content Include="App\Dialogs\Views\Popup.cshtml" />
+    <Content Include="App\Personnel\Views\AddNewPopup.cshtml" />
+    <Content Include="App\Personnel\Views\EditLoginInfo.cshtml" />
+    <Content Include="App\Personnel\Views\CreateLoginInfo.cshtml" />
+    <Content Include="App\Customers\Views\PageBase.cshtml" />
+    <Content Include="App\Customers\Views\Types.cshtml" />
+    <Content Include="App\Customers\Views\Industries.cshtml" />
+    <Content Include="App\Customers\Views\Customers.cshtml" />
+    <Content Include="App\Customers\Views\Mappings.cshtml" />
+    <Content Include="App\Customers\Views\TypesGrid.cshtml" />
+    <Content Include="App\Customers\Views\IndustriesGrid.cshtml" />
+    <Content Include="App\Customers\Views\CustomersGrid.cshtml" />
+    <Content Include="App\Customers\Views\AddNewCustomerPopup.cshtml" />
+    <Content Include="App\Customers\Views\MappingsPersonnelGrid.cshtml" />
+    <Content Include="App\Customers\Views\MappingsCustomersGrid.cshtml" />
+    <Content Include="App\MemberBar\Views\ViewAs.cshtml" />
+    <Content Include="App\MemberBar\Views\ViewAsPopup.cshtml" />
+    <Content Include="App\MemberBar\Views\ViewAsPopupContent.cshtml" />
+    <Content Include="App\Data\Views\Management.cshtml" />
+    <Content Include="App\Data\Views\ManagementMatrixByCostsGrid.cshtml" />
+    <Content Include="App\Data\Views\ManagementMatrix.cshtml" />
+    <Content Include="App\Analysis\Views\Historic.cshtml" />
+    <Content Include="App\Analysis\Views\HistoricSalespersonPage.cshtml" />
+    <Content Include="App\Analysis\Views\HistoricIndustryPage.cshtml" />
+    <Content Include="App\Analysis\Views\HistoricCustomerTypePage.cshtml" />
+    <Content Include="App\Analysis\Views\ActualVsForecast.cshtml" />
+    <Content Include="App\Analysis\Views\ActualVsForecastCustomerTypePage.cshtml" />
+    <Content Include="App\Analysis\Views\ActualVsForecastIndustryPage.cshtml" />
+    <Content Include="App\Analysis\Views\ActualVsForecastSalespersonPage.cshtml" />
+    <Content Include="App\Customers\Views\Classifications.cshtml" />
+    <Content Include="App\Customers\Views\EditCustomerPopup.cshtml" />
+    <Content Include="App\Customers\Views\EditTypePopup.cshtml" />
+    <Content Include="App\Customers\Views\EditIndustryPopup.cshtml" />
+    <Content Include="App\Customers\Views\AccountTypes.cshtml" />
+    <Content Include="App\Customers\Views\AccountTypesGrid.cshtml" />
+    <Content Include="App\Customers\Views\EditAccountTypePopup.cshtml" />
+    <Content Include="App\Analysis\Views\Opportunities.cshtml" />
+    <Content Include="App\Analysis\Views\SalesCalls.cshtml" />
+    <Content Include="App\Analysis\Views\ActualVsForecastAccountTypePage.cshtml" />
+    <Content Include="App\Analysis\Views\HistoricAccountTypePage.cshtml" />
+    <Content Include="App\Analysis\Views\SalesCallsSalespersonPage.cshtml" />
+    <Content Include="App\Analysis\Views\SalesCallsIndustryPage.cshtml" />
+    <Content Include="App\Analysis\Views\SalesCallsCustomerTypePage.cshtml" />
+    <Content Include="App\Analysis\Views\SalesCallsAccountTypePage.cshtml" />
+    <Content Include="App\Analysis\Views\Drilldown.cshtml" />
+    <Content Include="App\Analysis\Views\DrilldownGrid.cshtml" />
+    <Content Include="App\Data\Views\Import.cshtml" />
+    <Content Include="App\Products\Views\Index.cshtml" />
+    <Content Include="App\Products\Views\ProductGroupGrid.cshtml" />
+    <Content Include="App\Products\Views\AddProductGroupPopup.cshtml" />
+    <Content Include="App\Products\Views\AddProductPopup.cshtml" />
+    <Content Include="App\Products\Views\ProductsGrid.cshtml" />
+    <Content Include="App\Analysis\Views\ActualVsForecastProductPage.cshtml" />
+    <Content Include="App\Analysis\Views\SalesCallsProductPage.cshtml" />
+    <Content Include="App\Analysis\Views\HistoricProductPage.cshtml" />
+    <Content Include="App\Data\Views\Forecast.cshtml" />
+    <Content Include="App\Data\Views\ForecastPlanByYearGrid.cshtml" />
+    <Content Include="App\Data\Views\ForecastDetailByYearGrid.cshtml" />
+    <Content Include="App\Personnel\Views\AvailabilityPopup.cshtml" />
+    <Content Include="App\Personnel\Views\AvailabilityPopupGrid.cshtml" />
+    <Content Include="App\Preferences\Views\Preferences.cshtml" />
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_AccountTypes.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_Companies.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_Customers.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_CustomerTypes.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_Industries.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_Personnel.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App\Analysis\Views\SalesCallPlanOverview.cshtml" />
+    <Content Include="App\Shared\Views\FeatureDisabled.cshtml" />
+    <Content Include="App\MemberBar\Views\FeedbackPopup.cshtml" />
+    <Content Include="App\MemberBar\Views\FeedbackPopupContent.cshtml" />
+    <Content Include="App\Data\Views\ForecastLock.cshtml" />
+    <Content Include="App\Analysis\Views\ActualVsForecastCustomerPage.cshtml" />
+    <Content Include="App\Analysis\Views\HistoricCustomerPage.cshtml" />
+    <Content Include="App\Analysis\Views\SalesCallsCustomerPage.cshtml" />
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_MonthlyData.csv" />
+    <None Include="client\scripts\_references.js" />
+    <Content Include="Global.asax" />
+    <Content Include="packages.config" />
+    <Content Include="App\Shared\Views\DisplayTemplates\Boolean.cshtml" />
+    <Content Include="App\Shared\Views\EditorTemplates\Boolean.cshtml" />
+    <Content Include="App\Shared\Views\EditorTemplates\DateTime.cshtml" />
+    <Content Include="App\Shared\Views\EditorTemplates\Decimal.cshtml" />
+    <Content Include="App\Shared\Views\EditorTemplates\MultilineText.cshtml" />
+    <Content Include="App\Shared\Views\EditorTemplates\Password.cshtml" />
+    <Content Include="App\Shared\Views\EditorTemplates\String.cshtml" />
+    <Content Include="App\Shared\Views\EditorTemplates\EmailAddress.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App\Account\Views\ChangePassword.cshtml" />
+    <Content Include="App\Account\Views\ChangePasswordSuccess.cshtml" />
+    <Content Include="App\Account\Views\Login.cshtml" />
+    <Content Include="App\Account\Views\Register.cshtml" />
+    <Content Include="App\Shared\Views\ContentLeftPartialView.cshtml" />
+    <Content Include="App\Shared\Views\FooterPartialView.cshtml" />
+    <Content Include="App\Shared\Views\HeaderPartialView.cshtml" />
+    <Content Include="App\Shared\Views\LogOnPartialView.cshtml" />
+    <Content Include="App\Shared\Views\_lightLayout.cshtml" />
+    <Content Include="App\Shared\Views\_mainLayout.cshtml" />
+    <Content Include="App\Shared\Views\_rootLayout.cshtml" />
+    <Content Include="App\Home\Views\Dashboard.cshtml" />
+    <Content Include="App\Web.config" />
+    <Content Include="App\_ViewStart.cshtml" />
+    <Content Include="App\Admin\Views\UserAdminHome.cshtml" />
+    <Content Include="App\Shared\Views\LoggedOnPartialView.cshtml" />
+    <Content Include="App\MemberBar\Views\UserPopup.cshtml" />
+    <Content Include="App\MemberBar\Views\UserPopupContent.cshtml" />
+    <Content Include="App\MemberBar\Views\AlertPopup.cshtml" />
+    <Content Include="App\MemberBar\Views\AlertPopupContent.cshtml" />
+    <Content Include="App\MemberBar\Views\HelpPopup.cshtml" />
+    <Content Include="App\MemberBar\Views\HelpPopupContent.cshtml" />
+    <Content Include="App\Dialogs\Views\AlertPopup.cshtml" />
+    <Content Include="App\Dialogs\Views\AlertPopupContent.cshtml" />
+    <Content Include="App\Dialogs\Views\ConfirmPopup.cshtml" />
+    <Content Include="App\Dialogs\Views\ConfirmPopupContent.cshtml" />
+    <None Include="Properties\PublishProfiles\Genrev Local Publish.pubxml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppCache.cs" />
+    <Compile Include="AppService.cs" />
+    <Compile Include="App\Account\AccountController.cs" />
+    <Compile Include="App\Account\Models\AccountVM.cs" />
+    <Compile Include="App\Admin\AdminController.cs" />
+    <Compile Include="App\Admin\Models\Users\UserAdminHomeVM.cs" />
+    <Compile Include="App\Analysis\AnalysisController.cs" />
+    <Compile Include="App\Analysis\AnalysisService.cs" />
+    <Compile Include="App\Analysis\Models\ActualVsForecastVM.cs" />
+    <Compile Include="App\Analysis\Models\CallOverviewListItem.cs" />
+    <Compile Include="App\Analysis\Models\CallPlanOverviewVM.cs" />
+    <Compile Include="App\Analysis\Models\DrilldownListItem.cs" />
+    <Compile Include="App\Analysis\Models\DrilldownVM.cs" />
+    <Compile Include="App\Analysis\Models\HistoricVM.cs" />
+    <Compile Include="App\Analysis\Models\OpportunitiesVM.cs" />
+    <Compile Include="App\Analysis\Models\SalesCallsVM.cs" />
+    <Compile Include="App\CommonListItems.cs" />
+    <Compile Include="App\Customers\CustomersController.cs" />
+    <Compile Include="App\Customers\CustomersDataService.cs" />
+    <Compile Include="App\Customers\Models\AddCustomerVM.cs" />
+    <Compile Include="App\Customers\Models\ClassificationVM.cs" />
+    <Compile Include="App\Customers\Models\CustomerListItemVM.cs" />
+    <Compile Include="App\Customers\Models\CustomersVM.cs" />
+    <Compile Include="App\Customers\Models\EditAccountTypeVM.cs" />
+    <Compile Include="App\Customers\Models\EditCustomerTypeVM.cs" />
+    <Compile Include="App\Customers\Models\EditIndustryVM.cs" />
+    <Compile Include="App\Customers\Models\EditCustomerVM.cs" />
+    <Compile Include="App\Customers\Models\AccountTypeListItemVM.cs" />
+    <Compile Include="App\Customers\Models\IndustryListItemVM.cs" />
+    <Compile Include="App\Customers\Models\MappingCustomerListItemVM.cs" />
+    <Compile Include="App\Customers\Models\MappingPersonnelListItemVM.cs" />
+    <Compile Include="App\Customers\Models\MappingVM.cs" />
+    <Compile Include="App\Customers\Models\TypesListItemVM.cs" />
+    <Compile Include="App\Data\DataController.cs" />
+    <Compile Include="App\Data\DataService.cs" />
+    <Compile Include="App\Data\DataUploadValidation.cs" />
+    <Compile Include="App\Data\Models\Forecast\ForecastDetailVM.cs" />
+    <Compile Include="App\Data\Models\Forecast\ForecastGridItemVM.cs" />
+    <Compile Include="App\Data\Models\Forecast\ForecastLockDTO.cs" />
+    <Compile Include="App\Data\Models\Forecast\ForecastPlanByYearListItem.cs" />
+    <Compile Include="App\Data\Models\Forecast\ForecastPlanByYearVM.cs" />
+    <Compile Include="App\Data\Models\Forecast\ForecastLockVM.cs" />
+    <Compile Include="App\Data\Models\Forecast\ForecastVM.cs" />
+    <Compile Include="App\Data\Models\Management\MatrixVM.cs" />
+    <Compile Include="App\Data\Models\Management\MatrixByCostGridItem.cs" />
+    <Compile Include="App\Dialogs\DialogsController.cs" />
+    <Compile Include="App\Dialogs\Models\PopupOptionsVM.cs" />
+    <Compile Include="App\Help\HelpController.cs" />
+    <Compile Include="App\Help\Models\Topics.cs" />
+    <Compile Include="App\Home\Charts\CurrentYearGrossProfit.cs" />
+    <Compile Include="App\Home\Charts\CurrentYearSalesVsForecast.cs" />
+    <Compile Include="App\Home\Data\CurrentYearProjections.cs" />
+    <Compile Include="App\Home\Data\TopBottomMatrix.cs" />
+    <Compile Include="App\Home\HomeController.cs" />
+    <Compile Include="App\Internal\InternalController.cs" />
+    <Compile Include="App\MemberBar\MemberBarController.cs" />
+    <Compile Include="App\MemberBar\Models\ViewAsVM.cs" />
+    <Compile Include="App\Navigation\Models\NavBarMV.cs" />
+    <Compile Include="App\Navigation\Services\NavBarService.cs" />
+    <Compile Include="App\Owner\Models\AccountListItemVM.cs" />
+    <Compile Include="App\Owner\Models\AccountListVM.cs" />
+    <Compile Include="App\Owner\Models\AccountCreateVM.cs" />
+    <Compile Include="App\Personnel\Models\AddNewVM.cs" />
+    <Compile Include="App\Personnel\Models\AvailabilityListItem.cs" />
+    <Compile Include="App\Personnel\Models\AvailabilityPopupGridVM.cs" />
+    <Compile Include="App\Personnel\Models\AvailabilityPopupVM.cs" />
+    <Compile Include="App\Personnel\Models\CreateLoginInfoVM.cs" />
+    <Compile Include="App\Personnel\Models\EditLoginInfoVM.cs" />
+    <Compile Include="App\Personnel\Models\ReportsToListItemVM.cs" />
+    <Compile Include="App\Personnel\Models\OverviewListItemVM.cs" />
+    <Compile Include="App\Personnel\Models\OverviewVM.cs" />
+    <Compile Include="App\Personnel\PersonnelController.cs" />
+    <Compile Include="App\Personnel\PersonnelDataService.cs" />
+    <Compile Include="App\Preferences\Models\PreferencesVM.cs" />
+    <Compile Include="App\Preferences\PreferencesController.cs" />
+    <Compile Include="App\Preferences\PreferencesService.cs" />
+    <Compile Include="App\Products\Models\ProductGroupListItem.cs" />
+    <Compile Include="App\Products\Models\ProductListItem.cs" />
+    <Compile Include="App\Products\Models\ProductsVM.cs" />
+    <Compile Include="App\Products\ProductsController.cs" />
+    <Compile Include="App\Products\ProductsService.cs" />
+    <Compile Include="App\Sample\SampleController.cs" />
+    <Compile Include="App\Owner\OwnerController.cs" />
+    <Compile Include="App\Subscription\Models\ApiVM.cs" />
+    <Compile Include="App\Subscription\Models\GeneralVM.cs" />
+    <Compile Include="App\Subscription\SubscriptionService.cs" />
+    <Compile Include="App_Start\AuthConfig.cs" />
+    <Compile Include="App_Start\ExceptionHandlingConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\ViewEngineConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure\Membership\DymengMembershipProvider.cs" />
+    <Compile Include="Infrastructure\Membership\DymengRoleProvider.cs" />
+    <Compile Include="Infrastructure\Membership\MembershipRepository.cs" />
+    <Compile Include="Infrastructure\Membership\RoleRepository.cs" />
+    <Compile Include="Infrastructure\ViewEngine\DymengRazorViewEngine.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="App\Subscription\SubscriptionController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\Uploads\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Genrev.Data\Genrev.Data.csproj">
+      <Project>{dee4c464-b3c1-479e-a800-bad327ca82fb}</Project>
+      <Name>Genrev.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Genrev.Domain.Services\Genrev.Domain.Services.csproj">
+      <Project>{7afc881e-3fa7-4dd8-a1d1-c4ba0996a54f}</Project>
+      <Name>Genrev.Domain.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Genrev.Domain\Genrev.Domain.csproj">
+      <Project>{5fbcedb3-1b8b-4d42-ba68-3dda2fc167c5}</Project>
+      <Name>Genrev.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>63590</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:63970/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+</Project>

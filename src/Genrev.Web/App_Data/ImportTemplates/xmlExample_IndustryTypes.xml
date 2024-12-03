@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Request>
+	<IndustryTypes>
+		<IndustryType>
+			<ID>IT-001</ID>
+			<Name>Developer</Name>
+		</IndustryType>
+		<IndustryType>
+			<ID>CTT-002</ID>
+			<Name>Municipal</Name>
+		</IndustryType>
+		<IndustryType>
+			<ID>IT-003</ID>
+			<Name>Engineering</Name>
+		</IndustryType>
+	</IndustryTypes>
+</Request>

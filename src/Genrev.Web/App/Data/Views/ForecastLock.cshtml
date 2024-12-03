@@ -1,0 +1,61 @@
+﻿@model Genrev.Web.App.Data.Models.Forecast.ForecastLockVM
+<style>
+    #data-forecast-lock-list ul {
+        margin: 15px;
+        padding: 0;
+        width: 50%;
+        background-color: white;
+        list-style-type: none;
+        border-top: 1px solid #7EACB1;
+    }
+
+        #data-forecast-lock-list ul li {
+            padding: 5px;
+            border-bottom: 1px solid #7EACB1;
+            overflow: auto;
+            line-height: 23px;
+        }
+
+            #data-forecast-lock-list ul li button {
+                float: right;
+            }
+</style>
+<div style="padding: 5px;">
+    <h2 id="data-forecast-heading">Forecast Locks</h2>
+    <div id="data-forecast-selectors-container">
+        <table>
+            <tr>
+                <td style="padding-right: 15px;">
+                    @Html.DevExpress().ComboBox(
+                        s => {
+                            s.Name = "ctlYear";
+                            s.Width = 55;
+                            s.Properties.Caption = "Fiscal Year";
+                        }
+                    ).BindList(Model.AvailableYears).Bind(Model.SelectedYear).GetHtml()
+                    <div class="spacer-10"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="data-forecast-lock-list"></div>
+    <div class="spacer-10"></div>
+</div>
+
+@Html.DevExpress().LoadingPanel(
+    settings =>
+    {
+        settings.Name = "LoadingPanel";
+        settings.Modal = true;
+        settings.ContainerElementID = string.Empty;
+    }
+).GetHtml()
+
+<script type="text/javascript" id="dxss_9we876v93847bn98476b3m94">
+    EnsureAppLoaded(function () {
+        require(['forecastLock', 'devex'], function (forecastLock, devex) {
+            ForecastLock.Initialize();
+        });
+    });
+</script>

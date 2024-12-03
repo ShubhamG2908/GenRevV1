@@ -1,0 +1,32 @@
+﻿@model List<Genrev.Web.App.Customers.Models.TypesListItemVM>
+
+<h2>Customer Types</h2>
+
+<table>
+    <tr>
+        <td>
+            @Html.DevExpress().TextBox(
+                s => {
+                    s.Name = "AddCustomerType";
+                    s.Width = 170;
+                }
+            ).GetHtml()
+        </td>
+        <td style="padding-left: 5px;">
+            @Html.DevExpress().Button(
+                s => {
+                    s.Name = "AddCustomerTypeButton";
+                    s.Text = "Add";
+                    s.Width = 75;
+                }
+            ).GetHtml()
+        </td>
+    </tr>
+</table>
+
+<div class="spacer-10"></div>
+
+@Html.Partial("TypesGrid", Model)
+
+
+

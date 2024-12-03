@@ -1,0 +1,272 @@
+@model Genrev.Web.App.Analysis.Models.OpportunitiesVM
+
+<div id="opp-grid-main" class="dg-grid">
+
+    <div class="dg-row">
+        <div class="dg-col-12">
+            <div class="dgf top left right" style="height: 60px;">
+                <div class="dgc heading">Opportunities</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dg-row">
+        <div class="dg-col-12">
+            <div class="dgf top left right" style="height: 40px;">
+                
+                    <!-- Selectors -->
+                    <div class="dg-row">
+                        <div class="dg-col-6 dg-tabs">
+                            <!-- tabs would go here, not present for this page -->
+                        </div>
+                        <div class="dg-col-6 pulltext-right">
+                            
+                            <div id="an-opp-params">
+
+                                <table align="right">
+                                    <tr>
+                                        <td>
+                                            <div id="an-opp-salespersonComboContainer">
+                                                @Html.DevExpress().ComboBox(
+                                                    s => {
+                                                        s.Name = "an-opp-salespersonCombo";
+                                                        s.Properties.ValueField = "ID";
+                                                        s.Properties.ValueType = typeof(int);
+                                                        s.Properties.TextField = "DisplayName";
+                                                        s.Properties.DropDownRows = 10;
+                                                        s.Width = 150;
+                                                        s.PreRender = (sender, e) => {
+                                                            ComboBox.PreRenderByField(sender, Model.DefaultPerson, "ID");
+                                                        };
+                                                    }
+                                                ).BindList(Model.PersonsFilterList).GetHtml()
+                                            </div>
+                                        </td>
+                                        <td style="padding-left: 5px;">
+                                            @Html.DevExpress().ComboBox(
+                                                s => {
+                                                    s.Name = "an-opp-yearsToShowCombobox";
+                                                    s.Properties.ValueField = "Number";
+                                                    s.Properties.ValueType = typeof(int);
+                                                    s.Properties.TextField = "Number";
+                                                    s.Properties.DropDownRows = 10;
+                                                    s.Width = 100;
+                                                    s.PreRender = (sender, e) => {
+                                                        ComboBox.PreRenderByField(sender, Model.DefaultFiscalYear, "Number");
+                                                    };
+                                                }
+                                            ).BindList(Model.FiscalYearList).GetHtml()
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+    <div id="opportunities-tab-content">
+                
+        <div class="dg-grid" id="opp-grid-main">
+
+            <div class="dg-row">
+
+                <div class="dg-col-12">
+
+                    <div class="dgf left right bottom" style="height: 225px;">
+                        <div class="dgc block">
+
+                            <div class="side-label">
+                                <span class="vertical" style="margin-top: 180px;">By Salesperson</span>
+                            </div>
+
+                            <div class="dg-row" style="margin-left: 30px;">
+
+                                <div class="dg-col-4">
+                                    <div id="an-opp-sp-potential"></div>
+                                </div>
+
+                                <div class="dg-col-4">
+                                    <div id="an-opp-sp-current"></div>
+                                </div>
+
+                                <div class="dg-col-4">
+                                    <div id="an-opp-sp-future"></div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="dg-row">
+
+                <div class="dg-col-12">
+
+                    <div class="dgf left right bottom" style="height: 225px;">
+                        <div class="dgc block">
+
+                            <div class="side-label">
+                                <span class="vertical" style="margin-top: 180px;">By Industry</span>
+                            </div>
+
+                            <div class="dg-row" style="margin-left: 30px;">
+
+                                <div class="dg-col-4">
+                                    <div id="an-opp-ind-potential"></div>
+                                </div>
+
+                                <div class="dg-col-4">
+                                    <div id="an-opp-ind-current"></div>
+                                </div>
+
+                                <div class="dg-col-4">
+                                    <div id="an-opp-ind-future"></div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+
+            <div class="dg-row">
+
+                <div class="dg-col-12">
+
+                    <div class="dgf left right bottom" style="height: 225px;">
+                        <div class="dgc block">
+
+                            <div class="side-label">
+                                <span class="vertical" style="margin-top: 180px;">By Customer Type</span>
+                            </div>
+
+                            <div class="dg-row" style="margin-left: 30px;">
+
+                                <div class="dg-col-4">
+                                    <div id="an-opp-ct-potential"></div>
+                                </div>
+
+                                <div class="dg-col-4">
+                                    <div id="an-opp-ct-current"></div>
+                                </div>
+
+                                <div class="dg-col-4">
+                                    <div id="an-opp-ct-future"></div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+
+            <div class="dg-row">
+
+                <div class="dg-col-12">
+
+                    <div class="dgf left right bottom" style="height: 225px;">
+                        <div class="dgc block">
+
+                            <div class="side-label">
+                                <span class="vertical" style="margin-top: 180px;">By Account Type</span>
+                            </div>
+
+                            <div class="dg-row" style="margin-left: 30px;">
+
+                                <div class="dg-col-4">
+                                    <div id="an-opp-at-potential"></div>
+                                </div>
+
+                                <div class="dg-col-4">
+                                    <div id="an-opp-at-current"></div>
+                                </div>
+
+                                <div class="dg-col-4">
+                                    <div id="an-opp-at-future"></div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="dg-row">
+
+                <div class="dg-col-12">
+
+                    <div class="dgf left right bottom" style="height: 225px;">
+                        <div class="dgc block">
+
+                            <div class="side-label">
+                                <span class="vertical" style="margin-top: 180px;">By Customer</span>
+                            </div>
+
+                            <div class="dg-row" style="margin-left: 30px;">
+
+                                <div class="dg-col-4">
+                                    <div id="an-opp-cr-potential"></div>
+                                </div>
+
+                                <div class="dg-col-4">
+                                    <div id="an-opp-cr-current"></div>
+                                </div>
+
+                                <div class="dg-col-4">
+                                    <div id="an-opp-cr-future"></div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+        
+    </div>
+
+</div>
+
+
+
+
+<script type="text/javascript" id="dxss_5976v8t748763489t5">
+    EnsureAppLoaded(function () {
+        require(['analysisOpportunities', 'devex', 'core'], function () {
+            AnalysisOpportunities.Initialize();
+        });
+    });
+</script>

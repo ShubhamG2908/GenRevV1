@@ -1,0 +1,9 @@
+<div class="footerMenu">
+    
+</div>
+<div class="copyright">
+    @Html.DevExpress().Label(settings => {
+        settings.EncodeHtml = false;
+        settings.Text = "2010 - " + DateTime.Now.Year + " &copy; Copyright Business Betterments";
+    }).GetHtml()
+</div>

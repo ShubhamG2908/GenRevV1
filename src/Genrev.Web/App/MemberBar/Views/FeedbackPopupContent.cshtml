@@ -1,0 +1,43 @@
+﻿<div style="padding:0px 10px 0px 10px">
+
+    <h3>Leave feedback about the site</h3>
+
+    @Html.DevExpress().Memo(
+        s =>
+        {
+            s.Name = "FeedbackComments";
+            s.Properties.Caption = "";
+            s.Properties.Rows = 12;
+            s.Width = Unit.Percentage(100);
+        }
+    ).GetHtml()
+
+    <div class="clearfix spacer-10"></div>
+
+    <div id="feedbackSpinner" style="display:none; position:absolute; bottom:5px; right:155px; height:35px; width:35px">
+        <div class="spinner"></div>
+    </div>
+
+    <table style="float: right;">
+        <tr>
+            <td>
+                @Html.DevExpress().Button(s => {
+               s.Name = "feedbackSubmit";
+               s.Text = "Submit";
+               s.ClientSideEvents.Click = "function(s, e) { Shell.SubmitFeedback(); }";
+           }).GetHtml()
+            </td>
+            <td style="padding-left: 5px;">
+                @Html.DevExpress().Button(s => {
+               s.Name = "feedbackCancel";
+               s.Text = "Cancel";
+               s.ClientSideEvents.Click = "function(s, e) { Shell.CancelFeedback(); }";
+           }).GetHtml()
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+
+

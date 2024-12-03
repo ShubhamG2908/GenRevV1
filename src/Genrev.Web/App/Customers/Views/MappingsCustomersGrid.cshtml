@@ -1,0 +1,36 @@
+﻿@model List<Genrev.Web.App.Customers.Models.MappingCustomerListItemVM>
+
+@Html.DevExpress().GridView(
+    s => {
+
+        s.Name = "CustomerMappingsCustomerGrid";
+        s.KeyFieldName = "ID";
+        s.CallbackRouteValues = new { Controller = "Customers", Action = "CustomerMappingsCustomerGridCallback" };
+        s.SettingsBehavior.AllowFocusedRow = true;
+        s.SettingsBehavior.AllowSelectByRowClick = true;
+        s.SettingsBehavior.AllowSelectSingleRowOnly = true;
+        s.SettingsLoadingPanel.Mode = GridViewLoadingPanelMode.Disabled;
+
+        s.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+        
+        s.Width = 300;
+
+        var col = s.Columns.Add("colName");
+        col.Caption = "Mapped";
+        col.FieldName = "Selected";
+        col.ColumnType = MVCxGridViewColumnType.CheckBox;
+        col.Width = 35;
+
+        col = s.Columns.Add("colName");
+        col.Caption = "Customer";
+        col.FieldName = "Name";
+
+
+
+        s.HtmlDataCellPrepared = (sender, e) => {
+            e.Cell.Attributes.Add("data-dym-cellClick", "CustomerMappingsGrid");
+            e.Cell.Attributes.Add("data-dym-visibleIndex", e.VisibleIndex.ToString());
+            e.Cell.Attributes.Add("data-dym-fieldName", e.DataColumn.FieldName);
+        };
+    }
+).Bind(Model).GetHtml()

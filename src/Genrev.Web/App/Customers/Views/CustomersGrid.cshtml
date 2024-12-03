@@ -1,0 +1,61 @@
+﻿@model Genrev.Web.App.Customers.Models.CustomersVM
+
+@Html.DevExpress().GridView(
+    s => {
+
+        s.Name = "CustomersGrid";
+        s.KeyFieldName = "ID";
+        s.CallbackRouteValues = new { Controller = "Customers", Action = "CustomersGridCallback" };
+        s.SettingsBehavior.AllowFocusedRow = true;
+        s.SettingsBehavior.AllowSelectByRowClick = true;
+        s.SettingsBehavior.AllowSelectSingleRowOnly = true;
+        s.SettingsLoadingPanel.Mode = GridViewLoadingPanelMode.Disabled;
+        s.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+        s.SettingsPager.PageSize = 30;
+
+        s.Width = Unit.Percentage(100);
+
+        s.HtmlDataCellPrepared = (sender, e) => {
+            e.Cell.Attributes.Add("data-dym-cell", s.Name);
+            e.Cell.Attributes.Add("data-dym-visibleIndex", e.VisibleIndex.ToString());
+        };
+
+        var col = s.Columns.Add("colName");
+        col.Caption = "Customer";
+        col.FieldName = "Name";
+        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+
+        col = s.Columns.Add("Address1");
+        col.Caption = "Address";
+        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+
+        col = s.Columns.Add("City");
+        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+
+        col = s.Columns.Add("State");
+        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+        col.Width = 50;
+
+        col = s.Columns.Add("PostalCode");
+        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+        col.Width = 75;
+
+        col = s.Columns.Add("Country");
+        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+
+        col = s.Columns.Add("Phone");
+        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+        col.Width = 75;
+
+        col = s.Columns.Add("CustomerType");
+        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+
+        col = s.Columns.Add("Industry");
+        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+
+        col = s.Columns.Add("AccountType");
+        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+
+    }
+
+).Bind(Model.CustomerListItems).GetHtml()

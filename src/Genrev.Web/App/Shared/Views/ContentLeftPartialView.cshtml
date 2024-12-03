@@ -1,0 +1,46 @@
+@using Genrev.Web.App.Navigation.Services
+
+<div class="leftPanel">
+        
+    @Html.DevExpress().NavBar(
+        s => {
+
+            s.Name = "LeftNavBar";
+            s.AutoCollapse = true;
+            s.EnableAnimation = true;
+            s.Width = Unit.Percentage(100);
+            s.ControlStyle.Border.BorderWidth = Unit.Pixel(0);
+            s.ControlStyle.Paddings.Padding = Unit.Pixel(0);
+            s.EnableClientSideAPI = true;
+
+            s.AllowSelectItem = true;
+            s.ItemLinkMode = ItemLinkMode.ContentBounds;
+
+            s.AutoCollapse = false;
+
+            // create a dummy event so our later attached handlers wire correctly
+            s.ClientSideEvents.ItemClick = "function(s, e) { var x = 1; }";
+
+            var model = NavBarService.GetNavBarVM();
+
+            foreach(var g in model.Groups) {
+                s.Groups.Add(group => {
+                    group.HeaderStyle.Paddings.PaddingTop = 10;
+                    group.HeaderStyle.Paddings.PaddingBottom = 10;
+                    group.ItemStyle.Paddings.PaddingTop = 10;
+                    group.ItemStyle.Paddings.PaddingBottom = 10;
+                    group.Text = g.Text;
+                    group.Expanded = g.Expanded;
+
+                    foreach (var i in g.Items) {
+                        var item = new MVCxNavBarItem();
+                        item.Text = i.Text;
+                        item.NavigateUrl = i.Url;
+                        group.Items.Add(item);
+                    }
+                });
+            }
+
+        }
+    ).GetHtml()
+</div>

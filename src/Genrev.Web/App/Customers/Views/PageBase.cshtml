@@ -1,0 +1,54 @@
+﻿
+
+
+
+@Html.DevExpress().PageControl(
+
+    s => {
+
+        s.Name = "CustomersPageBasePageControl";
+        s.Width = Unit.Percentage(100);
+
+        s.CallbackRouteValues = new { Controller = "Customers", Action = "PageBaseCallback" };
+
+        // Events (see customers.js)
+        // ----------------------------
+        // ActiveTabChanging        ensure reload content on callback
+        // BeginCallback            set tabName custom arg for server read
+
+
+
+        MVCxTabPage tab;
+
+        tab = s.TabPages.Add();
+        tab.Name = "tabCustomers";
+        tab.SetContent(() => { ViewContext.Writer.Write(""); });
+        tab.Text = "Customers";
+
+        tab = s.TabPages.Add();
+        tab.Name = "tabClassifications";
+        tab.SetContent(() => { ViewContext.Writer.Write(""); });
+        tab.Text = "Classifications";
+        
+        tab = s.TabPages.Add();
+        tab.Name = "tabMappings";
+        tab.SetContent(() => { ViewContext.Writer.Write(""); });
+        tab.Text = "Mappings";
+
+    }
+
+).GetHtml()
+
+<script type="text/javascript" id="CustomersPageBaseScriptsLoad">
+
+    EnsureAppLoaded(function () {
+        
+        require(['customers', 'devex'], function (subscription, devex) {
+            
+            Customers.Initialize("CustomersPageBasePageControl", function () {
+                // nothing to do
+            });
+        });
+    });
+
+</script>

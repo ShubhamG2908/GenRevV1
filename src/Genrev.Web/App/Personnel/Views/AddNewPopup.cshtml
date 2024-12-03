@@ -1,0 +1,43 @@
+﻿@model Genrev.Web.App.Personnel.Models.AddNewVM
+
+<h3>Add New Person</h3>
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "AddPersonnelFirstName";
+        s.Properties.Caption = "First Name";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.AddPersonnelFirstName).GetHtml()
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "AddPersonnelLastName";
+        s.Properties.Caption = "Last Name";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.AddPersonnelLastName).GetHtml()
+
+@Html.DevExpress().CheckBox(
+    s =>
+    {
+        s.Name = "AddPersonnelIsAdmin";
+        s.Properties.Caption = "Admin";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.AddPersonnelIsAdmin).GetHtml()
+
+<div class="clearfix spacer-10"></div>
+
+<table style="float: right;">
+    <tr>
+        <td>
+            @Html.DevExpress().Button(s => { s.Name = "personnelAddNewOkButton"; s.Text = "OK"; }).GetHtml()
+        </td>
+        <td style="padding-left: 5px;">
+            @Html.DevExpress().Button(s => { s.Name = "personnelAddNewCancelButton"; s.Text = "Cancel"; }).GetHtml()
+        </td>
+    </tr>
+</table>
+
+

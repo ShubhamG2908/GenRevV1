@@ -1,0 +1,62 @@
+﻿@model Genrev.Web.App.Subscription.Models.ApiVM
+
+<h2>API</h2>
+
+@Html.DevExpress().CheckBox(
+    s => {
+        s.Name = "ApiEnabled";
+        s.Text = "Enable API";
+        s.Properties.CheckBoxStyle.CssClass = "checkbox-standard-align";
+        
+    }).Bind(Model.ApiEnabled).GetHtml()
+
+<table style="margin-top: 5px;">
+    <tr>
+        <td>
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "ApiKey";
+        s.Properties.Caption = "API Key";
+        s.Width = 250;
+        s.ReadOnly = true;
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.ApiKey).GetHtml()
+
+        </td>
+        <td style="padding-left: 5px;">
+            @Html.DevExpress().Button(
+             s => {
+                 s.Name = "btnRegenKey";
+                 s.Text = "Generate new Key";
+             }).GetHtml()
+
+
+        </td>
+    </tr>
+</table>
+
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "ApiPassword";
+        s.Properties.Caption = "API Password";
+        s.Width = 250;
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.ApiPassword).GetHtml()
+
+
+<div style="margin-left: 252px; margin-top: 10px;">
+    @Html.DevExpress().Button(
+             s => {
+                 s.Name = "btnSaveChanges";
+                 s.Text = "Save Changes";
+             }).GetHtml()
+</div>
+
+
+
+<script id="dxss_3049vt8035uy84304958by3" type="text/javascript">
+    Subscription.Integrations.Init();
+</script>

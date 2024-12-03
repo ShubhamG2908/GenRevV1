@@ -1,0 +1,187 @@
+@model Genrev.Web.App.Analysis.Models.HistoricVM
+
+<div id="hs-grid-main" class="dg-grid">
+
+    <div class="dg-row">
+        <div class="dg-col-12">
+            <div class="dgf top left right" style="height: 60px;">
+                <div class="dgc heading">Historic Sales &amp; Gross Profit</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dg-row">
+        <div class="dg-col-12">
+            <div class="dgf top left right" style="height: 40px;">
+                
+                    
+                    <!-- Selectors -->
+                    <div class="dg-row">
+                        <div class="dg-col-6 dg-tabs">
+                            <span class="selected" id="an-hs-selector-salesperson" data-dym-selector="an-hs" data-dym-value="salesperson">Salesperson</span>
+                            <span id="an-hs-selector-industry" data-dym-selector="an-hs" data-dym-value="industry">Industry</span>
+                            <span id="an-hs-selector-customerType" data-dym-selector="an-hs" data-dym-value="customerType">Customer Type</span>
+                            <span id="an-hs-selector-accountType" data-dym-selector="an-hs" data-dym-value="accountType">Account Type</span>
+                            @if (AppService.Current.Settings.ProductFeatureEnabled)
+                            {
+                                <span id="an-hs-selector-product" data-dym-selector="an-hs" data-dym-value="product">Product</span>
+                            }
+                            <span id="an-hs-selector-customer" data-dym-selector="an-hs" data-dym-value="customer">Customer</span>
+                        </div>
+                        <div class="dg-col-6 pulltext-right">
+                            
+                            <div id="an-hs-params">
+
+                                <table align="right">
+                                    <tr>
+                                        <td>
+                                            <div id="an-hs-salespersonComboContainer">
+                                                @Html.DevExpress().ComboBox( 
+                                                    s =>
+                                                         {
+                                                        s.Name = "an-hs-salespersonCombo";
+                                                        s.Properties.ValueField = "ID";
+                                                        s.Properties.ValueType = typeof(int);
+                                                        s.Properties.TextField = "DisplayName";
+                                                        s.Properties.DropDownRows = 10;
+                                                        s.Width = 150;
+                                                        s.PreRender = (sender, e) =>
+                                                             {
+                                                            ComboBox.PreRenderByField(sender, Model.DefaultPerson, "ID");
+                                                        };
+                                                    }
+                                                ).BindList(Model.PersonsFilterList).GetHtml()
+                                            </div>
+                                            <div id="an-hs-industryComboContainer" style="display: none;">
+                                                @Html.DevExpress().ComboBox(
+                                                    s =>
+                                                         {
+                                                        s.Name = "an-hs-industriesCombo";
+                                                        s.Properties.ValueField = "ID";
+                                                        s.Properties.ValueType = typeof(int);
+                                                        s.Properties.TextField = "Name";
+                                                        s.Properties.DropDownRows = 10;
+                                                        s.Width = 150;
+                                                        s.PreRender = (sender, e) =>
+                                                             {
+                                                           ComboBox.PreRenderByField(sender, Model.DefaultIndustry, "ID");
+                                                        };
+                                                    }
+                                                ).BindList(Model.IndustriesList).GetHtml()
+                                            </div>
+                                            <div id="an-hs-customerTypeComboContainer" style="display: none;">
+                                                @Html.DevExpress().ComboBox(
+                                                    s =>
+                                                         {
+                                                        s.Name = "an-hs-customerTypesCombo";
+                                                        s.Properties.ValueField = "ID";
+                                                        s.Properties.ValueType = typeof(int);
+                                                        s.Properties.TextField = "Name";
+                                                        s.Properties.DropDownRows = 10;
+                                                        s.Width = 150;
+                                                        s.PreRender = (sender, e) =>
+                                                             {
+                                                            ComboBox.PreRenderByField(sender, Model.DefaultCustomerType, "ID");
+                                                        };
+                                                    }
+                                                ).BindList(Model.CustomerTypesList).GetHtml()
+                                            </div>
+                                            <div id="an-hs-accountTypeComboContainer" style="display: none;">
+                                                @Html.DevExpress().ComboBox(
+                                                    s =>
+                                                         {
+                                                        s.Name = "an-hs-accountTypesCombo";
+                                                        s.Properties.ValueField = "ID";
+                                                        s.Properties.ValueType = typeof(int);
+                                                        s.Properties.TextField = "Name";
+                                                        s.Properties.DropDownRows = 10;
+                                                        s.Width = 150;
+                                                        s.PreRender = (sender, e) =>
+                                                             {
+                                                            ComboBox.PreRenderByField(sender, Model.DefaultAccountType, "ID");
+                                                        };
+                                                    }
+                                                ).BindList(Model.AccountTypesList).GetHtml()
+                                            </div>
+                                            <div id="an-hs-productComboContainer" style="display: none;">
+                                                @Html.DevExpress().ComboBox(
+                                                    s =>
+                                                         {
+                                                        s.Name = "an-hs-productsCombo";
+                                                        s.Properties.ValueField = "ID";
+                                                        s.Properties.ValueType = typeof(int);
+                                                        s.Properties.TextField = "SKU";
+                                                        s.Properties.DropDownRows = 10;
+                                                        s.Width = 150;
+                                                        s.PreRender = (sender, e) =>
+                                                             {
+                                                            ComboBox.PreRenderByField(sender, Model.DefaultProduct, "ID");
+                                                        };
+                                                    }
+                                                ).BindList(Model.ProductsList).GetHtml()
+                                            </div>
+                                            <div id="an-hs-customerComboContainer" style="display: none;">
+                                                @Html.DevExpress().ComboBox(
+                                                    s =>
+                                                         {
+                                                        s.Name = "an-hs-customersCombo";
+                                                        s.Properties.ValueField = "ID";
+                                                        s.Properties.ValueType = typeof(int);
+                                                        s.Properties.TextField = "Name";
+                                                        s.Properties.DropDownRows = 10;
+                                                        s.Width = 150;
+                                                        s.PreRender = (sender, e) =>
+                                                             {
+                                                            ComboBox.PreRenderByField(sender, Model.DefaultCustomer, "ID");
+                                                        };
+                                                    }
+                                                ).BindList(Model.CustomersList).GetHtml()
+                                            </div>
+                                        </td>
+                                        <td style="padding-left: 5px;">
+                                            @Html.DevExpress().ComboBox(
+                                                s => {
+                                                    s.Name = "an-hs-yearsToShowCombobox";
+                                                    s.Properties.ValueField = "Number";
+                                                    s.Properties.ValueType = typeof(int);
+                                                    s.Properties.TextField = "Display";
+                                                    s.Properties.DropDownRows = 10;
+                                                    s.Width = 100;
+                                                    s.PreRender = (sender, e) => {
+                                                        ComboBox.PreRenderByField(sender, Model.DefaultYearsToShow, "Number");
+                                                    };
+                                                }
+                                            ).BindList(Model.YearsToShowList).GetHtml()
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+    <div id="historic-tab-content">
+
+
+
+    </div>
+
+
+</div>
+
+
+
+
+<script type="text/javascript" id="dxss_0wq487v639n847">
+    EnsureAppLoaded(function () {
+        require(['analysisHistoric', 'devex', 'core'], function () {
+            AnalysisHistoric.Initialize();
+        });
+    });
+</script>

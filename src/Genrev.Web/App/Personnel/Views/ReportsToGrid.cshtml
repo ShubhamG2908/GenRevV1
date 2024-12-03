@@ -1,0 +1,52 @@
+﻿@model List<Genrev.Web.App.Personnel.Models.ReportsToListItemVM>
+
+@{
+    string uip = ViewBag.UIPrefix;
+}
+
+@Html.DevExpress().GridView(
+    s => {
+
+        s.Name = uip + "ReportsToGrid";
+        s.KeyFieldName = "ID";
+        s.CallbackRouteValues = new { Controller = "Personnel", Action = "ReportsToGridCallback" };
+
+        s.SettingsBehavior.AllowFocusedRow = true;
+        s.SettingsLoadingPanel.Mode = GridViewLoadingPanelMode.Disabled;
+        s.ClientSideEvents.Init = "function(s, e) { }"; // placeholder to turn on js events
+
+        //s.HtmlDataCellPrepared = (sender, e) => {
+        //    e.Cell.Attributes.Add(
+        //        "onclick",
+        //        string.Format("gvNameCellClick('{0}', '{1}');", e.VisibleIndex, e.DataColumn.FieldName)
+        //            );
+        //    e.Cell.Attributes.Add(
+        //        "ondblclick",
+        //        string.Format("gvNameCellDoubleClick('{0}', '{1}');", e.VisibleIndex, e.DataColumn.FieldName)
+        //        );
+        //};
+
+        s.HtmlDataCellPrepared = (sender, e) => {
+            e.Cell.Attributes.Add("data-dym-cellClick", "ReportsToGrid");
+            e.Cell.Attributes.Add("data-dym-visibleIndex", e.VisibleIndex.ToString());
+            e.Cell.Attributes.Add("data-dym-fieldName", e.DataColumn.FieldName);
+        };
+
+        var col = s.Columns.Add("colReportsTo");
+        col.Caption = "Reports To";
+        col.FieldName = "ReportsTo";
+        col.Width = 100;
+        col.ColumnType = MVCxGridViewColumnType.CheckBox;
+
+        col = s.Columns.Add("colFirstName");
+        col.Caption = "First Name";
+        col.FieldName = "FirstName";
+        col.Width = 100;
+
+        col = s.Columns.Add("colLastName");
+        col.Caption = "Last Name";
+        col.FieldName = "LastName";
+        col.Width = 100;
+
+    }
+).Bind(Model).GetHtml()

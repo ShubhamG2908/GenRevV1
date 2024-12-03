@@ -1,0 +1,20 @@
+﻿@model List<Genrev.Web.App.Products.Models.ProductListItem>
+
+@Html.DevExpress().GridView(
+    s => {
+
+        s.Name = "ProductsGrid";
+        s.KeyFieldName = "ID";
+        s.CallbackRouteValues = new { Controller = "Products", Action = "ProductsGridCallback" };
+        s.Width = 700;
+
+        s.SettingsBehavior.AllowFocusedRow = true;
+        s.SettingsLoadingPanel.Mode = GridViewLoadingPanelMode.Disabled;
+        s.ClientSideEvents.Init = "function(s, e) { }"; // placeholder to turn on js events
+
+        s.Columns.Add("SKU").Width = 150;
+        s.Columns.Add("Description");
+        s.Columns.Add("Group").Width = 150;
+
+    }
+).Bind(Model).GetHtml()

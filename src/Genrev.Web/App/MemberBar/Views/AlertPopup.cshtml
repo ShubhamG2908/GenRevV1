@@ -1,0 +1,37 @@
+﻿
+
+@Html.DevExpress().PopupControl(
+    s => {
+        s.Name = "memberBarAlertPopup";
+        s.PopupElementID = "memberbar-btn-alerts";
+
+        s.Width = 350;
+        //s.Height = 400;
+        s.MinHeight = 100;
+
+        s.ShowCloseButton = false;
+        s.ShowFooter = false;
+        s.ShowHeader = false;
+        s.AllowDragging = false;
+        s.AllowResize = false;
+        s.PopupAction = PopupAction.LeftMouseClick;
+        s.CloseAction = CloseAction.OuterMouseClick;
+        s.CloseOnEscape = false;
+
+        s.PopupHorizontalAlign = PopupHorizontalAlign.RightSides;
+        s.PopupVerticalAlign = PopupVerticalAlign.Below;
+        s.PopupVerticalOffset = -14;
+        s.PopupHorizontalOffset = 3;
+
+        s.Styles.Content.CssClass = "dx-popup-nopad";
+
+        s.SetContent(
+            () => {
+                Html.RenderAction("AlertPopupContent", "MemberBar");
+            }
+        );
+
+        
+    }
+
+).GetHtml()

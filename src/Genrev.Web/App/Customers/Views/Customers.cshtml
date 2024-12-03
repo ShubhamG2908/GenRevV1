@@ -1,0 +1,19 @@
+﻿@model Genrev.Web.App.Customers.Models.CustomersVM
+
+<div id="customers-header-area-container">
+
+    @Html.DevExpress().Button(
+    s => {
+        s.Name = "CustomersAddNewButton";
+        s.Text = "Add New Customer";
+    }
+).GetHtml()
+
+</div>
+
+<div class="spacer-10"></div>
+
+@Html.Partial("CustomersGrid", Model)
+
+
+<script type="text/javascript" id="dxss_684681687436874">Customers.Customers.Init();</script>

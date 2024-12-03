@@ -1,0 +1,94 @@
+﻿@model Genrev.Web.App.Owner.Models.AccountCreateVM
+
+@{
+    string uip = ViewBag.UIPrefix;
+}
+
+<h2>Create Subscription</h2>
+
+
+@using (@Html.BeginForm(null, null, FormMethod.Post, new { id = uip + "MainForm" })) {
+
+
+    <div class="datacontent-subsection">
+               
+
+        @Html.DevExpress().TextBox(
+                 s => {
+                     s.Name = "MasterEmail";
+                     s.Properties.Caption = "Email";
+                     s.Properties.CaptionCellStyle.Width = 100;
+                 }
+             ).Bind(Model.MasterEmail).GetHtml()
+
+    </div>
+
+        <div class="datacontent-subsection">
+            <h3>Company Info</h3>
+
+            @Html.DevExpress().TextBox(
+                 s => {
+                     s.Name = "CompanyFullName";
+                     s.Properties.Caption = "Full Name";
+                     s.Properties.CaptionCellStyle.Width = 100;
+                 }
+             ).Bind(Model.CompanyFullName).GetHtml()
+
+            @Html.DevExpress().TextBox(
+                 s => {
+                     s.Name = "CompanyName";
+                     s.Properties.Caption = "Name";
+                     s.Properties.CaptionCellStyle.Width = 100;
+                 }
+             ).Bind(Model.CompanyName).GetHtml()
+
+
+            @Html.DevExpress().TextBox(
+                 s => {
+                     s.Name = "CompanyCode";
+                     s.Properties.Caption = "Code";
+                     s.Properties.CaptionCellStyle.Width = 100;
+                 }
+             ).Bind(Model.CompanyCode).GetHtml()
+
+        </div>
+
+        <div class="datacontent-subsection">
+            <h3>Contact Info</h3>
+
+            @Html.DevExpress().TextBox(
+                 s => {
+                     s.Name = "ContactFirstName";
+                     s.Properties.Caption = "First Name";
+                     s.Properties.CaptionCellStyle.Width = 100;
+                 }
+             ).Bind(Model.ContactFirstName).GetHtml()
+
+            @Html.DevExpress().TextBox(
+                 s => {
+                     s.Name = "ContactLastName";
+                     s.Properties.Caption = "Last Name";
+                     s.Properties.CaptionCellStyle.Width = 100;
+                 }
+             ).Bind(Model.ContactLastName).GetHtml()
+
+        </div>
+
+
+        <div class="datacontent-subsection spacer-10">
+
+            <div style="width: 275px; text-align: right;">
+                @Html.DevExpress().Button(s => {
+               s.Name = uip + "CreateButton";
+               s.Text = "Create Subscription";
+           }).GetHtml()
+            </div>
+
+
+        </div>
+
+
+}
+
+
+<script type="text/javascript" id="dxss_3948h2m395tu2n934vtm">Owner.Create.Init('@ViewBag.UIPrefix');</script>

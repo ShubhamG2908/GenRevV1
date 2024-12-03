@@ -1,0 +1,50 @@
+@{ Layout = "~/App/Shared/Views/_lightLayout.cshtml"; }
+@model Genrev.Web.App.Account.Models.LoginModel
+
+<div id="login-container">
+
+    <div class="login-heading">
+        <span>Log in</span>
+    </div>
+
+    <div class="login-content">
+
+        @using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+            
+            @Html.DevExpress().TextBox(
+                s => {
+                    s.Name = "UserName";
+                    s.Properties.Caption = "User Name";
+                    s.Properties.CaptionCellStyle.Width = 100;
+                }
+            ).Bind(Model.UserName).GetHtml()
+            @Html.ValidationMessageFor(m => m.UserName)
+            
+            @Html.DevExpress().TextBox(
+                s => {
+                    s.Name = "Password";
+                    s.Properties.Password = true;
+                    s.Properties.Caption = "Password";
+                    s.Properties.CaptionCellStyle.Width = 100;
+                }
+            ).Bind(Model.Password).GetHtml()
+            @Html.ValidationMessageFor(m => m.Password)
+            
+            <div class="form-field">
+                @Html.DevExpress().CheckBox(settings => {
+           settings.Name = "RememberMe";
+           settings.Text = "Remember me?";
+       }).GetHtml()
+            </div>
+
+            @Html.DevExpress().Button(settings => {
+       settings.Name = "Button";
+       settings.Text = "Log On";
+       settings.UseSubmitBehavior = true;
+   }).GetHtml()
+        }
+
+    </div>
+
+</div>

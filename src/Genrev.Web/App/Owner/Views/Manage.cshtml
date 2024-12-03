@@ -1,0 +1,26 @@
+﻿@model Genrev.Web.App.Owner.Models.AccountListVM
+
+<h2>Existing Subscriptions Management</h2>
+<p>Select a subscription from the list and use the Action buttons on the right to make changes</p>
+
+<table>
+    <tr>
+        <td valign="top">
+            <div>
+                @Html.Partial("ManageGrid", Model.Items)
+            </div>
+        </td>
+        <td style="padding-left: 20px;" valign="top">
+            <h3>Actions</h3>
+            <div>
+                @Html.DevExpress().Button(
+                    s => {
+                        s.Name = "OwnerExistingSubscriptionRemoveButton";
+                        s.Text = "Remove";
+                    }
+                ).GetHtml()
+            </div>
+        </td>
+    </tr>
+</table>
+

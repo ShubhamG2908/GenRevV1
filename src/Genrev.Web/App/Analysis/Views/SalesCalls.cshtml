@@ -1,0 +1,191 @@
+@model Genrev.Web.App.Analysis.Models.SalesCallsVM
+
+<div id="sc-grid-main" class="dg-grid">
+
+    <div class="dg-row">
+        <div class="dg-col-12">
+            <div class="dgf top left right" style="height: 60px;">
+                <div class="dgc heading">Sales Calls</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dg-row">
+        <div class="dg-col-12">
+            <div class="dgf top left right" style="height: 40px;">
+
+
+
+
+                <!-- Selectors -->
+                <div class="dg-row">
+                    <div class="dg-col-6 dg-tabs">
+                        <span class="selected" id="an-sc-selector-salesperson" data-dym-selector="an-sc" data-dym-value="salesperson">Salesperson</span>
+                        <span id="an-sc-selector-industry" data-dym-selector="an-sc" data-dym-value="industry">Industry</span>
+                        <span id="an-sc-selector-customerType" data-dym-selector="an-sc" data-dym-value="customerType">Customer Type</span>
+                        <span id="an-sc-selector-accountType" data-dym-selector="an-sc" data-dym-value="accountType">Account Type</span>
+                        @if (AppService.Current.Settings.ProductFeatureEnabled)
+                        {
+                            <span id="an-sc-selector-product" data-dym-selector="an-sc" data-dym-value="product">Product</span>
+                        }
+                        <span id="an-sc-selector-customer" data-dym-selector="an-sc" data-dym-value="customer">Customer</span>
+                    </div>
+                    <div class="dg-col-6 pulltext-right">
+
+                        <div id="an-sc-params">
+
+                            <table align="right">
+                                <tr>
+                                    <td>
+                                        <div id="an-sc-salespersonComboContainer">
+                                            @Html.DevExpress().ComboBox(
+                                                s =>
+                                                     {
+                                                    s.Name = "an-sc-salespersonCombo";
+                                                    s.Properties.ValueField = "ID";
+                                                    s.Properties.ValueType = typeof(int);
+                                                    s.Properties.TextField = "DisplayName";
+                                                    s.Properties.DropDownRows = 10;
+                                                    s.Width = 150;
+                                                    s.PreRender = (sender, e) =>
+                                                         {
+                                                        Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRenderByField(sender, Model.DefaultPerson, "ID");
+                                                    };
+                                                }
+                                            ).BindList(Model.PersonsFilterList).GetHtml()
+                                        </div>
+                                        <div id="an-sc-industryComboContainer" style="display: none;">
+                                            @Html.DevExpress().ComboBox(
+                                                s =>
+                                                     {
+                                                    s.Name = "an-sc-industriesCombo";
+                                                    s.Properties.ValueField = "ID";
+                                                    s.Properties.ValueType = typeof(int);
+                                                    s.Properties.TextField = "Name";
+                                                    s.Properties.DropDownRows = 10;
+                                                    s.Width = 150;
+                                                    s.PreRender = (sender, e) =>
+                                                         {
+                                                        Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRenderByField(sender, Model.DefaultIndustry, "ID");
+                                                    };
+                                                }
+                                            ).BindList(Model.IndustriesList).GetHtml()
+                                        </div>
+                                        <div id="an-sc-customerTypeComboContainer" style="display: none;">
+                                            @Html.DevExpress().ComboBox(
+                                                s =>
+                                                     {
+                                                    s.Name = "an-sc-customerTypesCombo";
+                                                    s.Properties.ValueField = "ID";
+                                                    s.Properties.ValueType = typeof(int);
+                                                    s.Properties.TextField = "Name";
+                                                    s.Properties.DropDownRows = 10;
+                                                    s.Width = 150;
+                                                    s.PreRender = (sender, e) =>
+                                                         {
+                                                        Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRenderByField(sender, Model.DefaultCustomerType, "ID");
+                                                    };
+                                                }
+                                            ).BindList(Model.CustomerTypesList).GetHtml()
+                                        </div>
+                                        <div id="an-sc-accountTypeComboContainer" style="display: none;">
+                                            @Html.DevExpress().ComboBox(
+                                                s =>
+                                                     {
+                                                    s.Name = "an-sc-accountTypesCombo";
+                                                    s.Properties.ValueField = "ID";
+                                                    s.Properties.ValueType = typeof(int);
+                                                    s.Properties.TextField = "Name";
+                                                    s.Properties.DropDownRows = 10;
+                                                    s.Width = 150;
+                                                    s.PreRender = (sender, e) =>
+                                                         {
+                                                        Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRenderByField(sender, Model.DefaultAccountType, "ID");
+                                                    };
+                                                }
+                                            ).BindList(Model.AccountTypesList).GetHtml()
+                                        </div>
+                                        <div id="an-sc-productComboContainer" style="display: none;">
+                                            @Html.DevExpress().ComboBox(
+                                                s =>
+                                                     {
+                                                    s.Name = "an-sc-productsCombo";
+                                                    s.Properties.ValueField = "ID";
+                                                    s.Properties.ValueType = typeof(int);
+                                                    s.Properties.TextField = "SKU";
+                                                    s.Properties.DropDownRows = 10;
+                                                    s.Width = 150;
+                                                    s.PreRender = (sender, e) =>
+                                                         {
+                                                        Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRenderByField(sender, Model.DefaultProduct, "ID");
+                                                    };
+                                                }
+                                            ).BindList(Model.ProductsList).GetHtml()
+                                        </div>
+                                        <div id="an-sc-customerComboContainer" style="display: none;">
+                                            @Html.DevExpress().ComboBox(
+                                                s =>
+                                                     {
+                                                    s.Name = "an-sc-customersCombo";
+                                                    s.Properties.ValueField = "ID";
+                                                    s.Properties.ValueType = typeof(int);
+                                                    s.Properties.TextField = "Name";
+                                                    s.Properties.DropDownRows = 10;
+                                                    s.Width = 150;
+                                                    s.PreRender = (sender, e) =>
+                                                         {
+                                                        Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRenderByField(sender, Model.DefaultCustomer, "ID");
+                                                    };
+                                                }
+                                            ).BindList(Model.CustomersList).GetHtml()
+                                        </div>
+                                    </td>
+                                    <td style="padding-left: 5px;">
+                                        @Html.DevExpress().ComboBox(
+                                            s => {
+                                                s.Name = "an-sc-yearsToShowCombobox";
+                                                s.Properties.ValueField = "Number";
+                                                s.Properties.ValueType = typeof(int);
+                                                s.Properties.TextField = "Number";
+                                                s.Properties.DropDownRows = 10;
+                                                s.Width = 100;
+                                                s.PreRender = (sender, e) => {
+                                                    Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRenderByField(sender, Model.DefaultFiscalYear, "Number");
+                                                };
+                                            }
+                                        ).BindList(Model.FiscalYearList).GetHtml()
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div id="sc-tab-content">
+
+    </div>
+
+    <div class="dg-row" style="padding: 10px;">
+        @{ Html.RenderAction("AnalysisSalesCallsOverview", "Analysis"); }
+    </div>
+
+
+</div>
+
+
+
+
+<script type="text/javascript" id="dxss_w9486bj0w8b76w38">
+    EnsureAppLoaded(function () {
+        require(['analysisSalesCalls', 'devex', 'core'], function () {
+            AnalysisSalesCalls.Initialize();
+        });
+    });
+</script>

@@ -1,0 +1,59 @@
+﻿
+
+
+
+@Html.DevExpress().PageControl(
+
+    s => {
+
+        s.Name = "SubscriptionPageBasePageControl";
+        s.Width = Unit.Percentage(100);
+
+        s.CallbackRouteValues = new { Controller = "Subscription", Action = "PageBaseCallback" };
+
+        // Events (see subscription.js)
+        // ----------------------------
+        // ActiveTabChanging        ensure reload content on callback
+        // BeginCallback            set tabName custom arg for server read
+
+
+
+        MVCxTabPage tab;
+
+        tab = s.TabPages.Add();
+        tab.Name = "tabGeneral";
+        tab.SetContent(() => { ViewContext.Writer.Write(""); });
+        tab.Text = "General";
+
+        //tab = s.TabPages.Add();
+        //tab.Name = "tabSubscription";
+        //tab.SetContent(() => { ViewContext.Writer.Write(""); });
+        //tab.Text = "Subscription";
+
+        //tab = s.TabPages.Add();
+        //tab.Name = "tabActivity";
+        //tab.SetContent(() => { ViewContext.Writer.Write(""); });
+        //tab.Text = "Activity";
+
+        tab = s.TabPages.Add();
+        tab.Name = "tabIntegrations";
+        tab.SetContent(() => { ViewContext.Writer.Write(""); });
+        tab.Text = "Api";
+
+    }
+
+).GetHtml()
+
+<script type="text/javascript" id="SubscriptionPageBaseScriptsLoad">
+
+    EnsureAppLoaded(function () {
+        
+        require(['subscription', 'devex'], function (subscription, devex) {
+            
+            Subscription.Initialize("SubscriptionPageBasePageControl", function () {
+                // nothing to do
+            });
+        });
+    });
+
+</script>

@@ -1,0 +1,54 @@
+﻿
+
+
+
+@Html.DevExpress().PageControl(
+
+    s => {
+
+        s.Name = "OwnerPageBasePageControl";
+        s.Width = Unit.Percentage(100);
+
+        s.CallbackRouteValues = new { Controller = "Owner", Action = "PageBaseCallback" };
+
+        // Events (see owner.js)
+        // ----------------------------
+        // ActiveTabChanging        ensure reload content on callback
+        // BeginCallback            set tabName custom arg for server read
+        
+
+
+        MVCxTabPage tab;
+
+        tab = s.TabPages.Add();
+        tab.Name = "tabOverview";
+        tab.SetContent(() => { ViewContext.Writer.Write(""); });
+        tab.Text = "Overview";
+
+        tab = s.TabPages.Add();
+        tab.Name = "tabManageExisting";
+        tab.SetContent(() => { ViewContext.Writer.Write(""); });
+        tab.Text = "Existing Subscriptions";
+
+        tab = s.TabPages.Add();
+        tab.Name = "tabCreate";
+        tab.SetContent(() => { ViewContext.Writer.Write(""); });
+        tab.Text = "Create Subscription";
+        
+    }
+
+).GetHtml()
+
+<script type="text/javascript" id="SubscriptionPageBaseScriptsLoad">
+
+    EnsureAppLoaded(function () {
+        
+        require(['owner', 'devex'], function (subscription, devex) {
+            
+            Owner.Initialize("OwnerPageBasePageControl", function () {
+                // nothing to do
+            });
+        });
+    });
+
+</script>

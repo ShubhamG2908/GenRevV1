@@ -1,0 +1,30 @@
+﻿
+
+
+@Html.DevExpress().PopupControl(
+    s => {
+
+        s.Name = "popupDialogConfirm";
+        s.PopupElementID = "app-dialog-confirm-popup-container";
+
+        s.Width = 350;
+        s.MinHeight = 150;
+
+        s.AllowDragging = false;
+        s.AllowResize = false;
+        s.CloseAction = CloseAction.CloseButton;
+        s.ShowCloseButton = true;
+        s.CloseOnEscape = true;
+        s.PopupAnimationType = AnimationType.None;
+        s.Modal = true;
+        s.HeaderText = "Title";
+        s.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        s.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+    
+        s.SetContent(
+            () => {
+                Html.RenderAction("ConfirmPopupContent", "Dialogs");
+            }
+        );
+    
+}).GetHtml()

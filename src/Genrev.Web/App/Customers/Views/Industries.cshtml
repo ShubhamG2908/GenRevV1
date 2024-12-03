@@ -1,0 +1,32 @@
+﻿@model List<Genrev.Web.App.Customers.Models.IndustryListItemVM>
+
+<h2>Customer Industries</h2>
+
+<table>
+    <tr>
+        <td>
+            @Html.DevExpress().TextBox(
+                s => {
+                    s.Name = "AddCustomerIndustry";
+                    s.Width = 170;
+                }
+            ).GetHtml()
+        </td>
+        <td style="padding-left: 5px;">
+            @Html.DevExpress().Button(
+                s => {
+                    s.Name = "AddCustomerIndustryButton";
+                    s.Text = "Add";
+                    s.Width = 75;
+                }
+            ).GetHtml()
+        </td>
+    </tr>
+</table>
+
+<div class="spacer-10"></div>
+
+@Html.Partial("IndustriesGrid", Model)
+
+
+

@@ -1,0 +1,29 @@
+﻿@model List<Genrev.Web.App.Customers.Models.TypesListItemVM>
+
+@Html.DevExpress().GridView(
+    s => {
+
+        s.Name = "CustomerTypesGrid";
+        s.KeyFieldName = "ID";
+        s.CallbackRouteValues = new { Controller = "Customers", Action = "CustomerTypesCallback" };
+        s.SettingsBehavior.AllowFocusedRow = true;
+        s.SettingsBehavior.AllowSelectByRowClick = true;
+        s.SettingsBehavior.AllowSelectSingleRowOnly = true;
+        s.SettingsLoadingPanel.Mode = GridViewLoadingPanelMode.Disabled;
+
+        s.SettingsPager.PageSize = 16;
+
+        s.HtmlDataCellPrepared = (sender, e) => {
+            e.Cell.Attributes.Add("data-dym-cell", "CustomerTypesGrid");
+            e.Cell.Attributes.Add("data-dym-visibleIndex", e.VisibleIndex.ToString());
+        };
+
+        s.Width = 250;
+
+        var col = s.Columns.Add("colName");
+        col.Caption = "Type";
+        col.FieldName = "Name";
+        
+
+    }
+).Bind(Model).GetHtml()

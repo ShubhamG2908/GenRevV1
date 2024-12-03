@@ -1,0 +1,33 @@
+@model Genrev.Web.App.Analysis.Models.DrilldownVM
+
+<div id="hs-grid-main" class="dg-grid">
+
+    <div class="dg-row" id="drilldown-grid-headers">
+        <div class="dg-col-12">
+            <div class="dgf top left right" style="height: 60px;">
+                <div class="dgc heading">Data Drilldown</div>
+            </div>
+        </div>
+    </div>
+
+    
+
+
+    <div id="data-drilldown-grid-container" style="padding: 10px;">
+
+        @Html.Partial("DrilldownGrid", Model)
+
+    </div>
+
+</div>
+
+
+
+
+<script type="text/javascript" id="dxss_4578vn83746587vt647">
+    EnsureAppLoaded(function () {
+        require(['drilldown', 'devex', 'core'], function () {
+            Drilldown.Initialize();
+        });
+    });
+</script>

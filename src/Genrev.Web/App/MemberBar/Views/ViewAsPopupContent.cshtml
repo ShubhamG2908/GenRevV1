@@ -1,0 +1,42 @@
+﻿@model List<Genrev.Domain.Companies.Person>
+
+<div class="dx-popup-content">
+
+    <div  class="h-alerts-popup-none">
+        <div style="width: 100%; height: 369px; overflow: auto;">
+
+            <ul id="viewasQuickSelectList">
+                @foreach(var p in Model) {
+                    <li class="viewasClickSelectListItem" id="viewasQSL-@p.ID">@p.FirstName @p.LastName</li>
+                }
+            </ul>
+
+        </div>
+        <div style="width: 100%; height: 28px; border-top: 2px solid #7eacb1;">
+
+            <div style="float: left; margin-top: 6px; margin-left: 4px;">
+                
+            </div>
+
+            <div style="float: right; margin-top: 6px; margin-right: 4px;">
+                @*<span id="viewasQuickSelectAdvancedSearchLink" style="text-decoration: underline; cursor: pointer;">Advanced Search</span>*@
+
+                @*@Html.DevExpress().Button(
+                    s => {
+                        s.Name = "viewasQuickSelectSelectButton";
+                        s.UseSubmitBehavior = false;
+                        s.Text = "Select";
+                    }
+                ).GetHtml()*@
+            </div>
+        </div>
+        
+        @*<table style="width: 100%; height: 100%">
+            <tr>
+                <td valign="middle">
+                    <p>You have no selection items for ViewAs.</p>
+                </td>
+            </tr>
+        </table>*@
+    </div>
+</div>

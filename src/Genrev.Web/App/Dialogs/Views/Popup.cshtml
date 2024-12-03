@@ -1,0 +1,30 @@
+﻿@model Genrev.Web.App.Dialogs.Models.PopupOptionsVM
+
+
+@Html.DevExpress().PopupControl(
+    s => {
+
+        s.Name = "PopupControl_" + Model.ID;
+        s.PopupElementID = "PopupContainer_" + Model.ID;
+
+        s.Width = Model.Width;
+        s.MinHeight = Model.Height;
+
+        s.AllowDragging = Model.AllowDrag;
+        s.AllowResize = Model.AllowResize;
+        s.CloseAction = CloseAction.CloseButton;
+        s.ShowCloseButton = true;
+        s.CloseOnEscape = true;
+        s.PopupAnimationType = AnimationType.None;
+        s.Modal = true;
+        s.HeaderText = Model.Title;
+        s.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        s.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+    
+        s.SetContent(
+            () => {
+                ViewContext.Writer.WriteLine("<div id='PopupContent_" + Model.ID + "'></div>");
+            }
+        );
+    
+}).GetHtml()

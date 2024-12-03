@@ -1,0 +1,42 @@
+﻿@model Genrev.Web.App.Customers.Models.EditAccountTypeVM
+
+<h3>Edit Account Type</h3>
+<h5>(@Model.Name)</h5>
+
+@Html.HiddenFor(m => m.ID)
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "AccountTypeEditName";
+        s.Properties.Caption = "Account Type";
+        s.Properties.CaptionCellStyle.Width = 100;
+        s.Properties.CaptionStyle.CssClass = "label-required";
+    }
+).Bind(Model.Name).GetHtml()
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "AccountTypeCallsPerMonthGoal";
+        s.Properties.Caption = "Calls/Month";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.CallsPerMonthGoal).GetHtml()
+
+
+<div class="clearfix spacer-10"></div>
+<div style="float:left;">
+    @Html.DevExpress().Button(s => { s.Name = "AccountTypeDeleteButton"; s.Text = "Delete"; s.ControlStyle.ForeColor = System.Drawing.Color.Red; }).GetHtml()
+</div>
+
+<table style="float: right;">
+    <tr>
+        <td>
+            @Html.DevExpress().Button(s => { s.Name = "AccountTypeEditOkButton"; s.Text = "OK"; }).GetHtml()
+        </td>
+        <td style="padding-left: 5px;">
+            @Html.DevExpress().Button(s => { s.Name = "AccountTypeEditCancelButton"; s.Text = "Cancel"; }).GetHtml()
+        </td>
+    </tr>
+</table>
+
+

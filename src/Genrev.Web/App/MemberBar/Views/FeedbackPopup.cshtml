@@ -1,0 +1,33 @@
+﻿@Html.DevExpress().PopupControl(
+    s =>
+    {
+        s.Name = "memberBarFeedbackPopup";
+        s.PopupElementID = "memberbar-btn-feedback";
+
+        s.Width = 300;
+        s.Height = 275;
+
+        s.ShowCloseButton = false;
+        s.ShowFooter = false;
+        s.ShowHeader = false;
+        s.AllowDragging = false;
+        s.AllowResize = false;
+        s.PopupAction = PopupAction.LeftMouseClick;
+        s.CloseAction = CloseAction.OuterMouseClick;
+        s.CloseOnEscape = false;
+
+        s.PopupHorizontalAlign = PopupHorizontalAlign.RightSides;
+        s.PopupVerticalAlign = PopupVerticalAlign.Below;
+        s.PopupVerticalOffset = -14;
+
+        s.Styles.Content.CssClass = "dx-popup-nopad";
+
+        s.SetContent(
+            () =>
+            {
+                Html.RenderAction("FeedbackPopupContent", "MemberBar");
+            }
+        );
+    }
+
+).GetHtml()

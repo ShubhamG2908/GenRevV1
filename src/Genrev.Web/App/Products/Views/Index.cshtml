@@ -1,0 +1,86 @@
+﻿@model Genrev.Web.App.Products.Models.ProductsVM
+
+<div class="datacontent-main">
+
+    <h2>Products</h2>
+
+    <table style="min-height: 200px;">
+        <tr>
+            <td valign="top" width="350px;">
+                <h3>Product Groups</h3>
+                @Html.Partial("ProductGroupGrid", Model.ProductGroups)
+            </td>
+
+            <td valign="top" style="padding-left: 10px; width: 150px;">
+
+                <h3>Actions</h3>
+
+                @Html.DevExpress().Button(
+                    s => {
+                        s.Name = "ProductGroupAddNewButton";
+                        s.Text = "Add New";
+                        s.Width = 125;
+                    }
+                ).GetHtml()
+                <div class="spacer-5"></div>
+                @Html.DevExpress().Button(
+                    s => {
+                        s.Name = "ProductGroupRemoveSelectedButton";
+                        s.Text = "Remove Selected";
+                        s.Width = 125;
+                    }
+                ).GetHtml()
+            </td>
+            
+        </tr>
+    </table>
+
+
+    <table style="min-height: 200px;">
+        <tr>
+            <td valign="top" width="350px;">
+                <h3>Product Definitions</h3>
+                @Html.Partial("ProductsGrid", Model.Products)
+            </td>
+
+            <td valign="top" style="padding-left: 10px; width: 150px;">
+
+                <h3>Actions</h3>
+
+                @Html.DevExpress().Button(
+                    s => {
+                        s.Name = "ProductAddNewButton";
+                        s.Text = "Add New";
+                        s.Width = 125;
+                    }
+                ).GetHtml()
+                <div class="spacer-5"></div>
+                @Html.DevExpress().Button(
+                    s => {
+                        s.Name = "ProductRemoveSelectedButton";
+                        s.Text = "Remove Selected";
+                        s.Width = 125;
+                    }
+                ).GetHtml()
+            </td>
+
+        </tr>
+    </table>
+    
+    
+
+</div>
+
+<script type="text/javascript" id="dxss_90348t5uv958ut39453084">
+    EnsureAppLoaded(function () {
+        require(['products', 'devex'], function (personnel, devex) {
+
+            Products.Overview.Initialize(
+
+                function () {
+                    console.log('Products.Overview.Initialize completed');
+                }
+            );
+        });
+    });
+</script>

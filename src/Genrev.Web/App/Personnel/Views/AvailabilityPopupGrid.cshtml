@@ -1,0 +1,148 @@
+﻿@model Genrev.Web.App.Personnel.Models.AvailabilityPopupGridVM
+
+@Html.DevExpress().GridView(
+    s => {
+
+        s.Name = "AvailabilityPopupGrid";
+        s.KeyFieldName = "ID";
+        s.Width = Unit.Percentage(100);
+        s.Height = Unit.Percentage(100);
+
+        s.SettingsEditing.Mode = GridViewEditingMode.Batch;
+        s.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Personnel", Action = "AvailabilityPopupBatchEdit" };
+
+        s.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+
+        s.SettingsPager.PageSize = 300;
+
+        s.SettingsContextMenu.Enabled = true;
+        s.ClientSideEvents.ContextMenu = "function(s, e) { Personnel.Overview.Availability.Grid.ContextMenu.Invoked(s, e); }";
+        s.ClientSideEvents.ContextMenuItemClick = "function(s, e) { Personnel.Overview.Availability.Grid.ContextMenu.ItemClicked(s, e); }";
+        s.FillContextMenuItems = (sender, e) => {
+            e.Items.Clear();
+            e.Items.Add("Delete Line", "DeleteLine");
+        };
+
+        s.SettingsBehavior.AllowFixedGroups = false;
+
+        s.CallbackRouteValues = new { Controller = "Personnel", Action = "AvailabilityPopupGridCallback" };
+
+        s.CellEditorInitialize = (sender, e) => {
+            ASPxEdit editor = (ASPxEdit)e.Editor;
+            editor.ValidationSettings.Display = Display.Dynamic;
+        };
+
+        s.ClientSideEvents.Init = "function(s, e) { Personnel.Overview.Availability.Grid.Initialized(true); }";
+
+        s.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
+        s.Settings.ShowTitlePanel = true;
+
+
+        s.SetTitlePanelTemplateContent(c => {
+
+            var vw = ViewContext.Writer;
+
+            // cells for buttons
+            vw.Write("<div style='width: 100%; text-align: right;'>");
+
+            vw.Write("<a href='' id='availabilitygrid-add' style='padding-left: 15px;'>Add New</a> ");
+
+            vw.Write("<a href='' id='availabilitygrid-cancel' style='padding-left: 15px;'>Cancel Changes</a> ");
+
+            vw.Write("<a href='' id='availabilitygrid-save' style='padding-left: 15px;'>Save Changes</a> ");
+
+            vw.Write("</div>");
+
+        });
+
+
+        s.Columns.Add(c => {
+            c.Name = "ctlYear";
+            c.FieldName = "Year";
+            c.Caption = "Year";
+            c.Width = 70;
+            c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+        });
+
+        s.Columns.Add(c => {
+            c.Name = "ctlWeekdays";
+            c.FieldName = "Weekdays";
+            c.Caption = "Weekdays";
+            c.Width = 70;
+            c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+        });
+
+        s.Columns.Add(c => {
+            c.Name = "ctlHolidays";
+            c.FieldName = "Holidays";
+            c.Caption = "Holidays";
+            c.Width = 70;
+            c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+        });
+
+        s.Columns.Add(c => {
+            c.Name = "ctlVacationDays";
+            c.FieldName = "VacationDays";
+            c.Caption = "Vacation";
+            c.Width = 70;
+            c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+        });
+
+        s.Columns.Add(c => {
+            c.Name = "ctlAdministrationDays";
+            c.FieldName = "AdministrationDays";
+            c.Caption = "Admin";
+            c.Width = 70;
+            c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+        });
+
+        s.Columns.Add(c => {
+            c.Name = "ctlOtherDays";
+            c.FieldName = "OtherDays";
+            c.Caption = "Other";
+            c.Width = 70;
+            c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+        });
+
+        s.Columns.Add(c => {
+            c.Name = "ctlPlannedCalls";
+            c.FieldName = "PlannedCalls";
+            c.Caption = "Planned<br />Calls/Day";
+            c.Width = 70;
+            c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+        });
+
+
+
+        s.Columns.Add(c => {
+            c.Name = "DaysAvailable";
+            c.FieldName = "DaysAvailable";
+            c.Caption = "Days<br />Available";
+            //c.Width = 70;
+            c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+            c.EditFormSettings.Visible = DefaultBoolean.False;
+            c.CellStyle.ForeColor = System.Drawing.Color.Gray;
+        });
+
+        s.Columns.Add(c => {
+            c.Name = "ctlCallCommittment";
+            c.FieldName = "CallCommittment";
+            c.Caption = "Annual Call<br />Committment";
+            //c.Width = 70;
+            c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+            c.EditFormSettings.Visible = DefaultBoolean.False;
+            c.CellStyle.ForeColor = System.Drawing.Color.Gray;
+            
+        });
+
+    }
+).Bind(Model.Items).GetHtml()

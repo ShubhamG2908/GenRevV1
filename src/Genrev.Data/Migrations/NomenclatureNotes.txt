@@ -1,0 +1,8 @@
+﻿
+1xxx numbers:	creations
+2xxx numbers:	alters & updates
+5xxx numbers:	
+
+80xx numbers:	test-prerun
+81xx-8899:		test data
+89xx numbers:	test-postrun

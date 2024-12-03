@@ -1,0 +1,75 @@
+﻿@model Genrev.Web.App.Analysis.Models.CallPlanOverviewVM
+
+
+    @Html.DevExpress().GridView(
+                s =>
+                {
+                    s.Name = "SalesCallPlanYearOverview";
+                    s.CallbackRouteValues = new { Controller = "Analysis", Action = "AnalysisSalesCallsOverview" };
+
+                    s.Width = Unit.Percentage(100);
+                    s.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+
+                    s.Columns.Add("AccountType");
+
+                    s.Columns.Add(c =>
+                    {
+                        c.FieldName = "YearlyCallPlan";
+                        c.Caption = "Yearly<br/>Call Plan";
+                    });
+
+                    s.Columns.Add(c =>
+                    {
+                        c.FieldName = "GoalCount";
+                        c.Caption = "Goal Count";
+                    });
+
+                    s.Columns.Add(c =>
+                    {
+                        c.Name = "";
+                        c.FieldName = "";
+                        c.CellStyle.BorderBottom.BorderStyle = BorderStyle.None;
+                        c.HeaderStyle.CssClass = "blank-column";
+                    });
+
+                    s.Columns.Add("AccountType");
+
+                    s.Columns.Add(c =>
+                    {
+                        c.FieldName = "AvgWeeklyCalls";
+                        c.Caption = "Avg. Weekly<br/>Calls";
+                        c.PropertiesEdit.DisplayFormatString = "n2";
+                    });
+
+                    s.Columns.Add(c =>
+                    {
+                        c.FieldName = "MonthlyCalls";
+                        c.PropertiesEdit.DisplayFormatString = "n2";
+                    });
+
+                    s.Columns.Add(c =>
+                    {
+                        c.FieldName = "NumberOfAccounts";
+                        c.Caption = "No. Of<br/>Accounts";
+                    });
+
+                    s.Columns.Add("TotalCalls");
+
+                    s.Columns.Add(c =>
+                    {
+                        c.FieldName = "PercentOfTotalCalls";
+                        c.Caption = "% Of Total<br/>Calls";
+                        c.PropertiesEdit.DisplayFormatString = "{0:n2} %";
+                    });
+
+                    s.Columns.Add(c =>
+                    {
+                        c.FieldName = "PercentOfTotalSales";
+                        c.Caption = "% Of Total<br/>Sales";
+                        c.PropertiesEdit.DisplayFormatString = "{0:n2} %";
+                    });
+
+                }
+            ).Bind(Model.Items).GetHtml()
+
+

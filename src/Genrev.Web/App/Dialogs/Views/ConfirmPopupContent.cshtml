@@ -1,0 +1,54 @@
+﻿<div class="mb-container">
+    <table style="width: 100%; height: 100%;">
+        <tr>
+            <td style="width: 70px;">
+                <div id="mb-confirm-icon" class="mb-icon sprite-ico sprite-ico-info-48">
+                </div>
+            </td>
+            <td>
+                <table style="width: 100%; height: 100%;">
+                    <tr style="height: 100%;">
+                        <td valign="middle">
+                            <div id="mb-confirm-msg" class="mb-message">
+                                <p>message here (including p tags) will be overridden by javascript callers</p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <div class="mb-button-container">
+                    <table align="right">
+                        <tr>
+                            <td>
+                                @Html.DevExpress().Button(
+                                    s => {
+                                        s.Name = "dlgConfirmButtonOk";
+                                        s.Width = 75;
+                                        s.Text = "OK";
+                                        s.ClientSideEvents.Click = "function(s, e) { core.dialogs.confirm.ok(); console.log('ok'); }";
+                                    }
+                                ).GetHtml()
+                            </td>
+                            <td style="padding-left: 5px;">
+                                @Html.DevExpress().Button(
+                                    s => {
+                                        s.Name = "dlgConfirmButtonCancel";
+                                        s.Width = 75;
+                                        s.Text = "Cancel";
+                                        s.ClientSideEvents.Click = "function(s, e) { core.dialogs.confirm.cancel(); console.log('cancelled'); }";
+                                    }
+                                ).GetHtml()
+                            </td>
+                        </tr>
+                    </table>
+                    
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>

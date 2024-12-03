@@ -1,0 +1,19 @@
+﻿@model List<Genrev.Web.App.Products.Models.ProductGroupListItem>
+
+@Html.DevExpress().GridView(
+    s => {
+
+        s.Name = "ProductGroupGrid";
+        s.KeyFieldName = "ID";
+        s.CallbackRouteValues = new { Controller = "Products", Action = "ProductGroupGridCallback" };
+        s.Width = 400;
+
+        s.SettingsBehavior.AllowFocusedRow = true;
+        s.SettingsLoadingPanel.Mode = GridViewLoadingPanelMode.Disabled;
+        s.ClientSideEvents.Init = "function(s, e) { }"; // placeholder to turn on js events
+
+        s.Columns.Add("Name");
+        s.Columns.Add("ParentGroup");
+
+    }
+).Bind(Model).GetHtml()

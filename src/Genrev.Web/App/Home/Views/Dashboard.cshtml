@@ -1,0 +1,216 @@
+
+
+<div id="home-dash-grid-main" class="dashboard-fullpage-container">
+
+
+    <div class="ds-heading">Current Fiscal Year</div>
+
+    <table class="highcharts-table" style="width: 100%;">
+
+        <!-- actual vs forecast and gpp -->
+        <tr>
+            <td rowspan="2" style="width: 66%;">
+                <div id="cc-currentyear-salesvsforecast" class="dc dc-t dc-l"  style="height: 350px; position: relative;">
+                    <div class="spinner"></div>
+                </div>
+            </td>
+            <td>
+                <div id="cc-currentyear-grossprofitdollars" class="dc dc-t dc-r" style="height: 239px;">
+                    <div class="spinner"></div>
+                </div>
+            </td>
+        </tr>
+
+        <!-- second gp and overflow of actual vs forecast -->
+        <tr>
+            <td rowspan="3">
+                <div id="cc-currentyear-grossprofitpercent" class="dc dc-b dc-r" style="height: 239px;">
+                    <div class="spinner"></div>
+                </div>
+            </td>
+        </tr>
+
+
+        <!-- projections and overflow of second gp -->
+        <tr>
+            <td>
+
+                <!-- projections by thirds -->
+                <table style="width: 100%;">
+
+                    <tr>
+                        <td colspan="3"  style="height: 25px;">
+                            <div class="ds-heading-sm" style="margin-right: 5px;">
+                                <div class="ds-heading-left ds-heading-selector">
+                                    <span class="selected" id="pvf-selector-sales" data-dym-selector="pvf" data-dym-value="sales">Sales</span>
+                                    <span id="pvf-selector-gpp" data-dym-selector="pvf" data-dym-value="gpp">GPP</span>
+                                    <span id="pvf-selector-gpd" data-dym-selector="pvf" data-dym-value="gpd">GPD</span>
+                                </div>
+                                <span id="projection-title">Projections vs. Forecast (Month End/Year End)</span>
+                                <div id="pvf-mode-selector-group" style="visibility:hidden" class="ds-heading-right ds-heading-selector">
+                                    <span class="selected" id="pvf-mode-selector-forecast" data-dym-selector="pvf-mode" data-dym-value="forecast">Forecast</span>
+                                    <span id="pvf-mode-selector-target" data-dym-selector="pvf-mode" data-dym-value="target">Target</span>
+                                </div>
+
+                            </div>
+</td>
+                    </tr>
+
+                    <tr>
+                        <td style="width: 33%;">
+                            <div class="dc dc-l dc-b" style="height: 100px;">
+                                
+                                <table style="height: 100%; width: 100%">
+                                    <tr>
+                                        <td>
+                                            <div class="dc-text-title">Projection</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height: 100%; width: 100%;">
+                                            <div class="dc-text-value">
+                                                <table style="width: 100%;">
+                                                    <tr>
+                                                        <td style="width: 30px;">M</td>
+                                                        <td><span style="margin-left: -30px;" id="cy-pfc-projection-eom">--</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Y</td>
+                                                        <td><span style="margin-left: -30px;" id="cy-pfc-projection-eoy">--</span></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                            </div>
+                        </td>
+                        <td style="width: 33%;">
+                            <div class="dc dc-l dc-b" style="height: 100px;">
+                                <table style="height: 100%; width: 100%">
+                                    <tr>
+                                        <td>
+                                            <div id="projection-forecast-heading" class="dc-text-title">Forecast</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height: 100%;">
+                                            <div class="dc-text-value">
+                                                <table style="width: 100%;">
+                                                    <tr>
+                                                        <td style="width: 30px;">M</td>
+                                                        <td><span style="margin-left: -30px;" id="cy-pfc-forecast-eom">--</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Y</td>
+                                                        <td><span style="margin-left: -30px;" id="cy-pfc-forecast-eoy">--</span></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                        <td style="width: 33%;">
+                            <div class="dc dc-l dc-b" style="height: 100px;">
+                                <table style="height: 100%; width: 100%">
+                                    <tr>
+                                        <td>
+                                            <div class="dc-text-title">Differential</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height: 100%;">
+                                            <div class="dc-text-value">
+                                                <table style="width: 100%;">
+                                                    <tr>
+                                                        <td style="width: 30px;">M</td>
+                                                        <td><span style="margin-left: -30px;" id="cy-pfc-diff-eom">--</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Y</td>
+                                                        <td><span style="margin-left: -30px;" id="cy-pfc-diff-eoy">--</span></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+            
+        </tr>
+        
+    </table>
+    
+    
+
+
+    <div class="dash-topbottom">
+
+        <div class="dg-grid">
+
+            <div class="dg-row">
+
+                <div class="dg-col-12">
+
+                    <div class="ds-heading-sm">Top/Bottom Customers &amp; Salespersons</div>
+
+                </div>
+
+                <div class="dg-col-6">
+                    <div>
+                        
+                        
+
+                        <div style="margin-left: 10px; text-align: center; height: 450px;" class="dc dc-l dc-r dc-b">
+                            <h3 id="dash-top-customer-header" style="display: none; margin-bottom: 0px;">Top Customers by Sales</h3>
+                            <ul id="dash-top-customer-list" class="tb-list"></ul>
+
+                            <h3 id="dash-bottom-customer-header" style="display: none; margin-bottom: 0px; margin-top: 40px;">Bottom Customers by Sales</h3>
+                            <ul id="dash-bottom-customer-list" class="tb-list"></ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="dg-col-6">
+                    <div style="margin-right: 0px;">
+                        
+                        
+
+                        <div style="margin-left: 10px; text-align: center; height: 450px;" class="dc dc-l dc-r dc-b">
+                            <h3 id="dash-top-sp-header" style="display: none; margin-bottom: 0px;">Top Salespeople by Sales</h3>
+                            <ul id="dash-top-sp-list" class="tb-list"></ul>
+
+                            <h3 id="dash-bottom-sp-header" style="display: none; margin-bottom: 0px; margin-top: 40px;">Bottom Salespeople by Sales</h3>
+                            <ul id="dash-bottom-sp-list" class="tb-list"></ul>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+</div>
+
+<script type="text/javascript" id="dxss_49387m63v09487vm304897vm">
+    EnsureAppLoaded(function () {
+        require(['dashboard'], function (dashboard) {
+            dashboard.initialize();
+        });
+    });
+</script>

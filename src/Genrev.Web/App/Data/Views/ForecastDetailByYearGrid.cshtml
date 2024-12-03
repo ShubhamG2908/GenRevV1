@@ -1,0 +1,122 @@
+﻿@using Genrev.Web.App.Data.Models.Forecast
+@model ForecastDetailVM
+@Html.DevExpress().GridView(
+    s =>
+    {
+        s.Name = "ForecastDetailByYearGrid";
+        s.KeyFieldName = "Key";
+        s.Width = Unit.Percentage(100);
+        s.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+        s.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+        s.CallbackRouteValues = new { Controller = "Data", Action = "ForecastDetailByYearGridCallback" };
+        s.SettingsEditing.Mode = GridViewEditingMode.Batch;
+        s.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Data", Action = "ForecastDetailByYearBatchEdit" };
+        s.Settings.ShowTitlePanel = Model.IsLocked;
+        s.SetTitlePanelTemplateContent(c =>
+        {
+            if (Model.IsLocked)
+            {
+                var vw = ViewContext.Writer;
+                vw.Write("<p style=\"color: red\"><strong>Forecasts are locked</strong></p>");
+            }
+        });
+
+        s.BeforeGetCallbackResult += (sender, e) =>
+        {
+            var grid = sender as MVCxGridView;
+            grid.GroupBy(grid.Columns["Period2"]);
+        };
+
+        s.CustomGroupDisplayText = (sender, e) =>
+        {
+            e.DisplayText = ((DateTime)e.GetFieldValue("Period")).ToString("MMMM");
+        };
+
+        s.SettingsBehavior.AllowFixedGroups = true;
+
+        s.Columns.Add(col =>
+        {
+            col.Name = "Key";
+            col.FieldName = "Key";
+            col.Width = 0;
+        });
+
+        s.Columns.Add(col =>
+        {
+            col.Name = "Period2";
+            col.FieldName = "Period";
+            col.GroupIndex = 0;
+        });
+
+        s.Columns.Add(col =>
+        {
+            col.Name = "Period";
+            col.FieldName = "Period";
+            col.Width = 0;
+        });
+
+        s.Columns.Add(col =>
+        {
+            col.Name = "CustomerID";
+            col.FieldName = "CustomerID";
+            col.Width = 0;
+        });
+
+        s.Columns.Add(col =>
+        {
+            col.Name = "CustomerDataID";
+            col.FieldName = "CustomerDataID";
+            col.Width = 0;
+        });
+
+        s.Columns.Add(col =>
+        {
+            col.Name = "CustomerName";
+            col.FieldName = "CustomerName";
+            col.FixedStyle = GridViewColumnFixedStyle.Left;
+            col.EditFormSettings.Visible = DefaultBoolean.False;
+        });
+
+        foreach (var m in Model.GetColumns())
+        {
+            s.Columns.AddBand(b =>
+            {
+                b.Name = m.Name;
+                b.Caption = m.Caption;
+                b.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+
+                foreach (var f in m.Fields)
+                {
+                    b.Columns.Add(col =>
+                    {
+                        col.Name = f.FieldName;
+                        col.FieldName = f.FieldName;
+                        col.Caption = f.Caption;
+                        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+                        col.PropertiesEdit.DisplayFormatString = f.Format;
+                        col.ReadOnly = Model.IsLocked;
+                        col.EditFormSettings.Visible = !Model.IsLocked ? DefaultBoolean.True : DefaultBoolean.False;
+                    });
+                }
+            });
+        }
+
+        s.Columns.Add(col =>
+        {
+            col.Name = "Strategy";
+            col.FieldName = "Strategy";
+            col.Width = 300;
+            col.ColumnType = MVCxGridViewColumnType.Memo;
+            col.Width = 100;
+            (col.PropertiesEdit as MemoProperties).Rows = 3;
+            col.EditFormSettings.Visible = !Model.IsLocked ? DefaultBoolean.True : DefaultBoolean.False;
+        });
+
+        s.CellEditorInitialize = (sender, e) =>
+        {
+            ASPxEdit editor = (ASPxEdit)e.Editor;
+            editor.ValidationSettings.Display = Display.Dynamic;
+        };
+
+    }
+).Bind(Model.ForecastListItems).GetHtml()

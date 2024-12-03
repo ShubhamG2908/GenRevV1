@@ -1,0 +1,26 @@
+﻿@model Genrev.Web.App.Personnel.Models.AvailabilityPopupVM
+
+<h3>Time Management for @Model.PersonName</h3>
+
+<div style="height: 254px;">
+    @Html.Partial("AvailabilityPopupGrid", Model.GridVM)
+</div>
+
+
+<div class="clearfix spacer-10"></div>
+
+<table style="float: right;">
+    <tr>
+        <td>
+            @Html.DevExpress().Button(
+                s => {
+                    s.Name = "personnelAvailabilityClose";
+                    s.Text = "Close";
+                    s.ClientSideEvents.Click = "function(s, e) { Personnel.Overview.Availability.Close(); }";
+                }
+            ).GetHtml()
+        </td>
+    </tr>
+</table>
+
+

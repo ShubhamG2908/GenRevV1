@@ -1,0 +1,15 @@
+
+
+<div class="memberbar">
+
+
+    <div class="memberbar-item">
+        <div class="h-viewas">
+            @Html.Action("ViewAs", "MemberBar")
+        </div>
+    </div>    
+    <div id="memberbar-btn-feedback" class="memberbar-item memberbar-item-btn"><span class="icon"><i class="fa fa-comment fa-lg"></i></span></div>
+    <div id="memberbar-btn-user" class="memberbar-item memberbar-item-btn">
+        <span class="icon"><i style="padding-right: 8px;" class="fa fa-user fa-lg"></i>@AppService.Current.Person.Person.FirstName @AppService.Current.Person.Person.LastName</span>
+    </div>
+</div>

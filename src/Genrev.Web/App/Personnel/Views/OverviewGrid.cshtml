@@ -1,0 +1,50 @@
+﻿@model List<Genrev.Web.App.Personnel.Models.OverviewListItemVM>
+
+@{
+    string uip = ViewBag.UIPrefix;
+}
+
+@Html.DevExpress().GridView(
+    s => {
+
+        s.Name = uip + "Grid";
+        s.KeyFieldName = "ID";
+        s.CallbackRouteValues = new { Controller = "Personnel", Action = "PersonnelOverviewGridCallback" };
+
+        s.SettingsBehavior.AllowFocusedRow = true;
+        s.SettingsLoadingPanel.Mode = GridViewLoadingPanelMode.Disabled;
+        s.ClientSideEvents.Init = "function(s, e) { }"; // placeholder to turn on js events
+
+        s.HtmlDataCellPrepared = (sender, e) =>
+        {
+            e.Cell.Attributes.Add("data-dym-cellClick", "gvPersonnel");
+            e.Cell.Attributes.Add("data-dym-visibleIndex", e.VisibleIndex.ToString());
+            e.Cell.Attributes.Add("data-dym-fieldName", e.DataColumn.FieldName);
+        };
+
+        var col = s.Columns.Add("colFirstName");
+        col.Caption = "First Name";
+        col.FieldName = "FirstName";
+        col.Width = 150;
+
+        col = s.Columns.Add("colLastName");
+        col.Caption = "Last Name";
+        col.FieldName = "LastName";
+        col.Width = 150;
+
+        col = s.Columns.Add("colAdmin");
+        col.Caption = "Admin";
+        col.FieldName = "IsAdmin";
+        col.ColumnType = MVCxGridViewColumnType.CheckBox;
+        col.Width = 50;
+
+    }
+).Bind(Model).GetHtml()
+
+
+
+<script type="text/javascript" id="dxss_90348t5uv958ut39453084">
+    if ("Personnel" in window) {
+        Personnel.Overview.CurrentPersonnel.Initialize();
+    }
+</script>

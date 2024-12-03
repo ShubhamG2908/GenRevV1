@@ -1,0 +1,33 @@
+﻿@model List<Genrev.Web.App.Customers.Models.AccountTypeListItemVM>
+
+@Html.DevExpress().GridView(
+    s => {
+
+        s.Name = "AccountTypesGrid";
+        s.KeyFieldName = "ID";
+        s.CallbackRouteValues = new { Controller = "Customers", Action = "AccountTypesCallback" };
+        s.SettingsBehavior.AllowFocusedRow = true;
+        s.SettingsBehavior.AllowSelectByRowClick = true;
+        s.SettingsBehavior.AllowSelectSingleRowOnly = true;
+        s.SettingsLoadingPanel.Mode = GridViewLoadingPanelMode.Disabled;
+
+        s.SettingsPager.PageSize = 16;
+
+        s.HtmlDataCellPrepared = (sender, e) => {
+            e.Cell.Attributes.Add("data-dym-cell", "AccountTypesGrid");
+            e.Cell.Attributes.Add("data-dym-visibleIndex", e.VisibleIndex.ToString());
+        };
+
+        s.Width = 250;
+
+        var col = s.Columns.Add("colName");
+        col.Caption = "Type";
+        col.FieldName = "Name";
+
+        col = s.Columns.Add("colCallsPerMonthGoal");
+        col.Caption = "Calls/Month";
+        col.FieldName = "CallsPerMonthGoal";
+        
+
+    }
+).Bind(Model).GetHtml()

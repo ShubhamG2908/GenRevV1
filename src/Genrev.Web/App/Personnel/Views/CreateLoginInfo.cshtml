@@ -1,0 +1,41 @@
+﻿@model Genrev.Web.App.Personnel.Models.CreateLoginInfoVM
+
+
+<p>This person has no login.  Fill out the fields below and click Create to create one</p>
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "CreateLoginInfoEmail";
+        s.Properties.Caption = "Email";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.CreateLoginInfoEmail).GetHtml()
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "CreateLoginInfoDisplayName";
+        s.Properties.Caption = "Display Name";
+        s.Properties.CaptionCellStyle.Width = 100;
+    }
+).Bind(Model.CreateLoginInfoDisplayName).GetHtml()
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "CreateLoginInfoPassword";
+        s.Properties.Caption = "Password";
+        s.Properties.CaptionCellStyle.Width = 100;
+        s.Properties.Password = true;
+    }
+).Bind(Model.CreateLoginInfoPassword).GetHtml()
+
+<div class="spacer-10"></div>
+
+<div style="margin-left: 176px;">
+    @Html.DevExpress().Button(
+        s => {
+            s.Name = "CreateLoginInfoSubmitButton";
+            s.Text = "Create Login";
+            s.Width = 100;
+        }
+    ).GetHtml()
+</div>

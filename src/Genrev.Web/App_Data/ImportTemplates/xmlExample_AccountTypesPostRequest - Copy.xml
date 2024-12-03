@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Request>
+	<AccountTypes>
+		<AccountType>
+			<ID>AT-001</ID>
+			<Name>Target</Name>
+			<CallsPerMonthGoal>5</CallsPerMonthGoal>
+		</AccountType>
+		<AccountType>
+			<ID>AT-002</ID>
+			<Name>Low Potential</Name>
+		</AccountType>
+		<AccountType>
+			<ID>AT-003</ID>
+			<Name>Competitor</Name>
+			<CallsPerMonthGoal>4</CallsPerMonthGoal>
+		</AccountType>
+		<AccountType>
+			<ID>AT-004</ID>
+			<Name>Industry</Name>
+		</AccountType>
+	</AccountTypes>
+</Request>

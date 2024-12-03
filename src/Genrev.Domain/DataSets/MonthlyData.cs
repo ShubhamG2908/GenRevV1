@@ -28,7 +28,10 @@ namespace Genrev.Domain.DataSets
 
             // if we're on the current month, calculate the MTD
             int daysInMonth = currentMonthStart.AddMonths(1).AddDays(-1).Day;
-            int currentDay = currentDate.Day;
+
+            // Current day should be the day before the current day according to formula.
+            //int currentDay = currentDate.Day;     // Old
+            int currentDay = currentDate.Day - 1;   // New
 
             if (currentDay == daysInMonth) {
                 return SalesForecast;
@@ -38,9 +41,11 @@ namespace Genrev.Domain.DataSets
                 throw new InvalidOperationException("Current Day exceeds Days in Month");
             }
 
-            decimal percentOfMonthCompleted = 100 * currentDay / daysInMonth;
+            //decimal percentOfMonthCompleted = 100 * currentDay / daysInMonth;
+            //decimal? mtdForecast = percentOfMonthCompleted * SalesForecast / 100;
 
-            decimal? mtdForecast = percentOfMonthCompleted * SalesForecast / 100;
+            // Apply new formula
+            decimal? mtdForecast = (SalesForecast * currentDay) / daysInMonth;
 
             return mtdForecast;
         }

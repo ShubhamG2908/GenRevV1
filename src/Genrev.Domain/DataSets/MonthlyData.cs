@@ -24,10 +24,12 @@ namespace Genrev.Domain.DataSets
 
             // if we're on the current month, calculate the MTD
             int daysInMonth = currentMonthStart.AddMonths(1).AddDays(-1).Day;
-            int currentDay = currentDate.Day;
 
-            if (currentDay == daysInMonth)
-            {
+            // Current day should be the day before the current day according to formula.
+            //int currentDay = currentDate.Day;     // Old
+            int currentDay = currentDate.Day - 1;   // New
+
+            if (currentDay == daysInMonth) {
                 return SalesForecast;
             }
 
@@ -36,9 +38,11 @@ namespace Genrev.Domain.DataSets
                 throw new InvalidOperationException("Current Day exceeds Days in Month");
             }
 
-            decimal percentOfMonthCompleted = 100 * currentDay / daysInMonth;
+            //decimal percentOfMonthCompleted = 100 * currentDay / daysInMonth;
+            //decimal? mtdForecast = percentOfMonthCompleted * SalesForecast / 100;
 
-            decimal? mtdForecast = percentOfMonthCompleted * SalesForecast / 100;
+            // Apply new formula
+            decimal? mtdForecast = (SalesForecast * currentDay) / daysInMonth;
 
             return mtdForecast;
         }
@@ -102,10 +106,14 @@ namespace Genrev.Domain.DataSets
 
                 FiscalYear fy = FiscalYear.GetCurrent(currentDate, fiscalYearMonthEnd);
 
-                var x = currentYTDSales * fy.DaysInYear;
-                var y = x / currentDate.DayOfYear;
+                // OLD Code 
+                //var x = currentYTDSales * fy.DaysInYear;
+                //var y = x / currentDate.DayOfYear;
 
-                return General.FixDollars(y);
+                //return General.FixDollars(y);
+
+                // Duplicate code so calling directly that method.
+                return YearEndSales(currentYTDSales, currentDate, fy);
             }
 
             public static decimal? MonthEndGPP(decimal? sales, decimal? grossProfitDollars, DateTime currentDate)
@@ -134,10 +142,16 @@ namespace Genrev.Domain.DataSets
                 return (((salesProjection - gpdProjection) / salesProjection) - 1) * -1 * 100;
             }
 
-            public static decimal? YearEndSales(decimal? currentYTDSales, DateTime currentDate, FiscalYear fiscalYear)
-            {
-                var x = currentYTDSales * fiscalYear.DaysInYear;
-                var y = x / currentDate.DayOfYear;
+            public static decimal? YearEndSales(decimal? currentYTDSales, DateTime currentDate, FiscalYear fiscalYear) {
+
+                // Old Code
+                //var x = currentYTDSales * fiscalYear.DaysInYear;
+                //var y = x / currentDate.DayOfYear;
+
+                // New changed code according to the new equations.
+                int dayOfYear = currentDate.DayOfYear - 1;
+                var x = currentYTDSales * (fiscalYear.DaysInYear + 1);
+                var y = x / (dayOfYear < 1 ? 1 : dayOfYear);
 
                 return General.FixDollars(y);
             }

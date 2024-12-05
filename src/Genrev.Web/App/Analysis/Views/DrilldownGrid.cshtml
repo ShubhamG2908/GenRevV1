@@ -12,6 +12,7 @@
         s.Settings.ShowGroupPanel = true;
         //s.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
         s.Settings.ShowFilterRow = true;
+        s.Settings.ShowFilterRowMenu = true;
         s.SettingsBehavior.AllowFocusedRow = true;
         s.SettingsText.GroupPanel = "Drag a column header here to group by that column (non-numeric fields only)";
 
@@ -19,6 +20,17 @@
         s.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
         s.SettingsPager.PageSize = 200;
         s.Settings.ShowFooter = true;
+
+        s.SettingsExport.EnableClientSideExportAPI = true;
+        s.SettingsExport.ExcelExportMode = DevExpress.Export.ExportType.WYSIWYG;
+
+        s.Toolbars.Add(t =>
+        {
+            t.SettingsAdaptivity.Enabled = true;
+            t.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+            t.Items.Add(GridViewToolbarCommand.ExportToXls);
+            t.Items.Add(GridViewToolbarCommand.ExportToXlsx);
+        });
 
         s.TotalSummary.Add(new ASPxSummaryItem("SalesActual", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "SalesActual"});
         s.TotalSummary.Add(new ASPxSummaryItem("SalesForecast", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "SalesForecast" });
@@ -88,6 +100,8 @@
             c.FixedStyle = GridViewColumnFixedStyle.Left;
             c.SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
             c.SortIndex = 0;
+            c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+            c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
         });
 
         s.Columns.Add(c => {
@@ -98,6 +112,8 @@
             c.FixedStyle = GridViewColumnFixedStyle.Left;
             c.SortIndex = 1;
             c.SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+            c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+            c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
         });
 
         if (AppService.Current.Settings.ProductFeatureEnabled)
@@ -111,18 +127,23 @@
                 c.FixedStyle = GridViewColumnFixedStyle.Left;
                 c.SortIndex = 1;
                 c.SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+                c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+                c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
             });
         }
 
 
         s.Columns.Add(c => {
             c.Name = "SalesProfessional";
-            c.Caption = "Sales <br />Professional";
+            c.Caption = "Sales Professional";
             c.FieldName = "SalesProfessional";
             c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             c.FixedStyle = GridViewColumnFixedStyle.Left;
             c.SortIndex = 2;
             c.SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+            c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+            c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
+            c.Width = 150;
         });
 
         s.Columns.AddBand(b => {
@@ -135,18 +156,25 @@
                 c.Caption = "Industry";
                 c.FieldName = "Industry";
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+                c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+                c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
             });
             b.Columns.Add(c => {
                 c.Name = "CustomerType";
                 c.Caption = "Customer Type";
                 c.FieldName = "CustomerType";
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+                c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+                c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
+                c.Width = 120;
             });
             b.Columns.Add(c => {
                 c.Name = "AccountType";
                 c.Caption = "Account Type";
                 c.FieldName = "AccountType";
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+                c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+                c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
             });
         });
 
@@ -162,6 +190,8 @@
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 c.Settings.AllowGroup = DefaultBoolean.False;
                 c.PropertiesEdit.DisplayFormatString = "c0";
+                c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+                c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
             });
             b.Columns.Add(c => {
                 c.Name = "SalesActual";
@@ -170,6 +200,8 @@
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 c.Settings.AllowGroup = DefaultBoolean.False;
                 c.PropertiesEdit.DisplayFormatString = "c0";
+                c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+                c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
             });
             b.Columns.Add(c => {
                 c.Name = "SalesDifference";
@@ -178,6 +210,8 @@
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 c.Settings.AllowGroup = DefaultBoolean.False;
                 c.PropertiesEdit.DisplayFormatString = "c0";
+                c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+                c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
             });
             b.Columns.Add(c => {
                 c.Name = "SalesVariance";
@@ -186,6 +220,7 @@
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 c.Settings.AllowGroup = DefaultBoolean.False;
                 c.PropertiesEdit.DisplayFormatString = "p2";
+                c.Settings.ShowFilterRowMenu = DefaultBoolean.False;
             });
         });
 
@@ -201,6 +236,8 @@
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 c.Settings.AllowGroup = DefaultBoolean.False;
                 c.PropertiesEdit.DisplayFormatString = "c0";
+                c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+                c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
             });
             b.Columns.Add(c => {
                 c.Name = "GPDActual";
@@ -209,6 +246,8 @@
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 c.Settings.AllowGroup = DefaultBoolean.False;
                 c.PropertiesEdit.DisplayFormatString = "c0";
+                c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+                c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
             });
             b.Columns.Add(c => {
                 c.Name = "GPDDifference";
@@ -217,6 +256,8 @@
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 c.Settings.AllowGroup = DefaultBoolean.False;
                 c.PropertiesEdit.DisplayFormatString = "c0";
+                c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+                c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
             });
             b.Columns.Add(c => {
                 c.Name = "GPDVariance";
@@ -225,6 +266,7 @@
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 c.Settings.AllowGroup = DefaultBoolean.False;
                 c.PropertiesEdit.DisplayFormatString = "p2";
+                c.Settings.ShowFilterRowMenu = DefaultBoolean.False;
             });
         });
 
@@ -240,6 +282,7 @@
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 c.Settings.AllowGroup = DefaultBoolean.False;
                 c.PropertiesEdit.DisplayFormatString = "p2";
+                c.Settings.ShowFilterRowMenu = DefaultBoolean.False;
             });
             b.Columns.Add(c => {
                 c.Name = "GPPActual";
@@ -248,6 +291,7 @@
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 c.Settings.AllowGroup = DefaultBoolean.False;
                 c.PropertiesEdit.DisplayFormatString = "p2";
+                c.Settings.ShowFilterRowMenu = DefaultBoolean.False;
             });
             b.Columns.Add(c => {
                 c.Name = "GPPDifference";
@@ -256,6 +300,7 @@
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 c.Settings.AllowGroup = DefaultBoolean.False;
                 c.PropertiesEdit.DisplayFormatString = "p2";
+                c.Settings.ShowFilterRowMenu = DefaultBoolean.False;
             });
             b.Columns.Add(c => {
                 c.Name = "GPPVariance";
@@ -264,6 +309,7 @@
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 c.Settings.AllowGroup = DefaultBoolean.False;
                 c.PropertiesEdit.DisplayFormatString = "p2";
+                c.Settings.ShowFilterRowMenu = DefaultBoolean.False;
             });
         });
 
@@ -278,6 +324,8 @@
                 c.FieldName = "CallsForecast";
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 c.Settings.AllowGroup = DefaultBoolean.False;
+                c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+                c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
             });
             b.Columns.Add(c => {
                 c.Name = "CallsActual";
@@ -285,6 +333,8 @@
                 c.FieldName = "CallsActual";
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 c.Settings.AllowGroup = DefaultBoolean.False;
+                c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+                c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
             });
             b.Columns.Add(c => {
                 c.Name = "CallsDifference";
@@ -292,6 +342,8 @@
                 c.FieldName = "CallsDifference";
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 c.Settings.AllowGroup = DefaultBoolean.False;
+                c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+                c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
             });
         });
 

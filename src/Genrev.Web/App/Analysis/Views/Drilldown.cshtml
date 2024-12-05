@@ -15,9 +15,11 @@
 
     <div id="data-drilldown-grid-container" style="padding: 10px;">
 
-        @Html.Partial("DrilldownGrid", Model)
-
-    </div>
+        @using (Html.BeginForm())
+        {
+            @Html.Partial("DrilldownGrid", Model)
+        }
+        </div>
 
 </div>
 

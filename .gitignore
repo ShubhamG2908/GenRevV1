@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/GenRevV1 Publish.zip
+/GenRevV1 Publish

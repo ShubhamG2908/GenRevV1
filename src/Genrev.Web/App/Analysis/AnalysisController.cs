@@ -37,11 +37,11 @@ namespace Genrev.Web.App.Analysis
             int year = Int32.Parse(Request.Params["selectedYear"]);
             // devex sends these as "true,C" or "false,U", so we'll grab the first part
             // (someday should refactor this in the drilldown.js that calls this...
-            bool showClassification = bool.Parse(Request.Params["showClassification"].Split(',')[0]);
-            bool showSales = bool.Parse(Request.Params["showSales"].Split(',')[0]);
-            bool showGPD = bool.Parse(Request.Params["showGPD"].Split(',')[0]);
-            bool showGPP = bool.Parse(Request.Params["showGPP"].Split(',')[0]);
-            bool showCalls = bool.Parse(Request.Params["showCalls"].Split(',')[0]);
+            bool showClassification = bool.Parse(Request.Params["showClassification"].Split(',')[1]);
+            bool showSales = bool.Parse(Request.Params["showSales"].Split(',')[1]);
+            bool showGPD = bool.Parse(Request.Params["showGPD"].Split(',')[1]);
+            bool showGPP = bool.Parse(Request.Params["showGPP"].Split(',')[1]);
+            bool showCalls = bool.Parse(Request.Params["showCalls"].Split(',')[1]);
 
             var model = new Models.DrilldownVM();
             model.AvailableYears = _service.GetDefaultYears();

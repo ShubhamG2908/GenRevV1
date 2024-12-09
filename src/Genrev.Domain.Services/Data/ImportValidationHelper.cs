@@ -34,70 +34,83 @@ namespace Genrev.DomainServices.Data
         CallsPerMonthMustBeZeroOrMore,
         ActualSalesMustBeNumeric,
         ActualSalesMustBeZeroOrMore,
-        ActualGPPMustBeNumeric
+        ActualGPPMustBeNumeric,
+        InvalidDateFormat
     }
 
     public class ImportValidationHelper
     {
-        
 
-        public List<ValidationError> ValidateCompaniesDataTable(DataTable table) {
+
+        public List<ValidationError> ValidateCompaniesDataTable(DataTable table)
+        {
 
             var errors = new List<ValidationError>();
 
-            foreach (DataRow row in table.Rows) {
+            foreach (DataRow row in table.Rows)
+            {
 
                 string s = row.ToStringValue(0);    // clientID
 
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.ClientIDRequired, ref errors);
                 }
 
                 s = row.ToStringValue(3);   // name
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.CompanyNameRequired, ref errors);
                 }
 
                 s = row.ToStringValue(4);   // code
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.CompanyCodeRequired, ref errors);
                 }
 
                 s = row.ToStringValue(5);   //fiscal month end
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.FiscalMonthEndRequired, ref errors);
                 }
 
                 int i;
                 bool parsed = int.TryParse(s, out i);
-                if (!parsed || i < 1 || i > 12) {  
+                if (!parsed || i < 1 || i > 12)
+                {
                     addError(ImportValidationError.FiscalMonthEndOutOfRange, ref errors);
                 }
 
             }
 
-            return errors;            
+            return errors;
         }
 
-        public List<ValidationError> ValidatePersonnelDataTable(DataTable table) {
+        public List<ValidationError> ValidatePersonnelDataTable(DataTable table)
+        {
 
-            var errors = new List<ValidationError>(); 
+            var errors = new List<ValidationError>();
 
-            foreach (DataRow row in table.Rows) {
+            foreach (DataRow row in table.Rows)
+            {
 
                 var s = row.ToStringValue(0);   // clientid
 
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.ClientIDRequired, ref errors);
                 }
 
                 s = row.ToStringValue(1);   // first name
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.FirstNameRequired, ref errors);
                 }
-                
+
                 s = row.ToStringValue(2);   // last name
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.LastNameRequired, ref errors);
                 }
             }
@@ -105,73 +118,90 @@ namespace Genrev.DomainServices.Data
             return errors;
         }
 
-        public List<ValidationError> ValidateAccountTypesDataTable(DataTable table) {
+        public List<ValidationError> ValidateAccountTypesDataTable(DataTable table)
+        {
 
             var errors = new List<ValidationError>();
 
-            foreach (DataRow row in table.Rows) {
+            foreach (DataRow row in table.Rows)
+            {
 
                 string s = row.ToStringValue(0);    // clientID
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.ClientIDRequired, ref errors);
                 }
 
                 s = row.ToStringValue(1);   // name
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.AccountTypeNameRequired, ref errors);
                 }
 
                 s = row.ToStringValue(2);   // calls per month goal
-                if (!string.IsNullOrWhiteSpace(s)) {
+                if (!string.IsNullOrWhiteSpace(s))
+                {
                     int i;
                     bool parsed = int.TryParse(s, out i);
-                    if (!parsed) {
+                    if (!parsed)
+                    {
                         addError(ImportValidationError.CallsPerMonthMustBeNumeric, ref errors);
-                    } else {
-                        if (i < 0) {
+                    }
+                    else
+                    {
+                        if (i < 0)
+                        {
                             addError(ImportValidationError.CallsPerMonthMustBeZeroOrMore, ref errors);
                         }
                     }
                 }
             }
-            
+
             return errors;
         }
 
-        public List<ValidationError> ValidateCustomerTypesDataTable(DataTable table) {
+        public List<ValidationError> ValidateCustomerTypesDataTable(DataTable table)
+        {
 
             var errors = new List<ValidationError>();
 
-            foreach (DataRow row in table.Rows) {
+            foreach (DataRow row in table.Rows)
+            {
 
                 string s = row.ToStringValue(0);    // clientID
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.ClientIDRequired, ref errors);
                 }
 
                 s = row.ToStringValue(1);   // Name
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.CustomerTypeNameRequired, ref errors);
                 }
-                
+
             }
 
             return errors;
         }
 
-        public List<ValidationError> ValidateIndustryTypesDataTable(DataTable table) {
+        public List<ValidationError> ValidateIndustryTypesDataTable(DataTable table)
+        {
 
             var errors = new List<ValidationError>();
 
-            foreach (DataRow row in table.Rows) {
+            foreach (DataRow row in table.Rows)
+            {
 
                 string s = row.ToStringValue(0);    // clientID
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.ClientIDRequired, ref errors);
                 }
 
                 s = row.ToStringValue(1);   // Name
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.IndustryTypeNameRequired, ref errors);
                 }
 
@@ -180,96 +210,126 @@ namespace Genrev.DomainServices.Data
             return errors;
         }
 
-        public List<ValidationError> ValidateCustomersDataTable(DataTable table) {
+        public List<ValidationError> ValidateCustomersDataTable(DataTable table)
+        {
 
             var errors = new List<ValidationError>();
 
-            foreach (DataRow row in table.Rows) {
+            foreach (DataRow row in table.Rows)
+            {
 
                 string s = row.ToStringValue(0);    // clientID
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.ClientIDRequired, ref errors);
                 }
 
                 s = row.ToStringValue(1);   // name
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.CustomerNameRequired, ref errors);
                 }
             }
 
             return errors;
         }
-        
-        public List<ValidationError> ValidateMonthlyDataTable(DataTable table) {
 
+        public List<ValidationError> ValidateMonthlyDataTable(DataTable table)
+        {
             var errors = new List<ValidationError>();
-
-            foreach (DataRow row in table.Rows) {
-
+            List<int> invalidDateFormatCount = new List<int>();
+            int rowIndex = 0;
+            foreach (DataRow row in table.Rows)
+            {
+                if (rowIndex == 0)
+                {
+                    rowIndex++;
+                    continue;
+                }
                 string s = row.ToStringValue(0);    // clientID
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.ClientIDRequired, ref errors);
                 }
 
                 s = row.ToStringValue(1); // personID
-                if (string.IsNullOrWhiteSpace(s)) {
+                if (string.IsNullOrWhiteSpace(s))
+                {
                     addError(ImportValidationError.PersonnelIDRequired, ref errors);
                 }
 
                 s = row.ToStringValue(2);   // period
                 DateTime parsedDateTime;
                 bool dateParsed = DateTime.TryParse(s, out parsedDateTime);
-                if (!dateParsed) {
+                if (!dateParsed)
+                {
                     addError(ImportValidationError.PeriodRequired, ref errors);
+                    invalidDateFormatCount.Add(rowIndex);
                 }
 
                 s = row.ToStringValue(3);   // actual sales
-                if (!string.IsNullOrWhiteSpace(s)) {
+                if (!string.IsNullOrWhiteSpace(s))
+                {
                     decimal d;
                     bool parsed = decimal.TryParse(s, out d);
-                    if (!parsed) {
+                    if (!parsed)
+                    {
                         addError(ImportValidationError.ActualSalesMustBeNumeric, ref errors);
-                    } else {
-                        if (d < 0) {
+                    }
+                    else
+                    {
+                        if (d < 0)
+                        {
                             addError(ImportValidationError.ActualSalesMustBeZeroOrMore, ref errors);
                         }
                     }
                 }
 
                 s = row.ToStringValue(4);   // actual gpp
-                if (!string.IsNullOrWhiteSpace(s)) {
+                if (!string.IsNullOrWhiteSpace(s))
+                {
                     decimal d;
                     bool parsed = decimal.TryParse(s, out d);
-                    if (!parsed) {
+                    if (!parsed)
+                    {
                         addError(ImportValidationError.ActualGPPMustBeNumeric, ref errors);
-                    } 
+                    }
                 }
 
                 s = row.ToStringValue(5);   // actual calls
-                if (!string.IsNullOrWhiteSpace(s)) {
+                if (!string.IsNullOrWhiteSpace(s))
+                {
                     int i;
                     bool parsed = int.TryParse(s, out i);
-                    if (!parsed) {
+                    if (!parsed)
+                    {
                         addError(ImportValidationError.ActualCallsMustBeNumeric, ref errors);
-                    } else {
-                        if (i < 0) {
+                    }
+                    else
+                    {
+                        if (i < 0)
+                        {
                             addError(ImportValidationError.ActualCallsMustBeZeroOrMore, ref errors);
                         }
                     }
                 }
-
-
+                rowIndex++;
             }
-
+            if (invalidDateFormatCount.Count > 0)
+            {
+                addError(ImportValidationError.InvalidDateFormat, ref errors, invalidDateFormatCount);
+            }
             return errors;
         }
 
 
-        private void addError(ImportValidationError errorType, ref List<ValidationError> targetList) {
+        private void addError(ImportValidationError errorType, ref List<ValidationError> targetList, List<int> IDs = null)
+        {
 
             var error = new ValidationError();
 
-            switch (errorType) {
+            switch (errorType)
+            {
                 case ImportValidationError.ClientIDRequired:
                     error.Message = "ID is required.";
                     break;
@@ -277,7 +337,7 @@ namespace Genrev.DomainServices.Data
                 case ImportValidationError.CompanyNameRequired:
                     error.Message = "Company Name is required.";
                     break;
-                    
+
                 case ImportValidationError.CompanyCodeRequired:
                     error.Message = "Company Code is required.";
                     break;
@@ -322,21 +382,30 @@ namespace Genrev.DomainServices.Data
                 case ImportValidationError.ActualGPPMustBeNumeric:
                     error.Message = "Actual GPP must be numeric.";
                     break;
-
+                case ImportValidationError.InvalidDateFormat:
+                    {
+                        if (IDs != null && IDs.Count > 0)
+                        {
+                            error.Message = $"Invalid date format at row: {string.Join(",", IDs).TrimEnd(',')}";
+                        }
+                        break;
+                    }
                 default:
                     throw new ArgumentOutOfRangeException("The specificed error type is not registered");
             }
 
             error.ID = (int)errorType;
-            
-            if (targetList == null) {
+
+            if (targetList == null)
+            {
                 targetList = new List<ValidationError>();
             }
 
             targetList.Add(error);
         }
-        
-        internal void AddGeneralExceptionError(Exception e, ref List<ValidationError> errors) {
+
+        internal void AddGeneralExceptionError(Exception e, ref List<ValidationError> errors)
+        {
 
             var error = new ValidationError();
 

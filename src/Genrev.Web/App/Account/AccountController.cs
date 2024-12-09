@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Dymeng;
+using System;
 using System.Web.Mvc;
 using System.Web.Security;
 using WebMatrix.WebData;
-using Genrev.Web.App.Account;
-using Dymeng;
 
 
 namespace Genrev.Web.App.Account

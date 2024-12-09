@@ -177,68 +177,83 @@ namespace Genrev.Web.App.Data
         #region MANAGEMENT
 
 
-
         public List<MatrixByCostGridItem> GetMatrixGridItems(int year)
         {
-
             var context = AppService.Current.DataContext;
             var items = new List<MatrixByCostGridItem>();
 
             var company = AppService.Current.Account.PrimaryCompany;
             var fiscalYear = company.GetFiscalYear(year);
+            
+            var groupedData = from d in context.CustomerData
+                              join c in context.Customers on d.CustomerID equals c.ID
+                              where c.CompanyID == company.ID
+                                  && d.Period >= fiscalYear.StartDate
+                                  && d.Period <= fiscalYear.EndDate
+                              group d by new { d.Period.Month, d.CustomerID, d.PersonnelID, d.ProductID } into g
+                              orderby g.Key.Month, g.Key.CustomerID, g.Key.PersonnelID, g.Key.ProductID
+                              select new
+                              {
+                                  ID = g.FirstOrDefault().ID,
+                                  GridID = g.FirstOrDefault().ID,
+                                  Period = g.FirstOrDefault().Period,
+                                  CustomerID = g.FirstOrDefault().CustomerID,
+                                  PersonnelID = g.FirstOrDefault().PersonnelID,
+                                  ProductID = g.FirstOrDefault().ProductID,
+                                  SalesActualSum = g.Sum(x => x.SalesActual),
+                                  SalesForecastSum = g.Sum(x => x.SalesForecast),
+                                  CostActualSum = g.Sum(x => x.CostActual),
+                                  CostForecastSum = g.Sum(x => x.CostForecast),
+                                  CostTargetSum = g.Sum(x => x.CostTarget),
+                                  CallsActualSum = g.Sum(x => x.CallsActual),
+                                  CallsForecastSum = g.Sum(x => x.CallsForecast),
+                                  PotentialSum = g.Sum(x => x.Potential),
+                                  CurrentOpportunitySum = g.Sum(x => x.CurrentOpportunity),
+                                  FutureOpportunitySum = g.Sum(x => x.FutureOpportunity),
+                                  CallsTargetSum = g.Sum(x => x.CallsTarget),
+                                  SalesTargetSum = g.Sum(x => x.SalesTarget)
+                              };
 
-            var q = from d in context.CustomerData
-                    join c in context.Customers on d.CustomerID equals c.ID
-                    where c.CompanyID == company.ID
-                        && d.Period >= fiscalYear.StartDate
-                        && d.Period <= fiscalYear.EndDate
-                    orderby d.Period, d.CustomerID, d.PersonnelID, d.ProductID
-                    select d;
-
-            var data = q.ToList();
+            var data = groupedData.ToList();
 
             foreach (var d in data)
             {
-
-                var item = new MatrixByCostGridItem();
-                item.ID = d.ID;
-                item.CallsActual = d.CallsActual;
-                item.CallsForecast = d.CallsForecast;
-
-                item.GPPActual = CustomerData.GetGPP(d.SalesActual, d.CostActual);
-                //item.GPPActual = (d.SalesActual == 0) ? 0 : (d.SalesActual - d.CostActual) / d.SalesActual * 100;
-                item.GPPForecast = CustomerData.GetGPP(d.SalesForecast, d.CostForecast);
-                //item.GPPForecast = (d.SalesForecast == 0) ? 0 : (d.SalesForecast - d.CostForecast) / d.SalesForecast * 100;
-
-                item.CustomerID = d.CustomerID;
-                item.GridID = d.ID;
-                item.Period = new CommonListItems.Period() { Date = d.Period };
-                item.PersonnelID = d.PersonnelID;
-
+                var item = new MatrixByCostGridItem
+                {
+                    ID = d.ID,
+                    GridID = d.GridID,
+                    CustomerID = d.CustomerID,
+                    PersonnelID = d.PersonnelID,
+                    Period = new CommonListItems.Period()
+                    {
+                        Date = d.Period,
+                    },
+                    SalesActual = d.SalesActualSum,
+                    SalesForecast = d.SalesForecastSum,
+                    GPPActual = CustomerData.GetGPP(d.SalesActualSum, d.CostActualSum),
+                    GPPForecast = CustomerData.GetGPP(d.SalesForecastSum, d.CostForecastSum),
+                    CallsActual = d.CallsActualSum,
+                    CallsForecast = d.CallsForecastSum,
+                    CostTarget = d.CostTargetSum,
+                    Potential = d.PotentialSum,
+                    CurrentOpportunity = d.CurrentOpportunitySum,
+                    FutureOpportunity = d.FutureOpportunitySum
+                };
                 if (AppService.Current.Settings.ProductFeatureEnabled)
                 {
                     item.ProductID = d.ProductID;
                 }
-
-                item.SalesActual = d.SalesActual;
-                item.SalesForecast = d.SalesForecast;
-                item.Potential = d.Potential;
-                item.CurrentOpportunity = d.CurrentOpportunity;
-                item.FutureOpportunity = d.FutureOpportunity;
-
                 if (AppService.Current.Settings.TargetFeatureEnabled)
                 {
-                    item.CallsTarget = d.CallsTarget;
-                    item.GPPTarget = CustomerData.GetGPP(d.SalesTarget, d.CostTarget);
-                    //item.GPPTarget = (d.SalesTarget - d.CostTarget) / d.SalesTarget * 100;
-                    item.SalesTarget = d.SalesTarget;
+                    item.CallsTarget = d.CallsTargetSum;
+                    item.SalesTarget = d.SalesTargetSum;
+                    item.GPPTarget = CustomerData.GetGPP(d.SalesTargetSum, d.CostTargetSum);
                 }
 
                 items.Add(item);
             }
 
             return items;
-
         }
 
         internal void MatrixGridBatchDelete(List<int> deleteKeys)
@@ -268,9 +283,6 @@ namespace Genrev.Web.App.Data
             AppCache.InvalidateAll();
 
         }
-
-
-
 
         internal void MatrixGridBatchInsert(List<MatrixByCostGridItem> insert)
         {

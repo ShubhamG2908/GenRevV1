@@ -33,6 +33,7 @@ namespace Genrev.Web.App.Data.Models.Management
         public int? CallsActual { get; set; }
         public int? CallsForecast { get; set; }
         public int? CallsTarget { get; set; }
-                
+        public decimal? CostTarget { get; set; }
+
     }
 }

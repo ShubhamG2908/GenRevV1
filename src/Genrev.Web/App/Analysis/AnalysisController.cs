@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Dymeng.Web.Mvc;
 
 namespace Genrev.Web.App.Analysis
 {
     public class AnalysisController : Dymeng.Web.Mvc.DevExpress.ContentAreaController
     {
-
-        
-
-        public ActionResult Index() {
+        public ActionResult Index()
+        {
             return ActualVsForecast();
         }
 
@@ -22,41 +17,33 @@ namespace Genrev.Web.App.Analysis
          * DRILLDOWN
          * 
          * ********************/
-
-
-
-        public ActionResult Drilldown(int? year) {
-
+        public ActionResult Drilldown(int? year)
+        {
             var model = new Models.DrilldownVM();
             model.AvailableYears = _service.GetDefaultYears();
             model.SelectedYear = year.GetValueOrDefault(_service.DefaultYear);
 
             var fy = Domain.FiscalYear.GetByYear(
-                model.SelectedYear, 
+                model.SelectedYear,
                 AppService.Current.Account.PrimaryCompany.FiscalYearEndMonth);
 
             model.Items = _service.GetDrilldownListItems(fy.StartDate, fy.EndDate);
-
             return GetView("Drilldown", model);
-
-            
-
         }
 
-
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult DrilldownGridCallback() {
-
+        public ActionResult DrilldownGridCallback()
+        {
             int year = Int32.Parse(Request.Params["selectedYear"]);
             // devex sends these as "true,C" or "false,U", so we'll grab the first part
             // (someday should refactor this in the drilldown.js that calls this...
-            bool showClassification = bool.Parse(Request.Params["showClassification"].Split(',')[0]);
-            bool showSales = bool.Parse(Request.Params["showSales"].Split(',')[0]);
-            bool showGPD = bool.Parse(Request.Params["showGPD"].Split(',')[0]);
-            bool showGPP = bool.Parse(Request.Params["showGPP"].Split(',')[0]);
-            bool showCalls = bool.Parse(Request.Params["showCalls"].Split(',')[0]);
+            bool showClassification = bool.Parse(Request.Params["showClassification"].Split(',')[1]);
+            bool showSales = bool.Parse(Request.Params["showSales"].Split(',')[1]);
+            bool showGPD = bool.Parse(Request.Params["showGPD"].Split(',')[1]);
+            bool showGPP = bool.Parse(Request.Params["showGPP"].Split(',')[1]);
+            bool showCalls = bool.Parse(Request.Params["showCalls"].Split(',')[1]);
 
-            var model = new Models.DrilldownVM();            
+            var model = new Models.DrilldownVM();
             model.AvailableYears = _service.GetDefaultYears();
             model.SelectedYear = year;
 
@@ -72,14 +59,7 @@ namespace Genrev.Web.App.Analysis
 
             return PartialView("DrilldownGrid", model);
         }
-
-
-
-
-
-
         #endregion
-
 
         #region HISTORIC
         /***********************
@@ -88,13 +68,14 @@ namespace Genrev.Web.App.Analysis
          * 
          * ********************/
 
-        public ActionResult Historic() {
+        public ActionResult Historic()
+        {
 
             var model = new Models.HistoricVM();
-            
+
             model.PersonsFilterList.Insert(0, new CommonListItems.Person() { ID = -1, FirstName = "<All ", LastName = "Salespersons>" });
             model.IndustriesList.Insert(0, new CommonListItems.Industry() { ID = -1, Name = "<All Industries>" });
-            model.CustomerTypesList.Insert(0, new CommonListItems.CustomerType() {  ID = -1, Name = "<All Customer Types>"});
+            model.CustomerTypesList.Insert(0, new CommonListItems.CustomerType() { ID = -1, Name = "<All Customer Types>" });
             model.AccountTypesList.Insert(0, new CommonListItems.AccountType() { ID = -1, Name = "<All Account Types>" });
             model.ProductsList.Insert(0, new CommonListItems.Product() { ID = -1, SKU = "<All SKUs>" });
             model.CustomersList.Insert(0, new CommonListItems.Customer() { ID = -1, Name = "<All Customers>" });
@@ -121,27 +102,32 @@ namespace Genrev.Web.App.Analysis
 
 
         [Route("Analysis/Historic/Page/Salesperson")]
-        public ActionResult AnalysisHistoricPageSalesperson(int? salespersonID, int? yearsToShow) {
+        public ActionResult AnalysisHistoricPageSalesperson(int? salespersonID, int? yearsToShow)
+        {
             return PartialView("HistoricSalespersonPage");
         }
 
         [Route("Analysis/Historic/Page/Industry")]
-        public ActionResult AnalysisHistoricPageIndustry(int? industryID, int? yearsToShow) {
+        public ActionResult AnalysisHistoricPageIndustry(int? industryID, int? yearsToShow)
+        {
             return PartialView("HistoricIndustryPage");
         }
 
         [Route("Analysis/Historic/Page/CustomerType")]
-        public ActionResult AnalysisHistoricPageCustomerType(int? customerTypeID, int? yearsToShow) {
+        public ActionResult AnalysisHistoricPageCustomerType(int? customerTypeID, int? yearsToShow)
+        {
             return PartialView("HistoricCustomerTypePage");
         }
 
         [Route("Analysis/Historic/Page/AccountType")]
-        public ActionResult AnalysisHistoricPageAccountType(int? accountTypeID, int? yearsToShow) {
+        public ActionResult AnalysisHistoricPageAccountType(int? accountTypeID, int? yearsToShow)
+        {
             return PartialView("HistoricAccountTypePage");
         }
 
         [Route("Analysis/Historic/Page/Product")]
-        public ActionResult AnalysisHistoricPageProduct(int? productID, int? yearsToShow) {
+        public ActionResult AnalysisHistoricPageProduct(int? productID, int? yearsToShow)
+        {
             if (!AppService.Current.Settings.ProductFeatureEnabled)
             {
                 return PartialView("FeatureDisabled");
@@ -156,13 +142,16 @@ namespace Genrev.Web.App.Analysis
         }
 
         [Route("Analysis/Historic/ChartData/Sales")]
-        public string AnalysisHistoricChartDataSales(int? salesperson, int? years) {
-            
-            if (salesperson == null || salesperson == -1) {
+        public string AnalysisHistoricChartDataSales(int? salesperson, int? years)
+        {
+
+            if (salesperson == null || salesperson == -1)
+            {
                 salesperson = AppService.Current.ViewContext.PersonID;
             }
-            
-            if (years == null) {
+
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -170,17 +159,20 @@ namespace Genrev.Web.App.Analysis
 
             DateTime startDate = fy.EndDate.AddYears((years.Value) * -1).AddDays(1);
             DateTime endDate = fy.EndDate;
-            
+
             return _service.Charts.GetHistoricSalesJSON(salesperson.Value, startDate, endDate);
         }
 
         [Route("Analysis/Historic/ChartData/GP")]
-        public string AnalysisHistoricChartDataGP(int? salesperson, int? years) {
+        public string AnalysisHistoricChartDataGP(int? salesperson, int? years)
+        {
 
-            if (salesperson == null || salesperson == -1) {
+            if (salesperson == null || salesperson == -1)
+            {
                 salesperson = AppService.Current.ViewContext.PersonID;
             }
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -191,15 +183,18 @@ namespace Genrev.Web.App.Analysis
 
             return _service.Charts.GetHistoricGPJSON(salesperson.Value, startDate, endDate);
         }
-        
+
         [Route("Analysis/Historic/ChartData/Industry/Sales")]
-        public string AnalysisHistoricChartDataIndustrySales(int? industry, int? years) {
-            
-            if (industry == -1) {
+        public string AnalysisHistoricChartDataIndustrySales(int? industry, int? years)
+        {
+
+            if (industry == -1)
+            {
                 industry = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -209,17 +204,20 @@ namespace Genrev.Web.App.Analysis
             DateTime endDate = fy.EndDate;
 
             return _service.Charts.GetHistoricSalesByIndustryJSON(industry, startDate, endDate);
-            
+
         }
 
         [Route("Analysis/Historic/ChartData/Industry/GP")]
-        public string AnalysisHistoricChartDataIndustryGP(int? industry, int? years) {
+        public string AnalysisHistoricChartDataIndustryGP(int? industry, int? years)
+        {
 
-            if (industry == -1) {
+            if (industry == -1)
+            {
                 industry = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -232,13 +230,16 @@ namespace Genrev.Web.App.Analysis
         }
 
         [Route("Analysis/Historic/ChartData/CustomerType/Sales")]
-        public string AnalysisHistoricChartDataCustomerTypeSales(int? customerType, int? years) {
+        public string AnalysisHistoricChartDataCustomerTypeSales(int? customerType, int? years)
+        {
 
-            if (customerType == -1) {
+            if (customerType == -1)
+            {
                 customerType = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -253,13 +254,16 @@ namespace Genrev.Web.App.Analysis
         }
 
         [Route("Analysis/Historic/ChartData/CustomerType/GP")]
-        public string AnalysisHistoricChartDataCustomerTypeGP(int? customerType, int? years) {
+        public string AnalysisHistoricChartDataCustomerTypeGP(int? customerType, int? years)
+        {
 
-            if (customerType == -1) {
+            if (customerType == -1)
+            {
                 customerType = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -270,15 +274,18 @@ namespace Genrev.Web.App.Analysis
 
             return _service.Charts.GetHistoricGPByCustomerTypeJSON(customerType, startDate, endDate);
         }
-        
-        [Route("Analysis/Historic/ChartData/AccountType/Sales")]
-        public string AnalysisHistoricChartDataAccountTypeSales(int? accountType, int? years) {
 
-            if (accountType == -1) {
+        [Route("Analysis/Historic/ChartData/AccountType/Sales")]
+        public string AnalysisHistoricChartDataAccountTypeSales(int? accountType, int? years)
+        {
+
+            if (accountType == -1)
+            {
                 accountType = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -293,13 +300,16 @@ namespace Genrev.Web.App.Analysis
         }
 
         [Route("Analysis/Historic/ChartData/AccountType/GP")]
-        public string AnalysisHistoricChartDataAccountTypeGP(int? accountType, int? years) {
+        public string AnalysisHistoricChartDataAccountTypeGP(int? accountType, int? years)
+        {
 
-            if (accountType == -1) {
+            if (accountType == -1)
+            {
                 accountType = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -310,15 +320,18 @@ namespace Genrev.Web.App.Analysis
 
             return _service.Charts.GetHistoricGPByAccountTypeJSON(accountType, startDate, endDate);
         }
-        
-        [Route("Analysis/Historic/ChartData/Product/Sales")]
-        public string AnalysisHistoricChartDataProductSales(int? product, int? years) {
 
-            if (product == -1) {
+        [Route("Analysis/Historic/ChartData/Product/Sales")]
+        public string AnalysisHistoricChartDataProductSales(int? product, int? years)
+        {
+
+            if (product == -1)
+            {
                 product = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -333,13 +346,16 @@ namespace Genrev.Web.App.Analysis
         }
 
         [Route("Analysis/Historic/ChartData/Product/GP")]
-        public string AnalysisHistoricChartDataProductGP(int? product, int? years) {
+        public string AnalysisHistoricChartDataProductGP(int? product, int? years)
+        {
 
-            if (product == -1) {
+            if (product == -1)
+            {
                 product = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -400,15 +416,14 @@ namespace Genrev.Web.App.Analysis
 
         #endregion
 
-
-
         #region ACTUAL VS FORECAST
         /***********************
          * 
          * ACTUAL VS FORECAST
          * 
          * ********************/
-        public ActionResult ActualVsForecast() {
+        public ActionResult ActualVsForecast()
+        {
 
             var model = new Models.ActualVsForecastVM();
 
@@ -442,27 +457,32 @@ namespace Genrev.Web.App.Analysis
 
 
         [Route("Analysis/ActualVsForecast/Page/Salesperson")]
-        public ActionResult AnalysisActualVsForecastPageSalesperson(int? salespersonID, int? yearsToShow) {
+        public ActionResult AnalysisActualVsForecastPageSalesperson(int? salespersonID, int? yearsToShow)
+        {
             return PartialView("ActualVsForecastSalespersonPage");
         }
 
         [Route("Analysis/ActualVsForecast/Page/Industry")]
-        public ActionResult AnalysisActualVsForecastPageIndustry(int? industryID, int? yearsToShow) {
+        public ActionResult AnalysisActualVsForecastPageIndustry(int? industryID, int? yearsToShow)
+        {
             return PartialView("ActualVsForecastIndustryPage");
         }
 
         [Route("Analysis/ActualVsForecast/Page/CustomerType")]
-        public ActionResult AnalysisActualVsForecastPageCustomerType(int? customerTypeID, int? yearsToShow) {
+        public ActionResult AnalysisActualVsForecastPageCustomerType(int? customerTypeID, int? yearsToShow)
+        {
             return PartialView("ActualVsForecastCustomerTypePage");
         }
 
         [Route("Analysis/ActualVsForecast/Page/AccountType")]
-        public ActionResult AnalysisActualVsForecastPageAccountType(int? accountTypeID, int? yearsToShow) {
+        public ActionResult AnalysisActualVsForecastPageAccountType(int? accountTypeID, int? yearsToShow)
+        {
             return PartialView("ActualVsForecastAccountTypePage");
         }
 
         [Route("Analysis/ActualVsForecast/Page/Product")]
-        public ActionResult AnalysisActualVsForecastPageProduct(int? productID, int? yearsToShow) {
+        public ActionResult AnalysisActualVsForecastPageProduct(int? productID, int? yearsToShow)
+        {
             if (!AppService.Current.Settings.ProductFeatureEnabled)
             {
                 return PartialView("FeatureDisabled");
@@ -479,28 +499,34 @@ namespace Genrev.Web.App.Analysis
 
 
         [Route("Analysis/ActualVsForecast/ChartData/Sales")]
-        public string AnalysisActualVsForecastChartDataSales(int? salesperson, int? years) {
-            
-            if (salesperson == null || salesperson == -1) {
+        public string AnalysisActualVsForecastChartDataSales(int? salesperson, int? years)
+        {
+
+            if (salesperson == null || salesperson == -1)
+            {
                 salesperson = AppService.Current.ViewContext.PersonID;
             }
-            
-            if (years == null) {
+
+            if (years == null)
+            {
                 years = 3;
             }
 
             Domain.FiscalYear fy = Domain.FiscalYear.GetByYear(years.Value, AppService.Current.Account.PrimaryCompany.FiscalYearEndMonth);
-            
+
             return _service.Charts.GetActualVsForecastSalesJSON(salesperson.Value, fy.StartDate, fy.EndDate);
         }
 
         [Route("Analysis/ActualVsForecast/ChartData/GP")]
-        public string AnalysisActualVsForecastChartDataGP(int? salesperson, int? years) {
+        public string AnalysisActualVsForecastChartDataGP(int? salesperson, int? years)
+        {
 
-            if (salesperson == null || salesperson == -1) {
+            if (salesperson == null || salesperson == -1)
+            {
                 salesperson = AppService.Current.ViewContext.PersonID;
             }
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -508,15 +534,18 @@ namespace Genrev.Web.App.Analysis
 
             return _service.Charts.GetActualVsForecastGPJSON(salesperson.Value, fy.StartDate, fy.EndDate);
         }
-        
-        [Route("Analysis/ActualVsForecast/ChartData/Industry/Sales")]
-        public string AnalysisActualVsForecastChartDataIndustrySales(int? industry, int? years) {
 
-            if (industry == -1) {
+        [Route("Analysis/ActualVsForecast/ChartData/Industry/Sales")]
+        public string AnalysisActualVsForecastChartDataIndustrySales(int? industry, int? years)
+        {
+
+            if (industry == -1)
+            {
                 industry = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -527,13 +556,16 @@ namespace Genrev.Web.App.Analysis
         }
 
         [Route("Analysis/ActualVsForecast/ChartData/Industry/GP")]
-        public string AnalysisActualVsForecastChartDataIndustryGP(int? industry, int? years) {
+        public string AnalysisActualVsForecastChartDataIndustryGP(int? industry, int? years)
+        {
 
-            if (industry == -1) {
+            if (industry == -1)
+            {
                 industry = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -541,15 +573,18 @@ namespace Genrev.Web.App.Analysis
 
             return _service.Charts.GetActualVsForecastGPByIndustryJSON(industry, fy.StartDate, fy.EndDate);
         }
-        
-        [Route("Analysis/ActualVsForecast/ChartData/CustomerType/Sales")]
-        public string AnalysisActualVsForecastChartDataCustomerTypeSales(int? customerType, int? years) {
 
-            if (customerType == -1) {
+        [Route("Analysis/ActualVsForecast/ChartData/CustomerType/Sales")]
+        public string AnalysisActualVsForecastChartDataCustomerTypeSales(int? customerType, int? years)
+        {
+
+            if (customerType == -1)
+            {
                 customerType = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -560,13 +595,16 @@ namespace Genrev.Web.App.Analysis
         }
 
         [Route("Analysis/ActualVsForecast/ChartData/CustomerType/GP")]
-        public string AnalysisActualVsForecastChartDataCustomerTypeGP(int? customerType, int? years) {
+        public string AnalysisActualVsForecastChartDataCustomerTypeGP(int? customerType, int? years)
+        {
 
-            if (customerType == -1) {
+            if (customerType == -1)
+            {
                 customerType = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -574,15 +612,18 @@ namespace Genrev.Web.App.Analysis
 
             return _service.Charts.GetActualVsForecastGPByCustomerTypeJSON(customerType, fy.StartDate, fy.EndDate);
         }
-        
-        [Route("Analysis/ActualVsForecast/ChartData/AccountType/Sales")]
-        public string AnalysisActualVsForecastChartDataAccountTypeSales(int? accountType, int? years) {
 
-            if (accountType == -1) {
+        [Route("Analysis/ActualVsForecast/ChartData/AccountType/Sales")]
+        public string AnalysisActualVsForecastChartDataAccountTypeSales(int? accountType, int? years)
+        {
+
+            if (accountType == -1)
+            {
                 accountType = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -593,13 +634,16 @@ namespace Genrev.Web.App.Analysis
         }
 
         [Route("Analysis/ActualVsForecast/ChartData/AccountType/GP")]
-        public string AnalysisActualVsForecastChartDataAccountTypeGP(int? accountType, int? years) {
+        public string AnalysisActualVsForecastChartDataAccountTypeGP(int? accountType, int? years)
+        {
 
-            if (accountType == -1) {
+            if (accountType == -1)
+            {
                 accountType = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -609,13 +653,16 @@ namespace Genrev.Web.App.Analysis
         }
 
         [Route("Analysis/ActualVsForecast/ChartData/Product/Sales")]
-        public string AnalysisActualVsForecastChartDataProductSales(int? product, int? years) {
+        public string AnalysisActualVsForecastChartDataProductSales(int? product, int? years)
+        {
 
-            if (product == -1) {
+            if (product == -1)
+            {
                 product = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -626,13 +673,16 @@ namespace Genrev.Web.App.Analysis
         }
 
         [Route("Analysis/ActualVsForecast/ChartData/Product/GP")]
-        public string AnalysisActualVsForecastChartDataProductGP(int? product, int? years) {
+        public string AnalysisActualVsForecastChartDataProductGP(int? product, int? years)
+        {
 
-            if (product == -1) {
+            if (product == -1)
+            {
                 product = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -686,15 +736,14 @@ namespace Genrev.Web.App.Analysis
 
         #endregion
 
-
-
         #region OPPORTUNITIES
         /***********************
          * 
          * OPPORTUNITIES
          * 
          * ********************/
-        public ActionResult Opportunities() {
+        public ActionResult Opportunities()
+        {
 
             var model = new Models.OpportunitiesVM();
 
@@ -717,13 +766,16 @@ namespace Genrev.Web.App.Analysis
 
 
         [Route("Analysis/Opportunities/Data/Salesperson")]
-        public string OpportunitiesDataSalesperson(int? salespersonID, int? year) {
+        public string OpportunitiesDataSalesperson(int? salespersonID, int? year)
+        {
 
-            if (!salespersonID.HasValue || salespersonID.Value == -1) {
+            if (!salespersonID.HasValue || salespersonID.Value == -1)
+            {
                 salespersonID = AppService.Current.ViewContext.PersonID;
             }
 
-            if (!year.HasValue) {
+            if (!year.HasValue)
+            {
                 year = DateTime.Now.Year;
             }
 
@@ -735,13 +787,16 @@ namespace Genrev.Web.App.Analysis
         }
 
         [Route("Analysis/Opportunities/Data/Industry")]
-        public string OpportunitiesDataIndustry(int? salespersonID, int? year) {
+        public string OpportunitiesDataIndustry(int? salespersonID, int? year)
+        {
 
-            if (!salespersonID.HasValue || salespersonID.Value == -1) {
+            if (!salespersonID.HasValue || salespersonID.Value == -1)
+            {
                 salespersonID = AppService.Current.ViewContext.PersonID;
             }
 
-            if (!year.HasValue) {
+            if (!year.HasValue)
+            {
                 year = DateTime.Now.Year;
             }
 
@@ -752,13 +807,16 @@ namespace Genrev.Web.App.Analysis
         }
 
         [Route("Analysis/Opportunities/Data/CustomerType")]
-        public string OpportunitiesDataCustomerType(int? salespersonID, int? year) {
+        public string OpportunitiesDataCustomerType(int? salespersonID, int? year)
+        {
 
-            if (!salespersonID.HasValue || salespersonID.Value == -1) {
+            if (!salespersonID.HasValue || salespersonID.Value == -1)
+            {
                 salespersonID = AppService.Current.ViewContext.PersonID;
             }
 
-            if (!year.HasValue) {
+            if (!year.HasValue)
+            {
                 year = DateTime.Now.Year;
             }
 
@@ -769,13 +827,16 @@ namespace Genrev.Web.App.Analysis
         }
 
         [Route("Analysis/Opportunities/Data/AccountType")]
-        public string OpportunitiesDataAccountType(int? salespersonID, int? year) {
+        public string OpportunitiesDataAccountType(int? salespersonID, int? year)
+        {
 
-            if (!salespersonID.HasValue || salespersonID.Value == -1) {
+            if (!salespersonID.HasValue || salespersonID.Value == -1)
+            {
                 salespersonID = AppService.Current.ViewContext.PersonID;
             }
 
-            if (!year.HasValue) {
+            if (!year.HasValue)
+            {
                 year = DateTime.Now.Year;
             }
 
@@ -807,15 +868,14 @@ namespace Genrev.Web.App.Analysis
 
         #endregion
 
-
-
         #region SALES CALLS
         /***********************
          * 
          * SALES CALLS
          * 
          * ********************/
-        public ActionResult SalesCalls() {
+        public ActionResult SalesCalls()
+        {
 
             var model = new Models.SalesCallsVM();
 
@@ -853,7 +913,7 @@ namespace Genrev.Web.App.Analysis
                 salespersonID = AppService.Current.ViewContext.PersonID;
             }
 
-            if(fiscalYear == null || fiscalYear == -1)
+            if (fiscalYear == null || fiscalYear == -1)
             {
                 fiscalYear = DateTime.Now.Year;
             }
@@ -869,27 +929,32 @@ namespace Genrev.Web.App.Analysis
 
 
         [Route("Analysis/SalesCalls/Page/Salesperson")]
-        public ActionResult AnalysisSalesCallsPageSalesperson(int? salespersonID, int? yearsToShow) {
+        public ActionResult AnalysisSalesCallsPageSalesperson(int? salespersonID, int? yearsToShow)
+        {
             return PartialView("SalesCallsSalespersonPage");
         }
 
         [Route("Analysis/SalesCalls/Page/Industry")]
-        public ActionResult AnalysisSalesCallsPageIndustry(int? industryID, int? yearsToShow) {
+        public ActionResult AnalysisSalesCallsPageIndustry(int? industryID, int? yearsToShow)
+        {
             return PartialView("SalesCallsIndustryPage");
         }
 
         [Route("Analysis/SalesCalls/Page/CustomerType")]
-        public ActionResult AnalysisSalesCallsPageCustomerType(int? customerTypeID, int? yearsToShow) {
+        public ActionResult AnalysisSalesCallsPageCustomerType(int? customerTypeID, int? yearsToShow)
+        {
             return PartialView("SalesCallsCustomerTypePage");
         }
 
         [Route("Analysis/SalesCalls/Page/AccountType")]
-        public ActionResult AnalysisSalesCallsPageAccountType(int? accountTypeID, int? yearsToShow) {
+        public ActionResult AnalysisSalesCallsPageAccountType(int? accountTypeID, int? yearsToShow)
+        {
             return PartialView("SalesCallsAccountTypePage");
         }
 
         [Route("Analysis/SalesCalls/Page/Product")]
-        public ActionResult AnalysisSalesCallsPageProduct(int? productID, int? yearsToShow) {
+        public ActionResult AnalysisSalesCallsPageProduct(int? productID, int? yearsToShow)
+        {
             if (!AppService.Current.Settings.ProductFeatureEnabled)
             {
                 return PartialView("FeatureDisabled");
@@ -907,13 +972,16 @@ namespace Genrev.Web.App.Analysis
 
 
         [Route("Analysis/SalesCalls/ChartData/Calls")]
-        public string AnalysisSalesCallsChartDataCalls(int? salesperson, int? years) {
+        public string AnalysisSalesCallsChartDataCalls(int? salesperson, int? years)
+        {
 
-            if (salesperson == null || salesperson == -1) {
+            if (salesperson == null || salesperson == -1)
+            {
                 salesperson = AppService.Current.ViewContext.PersonID;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -921,15 +989,18 @@ namespace Genrev.Web.App.Analysis
 
             return _service.Charts.GetSalesCallsJSON(salesperson.Value, fy.StartDate, fy.EndDate);
         }
-        
-        [Route("Analysis/SalesCalls/ChartData/Industry/Calls")]
-        public string AnalysisSalesCallsChartDataIndustryCalls(int? industry, int? years) {
 
-            if (industry == -1) {
+        [Route("Analysis/SalesCalls/ChartData/Industry/Calls")]
+        public string AnalysisSalesCallsChartDataIndustryCalls(int? industry, int? years)
+        {
+
+            if (industry == -1)
+            {
                 industry = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -938,15 +1009,18 @@ namespace Genrev.Web.App.Analysis
             return _service.Charts.GetSalesCallsByIndustryJSON(industry, fy.StartDate, fy.EndDate);
 
         }
-        
-        [Route("Analysis/SalesCalls/ChartData/CustomerType/Calls")]
-        public string AnalysisSalesCallsChartDataCustomerTypeCalls(int? customerType, int? years) {
 
-            if (customerType == -1) {
+        [Route("Analysis/SalesCalls/ChartData/CustomerType/Calls")]
+        public string AnalysisSalesCallsChartDataCustomerTypeCalls(int? customerType, int? years)
+        {
+
+            if (customerType == -1)
+            {
                 customerType = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -955,15 +1029,18 @@ namespace Genrev.Web.App.Analysis
             return _service.Charts.GetSalesCallsByCustomerTypeJSON(customerType, fy.StartDate, fy.EndDate);
 
         }
-        
-        [Route("Analysis/SalesCalls/ChartData/AccountType/Calls")]
-        public string AnalysisSalesCallsChartDataAccountTypeCalls(int? accountType, int? years) {
 
-            if (accountType == -1) {
+        [Route("Analysis/SalesCalls/ChartData/AccountType/Calls")]
+        public string AnalysisSalesCallsChartDataAccountTypeCalls(int? accountType, int? years)
+        {
+
+            if (accountType == -1)
+            {
                 accountType = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -974,13 +1051,16 @@ namespace Genrev.Web.App.Analysis
         }
 
         [Route("Analysis/SalesCalls/ChartData/Product/Calls")]
-        public string AnalysisSalesCallsChartDateProductCalls(int? product, int? years) {
+        public string AnalysisSalesCallsChartDateProductCalls(int? product, int? years)
+        {
 
-            if (product == -1) {
+            if (product == -1)
+            {
                 product = null;
             }
 
-            if (years == null) {
+            if (years == null)
+            {
                 years = 3;
             }
 
@@ -1012,15 +1092,11 @@ namespace Genrev.Web.App.Analysis
 
         #endregion
 
-
-
         private AnalysisService _service;
 
-        public AnalysisController() {
+        public AnalysisController()
+        {
             _service = new AnalysisService();
         }
-
-
-
     }
 }

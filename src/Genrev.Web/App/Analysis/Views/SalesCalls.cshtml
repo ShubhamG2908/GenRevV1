@@ -49,7 +49,7 @@
                                                     s.Width = 150;
                                                     s.PreRender = (sender, e) =>
                                                          {
-                                                        Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRenderByField(sender, Model.DefaultPerson, "ID");
+                                                        ComboBox.PreRenderByField(sender, Model.DefaultPerson, "ID");
                                                     };
                                                 }
                                             ).BindList(Model.PersonsFilterList).GetHtml()
@@ -66,7 +66,7 @@
                                                     s.Width = 150;
                                                     s.PreRender = (sender, e) =>
                                                          {
-                                                        Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRenderByField(sender, Model.DefaultIndustry, "ID");
+                                                        ComboBox.PreRenderByField(sender, Model.DefaultIndustry, "ID");
                                                     };
                                                 }
                                             ).BindList(Model.IndustriesList).GetHtml()
@@ -83,7 +83,7 @@
                                                     s.Width = 150;
                                                     s.PreRender = (sender, e) =>
                                                          {
-                                                        Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRenderByField(sender, Model.DefaultCustomerType, "ID");
+                                                        ComboBox.PreRenderByField(sender, Model.DefaultCustomerType, "ID");
                                                     };
                                                 }
                                             ).BindList(Model.CustomerTypesList).GetHtml()
@@ -100,7 +100,7 @@
                                                     s.Width = 150;
                                                     s.PreRender = (sender, e) =>
                                                          {
-                                                        Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRenderByField(sender, Model.DefaultAccountType, "ID");
+                                                        ComboBox.PreRenderByField(sender, Model.DefaultAccountType, "ID");
                                                     };
                                                 }
                                             ).BindList(Model.AccountTypesList).GetHtml()
@@ -117,7 +117,7 @@
                                                     s.Width = 150;
                                                     s.PreRender = (sender, e) =>
                                                          {
-                                                        Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRenderByField(sender, Model.DefaultProduct, "ID");
+                                                        ComboBox.PreRenderByField(sender, Model.DefaultProduct, "ID");
                                                     };
                                                 }
                                             ).BindList(Model.ProductsList).GetHtml()
@@ -134,7 +134,7 @@
                                                     s.Width = 150;
                                                     s.PreRender = (sender, e) =>
                                                          {
-                                                        Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRenderByField(sender, Model.DefaultCustomer, "ID");
+                                                        ComboBox.PreRenderByField(sender, Model.DefaultCustomer, "ID");
                                                     };
                                                 }
                                             ).BindList(Model.CustomersList).GetHtml()
@@ -150,7 +150,7 @@
                                                 s.Properties.DropDownRows = 10;
                                                 s.Width = 100;
                                                 s.PreRender = (sender, e) => {
-                                                    Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRenderByField(sender, Model.DefaultFiscalYear, "Number");
+                                                    ComboBox.PreRenderByField(sender, Model.DefaultFiscalYear, "Number");
                                                 };
                                             }
                                         ).BindList(Model.FiscalYearList).GetHtml()

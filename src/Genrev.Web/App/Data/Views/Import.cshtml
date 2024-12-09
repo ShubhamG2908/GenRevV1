@@ -6,35 +6,39 @@
     <p>Use this area to import new data into GENREV!  Click the <em>description</em> link for each upload for general information, or download the template files to help.</p>
     @*<p>For detailed documentation, please see our <a href="#">technical documentation topic here</a>.</p>*@
     <p>Each imported file should be in the CSV format, with the first row containing column headings.  Please refer to the download templates for examples.</p>
-    
+    <p style="color:red;">
+        <b>Note: </b>Please add Period date in mm/dd/yyyy format only while importing Monthly data.
+    </p>
+
     <hr />
 
-    @using (Html.BeginForm()) {
-        
+    @using (Html.BeginForm())
+    {
 
-    @*<div class="dg-row">
-        <h3>Companies</h3>
-        <div class="dg-col-6">
-            @Html.DevExpress().UploadControl(
-                 s => {
-                     s.Name = "uploadCompanies";
-                     s.ShowProgressPanel = false;
-                     s.UploadMode = UploadControlUploadMode.Auto;
-                     s.AutoStartUpload = true;
-                     s.Width = Unit.Percentage(80);
-                     s.CallbackRouteValues = new { Controller = "Data", Action = "UploadCompanies" };
-                     s.ValidationSettings.Assign(Genrev.Web.App.Data.DataUploadValidation.Settings);
-                 }
-             ).GetHtml()
-        </div>
-        <div class="dg-col-6">
-            <a id="template-dl-companies" href="#">Download Companies Template</a>
-        </div>
-    </div>
-    <a data-dym-description-link="companies" href="#"><small>Description</small></a>
-    <div data-dym-description-container="companies" style="display: none;">
-        <p>This is a description for the Companies upload</p>
-    </div>*@
+
+        @*<div class="dg-row">
+                <h3>Companies</h3>
+                <div class="dg-col-6">
+                    @Html.DevExpress().UploadControl(
+                         s => {
+                             s.Name = "uploadCompanies";
+                             s.ShowProgressPanel = false;
+                             s.UploadMode = UploadControlUploadMode.Auto;
+                             s.AutoStartUpload = true;
+                             s.Width = Unit.Percentage(80);
+                             s.CallbackRouteValues = new { Controller = "Data", Action = "UploadCompanies" };
+                             s.ValidationSettings.Assign(Genrev.Web.App.Data.DataUploadValidation.Settings);
+                         }
+                     ).GetHtml()
+                </div>
+                <div class="dg-col-6">
+                    <a id="template-dl-companies" href="#">Download Companies Template</a>
+                </div>
+            </div>
+            <a data-dym-description-link="companies" href="#"><small>Description</small></a>
+            <div data-dym-description-container="companies" style="display: none;">
+                <p>This is a description for the Companies upload</p>
+            </div>*@
 
 
 
@@ -42,7 +46,8 @@
             <h3>Monthly Data</h3>
             <div class="dg-col-6">
                 @Html.DevExpress().UploadControl(
-                 s => {
+                 s =>
+                      {
                      s.Name = "uploadMonthlyData";
                      s.ShowProgressPanel = false;
                      s.UploadMode = UploadControlUploadMode.Auto;
@@ -68,7 +73,8 @@
             <h3>Personnel</h3>
             <div class="dg-col-6">
                 @Html.DevExpress().UploadControl(
-                     s => {
+                     s =>
+                          {
                          s.Name = "uploadPersonnel";
                          s.ShowProgressPanel = false;
                          s.UploadMode = UploadControlUploadMode.Auto;
@@ -97,7 +103,8 @@
             <h3>Account Types</h3>
             <div class="dg-col-6">
                 @Html.DevExpress().UploadControl(
-                     s => {
+                     s =>
+                          {
                          s.Name = "uploadAccountTypes";
                          s.ShowProgressPanel = false;
                          s.UploadMode = UploadControlUploadMode.Auto;
@@ -121,7 +128,8 @@
             <h3>Customer Types</h3>
             <div class="dg-col-6">
                 @Html.DevExpress().UploadControl(
-                     s => {
+                     s =>
+                          {
                          s.Name = "uploadCustomerTypes";
                          s.ShowProgressPanel = false;
                          s.UploadMode = UploadControlUploadMode.Auto;
@@ -145,7 +153,8 @@
             <h3>Industry Types</h3>
             <div class="dg-col-6">
                 @Html.DevExpress().UploadControl(
-                     s => {
+                     s =>
+                          {
                          s.Name = "uploadIndustryTypes";
                          s.ShowProgressPanel = false;
                          s.UploadMode = UploadControlUploadMode.Auto;
@@ -169,7 +178,8 @@
             <h3>Customers</h3>
             <div class="dg-col-6">
                 @Html.DevExpress().UploadControl(
-                     s => {
+                     s =>
+                          {
                          s.Name = "uploadCustomers";
                          s.ShowProgressPanel = false;
                          s.UploadMode = UploadControlUploadMode.Auto;
@@ -197,7 +207,7 @@
 
 
 
-    
+
 
 
 
@@ -206,7 +216,8 @@
 
 
 @Html.DevExpress().LoadingPanel(
-    s => {
+    s =>
+    {
         s.Name = "uploadLoadingPanel";
         s.Modal = true;
         s.ContainerElementID = "";

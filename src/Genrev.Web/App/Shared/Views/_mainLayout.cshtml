@@ -14,6 +14,7 @@
         subpane.Size = System.Web.UI.WebControls.Unit.Pixel(200);
         subpane.MinSize = System.Web.UI.WebControls.Unit.Pixel(150);
         subpane.PaneStyle.Paddings.Padding = System.Web.UI.WebControls.Unit.Pixel(1);
+        subpane.ScrollBars = ScrollBars.Auto;
         subpane.SetContent(() => {
             Html.RenderPartial("ContentLeftPartialView");
         });

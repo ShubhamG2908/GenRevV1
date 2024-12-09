@@ -14,7 +14,8 @@ namespace Genrev.DomainServices.Data
         Genrev.Data.GenrevContext context;
 
 
-        public ImportStagingHelper(Genrev.Data.GenrevContext context) {
+        public ImportStagingHelper(Genrev.Data.GenrevContext context)
+        {
             this.context = context;
             validationHelper = new ImportValidationHelper();
         }
@@ -22,7 +23,8 @@ namespace Genrev.DomainServices.Data
 
 
 
-        public DataTable GetPersonnelStagingTable() {
+        public DataTable GetPersonnelStagingTable()
+        {
 
             var table = new DataTable();
 
@@ -33,7 +35,8 @@ namespace Genrev.DomainServices.Data
             return table;
         }
 
-        public DataTable GetCustomerTypeStagingTable() {
+        public DataTable GetCustomerTypeStagingTable()
+        {
 
             var table = new DataTable();
 
@@ -44,7 +47,8 @@ namespace Genrev.DomainServices.Data
 
         }
 
-        public DataTable GetAccountTypeStagingTable() {
+        public DataTable GetAccountTypeStagingTable()
+        {
 
             var table = new DataTable();
 
@@ -56,7 +60,8 @@ namespace Genrev.DomainServices.Data
 
         }
 
-        public DataTable GetIndustryTypeStagingTable() {
+        public DataTable GetIndustryTypeStagingTable()
+        {
 
             var table = new DataTable();
 
@@ -67,7 +72,8 @@ namespace Genrev.DomainServices.Data
 
         }
 
-        public DataTable GetCustomerStagingTable() {
+        public DataTable GetCustomerStagingTable()
+        {
 
             var table = new DataTable();
 
@@ -88,7 +94,8 @@ namespace Genrev.DomainServices.Data
 
         }
 
-        public DataTable GetMonthlyDataStagingTable() {
+        public DataTable GetMonthlyDataStagingTable()
+        {
 
             var table = new DataTable();
 
@@ -103,27 +110,33 @@ namespace Genrev.DomainServices.Data
         }
 
 
-        public bool CheckPersonnelStagingTable(DataTable table) {
+        public bool CheckPersonnelStagingTable(DataTable table)
+        {
             return table.Columns.Count == 4;
         }
 
-        public bool CheckCustomerTypeStagingTable(DataTable table) {
+        public bool CheckCustomerTypeStagingTable(DataTable table)
+        {
             return table.Columns.Count == 2;
         }
 
-        public bool CheckAccountTypeStagingTable(DataTable table) {
+        public bool CheckAccountTypeStagingTable(DataTable table)
+        {
             return table.Columns.Count == 3;
         }
 
-        public bool CheckIndustryTypeStagingTable(DataTable table) {
+        public bool CheckIndustryTypeStagingTable(DataTable table)
+        {
             return table.Columns.Count == 2;
         }
 
-        public bool CheckCustomerStagingTable(DataTable table) {
+        public bool CheckCustomerStagingTable(DataTable table)
+        {
             return table.Columns.Count == 12;
         }
 
-        public bool CheckMonthlyDataStagingTable(DataTable table) {
+        public bool CheckMonthlyDataStagingTable(DataTable table)
+        {
             return table.Columns.Count == 6;
         }
 
@@ -132,7 +145,8 @@ namespace Genrev.DomainServices.Data
 
 
 
-        public List<ValidationError> ImportToPersonnelStaging(DataTable table) {
+        public List<ValidationError> ImportToPersonnelStaging(DataTable table)
+        {
 
             /* Expected Fields
              * ClientID
@@ -142,14 +156,17 @@ namespace Genrev.DomainServices.Data
 
             var errors = validationHelper.ValidatePersonnelDataTable(table);
 
-            if (errors.Count > 0) {
+            if (errors.Count > 0)
+            {
                 return errors;
             }
 
             var personnel = new List<PersonnelStaging>();
 
-            try {
-                foreach (DataRow row in table.Rows) {
+            try
+            {
+                foreach (DataRow row in table.Rows)
+                {
                     var person = new PersonnelStaging();
                     person.ClientID = row.ToStringValue(0);
                     person.FirstName = row.ToStringValue(1);
@@ -162,14 +179,16 @@ namespace Genrev.DomainServices.Data
                 context.SaveChanges();
 
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 validationHelper.AddGeneralExceptionError(e, ref errors);
             }
 
             return errors;
         }
 
-        public List<ValidationError> ImportToAccountTypesStaging(DataTable table) {
+        public List<ValidationError> ImportToAccountTypesStaging(DataTable table)
+        {
 
             /* Expected Fields
              * ClientID
@@ -179,15 +198,18 @@ namespace Genrev.DomainServices.Data
 
             var errors = validationHelper.ValidateAccountTypesDataTable(table);
 
-            if (errors.Count > 0) {
+            if (errors.Count > 0)
+            {
                 return errors;
             }
 
             var accountTypes = new List<AccountTypeStaging>();
-            try {
+            try
+            {
 
 
-                foreach (DataRow row in table.Rows) {
+                foreach (DataRow row in table.Rows)
+                {
                     var accountType = new AccountTypeStaging();
                     accountType.ClientID = row.ToStringValue(0);
                     accountType.Name = row.ToStringValue(1);
@@ -199,13 +221,15 @@ namespace Genrev.DomainServices.Data
                 context.StagedAccountTypes.AddRange(accountTypes);
                 context.SaveChanges();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 validationHelper.AddGeneralExceptionError(e, ref errors);
             }
             return errors;
         }
 
-        public List<ValidationError> ImportToCustomerTypesStaging(DataTable table) {
+        public List<ValidationError> ImportToCustomerTypesStaging(DataTable table)
+        {
 
             /* Expected Fields
              * ClientID
@@ -214,15 +238,18 @@ namespace Genrev.DomainServices.Data
 
             var errors = validationHelper.ValidateCustomerTypesDataTable(table);
 
-            if (errors.Count > 0) {
+            if (errors.Count > 0)
+            {
                 return errors;
             }
 
             var customerTypes = new List<CustomerTypeStaging>();
 
-            try {
+            try
+            {
 
-                foreach (DataRow row in table.Rows) {
+                foreach (DataRow row in table.Rows)
+                {
                     var customerType = new CustomerTypeStaging();
                     customerType.ClientID = row.ToStringValue(0);
                     customerType.Name = row.ToStringValue(1);
@@ -234,14 +261,16 @@ namespace Genrev.DomainServices.Data
                 context.SaveChanges();
 
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 validationHelper.AddGeneralExceptionError(e, ref errors);
             }
 
             return errors;
         }
 
-        public List<ValidationError> ImportToIndustryTypesStaging(DataTable table) {
+        public List<ValidationError> ImportToIndustryTypesStaging(DataTable table)
+        {
 
             /* Expected Fields
              * ClientID
@@ -250,15 +279,18 @@ namespace Genrev.DomainServices.Data
 
             var errors = validationHelper.ValidateIndustryTypesDataTable(table);
 
-            if (errors.Count > 0) {
+            if (errors.Count > 0)
+            {
                 return errors;
             }
 
             var industryTypes = new List<IndustryTypeStaging>();
 
-            try {
+            try
+            {
 
-                foreach (DataRow row in table.Rows) {
+                foreach (DataRow row in table.Rows)
+                {
                     var industryType = new IndustryTypeStaging();
                     industryType.ClientID = row.ToStringValue(0);
                     industryType.Name = row.ToStringValue(1);
@@ -269,14 +301,16 @@ namespace Genrev.DomainServices.Data
                 context.StagedIndustryTypes.AddRange(industryTypes);
                 context.SaveChanges();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 validationHelper.AddGeneralExceptionError(e, ref errors);
             }
 
             return errors;
         }
 
-        public List<ValidationError> ImportToCustomersStaging(DataTable table) {
+        public List<ValidationError> ImportToCustomersStaging(DataTable table)
+        {
 
             /* Expected Fields
              * ClientID
@@ -295,15 +329,18 @@ namespace Genrev.DomainServices.Data
 
             var errors = validationHelper.ValidateCustomersDataTable(table);
 
-            if (errors.Count > 0) {
+            if (errors.Count > 0)
+            {
                 return errors;
             }
 
             var customers = new List<CustomerStaging>();
 
-            try {
+            try
+            {
 
-                foreach (DataRow row in table.Rows) {
+                foreach (DataRow row in table.Rows)
+                {
                     var customer = new CustomerStaging();
                     customer.ClientID = row.ToStringValue(0);
                     customer.Name = row.ToStringValue(1);
@@ -325,14 +362,16 @@ namespace Genrev.DomainServices.Data
                 context.SaveChanges();
 
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 validationHelper.AddGeneralExceptionError(e, ref errors);
             }
 
             return errors;
         }
 
-        public List<ValidationError> ImportToMonthlyDataStaging(DataTable table) {
+        public List<ValidationError> ImportToMonthlyDataStaging(DataTable table)
+        {
 
             /* Expected Fields
              * CustomerClientID (required)
@@ -353,34 +392,30 @@ namespace Genrev.DomainServices.Data
             // TODO: change this to the correct validation
             var errors = validationHelper.ValidateMonthlyDataTable(table);
 
-            if (errors.Count > 0) {
+            if (errors.Count > 0)
+            {
                 return errors;
             }
 
             var data = new List<MonthlyDataStaging>();
-
-            foreach (DataRow row in table.Rows) {
-
+            int rowIndex = 0;
+            foreach (DataRow row in table.Rows)
+            {
+                if (rowIndex == 0)
+                {
+                    rowIndex++;
+                    continue;
+                }
                 var d = new MonthlyDataStaging();
-
                 d.CustomerClientID = row.ToStringValue(0);
                 d.PersonClientID = row.ToStringValue(1);
-                //d.ProductClientID = row.ToStringValue(2);
                 d.Period = row.ToDateTime(2);
-
                 d.SalesActual = (decimal?)row.ToDoubleOrNull(3);
-
-                //d.SalesTarget = (decimal?)row.ToDoubleOrNull(4);
                 d.CostActual = (decimal?)row.ToDoubleOrNull(4);
-
-                //d.CostTarget = (decimal?)row.ToDoubleOrNull(6);
                 d.CallsActual = (decimal?)row.ToDoubleOrNull(5);
-                //d.CallsTarget = (decimal?)row.ToDoubleOrNull(8);
-                //d.Potential = (decimal?)row.ToDoubleOrNull(9);
-                //d.CurrentOpportunity = (decimal?)row.ToDoubleOrNull(10);
-                //d.FutureOpportunity = (decimal?)row.ToDoubleOrNull(11);
 
                 data.Add(d);
+                rowIndex++;
             }
 
             context.StagedMonthlyData.RemoveRange(context.StagedMonthlyData);
@@ -389,8 +424,5 @@ namespace Genrev.DomainServices.Data
 
             return errors;
         }
-
-
-
     }
 }

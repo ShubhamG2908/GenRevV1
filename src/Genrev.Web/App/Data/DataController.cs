@@ -484,7 +484,19 @@ namespace Genrev.Web.App.Data
         #endregion
 
 
+        #region ACUAL MANAGEMENT
+        [Authorize(Roles = "sysadmin")]
+        public ActionResult Actual()
+        {
+            return GetView("Actual");
+        }
 
+        [Authorize(Roles = "sysadmin")]
+        public ActionResult ActualMatrix(int? year)
+        {
+            return PartialView("ActualMatrix");
+        }
+        #endregion
 
 
 

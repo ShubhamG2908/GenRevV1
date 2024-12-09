@@ -222,6 +222,7 @@
     </Content>
     <Content Include="client\css\app-v10.css" />
     <Content Include="client\css\sprites-v1.css" />
+    <Content Include="client\scripts\app\actual.v1.0.js" />
     <Content Include="client\scripts\app\analysisOpportunities.v1.0.js" />
     <Content Include="client\scripts\app\analysisSalesCalls.v1.2.js" />
     <Content Include="client\scripts\app\analysisActualVsForecast.v1.2.js" />
@@ -241,7 +242,7 @@
     <Content Include="client\scripts\app\subscription.v1.0.js" />
     <Content Include="client\scripts\app\devex.v1.1.js" />
     <Content Include="client\scripts\app\test.v1.0.js" />
-    <Content Include="client\scripts\config.v1.11.js">
+    <Content Include="client\scripts\config.v1.12.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="client\scripts\app\core.v1.1.js" />
@@ -358,6 +359,8 @@
     <Content Include="App\Analysis\Views\HistoricCustomerPage.cshtml" />
     <Content Include="App\Analysis\Views\SalesCallsCustomerPage.cshtml" />
     <Content Include="App_Data\ImportTemplates\GRImportTemplate_MonthlyData.csv" />
+    <Content Include="App\Data\Views\Actual.cshtml" />
+    <Content Include="App\Data\Views\ActualMatrix.cshtml" />
     <None Include="client\scripts\_references.js" />
     <Content Include="Global.asax" />
     <Content Include="packages.config" />
@@ -445,6 +448,8 @@
     <Compile Include="App\Data\DataController.cs" />
     <Compile Include="App\Data\DataService.cs" />
     <Compile Include="App\Data\DataUploadValidation.cs" />
+    <Compile Include="App\Data\Models\Actual\ActualGridItem.cs" />
+    <Compile Include="App\Data\Models\Actual\ActualVM.cs" />
     <Compile Include="App\Data\Models\Forecast\ForecastDetailVM.cs" />
     <Compile Include="App\Data\Models\Forecast\ForecastGridItemVM.cs" />
     <Compile Include="App\Data\Models\Forecast\ForecastLockDTO.cs" />

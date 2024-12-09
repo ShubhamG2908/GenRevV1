@@ -8,6 +8,7 @@
         highstock: '/client/scripts/lib/highstock.v4.2.6',
         highchartsnodata: '/client/scripts/lib/highcharts-nodata.v5.0.0',
 
+        actual: '/client/scripts/app/actual.v1.0',
         analysisActualVsForecast: '/client/scripts/app/analysisActualVsForecast.v1.2',
         analysisHistoric: '/client/scripts/app/analysisHistoric.v1.0',
         analysisSalesCalls: '/client/scripts/app/analysisSalesCalls.v1.2',

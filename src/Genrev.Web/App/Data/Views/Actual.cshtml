@@ -1,0 +1,19 @@
+﻿
+<div style="padding: 5px;">
+
+    <h2 id="data-actual-heading">Daily Actual Management</h2>
+
+    <div id="data-actual-matrix-container"></div>
+
+
+</div>
+
+<script type="text/javascript">
+
+    EnsureAppLoaded(function () {
+
+        require(['actual', 'devex'], function (actual, devex) {
+            Actual.Initialize();
+        });
+    });
+</script>

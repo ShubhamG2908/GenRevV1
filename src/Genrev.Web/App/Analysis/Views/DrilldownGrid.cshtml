@@ -20,6 +20,17 @@
         s.SettingsPager.PageSize = 200;
         s.Settings.ShowFooter = true;
 
+        s.SettingsExport.EnableClientSideExportAPI = true;
+        s.SettingsExport.ExcelExportMode = DevExpress.Export.ExportType.WYSIWYG;
+
+        s.Toolbars.Add(t =>
+        {
+            t.SettingsAdaptivity.Enabled = true;
+            t.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+            t.Items.Add(GridViewToolbarCommand.ExportToXls);
+            t.Items.Add(GridViewToolbarCommand.ExportToXlsx);
+        });
+
         s.TotalSummary.Add(new ASPxSummaryItem("SalesActual", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "SalesActual"});
         s.TotalSummary.Add(new ASPxSummaryItem("SalesForecast", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "SalesForecast" });
         s.TotalSummary.Add(new ASPxSummaryItem("SalesDifference", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "SalesDifference" });

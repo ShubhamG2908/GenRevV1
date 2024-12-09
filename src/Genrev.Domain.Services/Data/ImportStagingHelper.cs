@@ -401,11 +401,13 @@ namespace Genrev.DomainServices.Data
             int rowIndex = 0;
             foreach (DataRow row in table.Rows)
             {
-                if (rowIndex == 0)
-                {
-                    rowIndex++;
-                    continue;
-                }
+                // No need to skip first row because it will get only data rows not headers
+                //if (rowIndex == 0)
+                //{
+                //    rowIndex++;
+                //    continue;
+                //}
+
                 var d = new MonthlyDataStaging();
                 d.CustomerClientID = row.ToStringValue(0);
                 d.PersonClientID = row.ToStringValue(1);

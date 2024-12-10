@@ -105,9 +105,8 @@
         {
             col.Name = "Strategy";
             col.FieldName = "Strategy";
-            col.Width = 300;
+            col.Width = 350;
             col.ColumnType = MVCxGridViewColumnType.Memo;
-            col.Width = 100;
             (col.PropertiesEdit as MemoProperties).Rows = 3;
             col.EditFormSettings.Visible = !Model.IsLocked ? DefaultBoolean.True : DefaultBoolean.False;
         });

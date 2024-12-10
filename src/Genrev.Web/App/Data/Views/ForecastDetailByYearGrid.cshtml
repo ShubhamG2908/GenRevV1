@@ -12,6 +12,7 @@
         s.SettingsEditing.Mode = GridViewEditingMode.Batch;
         s.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Data", Action = "ForecastDetailByYearBatchEdit" };
         s.Settings.ShowTitlePanel = Model.IsLocked;
+        s.SettingsResizing.ColumnResizeMode = ColumnResizeMode.Control;
         s.SetTitlePanelTemplateContent(c =>
         {
             if (Model.IsLocked)
@@ -60,6 +61,7 @@
             col.Name = "CustomerID";
             col.FieldName = "CustomerID";
             col.Width = 0;
+            col.Visible = false;
         });
 
         s.Columns.Add(col =>
@@ -105,9 +107,8 @@
         {
             col.Name = "Strategy";
             col.FieldName = "Strategy";
-            col.Width = 300;
+            col.Width = 350;
             col.ColumnType = MVCxGridViewColumnType.Memo;
-            col.Width = 100;
             (col.PropertiesEdit as MemoProperties).Rows = 3;
             col.EditFormSettings.Visible = !Model.IsLocked ? DefaultBoolean.True : DefaultBoolean.False;
         });

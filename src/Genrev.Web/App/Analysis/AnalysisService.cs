@@ -4,6 +4,10 @@ using System.Linq;
 using System.Dynamic;
 using Newtonsoft.Json.Linq;
 using Genrev.DomainServices.Data;
+using Genrev.Web.App.Analysis.Models;
+using static Genrev.Web.App.CommonListItems;
+using Genrev.Domain.DataSets;
+using Genrev.Web.App.Products.Models;
 
 namespace Genrev.Web.App.Analysis
 {
@@ -28,14 +32,16 @@ namespace Genrev.Web.App.Analysis
             return _yearProvider.GetDefaultYears();
         }
 
-        public List<Models.DrilldownListItem> GetDrilldownListItems(DateTime startDate, DateTime endDate) {
+        public List<Models.DrilldownListItem> GetDrilldownListItems(DateTime startDate, DateTime endDate)
+        {
 
 
             var cacheKey = getDrilldownDataCacheKey(startDate, endDate);
 
             object cacheObject = AppCache.GetItem(cacheKey);
 
-            if (cacheObject != null) {
+            if (cacheObject != null)
+            {
                 return cacheObject as List<Models.DrilldownListItem>;
             }
 
@@ -45,20 +51,53 @@ namespace Genrev.Web.App.Analysis
             context.Database.Log = (s) => System.Diagnostics.Debug.WriteLine(s);
 
             int[] ids = AppService.Current.ViewContext.PersonnelIDs;
-            
+
             var data = context.CustomerDrilldowns
-                .Where(x => x.Period >= startDate && x.Period <= endDate)
-                .Join(
-                    ids.ToList(),
-                    cd => cd.PersonnelID,
-                    id => id,
-                    (cd, id) => cd)
-                .ToList();
+                .Where(x => x.Period >= startDate && x.Period <= endDate && ids.ToList().Contains((int)x.PersonnelID))
+                .GroupBy(x => new
+                {
+                    x.CalendarMonth,
+                    x.CalendarYear,
+                    x.CustomerID,
+                    x.CustomerName,
+                    x.PersonnelID,
+                    x.PersonFirstName,
+                    x.PersonLastName,
+                    x.ProductSKU,
+                    x.IndustryName,
+                    x.CustomerTypeName,
+                    x.AccountTypeName,
+                    x.IndustryID,
+                    x.CustomerTypeID,
+                    x.AccountTypeID
+                }).Select(y => new CustomerDrilldownVM()
+                {
+                    CalendarMonth = y.Key.CalendarMonth,
+                    CalendarYear = y.Key.CalendarYear,
+                    CustomerName = y.Key.CustomerName,
+                    PersonFirstName = y.Key.PersonFirstName,
+                    PersonLastName = y.Key.PersonLastName,
+                    ProductSKU = y.Key.ProductSKU,
+                    IndustryName = y.Key.IndustryName,
+                    CustomerTypeName = y.Key.CustomerTypeName,
+                    AccountTypeName = y.Key.AccountTypeName,
+                    IndustryID = y.Key.IndustryID,
+                    CustomerTypeID = y.Key.CustomerTypeID,
+                    AccountTypeID = y.Key.AccountTypeID,
+                    PersonnelID = y.Key.PersonnelID,
+                    CallsActual = y.Sum(x => x.CallsActual),
+                    CallsForecast = y.Sum(x => x.CallsForecast),
+                    SalesActual = y.Sum(x => x.SalesActual),
+                    SalesForecast = y.Sum(x => x.SalesForecast),
+                    CostActual = y.Sum(x => x.CostActual),
+                    CostForecast = y.Sum(x => x.CostForecast)
+                }).ToList();
 
             var items = new List<Models.DrilldownListItem>();
 
-            foreach (var d in data) {
-                items.Add(Models.DrilldownListItem.FromCustomerDrilldownModel(d));
+            foreach (var d in data)
+            {
+                items.Add(Models.DrilldownListItem.FromCustomerDrilldownModel(new CustomerDrilldown(d)));
             }
 
             AppCache.AddItem(cacheKey, items);
@@ -67,7 +106,8 @@ namespace Genrev.Web.App.Analysis
         }
 
 
-        private string getDrilldownDataCacheKey(DateTime startDate, DateTime endDate) {
+        private string getDrilldownDataCacheKey(DateTime startDate, DateTime endDate)
+        {
 
             string key =
                 "DrilldownData_" +
@@ -85,7 +125,7 @@ namespace Genrev.Web.App.Analysis
         public class ChartsService
         {
 
-            
+
             #region HISTORIC
 
             /**********************
@@ -94,7 +134,8 @@ namespace Genrev.Web.App.Analysis
              * 
              * *******************/
 
-            internal string GetHistoricSalesJSON(int salesperson, DateTime startDate, DateTime endDate) {
+            internal string GetHistoricSalesJSON(int salesperson, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(salesperson);
 
@@ -108,7 +149,8 @@ namespace Genrev.Web.App.Analysis
 
                 var allseries = new List<Object>() { salesSeries };
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = years,
                     series = allseries
                 });
@@ -117,7 +159,8 @@ namespace Genrev.Web.App.Analysis
 
             }
 
-            internal string GetHistoricGPJSON(int salesperson, DateTime startDate, DateTime endDate) {
+            internal string GetHistoricGPJSON(int salesperson, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(salesperson);
 
@@ -137,7 +180,8 @@ namespace Genrev.Web.App.Analysis
 
                 var allseries = new List<Object>() { gpdSeries, gppSeries };
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = years,
                     series = allseries
                 });
@@ -146,7 +190,8 @@ namespace Genrev.Web.App.Analysis
 
             }
 
-            internal string GetHistoricSalesByIndustryJSON(int? industry, DateTime startDate, DateTime endDate) {
+            internal string GetHistoricSalesByIndustryJSON(int? industry, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
                 int[] indIDs = industry.HasValue ? new int[] { industry.Value } : null;
@@ -161,7 +206,8 @@ namespace Genrev.Web.App.Analysis
 
                 var allseries = new List<Object>() { salesSeries };
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = years,
                     series = allseries
                 });
@@ -170,11 +216,12 @@ namespace Genrev.Web.App.Analysis
 
             }
 
-            internal string GetHistoricGPByIndustryJSON(int? industry, DateTime startDate, DateTime endDate) {
+            internal string GetHistoricGPByIndustryJSON(int? industry, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
                 int[] indIDs = industry.HasValue ? new int[] { industry.Value } : null;
-                
+
                 var model = AppService.Current.DataContext.GetHistoricSales(startDate, endDate, spIDs, indIDs);
 
                 var years = model.Select(x => x.FiscalYear);
@@ -191,7 +238,8 @@ namespace Genrev.Web.App.Analysis
 
                 var allseries = new List<Object>() { gpdSeries, gppSeries };
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = years,
                     series = allseries
                 });
@@ -200,7 +248,8 @@ namespace Genrev.Web.App.Analysis
 
             }
 
-            internal string GetHistoricSalesByCustomerTypeJSON(int? customerType, DateTime startDate, DateTime endDate) {
+            internal string GetHistoricSalesByCustomerTypeJSON(int? customerType, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
                 int[] ctIDs = customerType.HasValue ? new int[] { customerType.Value } : null;
@@ -215,7 +264,8 @@ namespace Genrev.Web.App.Analysis
 
                 var allseries = new List<Object>() { salesSeries };
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = years,
                     series = allseries
                 });
@@ -223,7 +273,8 @@ namespace Genrev.Web.App.Analysis
                 return chart.ToString();
             }
 
-            internal string GetHistoricGPByCustomerTypeJSON(int? customerType, DateTime startDate, DateTime endDate) {
+            internal string GetHistoricGPByCustomerTypeJSON(int? customerType, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
                 int[] ctIDs = customerType.HasValue ? new int[] { customerType.Value } : null;
@@ -244,7 +295,8 @@ namespace Genrev.Web.App.Analysis
 
                 var allseries = new List<Object>() { gpdSeries, gppSeries };
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = years,
                     series = allseries
                 });
@@ -255,7 +307,8 @@ namespace Genrev.Web.App.Analysis
 
 
 
-            internal string GetHistoricSalesByAccountTypeJSON(int? accountType, DateTime startDate, DateTime endDate) {
+            internal string GetHistoricSalesByAccountTypeJSON(int? accountType, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
                 int[] atIDs = accountType.HasValue ? new int[] { accountType.Value } : null;
@@ -270,7 +323,8 @@ namespace Genrev.Web.App.Analysis
 
                 var allseries = new List<Object>() { salesSeries };
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = years,
                     series = allseries
                 });
@@ -278,7 +332,8 @@ namespace Genrev.Web.App.Analysis
                 return chart.ToString();
             }
 
-            internal string GetHistoricGPByAccountTypeJSON(int? accountType, DateTime startDate, DateTime endDate) {
+            internal string GetHistoricGPByAccountTypeJSON(int? accountType, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
                 int[] atIDs = accountType.HasValue ? new int[] { accountType.Value } : null;
@@ -299,7 +354,8 @@ namespace Genrev.Web.App.Analysis
 
                 var allseries = new List<Object>() { gpdSeries, gppSeries };
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = years,
                     series = allseries
                 });
@@ -316,7 +372,8 @@ namespace Genrev.Web.App.Analysis
 
 
 
-            internal string GetHistoricSalesByProductJSON(int? product, DateTime startDate, DateTime endDate) {
+            internal string GetHistoricSalesByProductJSON(int? product, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
                 int[] pIDs = product.HasValue ? new int[] { product.Value } : null;
@@ -331,7 +388,8 @@ namespace Genrev.Web.App.Analysis
 
                 var allseries = new List<Object>() { salesSeries };
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = years,
                     series = allseries
                 });
@@ -339,7 +397,8 @@ namespace Genrev.Web.App.Analysis
                 return chart.ToString();
             }
 
-            internal string GetHistoricGPByProductJSON(int? product, DateTime startDate, DateTime endDate) {
+            internal string GetHistoricGPByProductJSON(int? product, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
                 int[] pIDs = product.HasValue ? new int[] { product.Value } : null;
@@ -360,7 +419,8 @@ namespace Genrev.Web.App.Analysis
 
                 var allseries = new List<Object>() { gpdSeries, gppSeries };
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = years,
                     series = allseries
                 });
@@ -442,7 +502,8 @@ namespace Genrev.Web.App.Analysis
              * 
              * *******************/
 
-            internal string GetActualVsForecastSalesJSON(int salesperson, DateTime startDate, DateTime endDate) {
+            internal string GetActualVsForecastSalesJSON(int salesperson, DateTime startDate, DateTime endDate)
+            {
 
                 System.Diagnostics.Debug.WriteLine("SALESPERSON: " + salesperson.ToString());
 
@@ -453,7 +514,7 @@ namespace Genrev.Web.App.Analysis
                 var model = AppService.Current.DataContext.GetMonthlyData(startDate, endDate, spIDs);
 
                 var months = model.Select(x => x.Period.ToString("MMM"));
-                
+
                 dynamic totals = new ExpandoObject();
                 totals.sales = model.Sum(x => x.SalesActual);
                 totals.forecast = model.Sum(x => x.SalesForecast);
@@ -477,7 +538,8 @@ namespace Genrev.Web.App.Analysis
                     totals.target = model.Sum(x => x.SalesTarget);
                 }
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = months,
                     series = allseries,
                     totals = totals
@@ -487,13 +549,15 @@ namespace Genrev.Web.App.Analysis
 
             }
 
-            private static List<decimal?> getMTDForecastSeries(List<Domain.DataSets.MonthlyData> monthData) {
+            private static List<decimal?> getMTDForecastSeries(List<Domain.DataSets.MonthlyData> monthData)
+            {
 
                 var list = new List<decimal?>();
 
                 var refDate = DateTime.Now;
 
-                foreach (var data in monthData) {
+                foreach (var data in monthData)
+                {
                     list.Add(data.MonthToDateSalesForecast(refDate));
                 }
 
@@ -515,7 +579,8 @@ namespace Genrev.Web.App.Analysis
                 return list;
             }
 
-            internal string GetActualVsForecastGPJSON(int salesperson, DateTime startDate, DateTime endDate) {
+            internal string GetActualVsForecastGPJSON(int salesperson, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(salesperson);
 
@@ -549,7 +614,8 @@ namespace Genrev.Web.App.Analysis
 
                 var allseries = new List<Object>() { gpdSeries, gpdfSeries, gppSeries, gppfSeries };
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = months,
                     series = allseries,
                     totals = totals
@@ -559,7 +625,8 @@ namespace Genrev.Web.App.Analysis
 
             }
 
-            internal string GetActualVsForecastSalesByIndustryJSON(int? industry, DateTime startDate, DateTime endDate) {
+            internal string GetActualVsForecastSalesByIndustryJSON(int? industry, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
                 int[] indIDs = industry.HasValue ? new int[] { industry.Value } : null;
@@ -591,7 +658,8 @@ namespace Genrev.Web.App.Analysis
                     totals.target = model.Sum(x => x.SalesTarget);
                 }
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = months,
                     series = allseries,
                     totals = totals
@@ -601,7 +669,8 @@ namespace Genrev.Web.App.Analysis
 
             }
 
-            internal string GetActualVsForecastGPByIndustryJSON(int? industry, DateTime startDate, DateTime endDate) {
+            internal string GetActualVsForecastGPByIndustryJSON(int? industry, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
                 int[] indIDs = industry.HasValue ? new int[] { industry.Value } : null;
@@ -636,7 +705,8 @@ namespace Genrev.Web.App.Analysis
 
                 var allseries = new List<Object>() { gpdSeries, gpdfSeries, gppSeries, gppfSeries };
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = months,
                     series = allseries,
                     totals = totals
@@ -646,7 +716,8 @@ namespace Genrev.Web.App.Analysis
 
             }
 
-            internal string GetActualVsForecastSalesByCustomerTypeJSON(int? customerType, DateTime startDate, DateTime endDate) {
+            internal string GetActualVsForecastSalesByCustomerTypeJSON(int? customerType, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
                 int[] ctIDs = customerType.HasValue ? new int[] { customerType.Value } : null;
@@ -678,7 +749,8 @@ namespace Genrev.Web.App.Analysis
                     totals.target = model.Sum(x => x.SalesTarget);
                 }
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = months,
                     series = allseries,
                     totals = totals
@@ -687,7 +759,8 @@ namespace Genrev.Web.App.Analysis
                 return chart.ToString();
             }
 
-            internal string GetActualVsForecastGPByCustomerTypeJSON(int? customerType, DateTime startDate, DateTime endDate) {
+            internal string GetActualVsForecastGPByCustomerTypeJSON(int? customerType, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
                 int[] ctIDs = customerType.HasValue ? new int[] { customerType.Value } : null;
@@ -722,7 +795,8 @@ namespace Genrev.Web.App.Analysis
 
                 var allseries = new List<Object>() { gpdSeries, gpdfSeries, gppSeries, gppfSeries };
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = months,
                     series = allseries,
                     totals = totals
@@ -731,9 +805,10 @@ namespace Genrev.Web.App.Analysis
                 return chart.ToString();
 
             }
-            
-            internal string GetActualVsForecastSalesByAccountTypeJSON(int? accountType, DateTime startDate, DateTime endDate) {
-                
+
+            internal string GetActualVsForecastSalesByAccountTypeJSON(int? accountType, DateTime startDate, DateTime endDate)
+            {
+
                 var fp = new Domain.DataSets.FilterParams();
                 fp.PersonnelIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
                 fp.AccountTypeIDs = accountType.HasValue ? new int[] { accountType.Value } : null;
@@ -765,7 +840,8 @@ namespace Genrev.Web.App.Analysis
                     totals.target = model.Sum(x => x.SalesTarget);
                 }
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = months,
                     series = allseries,
                     totals = totals
@@ -774,7 +850,8 @@ namespace Genrev.Web.App.Analysis
                 return chart.ToString();
             }
 
-            internal string GetActualVsForecastGPByAccountTypeJSON(int? accountType, DateTime startDate, DateTime endDate) {
+            internal string GetActualVsForecastGPByAccountTypeJSON(int? accountType, DateTime startDate, DateTime endDate)
+            {
 
                 var fp = new Domain.DataSets.FilterParams();
                 fp.PersonnelIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
@@ -810,7 +887,8 @@ namespace Genrev.Web.App.Analysis
 
                 var allseries = new List<Object>() { gpdSeries, gpdfSeries, gppSeries, gppfSeries };
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = months,
                     series = allseries,
                     totals = totals
@@ -820,7 +898,8 @@ namespace Genrev.Web.App.Analysis
 
             }
 
-            internal string GetActualVsForecastSalesByProductJSON(int? product, DateTime startDate, DateTime endDate) {
+            internal string GetActualVsForecastSalesByProductJSON(int? product, DateTime startDate, DateTime endDate)
+            {
 
                 var fp = new Domain.DataSets.FilterParams();
                 fp.PersonnelIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
@@ -853,7 +932,8 @@ namespace Genrev.Web.App.Analysis
                     totals.target = model.Sum(x => x.SalesTarget);
                 }
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = months,
                     series = allseries,
                     totals = totals
@@ -862,7 +942,8 @@ namespace Genrev.Web.App.Analysis
                 return chart.ToString();
             }
 
-            internal string GetActualVsForecastGPByProductJSON(int? product, DateTime startDate, DateTime endDate) {
+            internal string GetActualVsForecastGPByProductJSON(int? product, DateTime startDate, DateTime endDate)
+            {
 
                 var fp = new Domain.DataSets.FilterParams();
                 fp.PersonnelIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
@@ -898,7 +979,8 @@ namespace Genrev.Web.App.Analysis
 
                 var allseries = new List<Object>() { gpdSeries, gpdfSeries, gppSeries, gppfSeries };
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = months,
                     series = allseries,
                     totals = totals
@@ -1015,7 +1097,8 @@ namespace Genrev.Web.App.Analysis
 
 
 
-            internal string GetOpportunitiesJSONBySalesperson(int salespersonID, DateTime startDate, DateTime endDate) {
+            internal string GetOpportunitiesJSONBySalesperson(int salespersonID, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(salespersonID);
 
@@ -1037,7 +1120,8 @@ namespace Genrev.Web.App.Analysis
                 return o.ToString();
             }
 
-            internal string GetOpportunitiesJSONByIndustry(int salespersonID, DateTime startDate, DateTime endDate) {
+            internal string GetOpportunitiesJSONByIndustry(int salespersonID, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(salespersonID);
 
@@ -1059,7 +1143,8 @@ namespace Genrev.Web.App.Analysis
                 return o.ToString();
             }
 
-            internal string GetOpportunitiesJSONByCustomerType(int salespersonID, DateTime startDate, DateTime endDate) {
+            internal string GetOpportunitiesJSONByCustomerType(int salespersonID, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(salespersonID);
 
@@ -1081,23 +1166,24 @@ namespace Genrev.Web.App.Analysis
                 return o.ToString();
             }
 
-            internal string GetOpportunitiesJSONByAccountType(int salespersonID, DateTime startDate, DateTime endDate) {
+            internal string GetOpportunitiesJSONByAccountType(int salespersonID, DateTime startDate, DateTime endDate)
+            {
 
                 int[] spIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(salespersonID);
 
                 var data = AppService.Current.DataContext.GetOpportunitiesAggregateByAccountType(
                     startDate, endDate, spIDs);
-                
+
                 var potential = filterOpportunityAggregateBase(data, "potential");
                 var current = filterOpportunityAggregateBase(data, "current");
                 var future = filterOpportunityAggregateBase(data, "future");
-                
+
                 dynamic model = new ExpandoObject();
 
                 model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential }).ToList();
                 model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity }).ToList();
                 model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity }).ToList();
-                
+
                 JObject o = JObject.FromObject(model);
 
                 return o.ToString();
@@ -1128,13 +1214,15 @@ namespace Genrev.Web.App.Analysis
 
             private List<Domain.DataSets.OpportunitiesAggregate> filterOpportunityAggregateBase(
                 List<Domain.DataSets.OpportunitiesAggregate> data,
-                string targetType) {
+                string targetType)
+            {
 
                 int maxCount = 15;
 
                 IEnumerable<Domain.DataSets.OpportunitiesAggregate> tempList;
 
-                switch (targetType) {
+                switch (targetType)
+                {
 
                     case "potential":
                         tempList = data.Where(x => x.Potential > 0);
@@ -1145,16 +1233,16 @@ namespace Genrev.Web.App.Analysis
                         tempList = data.Where(x => x.Potential > 0);
                         tempList = tempList.OrderByDescending(x => x.Potential);
                         return Domain.DataSets.OpportunitiesAggregate.TruncateList(tempList, maxCount, true);
-                        
+
                     case "future":
                         tempList = data.Where(x => x.Potential > 0);
                         tempList = tempList.OrderByDescending(x => x.Potential);
                         return Domain.DataSets.OpportunitiesAggregate.TruncateList(tempList, maxCount, true);
-                        
+
                     default:
                         throw new ArgumentException("targetType not recognized");
                 }
-                
+
             }
 
 
@@ -1176,7 +1264,7 @@ namespace Genrev.Web.App.Analysis
                 var data = AppService.Current.DataContext.GetCallPlanOverviewByPersonnel(fiscalYear, personID);
                 var items = new List<Models.CallPlanOverviewListItem>();
 
-                foreach(var d in data.Items)
+                foreach (var d in data.Items)
                 {
                     items.Add(Models.CallPlanOverviewListItem.FromCallPlanOverviewModel(d));
                 }
@@ -1184,11 +1272,12 @@ namespace Genrev.Web.App.Analysis
                 return items;
             }
 
-            internal string GetSalesCallsJSON(int salesperson, DateTime startDate, DateTime endDate) {
+            internal string GetSalesCallsJSON(int salesperson, DateTime startDate, DateTime endDate)
+            {
 
                 var fp = new Domain.DataSets.FilterParams();
                 fp.PersonnelIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(salesperson);
-                
+
                 var model = AppService.Current.DataContext.GetMonthlyData(startDate, endDate, fp);
 
                 var months = model.Select(x => x.Period.ToString("MMM"));
@@ -1218,7 +1307,8 @@ namespace Genrev.Web.App.Analysis
                     totals.target = model.Sum(x => x.CallsTarget);
                 }
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = months,
                     series = allseries,
                     totals = totals
@@ -1227,8 +1317,9 @@ namespace Genrev.Web.App.Analysis
                 return chart.ToString();
 
             }
-            
-            internal string GetSalesCallsByIndustryJSON(int? industry, DateTime startDate, DateTime endDate) {
+
+            internal string GetSalesCallsByIndustryJSON(int? industry, DateTime startDate, DateTime endDate)
+            {
 
                 var fp = new Domain.DataSets.FilterParams();
                 fp.PersonnelIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
@@ -1262,7 +1353,8 @@ namespace Genrev.Web.App.Analysis
                     totals.target = model.Sum(x => x.CallsTarget);
                 }
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = months,
                     series = allseries,
                     totals = totals
@@ -1271,8 +1363,9 @@ namespace Genrev.Web.App.Analysis
                 return chart.ToString();
 
             }
-            
-            internal string GetSalesCallsByCustomerTypeJSON(int? customerType, DateTime startDate, DateTime endDate) {
+
+            internal string GetSalesCallsByCustomerTypeJSON(int? customerType, DateTime startDate, DateTime endDate)
+            {
 
                 var fp = new Domain.DataSets.FilterParams();
                 fp.PersonnelIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
@@ -1306,7 +1399,8 @@ namespace Genrev.Web.App.Analysis
                     totals.target = model.Sum(x => x.CallsTarget);
                 }
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = months,
                     series = allseries,
                     totals = totals
@@ -1314,8 +1408,9 @@ namespace Genrev.Web.App.Analysis
 
                 return chart.ToString();
             }
-            
-            internal string GetSalesCallsByAccountTypeJSON(int? accountType, DateTime startDate, DateTime endDate) {
+
+            internal string GetSalesCallsByAccountTypeJSON(int? accountType, DateTime startDate, DateTime endDate)
+            {
 
                 var fp = new Domain.DataSets.FilterParams();
                 fp.PersonnelIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
@@ -1349,7 +1444,8 @@ namespace Genrev.Web.App.Analysis
                     totals.target = model.Sum(x => x.CallsTarget);
                 }
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = months,
                     series = allseries,
                     totals = totals
@@ -1358,7 +1454,8 @@ namespace Genrev.Web.App.Analysis
                 return chart.ToString();
             }
 
-            internal string GetSalesCallsByProductJSON(int? productID, DateTime startDate, DateTime endDate) {
+            internal string GetSalesCallsByProductJSON(int? productID, DateTime startDate, DateTime endDate)
+            {
 
                 var fp = new Domain.DataSets.FilterParams();
                 fp.PersonnelIDs = AppService.Current.DataContext.GetDownstreamPersonnelIDs(AppService.Current.ViewContext.PersonID);
@@ -1392,7 +1489,8 @@ namespace Genrev.Web.App.Analysis
                     totals.target = model.Sum(x => x.CallsTarget);
                 }
 
-                JObject chart = JObject.FromObject(new {
+                JObject chart = JObject.FromObject(new
+                {
                     categories = months,
                     series = allseries,
                     totals = totals

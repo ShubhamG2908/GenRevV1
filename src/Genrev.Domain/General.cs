@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Genrev.Domain
+﻿namespace Genrev.Domain
 {
-
     public enum Month
     {
         January = 1,
@@ -23,23 +16,16 @@ namespace Genrev.Domain
         December = 12
     }
 
-
     public static class General
     {
-
-        public static decimal? FixDollars(decimal? input) {
-
-            if (!input.HasValue) {
+        public static decimal? FixDollars(decimal? input)
+        {
+            if (!input.HasValue)
+            {
                 return null;
             }
-
             var d = decimal.Parse(string.Format("{0:0.0000}", input));
             return d;
         }
-
     }
-
-
-
-
 }

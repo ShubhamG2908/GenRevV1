@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Accounts\Provision.cs" />
     <Compile Include="Accounts\ProvisionBaseSettings.cs" />
+    <Compile Include="Data\DataTableTrimHelper.cs" />
     <Compile Include="Data\YearProvider.cs" />
     <Compile Include="Data\CsvImportHelper.cs" />
     <Compile Include="Data\ImportStagingHelper.cs" />

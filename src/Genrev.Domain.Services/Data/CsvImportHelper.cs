@@ -21,10 +21,11 @@ namespace Genrev.DomainServices.Data
 
 
         string filePath;
-        ImportType importType;        
+        ImportType importType;
         ImportStagingHelper stagingHelper;
 
-        public CsvImportHelper(string filePath, ImportType importType, Genrev.Data.GenrevContext context) {
+        public CsvImportHelper(string filePath, ImportType importType, Genrev.Data.GenrevContext context)
+        {
             this.filePath = filePath;
             this.importType = importType;
             this.stagingHelper = new ImportStagingHelper(context);
@@ -54,28 +55,34 @@ namespace Genrev.DomainServices.Data
         }
 
 
-        public List<ValidationError> ImportToStaging() {
+        public List<ValidationError> ImportToStaging()
+        {
 
             var errors = new List<ValidationError>();
 
-            if (!File.Exists(filePath)) {
+            if (!File.Exists(filePath))
+            {
                 throw new FileNotFoundException("File " + filePath + " not found.");
             }
-            
+
             DataTable table = null;
-
-            try {
-
+            try
+            {
                 table = LoadCsvToTable(filePath, true);
+                table = DataTableTrimHelper.RemoveEmptyRows(table);
+                table = DataTableTrimHelper.RemoveEmptyColumns(table);
 
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 throw new FormatException("Unable to parse file", e);
             }
-            
-            switch (importType) {
+
+            switch (importType)
+            {
                 case ImportType.Companies:
                     throw new NotImplementedException();
-                    //break;
+                //break;
                 case ImportType.Personnel:
                     errors = stagingHelper.ImportToPersonnelStaging(table);
                     break;
@@ -97,7 +104,7 @@ namespace Genrev.DomainServices.Data
                 default:
                     throw new ArgumentOutOfRangeException("The specified import type isn't registered");
             }
-            
+
             return errors;
         }
     }

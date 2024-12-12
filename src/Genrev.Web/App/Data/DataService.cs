@@ -184,7 +184,7 @@ namespace Genrev.Web.App.Data
 
             var company = AppService.Current.Account.PrimaryCompany;
             var fiscalYear = company.GetFiscalYear(year);
-            
+
             var groupedData = from d in context.CustomerData
                               join c in context.Customers on d.CustomerID equals c.ID
                               where c.CompanyID == company.ID
@@ -226,7 +226,7 @@ namespace Genrev.Web.App.Data
                     PersonnelID = d.PersonnelID,
                     Period = new CommonListItems.Period()
                     {
-                        Date = d.Period,
+                        Date = new DateTime(d.Period.Year, d.Period.Month, 1),
                     },
                     SalesActual = d.SalesActualSum,
                     SalesForecast = d.SalesForecastSum,

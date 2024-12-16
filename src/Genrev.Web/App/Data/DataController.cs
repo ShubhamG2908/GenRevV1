@@ -26,7 +26,7 @@ namespace Genrev.Web.App.Data
         [HttpGet]
         public ActionResult GetForecastLocks(int year)
         {
-            return Json(_service.GetForecastLocksByYear(year),JsonRequestBehavior.AllowGet);
+            return Json(_service.GetForecastLocksByYear(year), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -411,6 +411,12 @@ namespace Genrev.Web.App.Data
         }
 
         [Authorize(Roles = "sysadmin")]
+        public ActionResult DailyManagement()
+        {
+            return GetView("DailyManagement");
+        }
+
+        [Authorize(Roles = "sysadmin")]
         public ActionResult ManagementMatrix(int? year)
         {
 
@@ -430,6 +436,25 @@ namespace Genrev.Web.App.Data
 
         }
 
+        [Authorize(Roles = "sysadmin")]
+        public ActionResult DailyManagementMatrix(int? year)
+        {
+
+            var model = new Models.Management.MatrixVM();
+
+            model.AvailableYears = _service.GetDefaultYears();
+            model.SelectedYear = year.HasValue ? year.Value : _service.DefaultYear;
+            model.MatrixGridItems = _service.GetMatrixGridItemsDaily(model.SelectedYear);
+            model.CustomersList = CommonListItems.DataService.GetCustomerCommonList();
+            model.PersonnelList = CommonListItems.DataService.GetPersonnalCommonListAll();
+            model.ProductsList = CommonListItems.DataService.GetProductCommonList();
+            model.FiscalYearPeriodsList = CommonListItems.DataService.GetPeriodCommonList(_service.GetFiscalYearPeriods(model.SelectedYear));
+            model.ViewMode = Models.Management.MatrixVM.ViewModes.ListAll;
+
+            return PartialView("DailyManagementMatrix", model);
+
+        }
+
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "sysadmin")]
         public ActionResult ManagementMatrixGridCallback()
@@ -445,13 +470,34 @@ namespace Genrev.Web.App.Data
             model.MatrixGridItems = _service.GetMatrixGridItems(model.SelectedYear);
             model.ViewMode = viewModelString == "true" ? Models.Management.MatrixVM.ViewModes.GroupedByMonth : Models.Management.MatrixVM.ViewModes.ListAll;
 
-            model.CustomersList = CommonListItems.DataService.GetCustomerCommonList().OrderBy(x => x.Name).ToList();
-            //model.PersonnelList = CommonListItems.DataService.GetPersonnelCommonList();
+            model.CustomersList = CommonListItems.DataService.GetCustomerCommonList().OrderBy(x => x.Name).ToList();            
             model.PersonnelList = CommonListItems.DataService.GetPersonnalCommonListAll().OrderBy(x => x.DisplayName).ToList();
             model.ProductsList = CommonListItems.DataService.GetProductCommonList().OrderBy(x => x.SKU).ToList();
             model.FiscalYearPeriodsList = CommonListItems.DataService.GetPeriodCommonList(_service.GetFiscalYearPeriods(model.SelectedYear));
 
             return PartialView("ManagementMatrixByCostsGrid", model);
+
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        [Authorize(Roles = "sysadmin")]
+        public ActionResult DailyManagementMatrixGridCallback()
+        {
+            int year = Int32.Parse(Request.Params["selectedYear"]);
+
+            var model = new Models.Management.MatrixVM();
+
+            model.AvailableYears = _service.GetDefaultYears();
+            model.SelectedYear = year;
+            model.MatrixGridItems = _service.GetMatrixGridItemsDaily(model.SelectedYear);
+            model.ViewMode = Models.Management.MatrixVM.ViewModes.ListAll;
+
+            model.CustomersList = CommonListItems.DataService.GetCustomerCommonList().OrderBy(x => x.Name).ToList();
+            model.PersonnelList = CommonListItems.DataService.GetPersonnalCommonListAll().OrderBy(x => x.DisplayName).ToList();
+            model.ProductsList = CommonListItems.DataService.GetProductCommonList().OrderBy(x => x.SKU).ToList();
+            model.FiscalYearPeriodsList = CommonListItems.DataService.GetPeriodCommonList(_service.GetFiscalYearPeriods(model.SelectedYear));
+
+            return PartialView("DailyManagementMatrixByCostsGrid", model);
 
         }
 
@@ -480,23 +526,28 @@ namespace Genrev.Web.App.Data
 
         }
 
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        [Authorize(Roles = "sysadmin")]
+        public ActionResult DailyManagementMatrixBatchEdit(DevExpress.Web.Mvc.MVCxGridViewBatchUpdateValues<Models.Management.MatrixByCostGridItem, int> updateValues)
+        {
+            if (updateValues.DeleteKeys.Count > 0)
+            {
+                _service.MatrixGridBatchDelete(updateValues.DeleteKeys);
+            }
+
+            if (updateValues.Insert.Count > 0)
+            {
+                _service.MatrixGridBatchInsert(updateValues.Insert);
+            }
+
+            if (updateValues.Update.Count > 0)
+            {
+                _service.MatrixGridBatchUpdate(updateValues.Update);
+            }
+            return TransferToAction("DailyManagementMatrixGridCallback");
+        }
 
         #endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         private DataService _service;
 

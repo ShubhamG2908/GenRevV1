@@ -116,7 +116,15 @@ namespace Genrev.Web.App.Navigation.Services
 
                 groupData.Items.Add(new NavBarGroupItem()
                 {
-                    ID = 0,
+                    ID = 1,
+                    Text = "Daily Data Management",
+                    Url = "/Data/DailyManagement",
+                    Title = "Daily - Data - Management"
+                });
+
+                groupData.Items.Add(new NavBarGroupItem()
+                {
+                    ID = 2,
                     Text = "Forecast Lock",
                     Url = "/Data/ForecastLock",
                     Title = "Data - Forecast Lock"
@@ -125,7 +133,7 @@ namespace Genrev.Web.App.Navigation.Services
 
             groupData.Items.Add(new NavBarGroupItem()
             {
-                ID = 1,
+                ID = 3,
                 Text = "Forecast Data",
                 Url = "/Data/Forecast",
                 Title = "Data - Forecast"
@@ -135,7 +143,7 @@ namespace Genrev.Web.App.Navigation.Services
             {
                 groupData.Items.Add(new NavBarGroupItem()
                 {
-                    ID = 2,
+                    ID = 4,
                     Text = "Import Data",
                     Url = "/Data/Import",
                     Title = "Data - Import"

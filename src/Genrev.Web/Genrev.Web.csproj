@@ -227,6 +227,7 @@
     <Content Include="client\scripts\app\analysisActualVsForecast.v1.2.js" />
     <Content Include="client\scripts\app\charts.v1.2.js" />
     <Content Include="client\scripts\app\analysisHistoric.v1.0.js" />
+    <Content Include="client\scripts\app\dailyDataManagement.v1.0.js" />
     <Content Include="client\scripts\app\drilldown.v1.0.js" />
     <Content Include="client\scripts\app\forecastLock.v1.0.js" />
     <Content Include="client\scripts\app\forecast.v1.0.js" />
@@ -358,6 +359,9 @@
     <Content Include="App\Analysis\Views\HistoricCustomerPage.cshtml" />
     <Content Include="App\Analysis\Views\SalesCallsCustomerPage.cshtml" />
     <Content Include="App_Data\ImportTemplates\GRImportTemplate_MonthlyData.csv" />
+    <Content Include="App\Data\Views\DailyManagement.cshtml" />
+    <Content Include="App\Data\Views\DailyManagementMatrix.cshtml" />
+    <Content Include="App\Data\Views\DailyManagementMatrixByCostsGrid.cshtml" />
     <None Include="client\scripts\_references.js" />
     <Content Include="Global.asax" />
     <Content Include="packages.config" />

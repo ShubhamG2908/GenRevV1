@@ -1,7 +1,8 @@
 ﻿@model Genrev.Web.App.Data.Models.Management.MatrixVM
 
 @Html.DevExpress().GridView(
-    s => {
+    s =>
+    {
 
         s.Name = "ManagementMatrixGrid";
         s.KeyFieldName = "GridID";
@@ -19,17 +20,22 @@
         s.SettingsContextMenu.Enabled = true;
         s.ClientSideEvents.ContextMenu = "function(s, e) { Data.Matrix.Grid.ContextMenu.Invoked(s, e); }";
         s.ClientSideEvents.ContextMenuItemClick = "function(s, e) { Data.Matrix.Grid.ContextMenu.ItemClicked(s, e); }";
-        s.FillContextMenuItems = (sender, e) => {
+        s.FillContextMenuItems = (sender, e) =>
+        {
             e.Items.Clear();
             e.Items.Add("Delete Line", "DeleteLine");
         };
 
-        s.BeforeGetCallbackResult += (sender, e) => {
+        s.BeforeGetCallbackResult += (sender, e) =>
+        {
             MVCxGridView grid = sender as MVCxGridView;
-            if (Model.ViewMode == Genrev.Web.App.Data.Models.Management.MatrixVM.ViewModes.GroupedByMonth) {
+            if (Model.ViewMode == Genrev.Web.App.Data.Models.Management.MatrixVM.ViewModes.GroupedByMonth)
+            {
                 grid.GroupBy(grid.Columns["ctlDate"]);
                 grid.Columns["periodSortable"].Visible = false;
-            } else {
+            }
+            else
+            {
                 grid.UnGroup(grid.Columns["ctlDate"]);
                 grid.Columns["periodSortable"].Visible = true;
             }
@@ -39,7 +45,8 @@
 
         s.CallbackRouteValues = new { Controller = "Data", Action = "ManagementMatrixGridCallback" };
 
-        s.CellEditorInitialize = (sender, e) => {
+        s.CellEditorInitialize = (sender, e) =>
+        {
             ASPxEdit editor = (ASPxEdit)e.Editor;
             editor.ValidationSettings.Display = Display.Dynamic;
         };
@@ -64,7 +71,8 @@
         s.TotalSummary.Add(new ASPxSummaryItem("CurrentOpportunity", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "CurrentOpportunity" });
         s.TotalSummary.Add(new ASPxSummaryItem("FutureOpportunity", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "FutureOpportunity" });
 
-        s.SetTitlePanelTemplateContent(c => {
+        s.SetTitlePanelTemplateContent(c =>
+        {
 
             var vw = ViewContext.Writer;
 
@@ -80,10 +88,12 @@
             vw.Write("<table><tr><td>");
 
             Html.DevExpress().ComboBox(
-                cb => {
+                cb =>
+                {
                     cb.Name = "ctlYear";
                     cb.Width = 55;
-                    cb.PreRender = (sender, e) => {
+                    cb.PreRender = (sender, e) =>
+                    {
                         //Genrev.Web.Helpers.DevEx.ComboPreRenderByField(sender, ViewBag.SelectedDate, "Date");
                     };
                     cb.Properties.Caption = "Fiscal Year";
@@ -93,7 +103,8 @@
             // close left cell inner table cell 1 and open cell 2
             vw.Write("</td><td style='white-space: nowrap; padding-left: 10px;'>");
 
-            Html.DevExpress().CheckBox(cb => {
+            Html.DevExpress().CheckBox(cb =>
+            {
                 cb.Name = "ctlViewMode";
                 cb.Text = "Group by Month";
                 cb.ControlStyle.Wrap = DefaultBoolean.False;
@@ -121,7 +132,8 @@
             // cells for buttons
             vw.Write("<td>");
             Html.DevExpress().Button(
-                b => {
+                b =>
+                {
                     b.Name = "btnAddNew";
                     b.Text = "Add New";
                     b.Enabled = Model.ViewMode == Genrev.Web.App.Data.Models.Management.MatrixVM.ViewModes.GroupedByMonth ? false : true;
@@ -131,7 +143,8 @@
 
             vw.Write("<td style='padding-left: 5px;'>");
             Html.DevExpress().Button(
-                b => {
+                b =>
+                {
                     b.Name = "btnCancelChanges";
                     b.Text = "Cancel Changes";
                     //b.Enabled = false;
@@ -141,7 +154,8 @@
 
             vw.Write("<td style='padding-left: 5px;'>");
             Html.DevExpress().Button(
-                b => {
+                b =>
+                {
                     b.Name = "btnSaveChanges";
                     b.Text = "Save Changes";
                     //b.Enabled = false;
@@ -204,13 +218,15 @@
         });
 
 
-        s.Columns.AddBand(b => {
+        s.Columns.AddBand(b =>
+        {
             b.Name = "bandAssignments";
             b.Caption = "Assignments";
             b.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
 
             b.Columns.Add(
-                c => {
+                c =>
+                {
                     c.FieldName = "CustomerID";
                     c.Caption = "Customer";
                     c.ColumnType = MVCxGridViewColumnType.ComboBox;
@@ -226,7 +242,8 @@
             );
 
             b.Columns.Add(
-                    c => {
+                    c =>
+                    {
                         c.FieldName = "PersonnelID";
                         c.Caption = "Sales Pro";
                         c.ColumnType = MVCxGridViewColumnType.ComboBox;
@@ -241,7 +258,8 @@
                 );
 
             b.Columns.Add(
-                c => {
+                c =>
+                {
                     c.FieldName = "ProductID";
                     c.Caption = "Product";
                     c.ColumnType = MVCxGridViewColumnType.ComboBox;
@@ -261,23 +279,23 @@
 
         });
 
-
-
-
-
-        s.Columns.AddBand(b => {
+        s.Columns.AddBand(b =>
+        {
             b.Name = "bandSales";
             b.Caption = "Sales";
             b.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
-            b.Columns.Add(c => {
+            b.Columns.Add(c =>
+            {
                 c.FieldName = "SalesActual";
                 c.Caption = "Actual";
-                //c.PropertiesEdit.DisplayFormatString = "${0}";
                 c.PropertiesEdit.DisplayFormatString = "C0";
                 c.Settings.AllowAutoFilter = DefaultBoolean.False;
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+                c.ReadOnly = true;
+                c.Settings.ShowEditorInBatchEditMode = false;
             });
-            b.Columns.Add(c => {
+            b.Columns.Add(c =>
+            {
                 c.FieldName = "SalesForecast";
                 c.Caption = "Forecast";
                 c.PropertiesEdit.DisplayFormatString = "C0";
@@ -296,18 +314,23 @@
             });
         });
 
-        s.Columns.AddBand(b => {
+        s.Columns.AddBand(b =>
+        {
             b.Name = "bandCosts";
             b.Caption = "GPP";
             b.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
-            b.Columns.Add(c => {
+            b.Columns.Add(c =>
+            {
                 c.FieldName = "GPPActual";
                 c.Caption = "Actual";
                 c.PropertiesEdit.DisplayFormatString = "{0:n2} %";
                 c.Settings.AllowAutoFilter = DefaultBoolean.False;
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+                c.ReadOnly = true;
+                c.Settings.ShowEditorInBatchEditMode = false;
             });
-            b.Columns.Add(c => {
+            b.Columns.Add(c =>
+            {
                 c.FieldName = "GPPForecast";
                 c.Caption = "Forecast";
                 c.PropertiesEdit.DisplayFormatString = "{0:n2} %";
@@ -325,18 +348,23 @@
             });
         });
 
-        s.Columns.AddBand(b => {
+        s.Columns.AddBand(b =>
+        {
             b.Name = "bandCalls";
             b.Caption = "Calls";
             b.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
-            b.Columns.Add(c => {
+            b.Columns.Add(c =>
+            {
                 c.FieldName = "CallsActual";
                 c.Caption = "Actual";
                 c.Settings.AllowAutoFilter = DefaultBoolean.False;
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                 c.Width = 75;
+                c.ReadOnly = true;
+                c.Settings.ShowEditorInBatchEditMode = false;
             });
-            b.Columns.Add(c => {
+            b.Columns.Add(c =>
+            {
                 c.FieldName = "CallsForecast";
                 c.Caption = "Forecast";
                 c.Settings.AllowAutoFilter = DefaultBoolean.False;
@@ -358,36 +386,36 @@
             }
         });
 
-        s.Columns.AddBand(b => {
+        s.Columns.AddBand(b =>
+        {
             b.Name = "bandOpportunity";
             b.Caption = "Opportunity";
             b.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
 
-            b.Columns.Add(c => {
+            b.Columns.Add(c =>
+            {
                 c.FieldName = "Potential";
                 c.Caption = "Potential";
                 c.PropertiesEdit.DisplayFormatString = "C0";
                 c.Settings.AllowAutoFilter = DefaultBoolean.False;
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             });
-            b.Columns.Add(c => {
+            b.Columns.Add(c =>
+            {
                 c.FieldName = "CurrentOpportunity";
                 c.Caption = "Current<br />Opportunity";
                 c.PropertiesEdit.DisplayFormatString = "C0";
                 c.Settings.AllowAutoFilter = DefaultBoolean.False;
                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             });
-            b.Columns.Add(c => {
+            b.Columns.Add(c =>
+            {
                 c.FieldName = "FutureOpportunity";
                 c.Caption = "Future<br />Opportunity";
                 c.PropertiesEdit.DisplayFormatString = "C0";
                 c.Settings.AllowAutoFilter = DefaultBoolean.False;
-                c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+                c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;                
             });
-
         });
-
-
-
     }
 ).Bind(Model.MatrixGridItems).GetHtml()

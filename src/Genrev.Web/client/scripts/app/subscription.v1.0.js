@@ -147,7 +147,6 @@ define(function () {
         },  // end subscription.general
 
         initialize: function (pageControlName, callback) {
-
             var p = subscription.pageBase;
             p.object = DevEx.Controls.GetByName(pageControlName);
             p.objectName = pageControlName;

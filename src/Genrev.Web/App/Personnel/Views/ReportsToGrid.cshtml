@@ -15,17 +15,6 @@
         s.SettingsLoadingPanel.Mode = GridViewLoadingPanelMode.Disabled;
         s.ClientSideEvents.Init = "function(s, e) { }"; // placeholder to turn on js events
 
-        //s.HtmlDataCellPrepared = (sender, e) => {
-        //    e.Cell.Attributes.Add(
-        //        "onclick",
-        //        string.Format("gvNameCellClick('{0}', '{1}');", e.VisibleIndex, e.DataColumn.FieldName)
-        //            );
-        //    e.Cell.Attributes.Add(
-        //        "ondblclick",
-        //        string.Format("gvNameCellDoubleClick('{0}', '{1}');", e.VisibleIndex, e.DataColumn.FieldName)
-        //        );
-        //};
-
         s.HtmlDataCellPrepared = (sender, e) => {
             e.Cell.Attributes.Add("data-dym-cellClick", "ReportsToGrid");
             e.Cell.Attributes.Add("data-dym-visibleIndex", e.VisibleIndex.ToString());

@@ -60,7 +60,7 @@ define(function () {
 
             var dxGrid = DevEx.Controls.GetByName("personnelmgmtGrid");
 
-            $("[data-dym-cellClick='gvPersonnel']").dblclick(function () {
+            $("[data-dym-cellClick='gvPersonnel']").click(function () {
 
                 var cell = $(this);
                 var index = cell.attr("data-dym-visibleIndex");
@@ -517,8 +517,7 @@ define(function () {
                 objectName: null,
 
                 currentDisplayedID: -1,
-                setSelection: function(personnelID, supressHide) {
-
+                setSelection: function(personnelID, supressHide) {                    
                     if (personnel.overview.reportsToGrid.currentDisplayedID == personnelID) {
                         return;
                     }
@@ -557,8 +556,7 @@ define(function () {
 
                     _fromSource: {
 
-                        cellClick: function (cell) {
-
+                        cellClick: function (cell) {                            
                             var index = cell.attr("data-dym-visibleIndex");
                             var field = cell.attr("data-dym-fieldName");
 
@@ -585,13 +583,13 @@ define(function () {
                             sourceID: personnel.overview.currentID(),
                             targetID: targetID
                         },
-                        success: function (r) {
+                        success: function (r) {                            
                             if (r == "ok") {
                                 // for some reason a simple refresh breaks the click events
                                 // this was the case also when trying to re-apply the events after
                                 // however if I clear and replace the entire grid via setSelection we're in decent shape
                                 // refactor later...
-                                personnel.overview.reportsToGrid.setSelection(personnel.overview.currentID(), true);
+                                personnel.overview.reportsToGrid.setSelection(personnel.overview.currentID(), true);                                
                             } else {
                                 App.Errors.ShowGeneral();
                             }
@@ -654,9 +652,7 @@ define(function () {
                 }  // end personnel.overview.mainGrid.events
 
             },  // end personnel.overview.mainGrid
-
-            
-
+           
             initialize: function(overviewGridControlName, reportsToGridID, callback) {
 
                 console.log('initializing personnel.overview');
@@ -700,22 +696,7 @@ define(function () {
                 var fr = grid.object.GetFocusedRowIndex();
                 return grid.object.GetRowKey(fr);
             }
-
-        }   // end personnel.overview
-
-        
-
-            
-            
-            
-
-        
-        
+        }   // end personnel.overview   
     }
-
-
-
-
     window.Personnel = Interface;
-
 });

@@ -1,5 +1,9 @@
 @model Genrev.Web.App.Analysis.Models.DrilldownVM
-
+<style>    
+    #DrilldownGrid_DXHeaderTable .dxgvHeader_Glass td {
+        white-space: break-spaces !important;
+    }
+</style>
 <div id="hs-grid-main" class="dg-grid">
 
     <div class="dg-row" id="drilldown-grid-headers">
@@ -10,9 +14,6 @@
         </div>
     </div>
 
-    
-
-
     <div id="data-drilldown-grid-container" style="padding: 10px;">
         @using (Html.BeginForm())
         {
@@ -21,9 +22,6 @@
     </div>
 
 </div>
-
-
-
 
 <script type="text/javascript" id="dxss_4578vn83746587vt647">
     EnsureAppLoaded(function () {

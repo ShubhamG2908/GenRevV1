@@ -1,0 +1,249 @@
+﻿@model Genrev.Web.App.Data.Models.Management.MatrixVM
+
+@Html.DevExpress().GridView(
+    s =>
+    {
+
+        s.Name = "DailyManagementMatrixGrid";
+        s.KeyFieldName = "GridID";
+        s.Width = Unit.Percentage(90);
+
+        s.SettingsEditing.Mode = GridViewEditingMode.Batch;
+        s.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Data", Action = "DailyManagementMatrixBatchEdit" };
+
+        s.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+
+        s.SettingsPager.PageSize = 300;
+
+        s.SettingsContextMenu.Enabled = true;
+        s.ClientSideEvents.ContextMenu = "function(s, e) { DailyData.Matrix.Grid.ContextMenu.Invoked(s, e); }";
+        s.ClientSideEvents.ContextMenuItemClick = "function(s, e) { DailyData.Matrix.Grid.ContextMenu.ItemClicked(s, e); }";
+        s.FillContextMenuItems = (sender, e) =>
+        {
+            e.Items.Clear();
+            e.Items.Add("Delete Line", "DeleteLine");
+        };
+
+        s.BeforeGetCallbackResult += (sender, e) =>
+        {
+            MVCxGridView grid = sender as MVCxGridView;
+            grid.Columns["periodSortable"].Visible = true;
+        };
+
+        s.SettingsBehavior.AllowFixedGroups = false;
+
+        s.CallbackRouteValues = new { Controller = "Data", Action = "DailyManagementMatrixGridCallback" };
+
+        s.CellEditorInitialize = (sender, e) =>
+        {
+            ASPxEdit editor = (ASPxEdit)e.Editor;
+            editor.ValidationSettings.Display = Display.Dynamic;
+        };
+
+        s.ClientSideEvents.Init = "function(s, e) { DailyData.Matrix.Grid.Initialized(true); }";
+
+        s.Settings.ShowStatusBar = GridViewStatusBarMode.Hidden;
+        s.Settings.ShowTitlePanel = true;
+
+        s.Settings.ShowFooter = true;
+
+        s.TotalSummary.Add(new ASPxSummaryItem("SalesActual", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "SalesActual" });
+        s.TotalSummary.Add(new ASPxSummaryItem("GPPActual", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "GPPActual" });
+        s.TotalSummary.Add(new ASPxSummaryItem("CallsActual", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "CallsActual" });
+
+        s.SetTitlePanelTemplateContent(c =>
+        {
+
+            var vw = ViewContext.Writer;
+
+            // OPEN OUTER TABLE AND FIRST ROW
+            vw.Write("<table style'width: 100%;'><tr>");
+
+            // OPEN LEFT CELL WITH FIXED WIDTH
+            vw.Write("<td>");
+
+            // LEFT CELL WITH FIXED WIDTH CONTENT
+
+            // left cell inner table
+            vw.Write("<table><tr><td>");
+
+            Html.DevExpress().ComboBox(
+                cb =>
+                {
+                    cb.Name = "ctlYear";
+                    cb.Width = 55;
+                    cb.PreRender = (sender, e) =>
+                    {
+                        //Genrev.Web.Helpers.DevEx.ComboPreRenderByField(sender, ViewBag.SelectedDate, "Date");
+                    };
+                    cb.Properties.Caption = "Fiscal Year";
+                }
+            ).BindList(Model.AvailableYears).Bind(Model.SelectedYear).Render();
+
+            // close left cell inner table cell 1 and open cell 2
+            vw.Write("</td><td style='white-space: nowrap; padding-left: 10px;'>");
+
+            Html.DevExpress().CheckBox(cb =>
+            {
+                cb.Name = "ctlViewMode";
+                cb.Text = "Group by Month";
+                cb.ControlStyle.Wrap = DefaultBoolean.False;
+                cb.Checked = false;
+                cb.ClientVisible = false;
+            }).Render();
+
+            // close left cell inner td, tr and table
+            vw.Write("</td></tr></table>");
+
+            // CLOSE LEFT CELL WITH FIXED WIDTH
+            vw.Write("</td>");
+
+            // OPEN RIGHT CELL WITH RELATIVE WIDTH & RIGHT ALIGN
+            vw.Write("<td align='right' style='width: 100%;'>");
+
+            // RIGHT CELL WITH RELATIVE WIDTH & RIGHT ALIGN CONTENT
+
+            // open button table and first row
+            vw.Write("<table align='right'><tr>");
+
+            // cells for buttons
+            vw.Write("<td>");
+            vw.Write("</td>");
+
+            vw.Write("<td style='padding-left: 5px;'>");
+            Html.DevExpress().Button(
+                b =>
+                {
+                    b.Name = "btnCancelChanges";
+                    b.Text = "Cancel Changes";
+                    //b.Enabled = false;
+                }
+            ).Render();
+            vw.Write("</td>");
+
+            vw.Write("<td style='padding-left: 5px;'>");
+            Html.DevExpress().Button(
+                b =>
+                {
+                    b.Name = "btnSaveChanges";
+                    b.Text = "Save Changes";                    
+                }
+            ).Render();
+            vw.Write("</td>");
+
+            // close button table and first row
+            vw.Write("</tr></table>");
+
+            // CLOSE RIGHT CELL WITH RELATIVE WIDTH & RIGHT ALIGN
+            vw.Write("</td>");
+
+            // CLOSE OUTER TABLE AND FIRST ROW
+            vw.Write("</tr></table>");
+        });
+
+        s.Columns.Add(c =>
+        {
+            c.Name = "periodSortable";
+            c.FieldName = "Period.Date";
+            c.Caption = "Period";
+            c.ColumnType = MVCxGridViewColumnType.DateEdit;
+            c.Width = 90;
+            c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+
+            var dateEditProperties = c.PropertiesEdit as DateEditProperties;
+            dateEditProperties.EditFormat = EditFormat.Custom;
+            dateEditProperties.EditFormatString = "MM/dd/yyyy";
+            dateEditProperties.DisplayFormatString = "MM/dd/yyyy";
+            dateEditProperties.EditFormat = EditFormat.Date;
+
+            dateEditProperties.AllowUserInput = true;
+            dateEditProperties.MinDate = new DateTime(2000, 1, 1);
+            dateEditProperties.MaxDate = DateTime.Now.AddYears(10);
+        });
+
+        s.Columns.Add(
+             c =>
+             {
+                 c.FieldName = "CustomerID";
+                 c.Caption = "Customer";
+                 c.ColumnType = MVCxGridViewColumnType.ComboBox;
+                 c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+                 c.Settings.SortMode = DevExpress.XtraGrid.ColumnSortMode.DisplayText;
+                 c.Width = 225;
+                 var cbProps = c.PropertiesEdit as ComboBoxProperties;
+                 cbProps.DataSource = Model.CustomersList;
+                 cbProps.TextField = "Name";
+                 cbProps.ValueField = "ID";
+                 cbProps.ValueType = typeof(int);
+
+             }
+         );
+
+        s.Columns.Add(
+                c =>
+                {
+                    c.FieldName = "PersonnelID";
+                    c.Caption = "Sales Pro";
+                    c.ColumnType = MVCxGridViewColumnType.ComboBox;
+                    c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+                    c.Settings.SortMode = DevExpress.XtraGrid.ColumnSortMode.DisplayText;
+                    c.Width = 225;
+                    var cbProps = c.PropertiesEdit as ComboBoxProperties;
+                    cbProps.DataSource = Model.PersonnelList;
+                    cbProps.TextField = "DisplayName";
+                    cbProps.ValueField = "ID";
+                    cbProps.ValueType = typeof(int);
+                }
+            );
+
+        s.Columns.Add(
+            c =>
+            {
+                c.FieldName = "ProductID";
+                c.Caption = "Product";
+                c.ColumnType = MVCxGridViewColumnType.ComboBox;
+                c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+                c.Visible = AppService.Current.Settings.ProductFeatureEnabled;
+                c.Settings.SortMode = DevExpress.XtraGrid.ColumnSortMode.DisplayText;
+                c.Width = 225;
+                var cbProps = c.PropertiesEdit as ComboBoxProperties;
+                cbProps.DataSource = Model.ProductsList;
+                cbProps.TextFormatString = "{1}";
+                cbProps.ValueField = "ID";
+                cbProps.Columns.Add("GroupName");
+                cbProps.Columns.Add("SKU");
+                cbProps.Columns.Add("Description");
+                cbProps.ValueType = typeof(int);
+            }
+        );
+
+        s.Columns.Add(c =>
+        {
+            c.FieldName = "SalesActual";
+            c.Caption = "Actual Sales";
+            c.PropertiesEdit.DisplayFormatString = "C0";
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+            c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            c.Width = 130;
+        });
+
+        s.Columns.Add(c =>
+        {
+            c.FieldName = "GPPActual";
+            c.Caption = "Actual GPP";
+            c.PropertiesEdit.DisplayFormatString = "{0:n2} %";
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+            c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            c.Width = 130;
+        });
+
+        s.Columns.Add(c =>
+        {
+            c.FieldName = "CallsActual";
+            c.Caption = "Actual Calls";
+            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+            c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            c.Width = 75;
+        });
+    }
+).Bind(Model.MatrixGridItems).GetHtml()

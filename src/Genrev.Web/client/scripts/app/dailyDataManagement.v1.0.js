@@ -3,7 +3,7 @@
 define(function () {
 
     /*****************************************
-
+     * 
         Data.Initialize()
         
 
@@ -27,18 +27,9 @@ define(function () {
         
     }   // end Data.Interface
 
-
-
-
-
-
-
-
-
     var data = {
 
-        initialize: function () {
-            
+        initialize: function () {            
             data.matrix.init();
             
         },   // end data.initialize
@@ -168,10 +159,10 @@ define(function () {
                             events.addAddRowClickHandler(grid);
                             events.addViewModeChangedHandler(grid);
 
-                            var headTable = $('#ManagementMatrixGrid_DXHeaderTable:first-child');
-                            var footerRow = $('#ManagementMatrixGrid_DXFooterRow');
+                            var headTable = $('#DailyManagementMatrixGrid_DXHeaderTable:first-child');
+                            var footerRow = $('#DailyManagementMatrixGrid_DXFooterRow');
                             if (footerRow && headTable) {
-                                $('#ManagementMatrixGrid_DXFooterRow td').text(
+                                $('#DailyManagementMatrixGrid_DXFooterRow td').text(
                                     function (ndx, text) {
                                         return text.replace("Sum=", "");
                                     }
@@ -204,7 +195,7 @@ define(function () {
                             App.Confirm("Are you sure you want to cancel your changes?", function () {
                                 grid.CancelEdit();
                                 // remove custom visual state for deleted grid items
-                                $("tr[id^=ManagementMatrixGrid_DXDataRow]").removeClass("grid-row-deleted");
+                                $("tr[id^=DailyManagementMatrixGrid_DXDataRow]").removeClass("grid-row-deleted");
                                 data.matrix.grid.setEditVisualState();
                             });
                         });
@@ -219,10 +210,10 @@ define(function () {
                     },
 
                     addAddRowClickHandler: function (grid) {
-                        DevEx.Controls.GetByName("btnAddNew").Click.AddHandler(function (s, e) {
-                            grid.AddNewRow();
-                            data.matrix.grid.setEditVisualState();
-                        });
+                        //DevEx.Controls.GetByName("btnAddNew").Click.AddHandler(function (s, e) {
+                        //    grid.AddNewRow();
+                        //    data.matrix.grid.setEditVisualState();
+                        //});
                     },
 
                     addViewModeChangedHandler: function (grid) {
@@ -236,7 +227,7 @@ define(function () {
                 
                 initialize: function () {
                     
-                    var grid = DevEx.Controls.GetByName("ManagementMatrixGrid");
+                    var grid = DevEx.Controls.GetByName("DailyManagementMatrixGrid");
                     var events = data.matrix.grid.events;
 
                     data.matrix.grid.stretchHeight(grid);
@@ -256,9 +247,9 @@ define(function () {
                 deleteRow: function(rowIndex, rowID) {
 
                     App.Confirm("Are you sure you want to permenantly delete this row?", function () {
-                        var grid = DevEx.Controls.GetByName("ManagementMatrixGrid");
+                        var grid = DevEx.Controls.GetByName("DailyManagementMatrixGrid");
                         grid.DeleteRowByKey(rowID);
-                        $("#ManagementMatrixGrid_DXDataRow" + rowIndex).addClass("grid-row-deleted").show();
+                        $("#DailyManagementMatrixGrid_DXDataRow" + rowIndex).addClass("grid-row-deleted").show();
                     });
 
                 },  // end data.matrix.grid.deleteRow
@@ -278,7 +269,7 @@ define(function () {
                     itemClick: function (s, e) {
                         //e.item.name = ...
 
-                        var grid = DevEx.Controls.GetByName("ManagementMatrixGrid");
+                        var grid = DevEx.Controls.GetByName("DailyManagementMatrixGrid");
                         var index = data.matrix.grid.contextMenu.lastClickedIndex;
                         var key = grid.GetRowKey(index);
                         data.matrix.grid.deleteRow(index, key);
@@ -291,7 +282,7 @@ define(function () {
 
                     var splitter = DevEx.Controls.GetByName("ContentSplitter");
                     var h = splitter.GetPane(1).GetClientHeight();
-                    var outerHeight = $("#data-management-heading").outerHeight(true);
+                    var outerHeight = $("#daily-data-management-heading").outerHeight(true);
                     var buffer = 10;
                     
                     h = h - buffer - outerHeight;
@@ -309,9 +300,9 @@ define(function () {
 
                 $.ajax({
                     type: 'get',
-                    url: '/Data/ManagementMatrix',
+                    url: '/Data/DailyManagementMatrix',
                     success: function (res) {
-                        $("#datamanagement-matrix-container").empty().append(res);
+                        $("#daily-datamanagement-matrix-container").empty().append(res);
                         data.matrix.grid.initialize();
                     },
                     error: function () {
@@ -326,6 +317,6 @@ define(function () {
     }   // end data
 
 
-    window.Data = Interface;
+    window.DailyData = Interface;
 
 });

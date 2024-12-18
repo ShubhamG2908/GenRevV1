@@ -11,6 +11,7 @@
         s.SettingsEditing.Mode = GridViewEditingMode.Batch;
         s.SettingsEditing.BatchUpdateRouteValues = new { Controller = "Data", Action = "DailyManagementMatrixBatchEdit" };
 
+        s.Settings.ShowFilterRow = true;
         s.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
 
         s.SettingsPager.PageSize = 300;
@@ -126,7 +127,7 @@
                 b =>
                 {
                     b.Name = "btnSaveChanges";
-                    b.Text = "Save Changes";                    
+                    b.Text = "Save Changes";
                 }
             ).Render();
             vw.Write("</td>");
@@ -148,7 +149,9 @@
             c.Caption = "Period";
             c.ColumnType = MVCxGridViewColumnType.DateEdit;
             c.Width = 90;
-            c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;            
+            c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+            c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
 
             var dateEditProperties = c.PropertiesEdit as DateEditProperties;
             dateEditProperties.EditFormat = EditFormat.Custom;
@@ -169,6 +172,8 @@
                  c.ColumnType = MVCxGridViewColumnType.ComboBox;
                  c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                  c.Settings.SortMode = DevExpress.XtraGrid.ColumnSortMode.DisplayText;
+                 c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+                 c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
                  c.Width = 225;
                  var cbProps = c.PropertiesEdit as ComboBoxProperties;
                  cbProps.DataSource = Model.CustomersList;
@@ -187,6 +192,8 @@
                     c.ColumnType = MVCxGridViewColumnType.ComboBox;
                     c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
                     c.Settings.SortMode = DevExpress.XtraGrid.ColumnSortMode.DisplayText;
+                    c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+                    c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
                     c.Width = 225;
                     var cbProps = c.PropertiesEdit as ComboBoxProperties;
                     cbProps.DataSource = Model.PersonnelList;
@@ -206,6 +213,8 @@
                 c.Visible = AppService.Current.Settings.ProductFeatureEnabled;
                 c.Settings.SortMode = DevExpress.XtraGrid.ColumnSortMode.DisplayText;
                 c.Width = 225;
+                c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+                c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
                 var cbProps = c.PropertiesEdit as ComboBoxProperties;
                 cbProps.DataSource = Model.ProductsList;
                 cbProps.TextFormatString = "{1}";
@@ -222,9 +231,11 @@
             c.FieldName = "SalesActual";
             c.Caption = "Actual Sales";
             c.PropertiesEdit.DisplayFormatString = "C0";
-            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+            c.Settings.AllowAutoFilter = DefaultBoolean.True;
             c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             c.Width = 130;
+            c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+            c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
         });
 
         s.Columns.Add(c =>
@@ -232,18 +243,22 @@
             c.FieldName = "GPPActual";
             c.Caption = "Actual GPP";
             c.PropertiesEdit.DisplayFormatString = "{0:n2} %";
-            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+            c.Settings.AllowAutoFilter = DefaultBoolean.True;
             c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             c.Width = 130;
+            c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+            c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
         });
 
         s.Columns.Add(c =>
         {
             c.FieldName = "CallsActual";
             c.Caption = "Actual Calls";
-            c.Settings.AllowAutoFilter = DefaultBoolean.False;
+            c.Settings.AllowAutoFilter = DefaultBoolean.True;
             c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             c.Width = 75;
+            c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+            c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
         });
     }
 ).Bind(Model.MatrixGridItems).GetHtml()

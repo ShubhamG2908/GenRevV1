@@ -77,7 +77,7 @@
         s.Properties.TextField = "Name";
         s.Properties.Caption = "Type";
         s.Properties.CaptionCellStyle.Width = 100;
-        s.PreRender = (sender, e) => { Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRender(sender, Model.CustomerTypeCLI); };
+        s.PreRender = (sender, e) => { ComboBox.PreRender(sender, Model.CustomerTypeCLI); };
     }
 ).BindList(Model.CustomerTypesList).GetHtml()
 
@@ -89,7 +89,7 @@
         s.Properties.TextField = "Name";
         s.Properties.Caption = "Industry";
         s.Properties.CaptionCellStyle.Width = 100;
-        s.PreRender = (sender, e) => { Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRender(sender, Model.IndustryCLI); };
+        s.PreRender = (sender, e) => { ComboBox.PreRender(sender, Model.IndustryCLI); };
     }
 ).BindList(Model.IndustriesList).GetHtml()
 
@@ -102,7 +102,7 @@
         s.Properties.TextField = "Name";
         s.Properties.Caption = "Account Type";
         s.Properties.CaptionCellStyle.Width = 100;
-        s.PreRender = (sender, e) => { Dymeng.Web.Mvc.DevExpress.ControlHelpers.ComboBox.PreRender(sender, Model.AccountTypeCLI); };
+        s.PreRender = (sender, e) => { ComboBox.PreRender(sender, Model.AccountTypeCLI); };
     }
 ).BindList(Model.AccountTypesList).GetHtml()
 

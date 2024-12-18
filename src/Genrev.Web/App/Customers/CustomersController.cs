@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
 using Dymeng.Web.Mvc.DevExpress;
+
 using Genrev.Domain;
 using Genrev.Web.App.Customers;
 
@@ -31,21 +33,24 @@ namespace Genrev.Web.App.Customers
 
 
         [HttpGet]
-        public ActionResult GetMappingCustomerList(int personnelID) {
+        public ActionResult GetMappingCustomerList(int personnelID)
+        {
 
             var model = service.GetCustomerMappingsListItems(personnelID);
 
             return PartialView("MappingsCustomersGrid", model);
 
         }
-        
+
         [HttpGet]
-        public ActionResult Index() {
+        public ActionResult Index()
+        {
             return GetView("PageBase");
         }
-        
+
         [HttpGet]
-        public ActionResult AddNewCustomerPopup() {
+        public ActionResult AddNewCustomerPopup()
+        {
 
             var model = new Models.AddCustomerVM();
 
@@ -57,7 +62,8 @@ namespace Genrev.Web.App.Customers
         }
 
         [HttpGet]
-        public ActionResult EditCustomerTypePopup(int id) {
+        public ActionResult EditCustomerTypePopup(int id)
+        {
 
             var model = new Models.EditCustomerTypeVM();
             var type = dataContext.CustomerTypes.Find(id);
@@ -69,7 +75,8 @@ namespace Genrev.Web.App.Customers
         }
 
         [HttpGet]
-        public ActionResult EditIndustryPopup(int id) {
+        public ActionResult EditIndustryPopup(int id)
+        {
 
             var model = new Models.EditIndustryVM();
             var ind = dataContext.Industries.Find(id);
@@ -81,7 +88,8 @@ namespace Genrev.Web.App.Customers
         }
 
         [HttpGet]
-        public ActionResult EditAccountTypePopup(int id) {
+        public ActionResult EditAccountTypePopup(int id)
+        {
 
             var model = new Models.EditAccountTypeVM();
             var acctType = dataContext.AccountTypes.Find(id);
@@ -94,10 +102,11 @@ namespace Genrev.Web.App.Customers
         }
 
         [HttpGet]
-        public ActionResult EditCustomerPopup(int id) {
+        public ActionResult EditCustomerPopup(int id)
+        {
 
             var model = new Models.EditCustomerVM();
-            
+
             model.CustomerTypesList = CommonListItems.DataService.GetCustomerTypeCommonList();
             model.IndustriesList = CommonListItems.DataService.GetIndustryCommonList();
             model.AccountTypesList = CommonListItems.DataService.GetAccountTypeCommonList();
@@ -108,9 +117,9 @@ namespace Genrev.Web.App.Customers
             model.Address2 = customer.Address2;
             model.City = customer.City;
             model.Country = customer.Country;
-            model.CustomerTypeCLI = 
-                customer.TypeID.HasValue 
-                ? model.CustomerTypesList.Where(x => x.ID == customer.TypeID.Value).SingleOrDefault() 
+            model.CustomerTypeCLI =
+                customer.TypeID.HasValue
+                ? model.CustomerTypesList.Where(x => x.ID == customer.TypeID.Value).SingleOrDefault()
                 : null;
             model.ID = customer.ID;
             model.IndustryCLI =
@@ -125,12 +134,13 @@ namespace Genrev.Web.App.Customers
             model.Phone = customer.Phone;
             model.PostalCode = customer.PostalCode;
             model.State = customer.State;
-            
+
             return PartialView("EditCustomerPopup", model);
         }
 
 
-        ActionResult getTabClassifications() {
+        ActionResult getTabClassifications()
+        {
 
             var model = new Models.ClassificationVM();
             int accountID = AppService.Current.Account.PrimaryCompany.ID;
@@ -143,7 +153,8 @@ namespace Genrev.Web.App.Customers
             model.Types = new List<Models.TypesListItemVM>();
             model.AccountTypes = new List<Models.AccountTypeListItemVM>();
 
-            foreach( var industry in industries) {
+            foreach (var industry in industries)
+            {
                 model.Industries.Add(new Models.IndustryListItemVM()
                 {
                     ID = industry.ID,
@@ -151,7 +162,8 @@ namespace Genrev.Web.App.Customers
                 });
             }
 
-            foreach (var type in types) {
+            foreach (var type in types)
+            {
                 model.Types.Add(new Models.TypesListItemVM()
                 {
                     ID = type.ID,
@@ -159,7 +171,8 @@ namespace Genrev.Web.App.Customers
                 });
             }
 
-            foreach (var accountType in accountTypes) {
+            foreach (var accountType in accountTypes)
+            {
                 model.AccountTypes.Add(new Models.AccountTypeListItemVM()
                 {
                     ID = accountType.ID,
@@ -171,30 +184,33 @@ namespace Genrev.Web.App.Customers
             return PartialView("Classifications", model);
         }
 
-        ActionResult getTabCustomers() {
+        ActionResult getTabCustomers()
+        {
 
             var model = new Models.CustomersVM();
             model.CustomerListItems = service.GetCustomerListItems();
-                        
+
             return PartialView("Customers", model);
         }
 
-        ActionResult getTabMappings() {
+        ActionResult getTabMappings()
+        {
 
             var model = new Models.MappingVM();
             var account = AppService.Current.Account;
             var domainPersonnel = account.PrimaryCompany.Personnel;
-                        
+
             model.Personnel = new List<Models.MappingPersonnelListItemVM>();
 
-            foreach (var dp in domainPersonnel) {
+            foreach (var dp in domainPersonnel)
+            {
                 var p = new Models.MappingPersonnelListItemVM();
                 p.ID = dp.ID;
                 p.FirstName = dp.FirstName;
                 p.LastName = dp.LastName;
                 model.Personnel.Add(p);
             }
-            
+
             return PartialView("Mappings", model);
         }
 
@@ -208,17 +224,19 @@ namespace Genrev.Web.App.Customers
         #region Callbacks
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult CustomerMappingsCustomerGridCallback() {
+        public ActionResult CustomerMappingsCustomerGridCallback()
+        {
 
             int personnelID = int.Parse(Request.Params["personnelID"]);
             var model = service.GetCustomerMappingsListItems(personnelID);
-            
+
             return PartialView("MappingsCustomersGrid", model);
-            
+
         }
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult CustomerMappingsPersonnelGridCallback() {
+        public ActionResult CustomerMappingsPersonnelGridCallback()
+        {
 
             var model = new Models.MappingVM();
             var account = AppService.Current.Account;
@@ -226,7 +244,8 @@ namespace Genrev.Web.App.Customers
 
             model.Personnel = new List<Models.MappingPersonnelListItemVM>();
 
-            foreach (var dp in domainPersonnel) {
+            foreach (var dp in domainPersonnel)
+            {
                 var p = new Models.MappingPersonnelListItemVM();
                 p.ID = dp.ID;
                 p.FirstName = dp.FirstName;
@@ -239,24 +258,27 @@ namespace Genrev.Web.App.Customers
         }
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult CustomersGridCallback() {
+        public ActionResult CustomersGridCallback()
+        {
 
             var model = new Models.CustomersVM();
-            model.CustomerListItems = service.GetCustomerListItems();                
+            model.CustomerListItems = service.GetCustomerListItems();
 
             return PartialView("CustomersGrid", model);
 
         }
-        
+
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult CustomerIndustriesCallback() {
+        public ActionResult CustomerIndustriesCallback()
+        {
 
             var model = new List<Models.IndustryListItemVM>();
 
             var account = AppService.Current.Account;
             var domainIndustries = dataContext.Industries.Where(x => x.CompanyID == account.PrimaryCompany.ID).ToList();
 
-            foreach (var ind in domainIndustries) {
+            foreach (var ind in domainIndustries)
+            {
                 model.Add(new Models.IndustryListItemVM()
                 {
                     ID = ind.ID,
@@ -268,14 +290,16 @@ namespace Genrev.Web.App.Customers
         }
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult CustomerTypesCallback() {
+        public ActionResult CustomerTypesCallback()
+        {
 
             var model = new List<Models.TypesListItemVM>();
 
             var account = AppService.Current.Account;
             var domainTypes = dataContext.CustomerTypes.Where(x => x.CompanyID == account.PrimaryCompany.ID).ToList();
 
-            foreach (var t in domainTypes) {
+            foreach (var t in domainTypes)
+            {
                 model.Add(new Models.TypesListItemVM()
                 {
                     ID = t.ID,
@@ -287,18 +311,20 @@ namespace Genrev.Web.App.Customers
         }
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult AccountTypesCallback() {
+        public ActionResult AccountTypesCallback()
+        {
 
             var model = new List<Models.AccountTypeListItemVM>();
 
             var account = AppService.Current.Account;
             var domainTypes = dataContext.AccountTypes.Where(x => x.CompanyID == account.PrimaryCompany.ID).ToList();
 
-            foreach (var t in domainTypes) {
+            foreach (var t in domainTypes)
+            {
                 model.Add(new Models.AccountTypeListItemVM()
                 {
                     ID = t.ID,
-                    Name = t.Name, 
+                    Name = t.Name,
                     CallsPerMonthGoal = t.CallsPerMonthGoal
                 });
             }
@@ -306,13 +332,15 @@ namespace Genrev.Web.App.Customers
             return PartialView("AccountTypesGrid", model);
 
         }
-        
+
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult PageBaseCallback() {
+        public ActionResult PageBaseCallback()
+        {
 
             string tabName = Request.Params["tabName"];
 
-            switch (tabName) {
+            switch (tabName)
+            {
 
                 case "tabCustomers":
                     return getTabCustomers();
@@ -339,23 +367,26 @@ namespace Genrev.Web.App.Customers
 
 
         [HttpPost]
-        public ActionResult ToggleMapping(int personnelID, int customerID) {
+        public ActionResult ToggleMapping(int personnelID, int customerID)
+        {
 
             service.ToggleCustomerMapping(personnelID, customerID);
 
             return Content("ok");
         }
-        
+
         [HttpPost]
         public ActionResult AddCustomer(
-            string customerName, string customerAddress1, string customerAddress2, string customerCity, 
+            string customerName, string customerAddress1, string customerAddress2, string customerCity,
             string customerState, string customerPostalCode, string customerCountry, string customerPhone,
-            int? customerTypeID, int? customerIndustryID, int? customerAccountTypeID) {
+            int? customerTypeID, int? customerIndustryID, int? customerAccountTypeID)
+        {
 
             var account = AppService.Current.Account;
             var customer = new Domain.Companies.Customer();
 
-            if (account.PrimaryCompany.Customers.Where(x => x.Name == customerName).FirstOrDefault() != null) {
+            if (account.PrimaryCompany.Customers.Where(x => x.Name == customerName).FirstOrDefault() != null)
+            {
                 return Content("ERR: This customer name already exists.");
             }
 
@@ -371,12 +402,12 @@ namespace Genrev.Web.App.Customers
             customer.TypeID = customerTypeID;
             customer.IndustryID = customerIndustryID;
             customer.AccountTypeID = customerAccountTypeID;
-            
+
             dataContext.Customers.Add(customer);
             dataContext.SaveChanges();
 
             return Content("ok");
-            
+
         }
 
 
@@ -384,17 +415,19 @@ namespace Genrev.Web.App.Customers
         public ActionResult EditCustomer(
             int id, string customerName, string customerAddress1, string customerAddress2, string customerCity,
             string customerState, string customerPostalCode, string customerCountry, string customerPhone,
-            int? customerTypeID, int? customerIndustryID, int? customerAccountTypeID) {
-            
+            int? customerTypeID, int? customerIndustryID, int? customerAccountTypeID)
+        {
+
             var customer = dataContext.Customers.Find(id);
 
             // verify not duplicate name attempt
             var dummy = AppService.Current.Account.PrimaryCompany.Customers.Where(x => x.Name == customerName).FirstOrDefault();
 
-            if (dummy != null && dummy.ID != id) {
+            if (dummy != null && dummy.ID != id)
+            {
                 return Content("This customer name already exists.");
             }
-            
+
             customer.Name = customerName;
             customer.Address1 = customerAddress1;
             customer.Address2 = customerAddress2;
@@ -406,7 +439,7 @@ namespace Genrev.Web.App.Customers
             customer.TypeID = customerTypeID;
             customer.IndustryID = customerIndustryID;
             customer.AccountTypeID = customerAccountTypeID;
-            
+
             dataContext.SaveChanges();
 
             return Content("ok");
@@ -414,14 +447,16 @@ namespace Genrev.Web.App.Customers
         }
 
         [HttpPost]
-        public ActionResult EditCustomerType(int id, string name) {
+        public ActionResult EditCustomerType(int id, string name)
+        {
 
             var t = dataContext.CustomerTypes.Find(id);
 
             // verify this type doesn't already exist
             var dummy = AppService.Current.Account.PrimaryCompany.CustomerTypes.Where(x => x.Name == name).FirstOrDefault();
 
-            if (dummy != null && dummy.ID != id) {
+            if (dummy != null && dummy.ID != id)
+            {
                 return Content("This customer type already exists");
             }
 
@@ -434,27 +469,30 @@ namespace Genrev.Web.App.Customers
         }
 
         [HttpPost]
-        public ActionResult EditAccountType(int id, string name, int? callsPerMonth) {
+        public ActionResult EditAccountType(int id, string name, int? callsPerMonth)
+        {
 
             var t = dataContext.AccountTypes.Find(id);
 
             // verify doesn't already exist
             var dummy = AppService.Current.Account.PrimaryCompany.AccountTypes.Where(x => x.Name == name).FirstOrDefault();
 
-            if (dummy != null && dummy.ID != id) {
+            if (dummy != null && dummy.ID != id)
+            {
                 return Content("This account type already exists");
             }
 
             t.Name = name;
             t.CallsPerMonthGoal = callsPerMonth;
-
+           
             dataContext.SaveChanges();
 
             return Content("ok");
         }
-        
+
         [HttpPost]
-        public ActionResult DeleteCustomerType(int id) {
+        public ActionResult DeleteCustomerType(int id)
+        {
 
             var t = dataContext.CustomerTypes.Find(id);
             dataContext.CustomerTypes.Remove(t);
@@ -463,9 +501,10 @@ namespace Genrev.Web.App.Customers
             return Content("ok");
 
         }
-        
+
         [HttpPost]
-        public ActionResult DeleteAccountType(int id) {
+        public ActionResult DeleteAccountType(int id)
+        {
 
             var t = dataContext.AccountTypes.Find(id);
             dataContext.AccountTypes.Remove(t);
@@ -475,14 +514,16 @@ namespace Genrev.Web.App.Customers
         }
 
         [HttpPost]
-        public ActionResult EditIndustry(int id, string name) {
+        public ActionResult EditIndustry(int id, string name)
+        {
 
             var ind = dataContext.Industries.Find(id);
 
             // verify this industry doesn't already exist
             var dummy = AppService.Current.Account.PrimaryCompany.Industries.Where(x => x.Name == name).FirstOrDefault();
 
-            if (dummy != null && dummy.ID != id) {
+            if (dummy != null && dummy.ID != id)
+            {
                 return Content("This industry already exists - unable to rename");
             }
 
@@ -491,11 +532,12 @@ namespace Genrev.Web.App.Customers
             dataContext.SaveChanges();
 
             return Content("ok");
-            
+
         }
 
         [HttpPost]
-        public ActionResult DeleteIndustry(int id) {
+        public ActionResult DeleteIndustry(int id)
+        {
 
             var ind = dataContext.Industries.Find(id);
             dataContext.Industries.Remove(ind);
@@ -506,7 +548,8 @@ namespace Genrev.Web.App.Customers
         }
 
         [HttpPost]
-        public ActionResult DeleteCustomer(int id) {
+        public ActionResult DeleteCustomer(int id)
+        {
 
             var c = dataContext.Customers.Find(id);
             dataContext.Customers.Remove(c);
@@ -514,15 +557,17 @@ namespace Genrev.Web.App.Customers
 
             return Content("ok");
         }
-        
+
         [HttpPost]
-        public ActionResult AddCustomerType(string typeName) {
+        public ActionResult AddCustomerType(string typeName)
+        {
 
             // make sure the type doesn't already exist for this customer
             var company = AppService.Current.Account.PrimaryCompany;
             var existingType = company.CustomerTypes.Where(x => x.Name == typeName).FirstOrDefault();
 
-            if (existingType != null) {
+            if (existingType != null)
+            {
                 return Content("ERR: This type already exists.");
             }
 
@@ -539,15 +584,17 @@ namespace Genrev.Web.App.Customers
             // return success
             return Content("ok");
         }
-        
+
         [HttpPost]
-        public ActionResult AddAccountType(string typeName) {
+        public ActionResult AddAccountType(string typeName)
+        {
 
             // make sure the type doesn't already exist
             var company = AppService.Current.Account.PrimaryCompany;
             var existingType = company.AccountTypes.Where(x => x.Name == typeName).FirstOrDefault();
 
-            if (existingType != null) {
+            if (existingType != null)
+            {
                 return Content("ERR: This account type already exists.");
             }
 
@@ -561,15 +608,17 @@ namespace Genrev.Web.App.Customers
 
             return Content("ok");
         }
-        
+
         [HttpPost]
-        public ActionResult AddCustomerIndustry(string industryName) {
+        public ActionResult AddCustomerIndustry(string industryName)
+        {
 
             // make sure the type doesn't already exist for this customer
             var company = AppService.Current.Account.PrimaryCompany;
             var existingIndustry = company.Industries.Where(x => x.Name == industryName).FirstOrDefault();
 
-            if (existingIndustry != null) {
+            if (existingIndustry != null)
+            {
                 return Content("ERR: This industry already exists.");
             }
 
@@ -596,20 +645,11 @@ namespace Genrev.Web.App.Customers
         ---------------------*/
 
 
-
         /*--------------------
             HELPERS
         ---------------------*/
 
-
-
-
-
         #endregion
-
-
-
-
 
         #region ControllerSetup
 
@@ -623,16 +663,13 @@ namespace Genrev.Web.App.Customers
         Genrev.Data.GenrevContext dataContext;
         CustomersDataService service;
 
-        public CustomersController() {
+        public CustomersController()
+        {
             dataContext = new Genrev.Data.GenrevContext();
             service = new CustomersDataService(dataContext);
         }
 
 
         #endregion
-
-
-
-
     }
 }

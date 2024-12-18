@@ -206,8 +206,6 @@ namespace Genrev.DomainServices.Data
             var accountTypes = new List<AccountTypeStaging>();
             try
             {
-
-
                 foreach (DataRow row in table.Rows)
                 {
                     var accountType = new AccountTypeStaging();

@@ -114,6 +114,9 @@ namespace Genrev.Web.App.Data
             customerData.CurrentOpportunity = item.CurrentOpportunity;
             customerData.FutureOpportunity = item.FutureOpportunity;
             customerData.Strategy = item.Strategy;
+            customerData.MarketShare = item.MarketShare;
+            customerData.AtRisk = item.AtRisk;
+            customerData.RiskExplanation = item.RiskExplanation;
         }
         #endregion
 

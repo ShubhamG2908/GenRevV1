@@ -99,7 +99,36 @@ namespace Genrev.Web.App.Analysis
 
         }
 
+        public ActionResult Historic2()
+        {
 
+            var model = new Models.HistoricVM();
+
+            model.PersonsFilterList.Insert(0, new CommonListItems.Person() { ID = -1, FirstName = "<All ", LastName = "Salespersons>" });
+            model.IndustriesList.Insert(0, new CommonListItems.Industry() { ID = -1, Name = "<All Industries>" });
+            model.CustomerTypesList.Insert(0, new CommonListItems.CustomerType() { ID = -1, Name = "<All Customer Types>" });
+            model.AccountTypesList.Insert(0, new CommonListItems.AccountType() { ID = -1, Name = "<All Account Types>" });
+            model.ProductsList.Insert(0, new CommonListItems.Product() { ID = -1, SKU = "<All SKUs>" });
+            model.CustomersList.Insert(0, new CommonListItems.Customer() { ID = -1, Name = "<All Customers>" });
+
+            model.PersonsFilterList = model.PersonsFilterList.OrderBy(x => x.LastName).ToList();
+            model.IndustriesList = model.IndustriesList.OrderBy(x => x.Name).ToList();
+            model.CustomerTypesList = model.CustomerTypesList.OrderBy(x => x.Name).ToList();
+            model.AccountTypesList = model.AccountTypesList.OrderBy(x => x.Name).ToList();
+            model.ProductsList = model.ProductsList.OrderBy(x => x.SKU).ToList();
+            model.CustomersList = model.CustomersList.OrderBy(x => x.Name).ToList();
+
+            model.DefaultYearsToShow = model.YearsToShowList.Where(x => x.Number == 4).Single();
+            model.DefaultPerson = model.PersonsFilterList.Where(x => x.ID == -1).Single();
+            model.DefaultIndustry = model.IndustriesList.Where(x => x.ID == -1).Single();
+            model.DefaultCustomerType = model.CustomerTypesList.Where(x => x.ID == -1).Single();
+            model.DefaultAccountType = model.AccountTypesList.Where(x => x.ID == -1).Single();
+            model.DefaultProduct = model.ProductsList.Where(x => x.ID == -1).Single();
+            model.DefaultCustomer = model.CustomersList.Where(x => x.ID == -1).Single();
+
+            return GetView("Historic2", model);
+
+        }
 
         [Route("Analysis/Historic/Page/Salesperson")]
         public ActionResult AnalysisHistoricPageSalesperson(int? salespersonID, int? yearsToShow)

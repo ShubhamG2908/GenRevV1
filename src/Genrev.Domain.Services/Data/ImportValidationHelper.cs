@@ -141,19 +141,12 @@ namespace Genrev.DomainServices.Data
                 s = row.ToStringValue(2);   // calls per month goal
                 if (!string.IsNullOrWhiteSpace(s))
                 {
-                    int i;
-                    bool parsed = int.TryParse(s, out i);
+                    double i;
+                    bool parsed = double.TryParse(s, out i);
                     if (!parsed)
                     {
                         addError(ImportValidationError.CallsPerMonthMustBeNumeric, ref errors);
-                    }
-                    else
-                    {
-                        if (i < 0)
-                        {
-                            addError(ImportValidationError.CallsPerMonthMustBeZeroOrMore, ref errors);
-                        }
-                    }
+                    }                    
                 }
             }
 

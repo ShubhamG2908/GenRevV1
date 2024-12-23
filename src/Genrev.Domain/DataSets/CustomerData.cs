@@ -18,7 +18,7 @@ namespace Genrev.Domain.DataSets
 
         public DateTime Period { get; set; }
 
-        public decimal? SalesActual { get; set; }        
+        public decimal? SalesActual { get; set; }
         public decimal? SalesForecast { get; set; }
         public decimal? SalesTarget { get; set; }
 
@@ -36,6 +36,10 @@ namespace Genrev.Domain.DataSets
 
         public string Strategy { get; set; }
 
+        public decimal? MarketShare { get; set; }
+        public decimal? AtRisk { get; set; }
+        public string RiskExplanation { get; set; }
+
         public virtual Companies.Customer Customer { get; set; }
         public virtual Companies.Person Person { get; set; }
         public virtual Products.Product Product { get; set; }
@@ -48,7 +52,7 @@ namespace Genrev.Domain.DataSets
 
         public static decimal? GetGPP(decimal? sales, decimal? cost)
         {
-            return sales == 0 ? 0 : (1 - cost / sales) * 100;            
+            return sales == 0 ? 0 : (1 - cost / sales) * 100;
         }
     }
 }

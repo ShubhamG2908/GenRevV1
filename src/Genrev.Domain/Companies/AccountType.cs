@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Genrev.Domain.Companies
 {
@@ -14,7 +11,7 @@ namespace Genrev.Domain.Companies
 
         public int CompanyID { get; set; }
         public string Name { get; set; }
-        public int? CallsPerMonthGoal { get; set; }
+        public double? CallsPerMonthGoal { get; set; }
 
         public virtual Company Company { get; set; }
         public virtual ICollection<Customer> Customers { get; set; }

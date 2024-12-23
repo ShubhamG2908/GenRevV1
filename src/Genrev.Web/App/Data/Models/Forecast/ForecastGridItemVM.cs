@@ -1,4 +1,5 @@
 ﻿using Genrev.Domain.DataSets;
+
 using System;
 
 namespace Genrev.Web.App.Data.Models.Forecast
@@ -17,6 +18,9 @@ namespace Genrev.Web.App.Data.Models.Forecast
         public decimal? CurrentOpportunity { get; set; }
         public decimal? FutureOpportunity { get; set; }
         public string Strategy { get; set; }
+        public decimal? MarketShare { get; set; }
+        public decimal? AtRisk { get; set; }
+        public string RiskExplanation { get; set; }
     }
 
     public class ForecastDTO : BaseForecastDTO
@@ -41,7 +45,10 @@ namespace Genrev.Web.App.Data.Models.Forecast
                 Potential = Potential,
                 CurrentOpportunity = CurrentOpportunity,
                 FutureOpportunity = FutureOpportunity,
-                Strategy = Strategy
+                Strategy = Strategy,
+                MarketShare = MarketShare,
+                AtRisk = AtRisk,
+                RiskExplanation = RiskExplanation,
             };
         }
     }

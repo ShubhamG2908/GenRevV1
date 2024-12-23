@@ -9,16 +9,16 @@ namespace Genrev.Web.App.Analysis.Models
     {
 
         public string AccountType { get; set; }
-        public int? YearlyCallPlan { get; set; }
-        public int? GoalCount { get; set; }
+        public double? YearlyCallPlan { get; set; }
+        public double? GoalCount { get; set; }
 
-        public decimal? AvgWeeklyCalls { get; set; }
-        public decimal? MonthlyCalls { get; set; }
+        public double? AvgWeeklyCalls { get; set; }
+        public double? MonthlyCalls { get; set; }
 
         public int NumberOfAccounts { get; set; }
-        public int? TotalCalls { get; set; }
+        public double? TotalCalls { get; set; }
 
-        public decimal? PercentOfTotalCalls { get; set; }
+        public double? PercentOfTotalCalls { get; set; }
         public decimal? PercentOfTotalSales { get; set; }
 
 
@@ -37,8 +37,5 @@ namespace Genrev.Web.App.Analysis.Models
                 PercentOfTotalSales = data.PercentOfTotalSales
             };
         }
-
-
     }
-
 }

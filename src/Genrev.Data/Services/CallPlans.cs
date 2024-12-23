@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
 
@@ -28,12 +26,10 @@ namespace Genrev.Data.Services
 
         public static CallPlanOverviewDataset GetCallPlanOverviewByPersonnel(GenrevContext context, int fiscalYear, int personnelID)
         {
-
             var personnel = Genrev.Data.Services.General.GetDownstreamPersonnel(context, personnelID).ToList();
 
             IEnumerable<DTOs.CallsAnnualOverview> data = new List<DTOs.CallsAnnualOverview>();
             CallPlanOverviewDataset retVal = new CallPlanOverviewDataset(fiscalYear, personnel);
-
 
             SqlParameter pFiscalYear = new SqlParameter("@FiscalYear", fiscalYear);
 
@@ -53,14 +49,8 @@ namespace Genrev.Data.Services
                     item.CallGoal,
                     item.NumberOfAccounts,
                     item.SalesForecast);
-
             }
-
             return retVal;
-
         }
-
-
-
     }
 }

@@ -15,43 +15,43 @@ namespace Genrev.Domain.DataSets
         }
 
         public string AccountType { get; set; }
-        public int? YearlyCallPlan { get; set; }
-        public int? GoalCount { get; set; }
+        public double? YearlyCallPlan { get; set; }
+        public double? GoalCount { get; set; }
 
         // Calculate Weeks as Person.DaysAvailable / 5
         // average? multiple persons.
-        public decimal? AvgWeeklyCalls
+        public double? AvgWeeklyCalls
         {
             get
             {
-                return YearlyCallPlan / (decimal)52;
+                return YearlyCallPlan / (double)52;
                 //return _parent.WeeksAvailable == 0 ? null : (YearlyCallPlan / _parent.WeeksAvailable);
             }
         }
 
 
-        public decimal? MonthlyCalls
+        public double? MonthlyCalls
         {
             get
             {
-                return YearlyCallPlan / (decimal)12;
+                return YearlyCallPlan / (double)12;
                 //return YearlyCallPlan / ((decimal)12 * _parent.PersonnelCount);
             }
         }
 
         public int NumberOfAccounts { get; set; }
-        public int? TotalCalls { get; set; }
+        public double? TotalCalls { get; set; }
         public decimal? SalesForecast { get; set; }
 
 
-        public decimal? PercentOfTotalCalls
+        public double? PercentOfTotalCalls
         {
             get
             {
                 if (_parent.TotalCalls == 0) {
                     return 0;
                 }
-                return (TotalCalls / (decimal)_parent.TotalCalls) * 100;
+                return (TotalCalls / (double)_parent.TotalCalls) * 100;
             }
         }
 
@@ -72,7 +72,7 @@ namespace Genrev.Domain.DataSets
 
     public class CallPlanOverviewDataset
     {
-        public int TotalCalls { get; private set; }
+        public double TotalCalls { get; private set; }
 
         public decimal TotalSales { get; private set; }
 
@@ -104,8 +104,8 @@ namespace Genrev.Domain.DataSets
 
         public void Add(
             string accountType,
-            int? yearlyCallPlan,
-            int? goalCount,
+            double? yearlyCallPlan,
+            double? goalCount,
             int numberOfAccounts,
             decimal? salesForecast)
         {

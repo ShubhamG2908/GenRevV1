@@ -111,7 +111,34 @@
             (col.PropertiesEdit as MemoProperties).Rows = 3;
             col.EditFormSettings.Visible = !Model.IsLocked ? DefaultBoolean.True : DefaultBoolean.False;
         });
-
+        s.Columns.Add(col =>
+        {
+            col.Name = "MarketShare";
+            col.FieldName = "MarketShare";
+            col.Caption = "Market Share";
+            col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;            
+            col.ReadOnly = Model.IsLocked;
+            col.EditFormSettings.Visible = !Model.IsLocked ? DefaultBoolean.True : DefaultBoolean.False;
+        });
+        s.Columns.Add(col =>
+        {
+            col.Name = "AtRisk";
+            col.FieldName = "AtRisk";
+            col.Caption = "At Risk";
+            col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            col.PropertiesEdit.DisplayFormatString = "c0";
+            col.ReadOnly = Model.IsLocked;
+            col.EditFormSettings.Visible = !Model.IsLocked ? DefaultBoolean.True : DefaultBoolean.False;
+        });
+        s.Columns.Add(col =>
+        {
+            col.Name = "RiskExplanation";
+            col.FieldName = "RiskExplanation";
+            col.Width = 350;
+            col.ColumnType = MVCxGridViewColumnType.Memo;
+            (col.PropertiesEdit as MemoProperties).Rows = 3;
+            col.EditFormSettings.Visible = !Model.IsLocked ? DefaultBoolean.True : DefaultBoolean.False;
+        });
         s.CellEditorInitialize = (sender, e) =>
         {
             ASPxEdit editor = (ASPxEdit)e.Editor;

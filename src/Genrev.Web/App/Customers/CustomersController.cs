@@ -469,7 +469,7 @@ namespace Genrev.Web.App.Customers
         }
 
         [HttpPost]
-        public ActionResult EditAccountType(int id, string name, int? callsPerMonth)
+        public ActionResult EditAccountType(int id, string name, double? callsPerMonth)
         {
 
             var t = dataContext.AccountTypes.Find(id);

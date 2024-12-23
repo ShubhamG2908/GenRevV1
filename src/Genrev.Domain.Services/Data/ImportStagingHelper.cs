@@ -211,7 +211,7 @@ namespace Genrev.DomainServices.Data
                     var accountType = new AccountTypeStaging();
                     accountType.ClientID = row.ToStringValue(0);
                     accountType.Name = row.ToStringValue(1);
-                    accountType.CallsPerMonthGoal = row.ToIntOrNull(2);
+                    accountType.CallsPerMonthGoal = row.ToDoubleOrNull(2);
                     accountTypes.Add(accountType);
                 }
 

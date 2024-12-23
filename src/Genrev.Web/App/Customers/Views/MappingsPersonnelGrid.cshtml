@@ -22,39 +22,5 @@
         col = s.Columns.Add("colLastName");
         col.Caption = "Last Name";
         col.FieldName = "LastName";
-
-        //col = s.Columns.Add("colActions");
-        //col.Caption = "Actions";
-        //col.UnboundType = DevExpress.Data.UnboundColumnType.String;
-
-        //col.SetDataItemTemplateContent(
-        //    c => {
-
-        //        string itemID = DataBinder.Eval(c.DataItem, "ID").ToString();
-        //        string editButton = Html.DevExpress().Button(
-        //            b => {
-        //                b.Name = "CustomerTypesGridEditButton_" + itemID;
-        //                b.Text = "Edit";
-        //                //b.Images.Image.IconID = IconID.ActionsEdit16x16devav;
-        //                b.ControlStyle.CssClass = "CustomerTypesGridEditButtonJSAnchor";
-        //            }
-        //        ).GetHtml().ToHtmlString();
-
-
-
-        //        string deleteButton = Html.DevExpress().Button(
-        //            b => {
-        //                b.Name = "CustomerTypesGridDeleteButton_" + itemID;
-        //                b.Text = "Delete";
-        //                //b.Images.Image.IconID = IconID.ActionsCancel16x16office2013;
-        //                b.ControlStyle.CssClass = "CustomerTypesGridDeleteButtonJSAnchor";
-        //            }
-        //        ).GetHtml().ToHtmlString();
-
-        //        ViewContext.Writer.Write(editButton + deleteButton);
-
-        //    }
-        //);
-
     }
 ).Bind(Model).GetHtml()

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 using System.Xml.Serialization;
 
@@ -18,7 +15,7 @@ namespace Genrev.Api.App.Classifications.Models
     {
         public string ID { get; set; }
         public string Name { get; set; }
-        public int? CallsPerMonthGoal { get; set; }
+        public double? CallsPerMonthGoal { get; set; }
     }
 
 }

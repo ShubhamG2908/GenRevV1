@@ -362,6 +362,8 @@
     <Content Include="App\Data\Views\DailyManagement.cshtml" />
     <Content Include="App\Data\Views\DailyManagementMatrix.cshtml" />
     <Content Include="App\Data\Views\DailyManagementMatrixByCostsGrid.cshtml" />
+    <Content Include="App\Analysis\Views\HistoricAllInOnePage.cshtml" />
+    <Content Include="App\Analysis\Views\Historic2.cshtml" />
     <None Include="client\scripts\_references.js" />
     <Content Include="Global.asax" />
     <Content Include="packages.config" />

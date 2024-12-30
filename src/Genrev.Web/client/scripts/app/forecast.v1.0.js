@@ -11,19 +11,17 @@ define(function () {
 
     var code = {
 
-        selectedYear: function() {
+        selectedYear: function () {
             return $("input[name='ctlYear']").val();
         },
 
-        selectedSalesperson: function() {
+        selectedSalesperson: function () {
             return DevEx.Controls.GetValue("ctlSalesperson");
         },
 
-
         initialize: function () {
-
             code.loadData(code.selectedYear(), code.selectedSalesperson());
-            
+
             DevEx.Controls.GetByName("ctlYear").ValueChanged.AddHandler(function (s, e) {
                 code.loadData(code.selectedYear(), code.selectedSalesperson());
             });
@@ -32,9 +30,27 @@ define(function () {
                 code.loadData(code.selectedYear(), code.selectedSalesperson());
             });
 
+            DevEx.Controls.GetByName('btnImportForecastData').Click.AddHandler(function (s, e) {
+                code.showImportPopup();
+            });
         }, // end code.initialize
-
-
+        getFile: function (e, file) {            
+            e.preventDefault();
+            var url = '/Data/GetImportTemplate/?templateName=' + file;
+            var win = window.open(url, '_blank');
+            win.focus();
+            return false;
+        },
+        uploadEvents: {
+            fileUploadComplete: function (s, e) {
+                if (!e.isValid) {
+                    App.Errors.Show("Unable to import file:\n\n" + e.errorText);
+                    return;
+                } else {
+                    App.Alert("Import Complete", DialogIcons.Ok);
+                }
+            }
+        },
         loadData: function (year, salespersonID) {
 
             // reload yearly plan
@@ -89,13 +105,39 @@ define(function () {
                 e.customArgs["year"] = code.selectedYear();
                 e.customArgs["personnelID"] = code.selectedSalesperson();
             });
-                       
-        }
 
+        },
+        showImportPopup: function () {
 
+            App.Popup.Show({
+                url: '/Data/OpenImportForecastPopup',
+                type: 'GET',
+                data: null,
+                options: {
+                    width: 300,
+                    height: 200,
+                    title: 'Import Forecast Data',
+                    allowDrag: true,
+                    allowResize: false
+                },
+                opened: function () {
+                    $('#template-dl-forecastData').click(function (e) { return code.getFile(e, 'forecastData'); });
+                    var uploader = DevEx.Controls.GetByName("uploadForecastData");
+                    uploader.FileUploadComplete.AddHandler(function (s, e) {
+                        App.Popup.Hide('ok');
+                        code.uploadEvents.fileUploadComplete(s, e);
+                    });
+                },
+                done: function (r) {
+                },
+                error: function () {
+                    App.Errors.ShowGeneral();
+                }
 
+            });
+
+        },
     }
-
     window.Forecast = api;
 
 });

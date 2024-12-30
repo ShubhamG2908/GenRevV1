@@ -15,7 +15,7 @@ namespace Genrev.Data.DTOs
         public decimal? DataSalesForecastSum { get; set; }
         public decimal? DataCostActualSum { get; set; }
         public decimal? DataCostForecastSum { get; set; }
-        public int? DataCallsActualSum { get; set; }
-        public int? DataCallsForecastSum { get; set; }
+        public double? DataCallsActualSum { get; set; }
+        public double? DataCallsForecastSum { get; set; }
     }
 }

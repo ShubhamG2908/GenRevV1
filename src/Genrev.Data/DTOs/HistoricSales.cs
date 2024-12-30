@@ -18,8 +18,8 @@ namespace Genrev.Data.DTOs
         public decimal? FutureOpportunity { get; set; }
         public decimal? CostActual { get; set; }
         public decimal? CostForecast { get; set; }
-        public int? CallsActual { get; set; }
-        public int? CallsForecast { get; set; }
+        public double? CallsActual { get; set; }
+        public double? CallsForecast { get; set; }
 
     }
 }

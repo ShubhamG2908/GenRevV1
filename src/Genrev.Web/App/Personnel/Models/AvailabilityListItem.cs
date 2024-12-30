@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Genrev.Web.App.Personnel.Models
+﻿namespace Genrev.Web.App.Personnel.Models
 {
     public class AvailabilityListItem
     {
@@ -16,9 +11,9 @@ namespace Genrev.Web.App.Personnel.Models
         public int? VacationDays { get; set; }
         public int? AdministrationDays { get; set; }
         public int? OtherDays { get; set; }
-        public int? PlannedCalls { get; set; }
+        public double? PlannedCalls { get; set; }
 
-        public int? CallCommittment { get; set; }
+        public double? CallCommittment { get; set; }
         public int? DaysAvailable { get; set; }
         
     }

@@ -1,10 +1,7 @@
-﻿using System;
+﻿using Genrev.Domain.Products;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Genrev.Domain.Products;
 
 namespace Genrev.Domain.Companies
 {
@@ -28,6 +25,7 @@ namespace Genrev.Domain.Companies
         public int? TypeID { get; set; }
         public int? IndustryID { get; set; }
         public int? AccountTypeID { get; set; }
+        public string ClientID { get; set; }
 
         public virtual Company Company { get; set; }
         public virtual CustomerType Type { get; set; }

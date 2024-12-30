@@ -75,6 +75,7 @@
     <Compile Include="Data\Staging\ClassificationStaging.cs" />
     <Compile Include="Data\Staging\CompanyStaging.cs" />
     <Compile Include="Data\Staging\CustomerStaging.cs" />
+    <Compile Include="Data\Staging\ForecastDataStaging.cs" />
     <Compile Include="Data\Staging\MonthlyDataStaging.cs" />
     <Compile Include="Data\Staging\PersonnelStaging.cs" />
     <Compile Include="Email\SMTPAccount.cs" />

@@ -99,8 +99,8 @@ namespace Genrev.Domain.DataSets
         public decimal? CostActual { get; set; }
         public decimal? CostForecast { get; set; }
 
-        public int? CallsActual { get; set; }
-        public int? CallsForecast { get; set; }
+        public double? CallsActual { get; set; }
+        public double? CallsForecast { get; set; }
 
     }
 }

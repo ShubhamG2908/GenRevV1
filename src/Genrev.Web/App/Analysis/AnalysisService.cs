@@ -565,9 +565,9 @@ namespace Genrev.Web.App.Analysis
 
             }
 
-            private static List<decimal?> getMTDForecastCallsSeries(List<Domain.DataSets.MonthlyData> monthData)
+            private static List<double?> getMTDForecastCallsSeries(List<Domain.DataSets.MonthlyData> monthData)
             {
-                var list = new List<decimal?>();
+                var list = new List<double?>();
 
                 var refDate = DateTime.Now;
 

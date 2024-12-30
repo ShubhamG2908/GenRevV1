@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Genrev.Domain.Companies
 {
@@ -19,11 +15,11 @@ namespace Genrev.Domain.Companies
         public int? VacationDays { get; set; }
         public int? AdministrationDays { get; set; }
         public int? OtherDays { get; set; }
-        public int? PlannedCallsPerDay { get; set; }
+        public double? PlannedCallsPerDay { get; set; }
 
 
 
-        public int? CallCommitment {
+        public double? CallCommitment {
             get
             {
                 if (!PlannedCallsPerDay.HasValue) {

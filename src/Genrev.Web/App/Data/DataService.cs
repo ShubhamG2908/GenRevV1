@@ -468,7 +468,8 @@ namespace Genrev.Web.App.Data
             try
             {
                 errors = csvImportHelper.ImportToStaging();
-                importHelper.UpsertStagingToLive(importType, AppService.Current.Account.ID, true);
+                if (importType != ImportType.ForecastData)
+                    importHelper.UpsertStagingToLive(importType, AppService.Current.Account.ID, true);
                 AppCache.InvalidateAll();
             }
 
@@ -503,14 +504,7 @@ namespace Genrev.Web.App.Data
             return errors;
         }
 
-
-
-
-
         #endregion
-
-
-
 
         private Genrev.Data.GenrevContext _context;
         private readonly YearProvider _yearProvider;
@@ -522,7 +516,5 @@ namespace Genrev.Web.App.Data
             _context = context ?? new Genrev.Data.GenrevContext();
             _yearProvider = new YearProvider();
         }
-
-
     }
 }

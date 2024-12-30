@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Genrev.Web.App.Data.Models.Management
+﻿namespace Genrev.Web.App.Data.Models.Management
 {
     public class MatrixByCostGridItem
     {
-        
+
         public int GridID { get; set; }
         public int ID { get; set; }
-        
+
         public CommonListItems.Period Period { get; set; }
         //public DateTime Period { get; set; }
 
@@ -30,9 +25,9 @@ namespace Genrev.Web.App.Data.Models.Management
         public decimal? GPPForecast { get; set; }
         public decimal? GPPTarget { get; set; }
 
-        public int? CallsActual { get; set; }
-        public int? CallsForecast { get; set; }
-        public int? CallsTarget { get; set; }
+        public double? CallsActual { get; set; }
+        public double? CallsForecast { get; set; }
+        public double? CallsTarget { get; set; }
         public decimal? CostTarget { get; set; }
 
     }

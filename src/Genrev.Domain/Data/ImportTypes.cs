@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Genrev.Domain.Data
+﻿namespace Genrev.Domain.Data
 {
     public enum ImportType
     {
@@ -15,7 +9,7 @@ namespace Genrev.Domain.Data
         CustomerTypes,
         IndustryTypes,
         Customers,
-        MonthlyData
-
+        MonthlyData,
+        ForecastData
     }
 }

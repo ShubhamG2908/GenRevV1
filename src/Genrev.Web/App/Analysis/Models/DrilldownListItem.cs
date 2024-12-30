@@ -39,9 +39,9 @@ namespace Genrev.Web.App.Analysis.Models
         public decimal? GPPDifference { get; set; }
         public decimal? GPPVariance { get; set; }
 
-        public int? CallsActual { get; set; }
-        public int? CallsForecast { get; set; }
-        public int? CallsDifference { get; set; }        
+        public double? CallsActual { get; set; }
+        public double? CallsForecast { get; set; }
+        public double? CallsDifference { get; set; }        
 
 
         public static DrilldownListItem FromCustomerDrilldownModel(Domain.DataSets.CustomerDrilldown data) {

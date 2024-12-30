@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
-
+﻿using Dymeng.Data;
 using Dymeng.Validation;
-using Dymeng.Data;
+
+using System;
+using System.Collections.Generic;
+using System.Data;
 
 
 namespace Genrev.DomainServices.Data
@@ -17,7 +14,15 @@ namespace Genrev.DomainServices.Data
         ClientIDRequired,
         AccountTypeNameRequired,
         ActualCallsMustBeNumeric,
+        ForecastCallsMustBeNumeric,
+        TargetCallsMustBeNumeric,
+        MarketShareMustBeNumeric,
+        AtRiskMustBeNumeric,
         ActualCallsMustBeZeroOrMore,
+        ForecastCallsMustBeZeroOrMore,
+        TargetCallsMustBeZeroOrMore,
+        MarketShareMustBeZeroOrMore,
+        AtRiskMustBeZeroOrMore,
         CustomerTypeNameRequired,
         IndustryTypeNameRequired,
         CompanyNameRequired,
@@ -33,8 +38,20 @@ namespace Genrev.DomainServices.Data
         CallsPerMonthMustBeNumeric,
         CallsPerMonthMustBeZeroOrMore,
         ActualSalesMustBeNumeric,
+        ForecastSalesMustBeNumeric,
+        OpportunityPotentialMustBeNumeric,
+        OpportunityCurrentMustBeNumeric,
+        OpportunityFutureMustBeNumeric,
+        TargetSalesMustBeNumeric,
         ActualSalesMustBeZeroOrMore,
+        ForecastSalesMustBeZeroOrMore,
+        OpportunityPotentialMustBeZeroOrMore,
+        OpportunityCurrentMustBeZeroOrMore,
+        OpportunityFutureMustBeZeroOrMore,
+        TargetSalesMustBeZeroOrMore,
         ActualGPPMustBeNumeric,
+        ForecastGPPMustBeNumeric,
+        TargetGPPMustBeNumeric,
         InvalidDateFormat
     }
 
@@ -146,7 +163,7 @@ namespace Genrev.DomainServices.Data
                     if (!parsed)
                     {
                         addError(ImportValidationError.CallsPerMonthMustBeNumeric, ref errors);
-                    }                    
+                    }
                 }
             }
 
@@ -315,6 +332,231 @@ namespace Genrev.DomainServices.Data
             return errors;
         }
 
+        public List<ValidationError> ValidateForecastDataTable(DataTable table)
+        {
+            var errors = new List<ValidationError>();
+            List<int> invalidDateFormatCount = new List<int>();
+            int rowIndex = 0;
+            foreach (DataRow row in table.Rows)
+            {
+                if (rowIndex == 0)
+                {
+                    rowIndex++;
+                    continue;
+                }
+                string s = row.ToStringValue(0);    // clientID
+                if (string.IsNullOrWhiteSpace(s))
+                {
+                    addError(ImportValidationError.ClientIDRequired, ref errors);
+                }
+
+                s = row.ToStringValue(1); // personID
+                if (string.IsNullOrWhiteSpace(s))
+                {
+                    addError(ImportValidationError.PersonnelIDRequired, ref errors);
+                }
+
+                s = row.ToStringValue(2);   // period
+                DateTime parsedDateTime;
+                bool dateParsed = DateTime.TryParse(s, out parsedDateTime);
+                if (!dateParsed)
+                {
+                    addError(ImportValidationError.PeriodRequired, ref errors);
+                    invalidDateFormatCount.Add(rowIndex);
+                }
+
+                s = row.ToStringValue(3);   // sales forecast
+                if (!string.IsNullOrWhiteSpace(s))
+                {
+                    decimal d;
+                    bool parsed = decimal.TryParse(s, out d);
+                    if (!parsed)
+                    {
+                        addError(ImportValidationError.ForecastSalesMustBeNumeric, ref errors);
+                    }
+                    else
+                    {
+                        if (d < 0)
+                        {
+                            addError(ImportValidationError.ForecastSalesMustBeZeroOrMore, ref errors);
+                        }
+                    }
+                }
+
+                s = row.ToStringValue(4);   // sales target
+                if (!string.IsNullOrWhiteSpace(s))
+                {
+                    decimal d;
+                    bool parsed = decimal.TryParse(s, out d);
+                    if (!parsed)
+                    {
+                        addError(ImportValidationError.TargetSalesMustBeNumeric, ref errors);
+                    }
+                    else
+                    {
+                        if (d < 0)
+                        {
+                            addError(ImportValidationError.TargetSalesMustBeZeroOrMore, ref errors);
+                        }
+                    }
+                }
+
+                s = row.ToStringValue(5);   // forecast gpp
+                if (!string.IsNullOrWhiteSpace(s))
+                {
+                    decimal d;
+                    bool parsed = decimal.TryParse(s, out d);
+                    if (!parsed)
+                    {
+                        addError(ImportValidationError.ForecastGPPMustBeNumeric, ref errors);
+                    }
+                }
+
+                s = row.ToStringValue(6);   // target gpp
+                if (!string.IsNullOrWhiteSpace(s))
+                {
+                    decimal d;
+                    bool parsed = decimal.TryParse(s, out d);
+                    if (!parsed)
+                    {
+                        addError(ImportValidationError.TargetGPPMustBeNumeric, ref errors);
+                    }
+                }
+
+                s = row.ToStringValue(7);   // forecast calls
+                if (!string.IsNullOrWhiteSpace(s))
+                {
+                    double i;
+                    bool parsed = double.TryParse(s, out i);
+                    if (!parsed)
+                    {
+                        addError(ImportValidationError.ForecastCallsMustBeNumeric, ref errors);
+                    }
+                    else
+                    {
+                        if (i < 0)
+                        {
+                            addError(ImportValidationError.ForecastCallsMustBeZeroOrMore, ref errors);
+                        }
+                    }
+                }
+
+                s = row.ToStringValue(8);   // target calls
+                if (!string.IsNullOrWhiteSpace(s))
+                {
+                    double i;
+                    bool parsed = double.TryParse(s, out i);
+                    if (!parsed)
+                    {
+                        addError(ImportValidationError.TargetCallsMustBeNumeric, ref errors);
+                    }
+                    else
+                    {
+                        if (i < 0)
+                        {
+                            addError(ImportValidationError.TargetCallsMustBeZeroOrMore, ref errors);
+                        }
+                    }
+                }
+
+                s = row.ToStringValue(9);   // Opportunity Potential
+                if (!string.IsNullOrWhiteSpace(s))
+                {
+                    decimal d;
+                    bool parsed = decimal.TryParse(s, out d);
+                    if (!parsed)
+                    {
+                        addError(ImportValidationError.OpportunityPotentialMustBeNumeric, ref errors);
+                    }
+                    else
+                    {
+                        if (d < 0)
+                        {
+                            addError(ImportValidationError.OpportunityPotentialMustBeZeroOrMore, ref errors);
+                        }
+                    }
+                }
+
+                s = row.ToStringValue(10);   // Opportunity Current
+                if (!string.IsNullOrWhiteSpace(s))
+                {
+                    decimal d;
+                    bool parsed = decimal.TryParse(s, out d);
+                    if (!parsed)
+                    {
+                        addError(ImportValidationError.OpportunityCurrentMustBeNumeric, ref errors);
+                    }
+                    else
+                    {
+                        if (d < 0)
+                        {
+                            addError(ImportValidationError.OpportunityCurrentMustBeZeroOrMore, ref errors);
+                        }
+                    }
+                }
+
+                s = row.ToStringValue(11);   // Opportunity Future
+                if (!string.IsNullOrWhiteSpace(s))
+                {
+                    decimal d;
+                    bool parsed = decimal.TryParse(s, out d);
+                    if (!parsed)
+                    {
+                        addError(ImportValidationError.OpportunityFutureMustBeNumeric, ref errors);
+                    }
+                    else
+                    {
+                        if (d < 0)
+                        {
+                            addError(ImportValidationError.OpportunityFutureMustBeZeroOrMore, ref errors);
+                        }
+                    }
+                }
+
+                s = row.ToStringValue(13);   // market share
+                if (!string.IsNullOrWhiteSpace(s))
+                {
+                    decimal i;
+                    bool parsed = decimal.TryParse(s, out i);
+                    if (!parsed)
+                    {
+                        addError(ImportValidationError.MarketShareMustBeNumeric, ref errors);
+                    }
+                    else
+                    {
+                        if (i < 0)
+                        {
+                            addError(ImportValidationError.MarketShareMustBeZeroOrMore, ref errors);
+                        }
+                    }
+                }
+
+                s = row.ToStringValue(14);   // at risk
+                if (!string.IsNullOrWhiteSpace(s))
+                {
+                    double i;
+                    bool parsed = double.TryParse(s, out i);
+                    if (!parsed)
+                    {
+                        addError(ImportValidationError.AtRiskMustBeNumeric, ref errors);
+                    }
+                    else
+                    {
+                        if (i < 0)
+                        {
+                            addError(ImportValidationError.AtRiskMustBeZeroOrMore, ref errors);
+                        }
+                    }
+                }
+                rowIndex++;
+            }
+            if (invalidDateFormatCount.Count > 0)
+            {
+                addError(ImportValidationError.InvalidDateFormat, ref errors, invalidDateFormatCount);
+            }
+            return errors;
+        }
+
 
         private void addError(ImportValidationError errorType, ref List<ValidationError> targetList, List<int> IDs = null)
         {
@@ -368,12 +610,34 @@ namespace Genrev.DomainServices.Data
                 case ImportValidationError.ActualCallsMustBeZeroOrMore:
                     error.Message = "Actual Calls must be numeric and must be blank, zero or more.";
                     break;
+                case ImportValidationError.ForecastCallsMustBeNumeric:
+                case ImportValidationError.ForecastCallsMustBeZeroOrMore:
+                    error.Message = "Forecast Calls must be numeric and must be blank, zero or more.";
+                    break;
+                case ImportValidationError.TargetCallsMustBeNumeric:
+                case ImportValidationError.TargetCallsMustBeZeroOrMore:
+                    error.Message = "Target Calls must be numeric and must be blank, zero or more.";
+                    break;
                 case ImportValidationError.ActualSalesMustBeNumeric:
                 case ImportValidationError.ActualSalesMustBeZeroOrMore:
                     error.Message = "Actual Sales must be numeric and must be blank, zero or more.";
                     break;
+                case ImportValidationError.ForecastSalesMustBeNumeric:
+                case ImportValidationError.ForecastSalesMustBeZeroOrMore:
+                    error.Message = "Forecast Sales must be numeric and must be blank, zero or more.";
+                    break;
+                case ImportValidationError.TargetSalesMustBeNumeric:
+                case ImportValidationError.TargetSalesMustBeZeroOrMore:
+                    error.Message = "Target Sales must be numeric and must be blank, zero or more.";
+                    break;
                 case ImportValidationError.ActualGPPMustBeNumeric:
                     error.Message = "Actual GPP must be numeric.";
+                    break;
+                case ImportValidationError.ForecastGPPMustBeNumeric:
+                    error.Message = "Forecast GPP must be numeric.";
+                    break;
+                case ImportValidationError.TargetGPPMustBeNumeric:
+                    error.Message = "Target GPP must be numeric.";
                     break;
                 case ImportValidationError.InvalidDateFormat:
                     {

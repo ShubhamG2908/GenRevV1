@@ -42,11 +42,19 @@
                             s.ClientVisible = Model.HasDownstreamSalespersons;
                         }
                     ).BindList(Model.AvailableSalespersons).Bind(Model.SelectedSalesperson).GetHtml()
-
                     
                     <div class="spacer-10"></div>
-                    
-
+                </td>
+                <td align="right" style="width:100%;">
+                    @Html.DevExpress().Button(
+                    s =>
+                         {
+                        s.Name = "btnImportForecastData";
+                        s.Text = "Import Forecast Data";
+                        s.Width = 150;
+                    }
+                ).GetHtml()
+                    &nbsp;&nbsp;
                 </td>
             </tr>
         </table>
@@ -68,5 +76,4 @@
             Forecast.Initialize();
         });
     });
-
 </script>

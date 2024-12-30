@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Genrev.Data.DTOs
 {
@@ -18,8 +14,8 @@ namespace Genrev.Data.DTOs
         public decimal? CostActual { get; set; }
         public decimal? CostForecast { get; set; }
         public decimal? CostTarget { get; set; }
-        public int? CallsActual { get; set; }
-        public int? CallsForecast { get; set; }
-        public int? CallsTarget { get; set; }
+        public double? CallsActual { get; set; }
+        public double? CallsForecast { get; set; }
+        public double? CallsTarget { get; set; }
     }
 }

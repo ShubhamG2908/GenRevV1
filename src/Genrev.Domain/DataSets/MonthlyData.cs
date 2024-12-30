@@ -48,7 +48,7 @@ namespace Genrev.Domain.DataSets
         }
 
 
-        public decimal? MonthToDateCallsForecast(DateTime currentDate)
+        public double? MonthToDateCallsForecast(DateTime currentDate)
         {
 
             DateTime currentMonthStart = new DateTime(currentDate.Year, currentDate.Month, 1);
@@ -79,9 +79,9 @@ namespace Genrev.Domain.DataSets
                 throw new InvalidOperationException("Current Day exceeds Days in Month");
             }
 
-            decimal percentOfMonthCompleted = 100 * currentDay / daysInMonth;
+            double percentOfMonthCompleted = 100 * currentDay / daysInMonth;
 
-            decimal? mtdForecast = percentOfMonthCompleted * CallsForecast / 100;
+            double? mtdForecast = percentOfMonthCompleted * CallsForecast / 100;
 
             return mtdForecast;
         }

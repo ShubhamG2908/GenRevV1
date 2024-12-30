@@ -225,6 +225,10 @@ namespace Genrev.Data
         public void UpsertPersonnelStagingToLive(int accountID) {
             Database.ExecuteSqlCommand("EXEC staging.UpsertPersonnelToLive @AccountID", new SqlParameter("@AccountID", accountID));
         }
+        public void UpsertForecastDataStagingToLive(int accountID)
+        {
+            Database.ExecuteSqlCommand("EXEC staging.UpsertForecastDataToLive @AccountID", new SqlParameter("@AccountID", accountID));
+        }
 
 
         // ACCOUNT PROVISIONING

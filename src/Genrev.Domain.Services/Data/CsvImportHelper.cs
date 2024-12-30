@@ -71,7 +71,6 @@ namespace Genrev.DomainServices.Data
                 table = LoadCsvToTable(filePath, true);
                 table = DataTableTrimHelper.RemoveEmptyRows(table);
                 table = DataTableTrimHelper.RemoveEmptyColumns(table);
-
             }
             catch (Exception e)
             {
@@ -100,6 +99,9 @@ namespace Genrev.DomainServices.Data
                     break;
                 case ImportType.MonthlyData:
                     errors = stagingHelper.ImportToMonthlyDataStaging(table);
+                    break;
+                case ImportType.ForecastData:
+                    errors = stagingHelper.ImportToForecastDataStaging(table);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("The specified import type isn't registered");

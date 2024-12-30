@@ -4,6 +4,10 @@ using Dymeng.Validation;
 using System.Data;
 using Dymeng.Data;
 using Genrev.Domain.Data.Staging;
+using System.Linq;
+using Genrev.Domain.DataSets;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
+using System.Data.Entity;
 
 namespace Genrev.DomainServices.Data
 {
@@ -412,7 +416,7 @@ namespace Genrev.DomainServices.Data
                 d.Period = row.ToDateTime(2);
                 d.SalesActual = (decimal?)row.ToDoubleOrNull(3);
                 d.CostActual = (decimal?)row.ToDoubleOrNull(4);
-                d.CallsActual = (decimal?)row.ToDoubleOrNull(5);
+                d.CallsActual = (double?)row.ToDoubleOrNull(5);
 
                 data.Add(d);
                 rowIndex++;
@@ -423,6 +427,111 @@ namespace Genrev.DomainServices.Data
             context.SaveChanges();
 
             return errors;
+        }
+
+        public List<ValidationError> ImportToForecastDataStaging(DataTable table)
+        {
+            var errors = validationHelper.ValidateForecastDataTable(table);
+
+            if (errors.Count > 0)
+            {
+                return errors;
+            }
+            var CustomerList = context.Customers.ToList();
+            var PersonnelList = context.Personnel.ToList();
+            var customerDataList = context.CustomerData.ToList();
+            foreach (DataRow row in table.Rows)
+            {
+                // No need to skip first row because it will get only data rows not headers
+                if (row.ToStringValue(0) == "CustomerID" || row.ToStringValue(0) == "SalespersonID")
+                {
+                    continue;
+                }
+
+                var d = new ForecastDataStaging();
+                d.CustomerClientID = row.ToStringValue(0);
+                d.PersonClientID = row.ToStringValue(1);
+                d.Period = row.ToDateTime(2);
+                d.SalesForecast = (decimal?)row.ToDoubleOrNull(3);
+                d.SalesTarget = (decimal?)row.ToDoubleOrNull(4);
+                d.GPPForecast = (decimal?)row.ToDoubleOrNull(5);
+                d.GPPTarget = (decimal?)row.ToDoubleOrNull(6);
+                d.CallsForecast = row.ToDoubleOrNull(7);
+                d.CallsTarget = row.ToDoubleOrNull(8);
+                d.Potential = (decimal?)row.ToDoubleOrNull(9);
+                d.CurrentOpportunity = (decimal?)row.ToDoubleOrNull(10);
+                d.FutureOpportunity = (decimal?)row.ToDoubleOrNull(11);
+                d.Strategy = row.ToStringValue(12);
+                d.MarketShare = (decimal?)row.ToDoubleOrNull(13);
+                d.AtRisk = (decimal?)row.ToDoubleOrNull(14);
+                d.RiskExplanation = row.ToStringValue(15);
+
+                //check for already exists
+                var singleCustomer = CustomerList.Where(w => w.ClientID == d.CustomerClientID).FirstOrDefault();
+                var singlePerson = PersonnelList.Where(w => w.ClientID == d.PersonClientID).FirstOrDefault();
+                CustomerData data = new CustomerData();
+                if (singleCustomer != null && singleCustomer.ID > 0 && singlePerson != null && singlePerson.ID > 0)
+                {
+                    data = customerDataList.Where(w => w.CustomerID == singleCustomer.ID && w.PersonnelID == singlePerson.ID && w.Period.Date == d.Period.Date).FirstOrDefault();
+                }
+                if (singleCustomer != null && singleCustomer.ID > 0 && singlePerson != null && singlePerson.ID > 0)
+                {
+                    if (data != null && data.ID > 0)
+                    {
+                        UpdateCustomerData(data, d, singleCustomer.ID, singlePerson.ID);
+                    }
+                    else
+                    {
+                        InsertCustomerData(d, singleCustomer.ID, singlePerson.ID);
+                    }
+                }
+            }
+
+            return errors;
+        }
+        private void UpdateCustomerData(CustomerData data, ForecastDataStaging obj, int customerId, int personnelId)
+        {
+            data.CustomerID = customerId;
+            data.PersonnelID = personnelId;
+            data.Period = obj.Period;
+            data.SalesForecast = obj.SalesForecast;
+            data.SalesTarget = obj.SalesTarget;
+            data.CostForecast = obj.GPPForecast;
+            data.CostTarget = obj.GPPTarget;
+            data.CallsForecast = obj.CallsForecast;
+            data.CallsTarget = obj.CallsTarget;
+            data.Potential = obj.Potential;
+            data.CurrentOpportunity = obj.CurrentOpportunity;
+            data.FutureOpportunity = obj.FutureOpportunity;
+            data.Strategy = obj.Strategy;
+            data.MarketShare = obj.MarketShare;
+            data.AtRisk = obj.AtRisk;
+            data.RiskExplanation = obj.RiskExplanation;
+            context.SaveChanges();
+        }
+        private void InsertCustomerData(ForecastDataStaging obj, int customerId, int personnelId)
+        {
+            CustomerData customerData = new CustomerData()
+            {
+                CustomerID = customerId,
+                PersonnelID = personnelId,
+                Period = obj.Period,
+                SalesForecast = obj.SalesForecast,
+                SalesTarget = obj.SalesTarget,
+                CostForecast = obj.GPPForecast,
+                CostTarget = obj.GPPTarget,
+                CallsForecast = obj.CallsForecast,
+                CallsTarget = obj.CallsTarget,
+                Potential = obj.Potential,
+                CurrentOpportunity = obj.CurrentOpportunity,
+                FutureOpportunity = obj.FutureOpportunity,
+                Strategy = obj.Strategy,
+                MarketShare = obj.MarketShare,
+                AtRisk = obj.AtRisk,
+                RiskExplanation = obj.RiskExplanation,
+            };
+            context.CustomerData.Add(customerData);
+            context.SaveChanges();
         }
     }
 }

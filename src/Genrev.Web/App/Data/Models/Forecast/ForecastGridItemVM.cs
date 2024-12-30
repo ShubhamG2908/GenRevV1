@@ -12,8 +12,8 @@ namespace Genrev.Web.App.Data.Models.Forecast
         public int? CustomerDataID { get; set; }
         public decimal? SalesForecast { get; set; }
         public decimal? SalesTarget { get; set; }
-        public int? CallsForecast { get; set; }
-        public int? CallsTarget { get; set; }
+        public double? CallsForecast { get; set; }
+        public double? CallsTarget { get; set; }
         public decimal? Potential { get; set; }
         public decimal? CurrentOpportunity { get; set; }
         public decimal? FutureOpportunity { get; set; }

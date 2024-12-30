@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using Genrev.Data;
 using Genrev.Domain.Data;
-using Genrev.Data;
+using System;
 
 namespace Genrev.DomainServices.Data
 {
@@ -50,6 +45,10 @@ namespace Genrev.DomainServices.Data
 
                 case ImportType.Personnel:
                     context.UpsertPersonnelStagingToLive(accountID);
+                    break;
+
+                case ImportType.ForecastData:
+                    context.UpsertForecastDataStagingToLive(accountID);
                     break;
 
                 default:

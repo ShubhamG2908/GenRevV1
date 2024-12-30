@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Genrev.Domain.DataSets
 {
@@ -19,12 +15,12 @@ namespace Genrev.Domain.DataSets
         public decimal? CostActual { get; set; }
         public decimal? CostForecast { get; set; }
         public decimal? CostTarget { get; set; }
-        public int? CallsActual { get; set; }
-        public int? CallsForecast { get; set; }
-        public int? CallsTarget { get; set; }
+        public double? CallsActual { get; set; }
+        public double? CallsForecast { get; set; }
+        public double? CallsTarget { get; set; }
 
         
-        public int? CallsDifference {
+        public double? CallsDifference {
             get
             {
                 if (!CallsActual.HasValue) {

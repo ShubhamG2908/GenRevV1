@@ -30,9 +30,9 @@ namespace Genrev.Domain.DataSets
         public decimal? CostForecast { get; set; }
         public decimal? CostTarget { get; set; }
 
-        public int? CallsActual { get; set; }
-        public int? CallsForecast { get; set; }
-        public int? CallsTarget { get; set; }
+        public double? CallsActual { get; set; }
+        public double? CallsForecast { get; set; }
+        public double? CallsTarget { get; set; }
 
         public string Strategy { get; set; }
 

@@ -125,7 +125,10 @@ namespace Genrev.Web.App.Data
         }
 
 
-
+        public ActionResult OpenImportForecastPopup()
+        {
+            return PartialView("ImportForecastDataPopup");
+        }
 
         #endregion
 
@@ -203,6 +206,9 @@ namespace Genrev.Web.App.Data
                         break;
                     case "monthlyData":
                         filename += "MonthlyData.csv";
+                        break;
+                    case "forecastData":
+                        filename += "ForecastData.csv";
                         break;
                     default:
                         throw new ArgumentOutOfRangeException("Type not registered");
@@ -470,7 +476,7 @@ namespace Genrev.Web.App.Data
             model.MatrixGridItems = _service.GetMatrixGridItems(model.SelectedYear);
             model.ViewMode = viewModelString == "true" ? Models.Management.MatrixVM.ViewModes.GroupedByMonth : Models.Management.MatrixVM.ViewModes.ListAll;
 
-            model.CustomersList = CommonListItems.DataService.GetCustomerCommonList().OrderBy(x => x.Name).ToList();            
+            model.CustomersList = CommonListItems.DataService.GetCustomerCommonList().OrderBy(x => x.Name).ToList();
             model.PersonnelList = CommonListItems.DataService.GetPersonnalCommonListAll().OrderBy(x => x.DisplayName).ToList();
             model.ProductsList = CommonListItems.DataService.GetProductCommonList().OrderBy(x => x.SKU).ToList();
             model.FiscalYearPeriodsList = CommonListItems.DataService.GetPeriodCommonList(_service.GetFiscalYearPeriods(model.SelectedYear));
@@ -545,6 +551,34 @@ namespace Genrev.Web.App.Data
                 _service.MatrixGridBatchUpdate(updateValues.Update);
             }
             return TransferToAction("DailyManagementMatrixGridCallback");
+        }
+
+        #endregion
+
+        #region Forecast Data
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        [Authorize(Roles = "sysadmin")]
+        public ActionResult UploadForecastData()
+        {
+
+            string[] errors;
+
+            DevExpress.Web.UploadedFile[] files = DevExpress.Web.Mvc.UploadControlExtension.GetUploadedFiles(
+                "uploadForecastData",
+                DataUploadValidation.Settings,
+                out errors,
+                (sender, e) =>
+                {
+                    var validationErrors = _service.ProcessFileImport(Domain.Data.ImportType.ForecastData, e.UploadedFile);
+                    e.UploadedFile.IsValid = validationErrors.Count == 0 ? true : false;
+                    if (validationErrors.Count > 0)
+                    {
+                        e.ErrorText = getCompiledValidationMessages(validationErrors);
+                    }
+                });
+
+            return null;
         }
 
         #endregion

@@ -1,9 +1,6 @@
-﻿using System;
+﻿using Genrev.Web.App.Customers.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-
-using Genrev.Web.App.Customers.Models;
 
 namespace Genrev.Web.App.Customers
 {
@@ -11,13 +8,15 @@ namespace Genrev.Web.App.Customers
     {
 
 
-        public List<CustomerListItemVM> GetCustomerListItems() {
+        public List<CustomerListItemVM> GetCustomerListItems()
+        {
 
             var items = new List<Models.CustomerListItemVM>();
             var account = AppService.Current.Account;
             var domainCustomers = account.PrimaryCompany.Customers.OrderBy(x => x.Name).ToList();
 
-            foreach (var dc in domainCustomers) {
+            foreach (var dc in domainCustomers)
+            {
 
                 var c = new CustomerListItemVM();
                 c.ID = dc.ID;
@@ -30,7 +29,7 @@ namespace Genrev.Web.App.Customers
                 c.Phone = dc.Phone;
                 c.Name = dc.Name;
                 c.CustomerType = dc.Type?.Name;
-                c.AccountType = dc.AccountType?.Name;                
+                c.AccountType = dc.AccountType?.Name;
 
                 items.Add(c);
             }
@@ -38,8 +37,8 @@ namespace Genrev.Web.App.Customers
             return items;
         }
 
-
-        public List<MappingCustomerListItemVM> GetCustomerMappingsListItems(int personnelID) {
+        public List<MappingCustomerListItemVM> GetCustomerMappingsListItems(int personnelID)
+        {
 
             var model = new List<Models.MappingCustomerListItemVM>();
 
@@ -49,32 +48,43 @@ namespace Genrev.Web.App.Customers
 
             var mappedCustomers = account.PrimaryCompany.Customers.Where(x => x.Personnel.Contains(person)).ToList();
 
-            foreach (var dc in domainCustomers) {
+            foreach (var dc in domainCustomers)
+            {
                 var c = new Models.MappingCustomerListItemVM();
                 c.ID = dc.ID;
                 c.Name = dc.Name;
-                if (mappedCustomers.Contains(dc)) {
+                if (mappedCustomers.Contains(dc))
+                {
                     c.Selected = true;
                 }
                 model.Add(c);
             }
-
             return model;
-            
         }
 
-        public void ToggleCustomerMapping(int personnelID, int customerID) {
+        public void ToggleCustomerMapping(int personnelID, int customerID)
+        {
 
             var person = dataContext.Personnel.Find(personnelID);
             var existingCustomer = person.Customers.Where(x => x.ID == customerID).FirstOrDefault();
 
-            if (existingCustomer == null) {
+            if (existingCustomer == null)
+            {
                 // toggle on
                 var newCustomer = dataContext.Customers.Find(customerID);
                 person.Customers.Add(newCustomer);
-            } else {
+            }
+            else
+            {
                 // toggle off
                 person.Customers.Remove(existingCustomer);
+
+                ////delete existing records from CustomerData table for this personnelID and CustomerID related.
+                //var existingCustomerData = dataContext.CustomerData.Where(w => w.PersonnelID == personnelID && w.CustomerID == customerID).ToList();
+                //if (existingCustomerData.Count > 0)
+                //{                    
+                //    dataContext.CustomerData.RemoveRange(existingCustomerData);
+                //}
             }
 
             dataContext.SaveChanges();
@@ -88,11 +98,13 @@ namespace Genrev.Web.App.Customers
 
         private Genrev.Data.GenrevContext dataContext;
 
-        public CustomersDataService() {
+        public CustomersDataService()
+        {
             dataContext = new Genrev.Data.GenrevContext();
         }
 
-        public CustomersDataService(Genrev.Data.GenrevContext context) {
+        public CustomersDataService(Genrev.Data.GenrevContext context)
+        {
             dataContext = context;
         }
 

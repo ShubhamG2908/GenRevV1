@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Genrev.Domain.DataSets
 {
@@ -14,16 +11,20 @@ namespace Genrev.Domain.DataSets
         public decimal Potential { get; set; }
         public decimal CurrentOpportunity { get; set; }
         public decimal FutureOpportunity { get; set; }
+        public decimal MarketShare { get; set; }
 
 
 
-        public static List<OpportunitiesAggregate> TruncateList(IEnumerable<OpportunitiesAggregate> items, int maxItems, bool appendTruncatedAsOther = true) {
+        public static List<OpportunitiesAggregate> TruncateList(IEnumerable<OpportunitiesAggregate> items, int maxItems, bool appendTruncatedAsOther = true)
+        {
 
-            if (items.Count() > maxItems) {
+            if (items.Count() > maxItems)
+            {
 
                 var truncatedList = items.Take(maxItems);
 
-                if (!appendTruncatedAsOther) {
+                if (!appendTruncatedAsOther)
+                {
                     return truncatedList.ToList();
                 }
 
@@ -33,13 +34,16 @@ namespace Genrev.Domain.DataSets
                 combinedElements.Potential = nonvisibleList.Sum(x => x.Potential);
                 combinedElements.CurrentOpportunity = nonvisibleList.Sum(x => x.CurrentOpportunity);
                 combinedElements.FutureOpportunity = nonvisibleList.Sum(x => x.FutureOpportunity);
+                combinedElements.MarketShare = nonvisibleList.Sum(x => x.MarketShare);
 
                 var finalList = truncatedList.ToList();
                 finalList.Add(combinedElements);
 
                 return finalList;
 
-            } else {
+            }
+            else
+            {
 
                 return items.ToList();
             }

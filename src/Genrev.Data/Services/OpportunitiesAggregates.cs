@@ -11,7 +11,8 @@ namespace Genrev.Data.Services
     class OpportunitiesAggregates
     {
 
-        public static List<Domain.DataSets.OpportunitiesAggregate> GetByPersonnel(GenrevContext context, DateTime startDate, DateTime endDate, int[] personnelIDs) {
+        public static List<Domain.DataSets.OpportunitiesAggregate> GetByPersonnel(GenrevContext context, DateTime startDate, DateTime endDate, int[] personnelIDs)
+        {
 
             IEnumerable<DTOs.OpportunitiesAggregate> data = new List<DTOs.OpportunitiesAggregate>();
 
@@ -29,7 +30,8 @@ namespace Genrev.Data.Services
 
         }
 
-        public static List<Domain.DataSets.OpportunitiesAggregate> GetByIndustry(GenrevContext context, DateTime startDate, DateTime endDate, int[] personnelIDs) {
+        public static List<Domain.DataSets.OpportunitiesAggregate> GetByIndustry(GenrevContext context, DateTime startDate, DateTime endDate, int[] personnelIDs)
+        {
 
             IEnumerable<DTOs.OpportunitiesAggregate> data = new List<DTOs.OpportunitiesAggregate>();
 
@@ -47,7 +49,8 @@ namespace Genrev.Data.Services
 
         }
 
-        public static List<Domain.DataSets.OpportunitiesAggregate> GetByCustomerType(GenrevContext context, DateTime startDate, DateTime endDate, int[] personnelIDs) {
+        public static List<Domain.DataSets.OpportunitiesAggregate> GetByCustomerType(GenrevContext context, DateTime startDate, DateTime endDate, int[] personnelIDs)
+        {
 
             IEnumerable<DTOs.OpportunitiesAggregate> data = new List<DTOs.OpportunitiesAggregate>();
 
@@ -65,7 +68,8 @@ namespace Genrev.Data.Services
 
         }
 
-        public static List<Domain.DataSets.OpportunitiesAggregate> GetByAccountType(GenrevContext context, DateTime startDate, DateTime endDate, int[] personnelIDs) {
+        public static List<Domain.DataSets.OpportunitiesAggregate> GetByAccountType(GenrevContext context, DateTime startDate, DateTime endDate, int[] personnelIDs)
+        {
 
             IEnumerable<DTOs.OpportunitiesAggregate> data = new List<DTOs.OpportunitiesAggregate>();
 
@@ -103,17 +107,20 @@ namespace Genrev.Data.Services
         }
 
 
-        private static List<Domain.DataSets.OpportunitiesAggregate> getResults(IEnumerable<DTOs.OpportunitiesAggregate> data) {
+        private static List<Domain.DataSets.OpportunitiesAggregate> getResults(IEnumerable<DTOs.OpportunitiesAggregate> data)
+        {
 
             var results = new List<Domain.DataSets.OpportunitiesAggregate>();
 
-            foreach (var d in data) {
+            foreach (var d in data)
+            {
                 var item = new Domain.DataSets.OpportunitiesAggregate();
                 item.GroupEntityID = d.GroupEntityID;
                 item.GroupEntityName = d.GroupEntityName;
                 item.Potential = d.Potential;
                 item.CurrentOpportunity = d.CurrentOpportunity;
                 item.FutureOpportunity = d.FutureOpportunity;
+                item.MarketShare = d.MarketShare;
                 results.Add(item);
             }
 

@@ -143,7 +143,8 @@ define(function () {
                 var s = '<b>' + this.point.name + '</b><br />';
                 s += '<hr>'
                 s += 'Dollars: ' + Genrev.FormatMoney(this.point.y) + '<br />';
-                s += 'Percent: ' + Math.round(this.point.percentage) + '%';
+                s += 'Percent: ' + Math.round(this.point.percentage) + '%<br />';
+                s += 'Market Share: ' + Math.round(this.point.z) + '%';
 
                 return s;
             },

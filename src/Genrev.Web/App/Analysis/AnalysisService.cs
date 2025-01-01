@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Dynamic;
-using Newtonsoft.Json.Linq;
+﻿using Genrev.Domain.DataSets;
 using Genrev.DomainServices.Data;
-using Genrev.Web.App.Analysis.Models;
-using static Genrev.Web.App.CommonListItems;
-using Genrev.Domain.DataSets;
-using Genrev.Web.App.Products.Models;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
 
 namespace Genrev.Web.App.Analysis
 {
@@ -1111,9 +1108,9 @@ namespace Genrev.Web.App.Analysis
 
                 dynamic model = new ExpandoObject();
 
-                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential }).ToList();
-                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity }).ToList();
-                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity }).ToList();
+                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential, z = x.MarketShare }).ToList();
+                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity, z = x.MarketShare }).ToList();
+                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity, z = x.MarketShare }).ToList();
 
                 JObject o = JObject.FromObject(model);
 
@@ -1134,9 +1131,9 @@ namespace Genrev.Web.App.Analysis
 
                 dynamic model = new ExpandoObject();
 
-                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential }).ToList();
-                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity }).ToList();
-                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity }).ToList();
+                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential, z = x.MarketShare }).ToList();
+                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity, z = x.MarketShare }).ToList();
+                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity, z = x.MarketShare }).ToList();
 
                 JObject o = JObject.FromObject(model);
 
@@ -1157,9 +1154,9 @@ namespace Genrev.Web.App.Analysis
 
                 dynamic model = new ExpandoObject();
 
-                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential }).ToList();
-                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity }).ToList();
-                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity }).ToList();
+                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential, z = x.MarketShare }).ToList();
+                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity, z = x.MarketShare }).ToList();
+                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity, z = x.MarketShare }).ToList();
 
                 JObject o = JObject.FromObject(model);
 
@@ -1180,9 +1177,9 @@ namespace Genrev.Web.App.Analysis
 
                 dynamic model = new ExpandoObject();
 
-                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential }).ToList();
-                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity }).ToList();
-                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity }).ToList();
+                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential, z = x.MarketShare }).ToList();
+                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity, z = x.MarketShare }).ToList();
+                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity, z = x.MarketShare }).ToList();
 
                 JObject o = JObject.FromObject(model);
 
@@ -1203,9 +1200,9 @@ namespace Genrev.Web.App.Analysis
 
                 dynamic model = new ExpandoObject();
 
-                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential }).ToList();
-                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity }).ToList();
-                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity }).ToList();
+                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential, z = x.MarketShare }).ToList();
+                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity, z = x.MarketShare }).ToList();
+                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity, z = x.MarketShare }).ToList();
 
                 JObject o = JObject.FromObject(model);
 

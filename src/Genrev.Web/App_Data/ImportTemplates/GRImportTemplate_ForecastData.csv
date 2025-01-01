@@ -1,4 +1,4 @@
-Note: Please add Period date in mm/dd/yyyy format only.,,,,,,,,,,,,,,,
-CustomerID,SalespersonID,Period,Sales Forecast,Sales Target,GPP Forecast,GPP Target,Calls Forecast,Calls Target,Potential,Current Opportunity,Future Oppertunity,Strategy,Market Share,At Risk,Risk Explanation
-C-01,P-01,12/1/2024,6000,10000,67,70,2,2,1600000,100000,700000,Strategy-1,0.2341,151000,Risk Explanation-1
-C-02,P-02,12/2/2024,12500,17000,25,30.4,2,2,500000,50000,100000,Strategy-2,0.3523,100000,Risk Explanation-2
+"Note: The ""Period"" Date must be formatted as MM/DD/YYYY and should always represent the first day of each month, as the forecast data is structured on a monthly basis.",,,,,,,,,,,,,,,
+CustomerID,SalespersonID,Period,Sales Forecast,Sales Target,GPP Forecast,GPP Target,Calls Forecast,Calls Target,Strategy,Potential,Current Opportunity,Future Opportunity,Market Share,At Risk,Risk Explanation
+C-01,P-01,11/1/2024,6000,10000,67,70,2,2,Strategy-1,1600000,100000,700000,0.2341,151000,Risk Explanation-1
+C-02,P-02,12/1/2024,12500,17000,25,30.4,2,2,Strategy-2,500000,50000,100000,0.3523,100000,Risk Explanation-2

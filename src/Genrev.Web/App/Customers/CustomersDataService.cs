@@ -79,12 +79,12 @@ namespace Genrev.Web.App.Customers
                 // toggle off
                 person.Customers.Remove(existingCustomer);
 
-                ////delete existing records from CustomerData table for this personnelID and CustomerID related.
-                //var existingCustomerData = dataContext.CustomerData.Where(w => w.PersonnelID == personnelID && w.CustomerID == customerID).ToList();
-                //if (existingCustomerData.Count > 0)
-                //{                    
-                //    dataContext.CustomerData.RemoveRange(existingCustomerData);
-                //}
+                //delete existing records from CustomerData table for this personnelID and CustomerID related.
+                var existingCustomerData = dataContext.CustomerData.Where(w => w.PersonnelID == personnelID && w.CustomerID == customerID).ToList();
+                if (existingCustomerData.Count > 0)
+                {
+                    dataContext.CustomerData.RemoveRange(existingCustomerData);
+                }
             }
 
             dataContext.SaveChanges();

@@ -458,10 +458,10 @@ namespace Genrev.DomainServices.Data
                 d.GPPTarget = (decimal?)row.ToDoubleOrNull(6);
                 d.CallsForecast = row.ToDoubleOrNull(7);
                 d.CallsTarget = row.ToDoubleOrNull(8);
-                d.Potential = (decimal?)row.ToDoubleOrNull(9);
-                d.CurrentOpportunity = (decimal?)row.ToDoubleOrNull(10);
-                d.FutureOpportunity = (decimal?)row.ToDoubleOrNull(11);
-                d.Strategy = row.ToStringValue(12);
+                d.Strategy = row.ToStringValue(9);
+                d.Potential = (decimal?)row.ToDoubleOrNull(10);
+                d.CurrentOpportunity = (decimal?)row.ToDoubleOrNull(11);
+                d.FutureOpportunity = (decimal?)row.ToDoubleOrNull(12);                
                 d.MarketShare = (decimal?)row.ToDoubleOrNull(13);
                 d.AtRisk = (decimal?)row.ToDoubleOrNull(14);
                 d.RiskExplanation = row.ToStringValue(15);
@@ -476,6 +476,13 @@ namespace Genrev.DomainServices.Data
                 }
                 if (singleCustomer != null && singleCustomer.ID > 0 && singlePerson != null && singlePerson.ID > 0)
                 {
+                    //check for hierarchy
+                    var personnelDownline = context.GetDownstreamCustomerIDs(singlePerson.ID).ToList();
+                    if (!personnelDownline.Contains(singleCustomer.ID))
+                    {
+                        errors.Add(new ValidationError() { Message = singleCustomer.ClientID + " is not mapped with " + singlePerson.ClientID });
+                        return errors;
+                    }
                     if (data != null && data.ID > 0)
                     {
                         UpdateCustomerData(data, d, singleCustomer.ID, singlePerson.ID);

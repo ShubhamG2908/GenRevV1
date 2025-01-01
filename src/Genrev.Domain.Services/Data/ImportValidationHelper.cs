@@ -459,7 +459,7 @@ namespace Genrev.DomainServices.Data
                     }
                 }
 
-                s = row.ToStringValue(9);   // Opportunity Potential
+                s = row.ToStringValue(10);   // Opportunity Potential
                 if (!string.IsNullOrWhiteSpace(s))
                 {
                     decimal d;
@@ -477,7 +477,7 @@ namespace Genrev.DomainServices.Data
                     }
                 }
 
-                s = row.ToStringValue(10);   // Opportunity Current
+                s = row.ToStringValue(11);   // Opportunity Current
                 if (!string.IsNullOrWhiteSpace(s))
                 {
                     decimal d;
@@ -495,7 +495,7 @@ namespace Genrev.DomainServices.Data
                     }
                 }
 
-                s = row.ToStringValue(11);   // Opportunity Future
+                s = row.ToStringValue(12);   // Opportunity Future
                 if (!string.IsNullOrWhiteSpace(s))
                 {
                     decimal d;

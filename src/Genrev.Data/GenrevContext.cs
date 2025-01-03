@@ -2,26 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
-
 using Genrev.Domain.Accounts;
 using Genrev.Domain.Companies;
 using Genrev.Domain.Users;
 using Genrev.Domain.Products;
 using Genrev.Domain.DataSets;
 using Genrev.Domain.Data.Staging;
-
 using System.Data;
 using System.Data.SqlClient;
 using Genrev.Domain.Data;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Infrastructure.Annotations;
+using System.Data.Entity.SqlServer;
 
 namespace Genrev.Data
 {
 
+    public class GenRevDbContextConfiguration : DbConfiguration
+    {
+        public GenRevDbContextConfiguration()
+        {
+            var now = SqlProviderServices.Instance;
+            SqlProviderServices.TruncateDecimalsToScale = false;
+            this.SetProviderServices(SqlProviderServices.ProviderInvariantName, SqlProviderServices.Instance);
+        }
+    }
 
-    
-
+    [DbConfigurationType(typeof(GenRevDbContextConfiguration))]
     public class GenrevContext : DbContext
     {
 
@@ -285,7 +292,7 @@ namespace Genrev.Data
         #region MODEL BUILDING
 
         private void buildUserModels(DbModelBuilder modelBuilder) {
-
+           
             modelBuilder.Entity<Role>().Property(e => e.IsSysAdministrator).HasColumnName("RoleIsSysAdministrator");
             modelBuilder.Entity<Role>().Property(e => e.IsSysSalesPro).HasColumnName("RoleIsSysSalesPro");
             modelBuilder.Entity<Role>().Property(e => e.Name).HasColumnName("RoleName");

@@ -72,6 +72,7 @@ define(function () {
                             e.customArgs["showGPD"] = DevEx.Controls.GetValue("ShowGPD");
                             e.customArgs["showGPP"] = DevEx.Controls.GetValue("ShowGPP");
                             e.customArgs["showCalls"] = DevEx.Controls.GetValue("ShowCalls");
+                            e.customArgs["showMarketShare"] = DevEx.Controls.GetValue("ShowMarketShare");
                         });
                     },   // end data.matrix.grid.events.addBeginCallbackHandler
 
@@ -96,6 +97,9 @@ define(function () {
                         });
 
                         DevEx.Controls.GetByName("ShowCalls").ValueChanged.AddHandler(function (s, e) {
+                            grid.PerformCallback();
+                        });
+                        DevEx.Controls.GetByName("ShowMarketShare").ValueChanged.AddHandler(function (s, e) {
                             grid.PerformCallback();
                         });
                         

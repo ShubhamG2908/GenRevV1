@@ -1,6 +1,8 @@
 ﻿using Genrev.Domain.DataSets;
 using Genrev.DomainServices.Data;
+
 using Newtonsoft.Json.Linq;
+
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -47,16 +49,30 @@ namespace Genrev.Web.App.Analysis
 
             context.Database.Log = (s) => System.Diagnostics.Debug.WriteLine(s);
 
-            int[] ids = AppService.Current.ViewContext.PersonnelIDs;
+            List<int> personnelIds = AppService.Current.ViewContext.PersonnelIDs.ToList();
+            List<int> customerIds = new List<int>();
+            if (personnelIds != null && personnelIds.Count > 0)
+            {
+                foreach (var pId in personnelIds)
+                {
+                    var tempCustomers = context.GetDownstreamCustomerIDs(pId).ToList();
+                    if (tempCustomers != null && tempCustomers.Count > 0)
+                    {
+                        customerIds.AddRange(tempCustomers);
+                        customerIds = customerIds.Distinct().Select(s => s).ToList();
+                    }
+                }
+            }
 
             var data = context.CustomerDrilldowns
-                .Where(x => x.Period >= startDate && x.Period <= endDate && ids.ToList().Contains((int)x.PersonnelID))
+                .Where(x => x.Period >= startDate && x.Period <= endDate && personnelIds.Contains((int)x.PersonnelID) && customerIds.Contains(x.CustomerID))
                 .GroupBy(x => new
                 {
                     x.CalendarMonth,
                     x.CalendarYear,
                     x.CustomerID,
                     x.CustomerName,
+                    x.MarketShare,
                     x.PersonnelID,
                     x.PersonFirstName,
                     x.PersonLastName,
@@ -72,6 +88,7 @@ namespace Genrev.Web.App.Analysis
                     CalendarMonth = y.Key.CalendarMonth,
                     CalendarYear = y.Key.CalendarYear,
                     CustomerName = y.Key.CustomerName,
+                    MarketShare = y.Key.MarketShare,
                     PersonFirstName = y.Key.PersonFirstName,
                     PersonLastName = y.Key.PersonLastName,
                     ProductSKU = y.Key.ProductSKU,

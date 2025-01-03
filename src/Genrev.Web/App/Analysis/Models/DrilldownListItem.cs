@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Genrev.Web.App.Analysis.Models
 {
     public class DrilldownListItem
     {
-        
+
         public int ID { get; set; }
 
         public DateTime Period { get; set; }
 
         public string CompanyName { get; set; }
+        public decimal? MarketShare { get; set; }
         public string Industry { get; set; }
         public string CustomerType { get; set; }
         public string AccountType { get; set; }
@@ -41,10 +39,11 @@ namespace Genrev.Web.App.Analysis.Models
 
         public double? CallsActual { get; set; }
         public double? CallsForecast { get; set; }
-        public double? CallsDifference { get; set; }        
+        public double? CallsDifference { get; set; }
 
 
-        public static DrilldownListItem FromCustomerDrilldownModel(Domain.DataSets.CustomerDrilldown data) {
+        public static DrilldownListItem FromCustomerDrilldownModel(Domain.DataSets.CustomerDrilldown data)
+        {
 
 
             var model = new DrilldownListItem();
@@ -52,6 +51,7 @@ namespace Genrev.Web.App.Analysis.Models
             model.ID = data.ID;
             model.Period = data.Period;
             model.CompanyName = data.CustomerName;
+            model.MarketShare = data.MarketShare;
             model.SalesProfessional = data.PersonFirstName + " " + data.PersonLastName;
 
             if (AppService.Current.Settings.ProductFeatureEnabled)
@@ -66,11 +66,11 @@ namespace Genrev.Web.App.Analysis.Models
             model.IndustryID = data.IndustryID;
             model.CustomerTypeID = data.CustomerTypeID;
             model.AccountTypeID = data.AccountTypeID;
-            
+
             model.CallsActual = data.CallsActual;
             model.CallsDifference = data.CallsDifference;
             model.CallsForecast = data.CallsForecast;
-            
+
             model.GPDActual = data.GrossProfitDollars;
             model.GPDDifference = data.GrossProfitDollarsDifference;
             model.GPDForecast = data.GrossProfitDollarsForecast;
@@ -80,14 +80,14 @@ namespace Genrev.Web.App.Analysis.Models
             model.GPPDifference = data.GrossProfitPercentDifference;
             model.GPPForecast = data.GrossProfitPercentForecast.HasValue ? data.GrossProfitPercentForecast / 100 : null;
             model.GPPVariance = data.GrossProfitPercentVariance;
-            
+
             model.SalesActual = data.SalesActual;
             model.SalesDifference = data.SalesDifference;
             model.SalesForecast = data.SalesForecast;
             model.SalesVariance = data.SalesVariance;
-            
+
             return model;
         }
-        
+
     }
 }

@@ -8,6 +8,7 @@ using System.Linq;
 using Genrev.Domain.DataSets;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Data.Entity;
+using System.Globalization;
 
 namespace Genrev.DomainServices.Data
 {
@@ -413,7 +414,8 @@ namespace Genrev.DomainServices.Data
                 var d = new MonthlyDataStaging();
                 d.CustomerClientID = row.ToStringValue(0);
                 d.PersonClientID = row.ToStringValue(1);
-                d.Period = row.ToDateTime(2);
+                //d.Period = DateTime.ParseExact(row.ToStringValue(2), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                d.Period = ConvertToDateTime(row.ToStringValue(2).ToString().Trim().Replace("/", "-"));
                 d.SalesActual = (decimal?)row.ToDoubleOrNull(3);
                 d.CostActual = (decimal?)row.ToDoubleOrNull(4);
                 d.CallsActual = (double?)row.ToDoubleOrNull(5);
@@ -451,7 +453,9 @@ namespace Genrev.DomainServices.Data
                 var d = new ForecastDataStaging();
                 d.CustomerClientID = row.ToStringValue(0);
                 d.PersonClientID = row.ToStringValue(1);
-                d.Period = row.ToDateTime(2);
+
+                d.Period = ConvertToDateTime(row.ToStringValue(2).ToString().Trim().Replace("/", "-"));
+                //d.Period = DateTime.ParseExact(row.ToStringValue(2), "MM/dd/yyyy", CultureInfo.InvariantCulture);
                 d.SalesForecast = (decimal?)row.ToDoubleOrNull(3);
                 d.SalesTarget = (decimal?)row.ToDoubleOrNull(4);
                 d.GPPForecast = (decimal?)row.ToDoubleOrNull(5);
@@ -461,7 +465,7 @@ namespace Genrev.DomainServices.Data
                 d.Strategy = row.ToStringValue(9);
                 d.Potential = (decimal?)row.ToDoubleOrNull(10);
                 d.CurrentOpportunity = (decimal?)row.ToDoubleOrNull(11);
-                d.FutureOpportunity = (decimal?)row.ToDoubleOrNull(12);                
+                d.FutureOpportunity = (decimal?)row.ToDoubleOrNull(12);
                 d.MarketShare = (decimal?)row.ToDoubleOrNull(13);
                 d.AtRisk = (decimal?)row.ToDoubleOrNull(14);
                 d.RiskExplanation = row.ToStringValue(15);
@@ -503,8 +507,8 @@ namespace Genrev.DomainServices.Data
             data.Period = obj.Period;
             data.SalesForecast = obj.SalesForecast;
             data.SalesTarget = obj.SalesTarget;
-            data.CostForecast = obj.GPPForecast;
-            data.CostTarget = obj.GPPTarget;
+            data.CostForecast = CustomerData.GetCost(obj.SalesForecast, obj.GPPForecast);
+            data.CostTarget = CustomerData.GetCost(obj.SalesTarget, obj.GPPTarget);
             data.CallsForecast = obj.CallsForecast;
             data.CallsTarget = obj.CallsTarget;
             data.Potential = obj.Potential;
@@ -525,8 +529,8 @@ namespace Genrev.DomainServices.Data
                 Period = obj.Period,
                 SalesForecast = obj.SalesForecast,
                 SalesTarget = obj.SalesTarget,
-                CostForecast = obj.GPPForecast,
-                CostTarget = obj.GPPTarget,
+                CostForecast = CustomerData.GetCost(obj.SalesForecast, obj.GPPForecast),
+                CostTarget = CustomerData.GetCost(obj.SalesTarget, obj.GPPTarget),
                 CallsForecast = obj.CallsForecast,
                 CallsTarget = obj.CallsTarget,
                 Potential = obj.Potential,
@@ -539,6 +543,63 @@ namespace Genrev.DomainServices.Data
             };
             context.CustomerData.Add(customerData);
             context.SaveChanges();
+        }
+        private static DateTime ConvertToDateTime(string dateValue)
+        {
+            dateValue = dateValue.Trim();
+            string[] formats = {
+                "MM-dd-yy hh:mm:ss tt",
+                "MM/dd/yy hh:mm:ss tt",
+                "MM-dd-yyyy hh:mm:ss tt",
+                "MM/dd/yyyy hh:mm:ss tt",
+                "yyyy-MM-dd HH:mm:ss",
+                "MM-dd-yyyy HH:mm:ss",
+                "MM/dd/yyyy HH:mm:ss",
+                "dd-MM-yyyy HH:mm:ss",
+                "MM-dd-yy",
+                "MM/dd/yy",
+                "M/dd/yyyy",
+                "MM/d/yyyy",
+                "MM-dd-yyyy",
+                "M-dd-yyyy",
+                "MM-d-yyyy",
+                "MM/dd/yyyy",
+                "yyyy-MM-dd",
+                "dd/MM/yyyy",
+                "dd-MM-yyyy",
+                "MM-dd-yy",
+                "MM/dd/yy",
+                "yyyyMMdd",
+                "ddMMyyyy",
+                "M-d-yy h:mm:ss tt",
+                "M/d/yy h:mm:ss tt",
+                "M-d-yyyy h:mm:ss tt",
+                "M/d/yyyy h:mm:ss tt",
+                "yyyy-M-d HH:mm:ss",
+                "M-d-yyyy HH:mm:ss",
+                "M/d/yyyy HH:mm:ss",
+                "M-d-yy",
+                "M/d/yy",
+                "M-d-yyyy",
+                "M/d/yyyy",
+                "yyyy-M-d",
+                "d/M/yyyy",
+                "d-M-yyyy",
+                "M-d-yy",
+                "M/d/yy",
+                "d/M/yyyy",
+                "d-M-yyyy"
+            };
+
+            DateTime parsedDate;
+            if (DateTime.TryParseExact(dateValue, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
+            {
+                return parsedDate;
+            }
+            else
+            {
+                return DateTime.MinValue;
+            }
         }
     }
 }

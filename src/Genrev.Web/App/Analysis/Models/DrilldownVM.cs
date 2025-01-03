@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace Genrev.Web.App.Analysis.Models
 {
@@ -15,9 +12,10 @@ namespace Genrev.Web.App.Analysis.Models
 
         public bool ShowColumnGroupClassification { get; set; } = true;
         public bool ShowColumnGroupSales { get; set; } = true;
-        public bool ShowColumnGroupGPD { get; set; } = false;
+        public bool ShowColumnGroupGPD { get; set; } = true;
         public bool ShowColumnGroupGPP { get; set; } = true;
         public bool ShowColumnGroupCalls { get; set; } = true;
+        public bool ShowColumnGroupMarketShare { get; set; } = true;
 
     }
 }

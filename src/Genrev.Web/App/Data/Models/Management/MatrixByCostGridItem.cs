@@ -29,6 +29,7 @@
         public double? CallsForecast { get; set; }
         public double? CallsTarget { get; set; }
         public decimal? CostTarget { get; set; }
+        public decimal? MarketShare { get; set; }
 
     }
 }

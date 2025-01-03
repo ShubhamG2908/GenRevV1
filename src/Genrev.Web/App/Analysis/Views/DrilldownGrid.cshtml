@@ -34,15 +34,15 @@
         s.TotalSummary.Add(new ASPxSummaryItem("SalesActual", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "SalesActual" });
         s.TotalSummary.Add(new ASPxSummaryItem("SalesForecast", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "SalesForecast" });
         s.TotalSummary.Add(new ASPxSummaryItem("SalesDifference", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "SalesDifference" });
-        s.TotalSummary.Add(new ASPxSummaryItem("SalesVariance", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "SalesVariance" });
+        //s.TotalSummary.Add(new ASPxSummaryItem("SalesVariance", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "SalesVariance" });
         s.TotalSummary.Add(new ASPxSummaryItem("GPDActual", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "GPDActual" });
         s.TotalSummary.Add(new ASPxSummaryItem("GPDForecast", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "GPDForecast" });
         s.TotalSummary.Add(new ASPxSummaryItem("GPDDifference", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "GPDDifference" });
-        s.TotalSummary.Add(new ASPxSummaryItem("GPDVariance", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPDVariance" });
-        s.TotalSummary.Add(new ASPxSummaryItem("GPPActual", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPPActual" });
-        s.TotalSummary.Add(new ASPxSummaryItem("GPPForecast", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPPForecast" });
-        s.TotalSummary.Add(new ASPxSummaryItem("GPPDifference", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPPDifference" });
-        s.TotalSummary.Add(new ASPxSummaryItem("GPPVariance", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPPVariance" });
+        //s.TotalSummary.Add(new ASPxSummaryItem("GPDVariance", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPDVariance" });
+        //s.TotalSummary.Add(new ASPxSummaryItem("GPPActual", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPPActual" });
+        //s.TotalSummary.Add(new ASPxSummaryItem("GPPForecast", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPPForecast" });
+        //s.TotalSummary.Add(new ASPxSummaryItem("GPPDifference", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPPDifference" });
+        //s.TotalSummary.Add(new ASPxSummaryItem("GPPVariance", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPPVariance" });
         s.TotalSummary.Add(new ASPxSummaryItem("CallsActual", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "CallsActual" });
         s.TotalSummary.Add(new ASPxSummaryItem("CallsForecast", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "CallsForecast" });
         s.TotalSummary.Add(new ASPxSummaryItem("CallsDifference", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "CallsDifference" });
@@ -55,6 +55,9 @@
             {
                 switch (col.Name)
                 {
+                    case "MarketShare":
+                        col.Visible = Model.ShowColumnGroupMarketShare;
+                        break;
                     case "Industry":
                         col.Visible = Model.ShowColumnGroupClassification;
                         break;
@@ -382,6 +385,16 @@
             c.Settings.AllowHeaderFilter = DefaultBoolean.True;
             c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
         });
+        s.Columns.Add(c =>
+        {
+            c.Name = "MarketShare";
+            c.Caption = "Market Share";
+            c.FieldName = "MarketShare";
+            c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            c.PropertiesEdit.DisplayFormatString = "p2";
+            c.Settings.AllowHeaderFilter = DefaultBoolean.True;
+            c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
+        });
 
         // SALES VARIANCE FORMATTING
         s.FormatConditions.AddHighlight(r =>
@@ -501,6 +514,8 @@
             Html.DevExpress().CheckBox(cb => { cb.Name = "ShowGPP"; cb.Text = "GPP"; }).Bind(Model.ShowColumnGroupGPP).Render();
             vw.Write("</td><td style='padding-left: 20px;'>");
             Html.DevExpress().CheckBox(cb => { cb.Name = "ShowCalls"; cb.Text = "Calls"; }).Bind(Model.ShowColumnGroupCalls).Render();
+            vw.Write("</td><td style='padding-left: 20px;'>");
+            Html.DevExpress().CheckBox(cb => { cb.Name = "ShowMarketShare"; cb.Text = "Market Share"; }).Bind(Model.ShowColumnGroupMarketShare).Render();
             vw.Write("</td>");
 
 

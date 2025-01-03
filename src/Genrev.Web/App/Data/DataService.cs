@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using Genrev.DomainServices.Data;
 using Genrev.Domain;
 using Genrev.Domain.DataSets;
+using System.Data.Entity.Migrations;
 
 namespace Genrev.Web.App.Data
 {
@@ -80,15 +81,28 @@ namespace Genrev.Web.App.Data
         internal void ForecastBatchUpdate(List<ForecastGridItemVM> items, int year, int personnelID)
         {
             var fiscalYear = FiscalYear.GetByYear(year, AppService.Current.Account.PrimaryCompany.FiscalYearEndMonth);
-            var existing = items.Where(m => m.CustomerDataID.HasValue);
+            var existing = items.Where(m => m.CustomerDataID.HasValue).ToList();
 
             foreach (var e in existing)
             {
-                var customerData = _context.CustomerData.Single(m => m.ID == e.CustomerDataID.Value);
-                Map(e, customerData);
+                var customerData = _context.CustomerData.Find(e.CustomerDataID.Value);
+                customerData.SalesForecast = e.SalesForecast;
+                customerData.SalesTarget = e.SalesTarget;
+                customerData.CostForecast = CustomerData.GetCost(e.SalesForecast, e.GPPForecast);
+                customerData.CostTarget = CustomerData.GetCost(e.SalesTarget, e.GPPTarget);
+                customerData.CallsForecast = e.CallsForecast;
+                customerData.CallsTarget = e.CallsTarget;
+                customerData.Potential = e.Potential;
+                customerData.CurrentOpportunity = e.CurrentOpportunity;
+                customerData.FutureOpportunity = e.FutureOpportunity;
+                customerData.Strategy = e.Strategy;
+                customerData.MarketShare = e.MarketShare;
+                customerData.AtRisk = e.AtRisk;
+                customerData.RiskExplanation = e.RiskExplanation;
+                _context.SaveChanges();
             }
 
-            var @new = items.Where(m => !m.CustomerDataID.HasValue);
+            var @new = items.Where(m => !m.CustomerDataID.HasValue).ToList();
             foreach (var e in @new)
             {
                 var customerData = new CustomerData();
@@ -102,7 +116,7 @@ namespace Genrev.Web.App.Data
             AppCache.InvalidateAll();
         }
 
-        private void Map(ForecastGridItemVM item, CustomerData customerData)
+        private CustomerData Map(ForecastGridItemVM item, CustomerData customerData)
         {
             customerData.SalesForecast = item.SalesForecast;
             customerData.SalesTarget = item.SalesTarget;
@@ -117,6 +131,7 @@ namespace Genrev.Web.App.Data
             customerData.MarketShare = item.MarketShare;
             customerData.AtRisk = item.AtRisk;
             customerData.RiskExplanation = item.RiskExplanation;
+            return customerData;
         }
         #endregion
 

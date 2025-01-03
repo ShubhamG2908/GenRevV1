@@ -27,14 +27,6 @@ define(function () {
         
     }   // end Data.Interface
 
-
-
-
-
-
-
-
-
     var data = {
 
         initialize: function () {
@@ -121,8 +113,7 @@ define(function () {
 
             init: function () {
 
-                data.matrix.load();
-
+                data.matrix.load();                
             },   // end data.matrix.init
 
             grid: {
@@ -250,6 +241,7 @@ define(function () {
                     events.addSaveChangesClickHandler(grid);
                     events.addAddRowClickHandler(grid);
                     events.addViewModeChangedHandler(grid);
+                    data.matrix.moveFooterSums();
 
                 },   // end data.matrix.grid.initialize
 
@@ -296,8 +288,9 @@ define(function () {
                     
                     h = h - buffer - outerHeight;
                     
-                    grid.SetHeight(h);
-
+                    grid.SetHeight(h);                    
+                    data.matrix.moveFooterSums();
+                    moveFooterSums();
                 }   // end data.matrix.grid.stretchHeight
 
             },  // end data.matrix.grid
@@ -313,19 +306,51 @@ define(function () {
                     success: function (res) {
                         $("#datamanagement-matrix-container").empty().append(res);
                         data.matrix.grid.initialize();
+                        data.matrix.moveFooterSums();
                     },
                     error: function () {
                         App.Error.ShowGeneral();
                     }
                 });
 
-            }   // end data.matrix.load
+            },   // end data.matrix.load
+
+            moveFooterSums: function () {              
+                var headTable = $('#ManagementMatrixGrid_DXHeaderTable:first-child');
+                var footerRow = $('#ManagementMatrixGrid_DXFooterRow');
+                if (footerRow && headTable) {
+                    $('#ManagementMatrixGrid_DXFooterRow td').text(
+                        function (ndx, text) {
+                            var newText = text
+                                .replace("Sum=", "")
+                                .replace("Avg=", "");
+                            return newText;
+                        }
+                    );
+                    headTable.append(footerRow);
+                }
+            }
 
         }   // end data.matrix
 
     }   // end data
-
-
+    
     window.Data = Interface;
 
 });
+
+function moveFooterSums() {
+    var headTable = $('#ManagementMatrixGrid_DXHeaderTable:first-child');
+    var footerRow = $('#ManagementMatrixGrid_DXFooterRow');
+    if (footerRow && headTable) {
+        $('#ManagementMatrixGrid_DXFooterRow td').text(
+            function (ndx, text) {
+                var newText = text
+                    .replace("Sum=", "")
+                    .replace("Avg=", "");
+                return newText;
+            }
+        );
+        headTable.append(footerRow);
+    }
+}

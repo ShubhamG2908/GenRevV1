@@ -42,6 +42,7 @@ namespace Genrev.Web.App.Analysis
             bool showGPD = bool.Parse(Request.Params["showGPD"].Split(',')[1]);
             bool showGPP = bool.Parse(Request.Params["showGPP"].Split(',')[1]);
             bool showCalls = bool.Parse(Request.Params["showCalls"].Split(',')[1]);
+            bool showMarketShare = bool.Parse(Request.Params["showMarketShare"].Split(',')[1]);
 
             var model = new Models.DrilldownVM();
             model.AvailableYears = _service.GetDefaultYears();
@@ -52,6 +53,7 @@ namespace Genrev.Web.App.Analysis
             model.ShowColumnGroupGPD = showGPD;
             model.ShowColumnGroupGPP = showGPP;
             model.ShowColumnGroupCalls = showCalls;
+            model.ShowColumnGroupMarketShare = showMarketShare;
 
             var fy = Domain.FiscalYear.GetByYear(year, AppService.Current.Account.PrimaryCompany.FiscalYearEndMonth);
 

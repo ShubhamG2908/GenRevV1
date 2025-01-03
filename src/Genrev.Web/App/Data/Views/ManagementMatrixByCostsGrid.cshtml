@@ -61,9 +61,9 @@
         s.TotalSummary.Add(new ASPxSummaryItem("SalesActual", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "SalesActual" });
         s.TotalSummary.Add(new ASPxSummaryItem("SalesForecast", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "SalesForecast" });
         s.TotalSummary.Add(new ASPxSummaryItem("SalesTarget", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "SalesTarget" });
-        s.TotalSummary.Add(new ASPxSummaryItem("GPPActual", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "GPPActual" });
-        s.TotalSummary.Add(new ASPxSummaryItem("GPPForecast", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "GPPForecast" });
-        s.TotalSummary.Add(new ASPxSummaryItem("GPPTarget", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "GPPTarget" });
+        //s.TotalSummary.Add(new ASPxSummaryItem("GPPActual", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPPActual" });
+        //s.TotalSummary.Add(new ASPxSummaryItem("GPPForecast", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPPForecast" });
+        //s.TotalSummary.Add(new ASPxSummaryItem("GPPTarget", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPPTarget" });
         s.TotalSummary.Add(new ASPxSummaryItem("CallsActual", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "CallsActual" });
         s.TotalSummary.Add(new ASPxSummaryItem("CallsForecast", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "CallsForecast" });
         s.TotalSummary.Add(new ASPxSummaryItem("CallsTarget", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "CallsTarget" });
@@ -414,7 +414,7 @@
                 c.Caption = "Future<br />Opportunity";
                 c.PropertiesEdit.DisplayFormatString = "C0";
                 c.Settings.AllowAutoFilter = DefaultBoolean.False;
-                c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;                
+                c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             });
         });
     }

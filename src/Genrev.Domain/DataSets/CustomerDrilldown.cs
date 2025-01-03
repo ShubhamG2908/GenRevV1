@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Genrev.Domain.DataSets
 {
@@ -35,6 +31,7 @@ namespace Genrev.Domain.DataSets
         public int? ProductGroupID { get; set; }
         public string ProductGroupName { get; set; }
         public string CustomerName { get; set; }
+        public decimal? MarketShare { get; set; }
 
 
         public virtual Companies.Customer Customer { get; set; }
@@ -53,6 +50,7 @@ namespace Genrev.Domain.DataSets
             CalendarMonth = vm.CalendarMonth;
             CalendarYear = vm.CalendarYear;
             CustomerName = vm.CustomerName;
+            MarketShare = vm.MarketShare;
             PersonnelID = vm.PersonnelID;
             PersonFirstName = vm.PersonFirstName;
             PersonLastName = vm.PersonLastName;
@@ -79,6 +77,8 @@ namespace Genrev.Domain.DataSets
         public int? CalendarMonth { get; set; }
 
         public string CustomerName { get; set; }
+
+        public decimal? MarketShare { get; set; }
 
         public int? PersonnelID { get; set; }
         public string PersonFirstName { get; set; }

@@ -44,8 +44,8 @@ namespace Genrev.Web.App.Home.Data
             projections.gppeomProjection = MonthlyData.Projections.MonthEndGPP(monthData.SalesActual, monthData.GrossProfitDollars, refDate);
             projections.gppeoyProjection = MonthlyData.Projections.YearEndGPP(yearData.Sum(x => x.SalesActual), yearData.Sum(x => x.GrossProfitDollars), refDate, fy);
             projections.gppeomForecast = monthData.GrossProfitPercentForecast;
-            //projections.gppeoyForecast = fy.GetAccurateYearEndGPPForecast(refDate);
-            projections.gppeoyForecast = yearData.Average(x => x.GrossProfitPercent);
+            projections.gppeoyForecast = fy.GetAccurateYearEndGPPForecast(refDate);
+            //projections.gppeoyForecast = yearData.Average(x => x.GrossProfitPercent);
             projections.gppeomDiff = projections.gppeomProjection - projections.gppeomForecast;
             projections.gppeoyDiff = projections.gppeoyProjection - projections.gppeoyForecast;
 

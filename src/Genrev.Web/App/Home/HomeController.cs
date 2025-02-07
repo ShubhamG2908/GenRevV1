@@ -6,7 +6,16 @@ namespace Genrev.Web.App.Home
     [Authorize]
     public class HomeController : Dymeng.Web.Mvc.DevExpress.ContentAreaController
     {
-
+        [AllowAnonymous]
+        public ActionResult success()
+        {
+            return Redirect("mauiapp://home/success");
+        }
+        [AllowAnonymous]
+        public ActionResult fail()
+        {
+            return Redirect("mauiapp://home/fail");
+        }
         public ActionResult Index() {
             return RedirectToAction("Dashboard");
         }

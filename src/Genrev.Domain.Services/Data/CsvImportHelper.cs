@@ -44,7 +44,7 @@ namespace Genrev.DomainServices.Data
             try
             {
                 DataTable dataTable = new DataTable();
-                dataTable.Locale = CultureInfo.CurrentCulture;
+                dataTable.Locale = CultureInfo.InvariantCulture;
                 oleDbDataAdapter.Fill(dataTable);
                 return dataTable;
             }

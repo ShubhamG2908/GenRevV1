@@ -414,8 +414,8 @@ namespace Genrev.DomainServices.Data
                 var d = new MonthlyDataStaging();
                 d.CustomerClientID = row.ToStringValue(0);
                 d.PersonClientID = row.ToStringValue(1);
-                //d.Period = DateTime.ParseExact(row.ToStringValue(2), "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                d.Period = ConvertToDateTime(row.ToStringValue(2).ToString().Trim().Replace("/", "-"));
+                //d.Period = DateTime.ParseExact(row.ToDateTime(2).ToString("MM/dd/yyyy"), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                d.Period = ConvertToDateTime(row.ToDateTime(2).ToString("MM/dd/yyyy").Trim());
                 d.SalesActual = (decimal?)row.ToDoubleOrNull(3);
                 d.CostActual = (decimal?)row.ToDoubleOrNull(4);
                 d.CallsActual = (double?)row.ToDoubleOrNull(5);
@@ -454,8 +454,8 @@ namespace Genrev.DomainServices.Data
                 d.CustomerClientID = row.ToStringValue(0);
                 d.PersonClientID = row.ToStringValue(1);
 
-                d.Period = ConvertToDateTime(row.ToStringValue(2).ToString().Trim().Replace("/", "-"));
-                //d.Period = DateTime.ParseExact(row.ToStringValue(2), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                d.Period = ConvertToDateTimeNew(row.ToDateTime(2).ToString("MM/dd/yyyy").Trim());
+                //d.Period = DateTime.ParseExact(row.ToDateTime(2).ToString("MM/dd/yyyy"), "MM/dd/yyyy", CultureInfo.InvariantCulture);
                 d.SalesForecast = (decimal?)row.ToDoubleOrNull(3);
                 d.SalesTarget = (decimal?)row.ToDoubleOrNull(4);
                 d.GPPForecast = (decimal?)row.ToDoubleOrNull(5);
@@ -600,6 +600,40 @@ namespace Genrev.DomainServices.Data
             {
                 return DateTime.MinValue;
             }
+        }        
+        private static DateTime ConvertToDateTimeNew(string dateValue)
+        {
+            if (string.IsNullOrWhiteSpace(dateValue))
+            {
+                return DateTime.MinValue; // Return MinValue for null/empty input
+            }
+
+            dateValue = dateValue.Trim().Replace(".", "-").Replace("/", "-"); // Normalize separators
+
+            string[] formats = {
+            "MM-dd-yy hh:mm:ss tt", "MM/dd/yy hh:mm:ss tt",
+            "MM-dd-yyyy hh:mm:ss tt", "MM/dd/yyyy hh:mm:ss tt",
+            "yyyy-MM-dd HH:mm:ss", "MM-dd-yyyy HH:mm:ss",
+            "MM/dd/yyyy HH:mm:ss", "dd-MM-yyyy HH:mm:ss",
+            "dd/MM/yyyy HH:mm:ss", "MM-dd-yy", "MM/dd/yy",
+            "MM-dd-yyyy", "MM/dd/yyyy", "yyyy-MM-dd",
+            "dd-MM-yyyy", "dd/MM/yyyy", "yyyyMMdd", "ddMMyyyy",
+            "M/d/yyyy", "M-d-yyyy", "yyyy-M-d", "M/d/yy", "M-d-yy",
+            "d-M-yyyy", "d/M/yyyy", "yyyy-MM-d", "yyyy-M-dd",
+            "MM-d-yyyy", "M-dd-yyyy", "d.MM.yyyy", "dd.MM.yyyy"
+        };
+
+            if (DateTime.TryParseExact(dateValue, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))
+            {
+                return parsedDate;
+            }
+
+            if (DateTime.TryParse(dateValue, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
+            {
+                return parsedDate;
+            }
+
+            return DateTime.MinValue;
         }
     }
 }

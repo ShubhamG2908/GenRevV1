@@ -1,5 +1,6 @@
 ﻿using Dymeng.Data;
 using Dymeng.Validation;
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -32,7 +33,7 @@ namespace Genrev.DomainServices.Data
         CustomerNameRequired,
         GeneralException,
         PersonnelIDRequired,
-        PeriodRequired,        
+        PeriodRequired,
         CallsPerMonthMustBeNumeric,
         CallsPerMonthMustBeZeroOrMore,
         ActualSalesMustBeNumeric,
@@ -272,7 +273,7 @@ namespace Genrev.DomainServices.Data
                 if (!dateParsed)
                 {
                     addError(ImportValidationError.PeriodRequired, ref errors);
-                    invalidDateFormatCount.Add(rowIndex);
+                    invalidDateFormatCount.Add(rowIndex + 2);
                 }
 
                 s = row.ToStringValue(3);   // actual sales
@@ -360,7 +361,7 @@ namespace Genrev.DomainServices.Data
                 if (!dateParsed)
                 {
                     addError(ImportValidationError.PeriodRequired, ref errors);
-                    invalidDateFormatCount.Add(rowIndex);
+                    invalidDateFormatCount.Add(rowIndex + 2);
                 }
 
                 s = row.ToStringValue(3);   // sales forecast
@@ -600,7 +601,7 @@ namespace Genrev.DomainServices.Data
 
                 case ImportValidationError.PeriodRequired:
                     error.Message = "Period is required and must be a valid date.";
-                    break;                
+                    break;
                 case ImportValidationError.PersonnelIDRequired:
                     error.Message = "Personnel ID is required.";
                     break;

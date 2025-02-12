@@ -9,6 +9,7 @@ using Genrev.Domain.DataSets;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Data.Entity;
 using System.Globalization;
+using Serilog;
 
 namespace Genrev.DomainServices.Data
 {
@@ -414,8 +415,7 @@ namespace Genrev.DomainServices.Data
                 var d = new MonthlyDataStaging();
                 d.CustomerClientID = row.ToStringValue(0);
                 d.PersonClientID = row.ToStringValue(1);
-                //d.Period = DateTime.ParseExact(row.ToDateTime(2).ToString("MM/dd/yyyy"), "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                d.Period = ConvertToDateTime(row.ToDateTime(2).ToString("MM/dd/yyyy").Trim());
+                d.Period = ConvertToDateTimeMonthly(row.ToStringValue(2).Trim());
                 d.SalesActual = (decimal?)row.ToDoubleOrNull(3);
                 d.CostActual = (decimal?)row.ToDoubleOrNull(4);
                 d.CallsActual = (double?)row.ToDoubleOrNull(5);
@@ -453,9 +453,7 @@ namespace Genrev.DomainServices.Data
                 var d = new ForecastDataStaging();
                 d.CustomerClientID = row.ToStringValue(0);
                 d.PersonClientID = row.ToStringValue(1);
-
-                d.Period = ConvertToDateTimeNew(row.ToDateTime(2).ToString("MM/dd/yyyy").Trim());
-                //d.Period = DateTime.ParseExact(row.ToDateTime(2).ToString("MM/dd/yyyy"), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                d.Period = ConvertToDateTimeForecast(row.ToStringValue(2).Trim());
                 d.SalesForecast = (decimal?)row.ToDoubleOrNull(3);
                 d.SalesTarget = (decimal?)row.ToDoubleOrNull(4);
                 d.GPPForecast = (decimal?)row.ToDoubleOrNull(5);
@@ -543,53 +541,29 @@ namespace Genrev.DomainServices.Data
             };
             context.CustomerData.Add(customerData);
             context.SaveChanges();
-        }
-        private static DateTime ConvertToDateTime(string dateValue)
-        {
-            dateValue = dateValue.Trim();
-            string[] formats = {
-                "MM-dd-yy hh:mm:ss tt",
-                "MM/dd/yy hh:mm:ss tt",
-                "MM-dd-yyyy hh:mm:ss tt",
-                "MM/dd/yyyy hh:mm:ss tt",
-                "yyyy-MM-dd HH:mm:ss",
-                "MM-dd-yyyy HH:mm:ss",
-                "MM/dd/yyyy HH:mm:ss",
-                "dd-MM-yyyy HH:mm:ss",
-                "MM-dd-yy",
-                "MM/dd/yy",
-                "M/dd/yyyy",
-                "MM/d/yyyy",
-                "MM-dd-yyyy",
-                "M-dd-yyyy",
-                "MM-d-yyyy",
-                "MM/dd/yyyy",
-                "yyyy-MM-dd",
-                "dd/MM/yyyy",
-                "dd-MM-yyyy",
-                "MM-dd-yy",
-                "MM/dd/yy",
-                "yyyyMMdd",
-                "ddMMyyyy",
-                "M-d-yy h:mm:ss tt",
-                "M/d/yy h:mm:ss tt",
-                "M-d-yyyy h:mm:ss tt",
-                "M/d/yyyy h:mm:ss tt",
-                "yyyy-M-d HH:mm:ss",
-                "M-d-yyyy HH:mm:ss",
-                "M/d/yyyy HH:mm:ss",
-                "M-d-yy",
-                "M/d/yy",
-                "M-d-yyyy",
-                "M/d/yyyy",
-                "yyyy-M-d",
-                "d/M/yyyy",
-                "d-M-yyyy",
-                "M-d-yy",
-                "M/d/yy",
-                "d/M/yyyy",
-                "d-M-yyyy"
+        }        
+        private static DateTime ConvertToDateTimeMonthly(string dateValue)
+        {            
+            dateValue = dateValue.Trim();            
+            string[] formats;
+
+#if DEBUG
+            formats = new string[]
+            {
+            "MM/dd/yyyy HH:mm:ss",            
+            "MM/dd/yyyy hh:mm:ss tt",                        
+            "yyyy/MM/dd HH:mm:ss",
+            "MM/dd/yyyy",            
             };
+#else
+        formats = new string[]
+            {
+            "dd-MM-yyyy HH:mm:ss",            
+            "dd-MM-yyyy hh:mm:ss tt",                        
+            "yyyy-MM-dd HH:mm:ss",
+            "dd-MM-yyyy",            
+            };
+#endif
 
             DateTime parsedDate;
             if (DateTime.TryParseExact(dateValue, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
@@ -597,43 +571,42 @@ namespace Genrev.DomainServices.Data
                 return parsedDate;
             }
             else
-            {
+            {                
                 return DateTime.MinValue;
             }
-        }        
-        private static DateTime ConvertToDateTimeNew(string dateValue)
+        }
+        private static DateTime ConvertToDateTimeForecast(string dateValue)
+        {            
+            dateValue = dateValue.Trim();            
+            string[] formats;
+
+#if DEBUG
+            formats = new string[]
         {
-            if (string.IsNullOrWhiteSpace(dateValue))
-            {
-                return DateTime.MinValue; // Return MinValue for null/empty input
-            }
-
-            dateValue = dateValue.Trim().Replace(".", "-").Replace("/", "-"); // Normalize separators
-
-            string[] formats = {
-            "MM-dd-yy hh:mm:ss tt", "MM/dd/yy hh:mm:ss tt",
-            "MM-dd-yyyy hh:mm:ss tt", "MM/dd/yyyy hh:mm:ss tt",
-            "yyyy-MM-dd HH:mm:ss", "MM-dd-yyyy HH:mm:ss",
-            "MM/dd/yyyy HH:mm:ss", "dd-MM-yyyy HH:mm:ss",
-            "dd/MM/yyyy HH:mm:ss", "MM-dd-yy", "MM/dd/yy",
-            "MM-dd-yyyy", "MM/dd/yyyy", "yyyy-MM-dd",
-            "dd-MM-yyyy", "dd/MM/yyyy", "yyyyMMdd", "ddMMyyyy",
-            "M/d/yyyy", "M-d-yyyy", "yyyy-M-d", "M/d/yy", "M-d-yy",
-            "d-M-yyyy", "d/M/yyyy", "yyyy-MM-d", "yyyy-M-dd",
-            "MM-d-yyyy", "M-dd-yyyy", "d.MM.yyyy", "dd.MM.yyyy"
+            "MM/dd/yyyy HH:mm:ss",            
+            "MM/dd/yyyy hh:mm:ss tt",            
+            "yyyy/MM/dd HH:mm:ss",
+            "MM/dd/yyyy",            
         };
+#else
+        formats = new string[]
+            {
+            "MM-dd-yyyy HH:mm:ss",            
+            "MM-dd-yyyy hh:mm:ss tt",            
+            "yyyy-MM-dd HH:mm:ss",
+            "MM-dd-yyyy",            
+            };
+#endif
 
-            if (DateTime.TryParseExact(dateValue, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))
+            DateTime parsedDate;
+            if (DateTime.TryParseExact(dateValue, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
             {
                 return parsedDate;
             }
-
-            if (DateTime.TryParse(dateValue, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
-            {
-                return parsedDate;
+            else
+            {                
+                return DateTime.MinValue;
             }
-
-            return DateTime.MinValue;
         }
     }
 }

@@ -72,39 +72,39 @@ namespace Genrev.Web.App.Analysis
                     x.CalendarYear,
                     x.CustomerID,
                     x.CustomerName,
-                    x.MarketShare,
                     x.PersonnelID,
                     x.PersonFirstName,
                     x.PersonLastName,
                     x.ProductSKU,
+                    x.IndustryID,
                     x.IndustryName,
                     x.CustomerTypeName,
                     x.AccountTypeName,
-                    x.IndustryID,
                     x.CustomerTypeID,
                     x.AccountTypeID
-                }).Select(y => new CustomerDrilldownVM()
+                })
+                .Select(y => new CustomerDrilldownVM()
                 {
                     CalendarMonth = y.Key.CalendarMonth,
                     CalendarYear = y.Key.CalendarYear,
                     CustomerName = y.Key.CustomerName,
-                    MarketShare = y.Key.MarketShare,
+                    PersonnelID = y.Key.PersonnelID,
                     PersonFirstName = y.Key.PersonFirstName,
                     PersonLastName = y.Key.PersonLastName,
                     ProductSKU = y.Key.ProductSKU,
+                    IndustryID = y.Key.IndustryID,
                     IndustryName = y.Key.IndustryName,
                     CustomerTypeName = y.Key.CustomerTypeName,
                     AccountTypeName = y.Key.AccountTypeName,
-                    IndustryID = y.Key.IndustryID,
                     CustomerTypeID = y.Key.CustomerTypeID,
                     AccountTypeID = y.Key.AccountTypeID,
-                    PersonnelID = y.Key.PersonnelID,
                     CallsActual = y.Sum(x => x.CallsActual),
                     CallsForecast = y.Sum(x => x.CallsForecast),
                     SalesActual = y.Sum(x => x.SalesActual),
                     SalesForecast = y.Sum(x => x.SalesForecast),
                     CostActual = y.Sum(x => x.CostActual),
-                    CostForecast = y.Sum(x => x.CostForecast)
+                    CostForecast = y.Sum(x => x.CostForecast),
+                    MarketShare = y.Sum(x => x.MarketShare),
                 }).ToList();
 
             var items = new List<Models.DrilldownListItem>();

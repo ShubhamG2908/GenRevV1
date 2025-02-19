@@ -46,7 +46,7 @@ namespace Genrev.Web.App.Account
             return RedirectToAction("Index", "Home");
         }
 
-        
+        [AllowAnonymous]
         public ActionResult Register() {
             return View();
         }

@@ -396,68 +396,99 @@
             c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
         });
 
-        // SALES VARIANCE FORMATTING
+        // SALES VARIANCE FORMATTING       
         s.FormatConditions.AddHighlight(r =>
         {
             r.FieldName = "SalesVariance";
-            r.Expression = "[SalesVariance] < -0.1";
-            r.CellStyle.CssClass = "drill-var-bad";
-            r.Format = GridConditionHighlightFormat.Custom;
-        });
-        s.FormatConditions.AddHighlight(r =>
-        {
-            r.FieldName = "SalesVariance";
-            r.Expression = "[SalesVariance] >= 0";
+            r.Expression = "[SalesVariance] >= 1.0"; // 100%+ (Green)
             r.CellStyle.CssClass = "drill-var-good";
             r.Format = GridConditionHighlightFormat.Custom;
         });
         s.FormatConditions.AddHighlight(r =>
         {
             r.FieldName = "SalesVariance";
-            r.Expression = "[SalesVariance] >= -0.1 AND [SalesVariance] < 0";
+            r.Expression = "[SalesVariance] >= 0.9 AND [SalesVariance] < 1.0"; // 90% - 99.9% (Yellow)
             r.CellStyle.CssClass = "drill-var-ok";
             r.Format = GridConditionHighlightFormat.Custom;
         });
         s.FormatConditions.AddHighlight(r =>
         {
             r.FieldName = "SalesVariance";
-            r.Expression = "[SalesVariance] = null";
+            r.Expression = "[SalesVariance] < 0.9"; // < 90% (Red)
+            r.CellStyle.CssClass = "drill-var-bad";
+            r.Format = GridConditionHighlightFormat.Custom;
+        });
+        s.FormatConditions.AddHighlight(r =>
+        {
+            r.FieldName = "SalesVariance";
+            r.Expression = "[SalesVariance] IS NULL";
             r.CellStyle.CssClass = "drill-var-none";
             r.Format = GridConditionHighlightFormat.Custom;
         });
 
-        // GPD VARIANCE FORMATTING
+
+        // GPD VARIANCE FORMATTING       
         s.FormatConditions.AddHighlight(r =>
         {
             r.FieldName = "GPDVariance";
-            r.Expression = "[GPDVariance] < -0";
+            r.Expression = "[GPDVariance] >= 1.0"; // Green
+            r.CellStyle.CssClass = "drill-var-good";
+            r.Format = GridConditionHighlightFormat.Custom;
+        });
+        s.FormatConditions.AddHighlight(r =>
+        {
+            r.FieldName = "GPDVariance";
+            r.Expression = "[GPDVariance] >= 0.9 AND [GPDVariance] < 1.0"; // Yellow
+            r.CellStyle.CssClass = "drill-var-ok";
+            r.Format = GridConditionHighlightFormat.Custom;
+        });
+        s.FormatConditions.AddHighlight(r =>
+        {
+            r.FieldName = "GPDVariance";
+            r.Expression = "[GPDVariance] < 0.9"; // Red
             r.CellStyle.CssClass = "drill-var-bad";
             r.Format = GridConditionHighlightFormat.Custom;
         });
         s.FormatConditions.AddHighlight(r =>
         {
             r.FieldName = "GPDVariance";
-            r.Expression = "[GPDVariance] = null";
+            r.Expression = "[GPDVariance] IS NULL";
             r.CellStyle.CssClass = "drill-var-none";
             r.Format = GridConditionHighlightFormat.Custom;
         });
 
 
-        // GPP VARIANCE FORMATTING
+
+        // GPP VARIANCE FORMATTING        
         s.FormatConditions.AddHighlight(r =>
         {
             r.FieldName = "GPPVariance";
-            r.Expression = "[GPPVariance] < -0";
+            r.Expression = "[GPPVariance] >= 1.0"; // Green
+            r.CellStyle.CssClass = "drill-var-good";
+            r.Format = GridConditionHighlightFormat.Custom;
+        });
+        s.FormatConditions.AddHighlight(r =>
+        {
+            r.FieldName = "GPPVariance";
+            r.Expression = "[GPPVariance] >= 0.9 AND [GPPVariance] < 1.0"; // Yellow
+            r.CellStyle.CssClass = "drill-var-ok";
+            r.Format = GridConditionHighlightFormat.Custom;
+        });
+        s.FormatConditions.AddHighlight(r =>
+        {
+            r.FieldName = "GPPVariance";
+            r.Expression = "[GPPVariance] < 0.9"; // Red
             r.CellStyle.CssClass = "drill-var-bad";
             r.Format = GridConditionHighlightFormat.Custom;
         });
         s.FormatConditions.AddHighlight(r =>
         {
             r.FieldName = "GPPVariance";
-            r.Expression = "[GPPVariance] = null";
+            r.Expression = "[GPPVariance] IS NULL";
             r.CellStyle.CssClass = "drill-var-none";
             r.Format = GridConditionHighlightFormat.Custom;
         });
+
 
         //Calls Formatting
         s.FormatConditions.AddHighlight(r =>

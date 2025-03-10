@@ -1,6 +1,8 @@
 using Serilog;
 using System;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -40,6 +42,13 @@ namespace Genrev.Web
                 .CreateLogger();
 
             Log.Information("Application Started");
+
+            SetGlobalCulture();
+        }
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            SetGlobalCulture();
         }
 
         protected void Application_Error(object sender, EventArgs e) 
@@ -51,6 +60,14 @@ namespace Genrev.Web
         {
             Log.Information("Application Ended");
             Log.CloseAndFlush();
+        }
+        private void SetGlobalCulture()
+        {
+            CultureInfo newCulture = new CultureInfo("en-US");
+            newCulture.NumberFormat.CurrencySymbol = "$";
+
+            Thread.CurrentThread.CurrentCulture = newCulture;
+            Thread.CurrentThread.CurrentUICulture = newCulture;
         }
     }
 }

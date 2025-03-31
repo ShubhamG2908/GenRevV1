@@ -6,23 +6,107 @@
     <title>GENREV!</title>
 
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    
+
     <link href="@Url.Content("~/Client/Css/app-v10.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Client/Css/sprites-v1.css")" rel="stylesheet" type="text/css" />
-        
-    @Html.DevExpress().GetStyleSheets( 
-        new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout }, 
-        new StyleSheet { ExtensionSuite = ExtensionSuite.Editors }, 
+
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
         new StyleSheet { ExtensionSuite = ExtensionSuite.GridView }
     )
-    @Html.DevExpress().GetScripts( 
-        new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout }, 
-        new Script { ExtensionSuite = ExtensionSuite.GridView }, 
+
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new Script { ExtensionSuite = ExtensionSuite.GridView },
         new Script { ExtensionSuite = ExtensionSuite.Editors }
     )
 
-    
     <script type="text/javascript" src="~/client/scripts/require.v2.2.0.js"></script>
+    <script src="~/client/scripts/lib/textEditor/tinymce.min.js"></script>
+
+    <script>
+        $("#crmForm").submit(function () {
+            // Collect phone numbers
+            var phoneNumbers = [];
+            $("#phoneContainer input").each(function () {
+                phoneNumbers.push($(this).val());
+            });
+            $("<input>").attr({ type: "hidden", name: "Phones", value: JSON.stringify(phoneNumbers) }).appendTo("#crmForm");
+
+            // Collect email addresses
+            var emailAddresses = [];
+            $("#emailContainer input").each(function () {
+                emailAddresses.push($(this).val());
+            });
+            $("<input>").attr({ type: "hidden", name: "Emails", value: JSON.stringify(emailAddresses) }).appendTo("#crmForm");
+
+            // Collect addresses
+            var addresses = [];
+            $("#addressContainer .field-group").each(function () {
+                var address = {
+                    Line1: $(this).find("input[name*='Line1']").val(),
+                    Line2: $(this).find("input[name*='Line2']").val(),
+                    City: $(this).find("input[name*='City']").val(),
+                    State: $(this).find("input[name*='State']").val(),
+                    Pincode: $(this).find("input[name*='Pincode']").val(),
+                    Country: $(this).find("input[name*='Country']").val()
+                };
+                addresses.push(address);
+            });
+
+            $("<input>").attr({ type: "hidden", name: "Addresses", value: JSON.stringify(addresses) }).appendTo("#crmForm");
+        });
+    </script>
+
+    <script>
+    $(document).ready(function () {
+    var selectedSalesPersonId = @ViewBag.SelectedSalesPersonId;
+
+    if (selectedSalesPersonId) {
+        loadCustomers(selectedSalesPersonId);
+    }
+});
+
+function onSalesPersonChange(s, e) {
+    var selectedSalesPersonId = s.GetValue();
+    loadCustomers(selectedSalesPersonId);
+    }
+function loadCustomers(salesPersonId) {
+    $.ajax({
+        url: '@Url.Action("GetCustomersBySalesPerson", "CRM")',
+        type: 'GET',
+        data: { salesPersonId: salesPersonId },
+        success: function (data) {
+            var customerDropdown = ASPxClientComboBox.Cast("CustomerId");
+            customerDropdown.ClearItems();
+
+            $.each(data, function (index, item) {
+                customerDropdown.AddItem(Text = item.Name, Value = item.ID);
+            });
+
+            customerDropdown.SetSelectedIndex(0);
+        }
+    });
+        }
+function onCustomerChange(s, e) {
+    var selectedCustomerId = s.GetValue();
+    fetchStrategy(selectedCustomerId);
+        }
+    function fetchStrategy(customerId) {
+    $.ajax({
+        url: '@Url.Action("GetStrategyByCustomer", "CRM")',
+        type: 'GET',
+        data: { customerId: customerId },
+        success: function (response) {
+            $("[name='Strategy']").val(response.strategy);
+        },
+        error: function () {
+            console.error("Error fetching strategy.");
+        }
+    });
+}
+    </script>
     <script type="text/javascript">
 
         function EnsureAppLoaded(callback) {
@@ -57,7 +141,7 @@
                     'deepmerge',
                     'history'
                 ], function () {
-                    
+
 
                     require(['highchartsnodata'], function () {
 
@@ -130,13 +214,6 @@
         });
     });
 }).GetHtml()
-
-    
-
-
-
-    
-
     @if (User.Identity.IsAuthenticated) {
         
         <div id="hidden-component-containers">

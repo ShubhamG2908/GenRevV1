@@ -1,0 +1,499 @@
+﻿@model Genrev.Data.DTOs.CRMViewModel
+@{
+    List<SelectListItem> salesPersonList = ((List<Genrev.Web.App.CommonListItems.Person>)ViewBag.SalesPersons)
+    .Select(sp => new SelectListItem { Value = sp.ID.ToString(), Text = sp.DisplayName }).ToList();
+
+    List<SelectListItem> customersList = ((List<Genrev.Web.App.Customers.Models.CustomerDDLVM>)ViewBag.Customers)
+    .Select(sp => new SelectListItem { Value = sp.ID.ToString(), Text = sp.Name }).ToList();
+
+    bool IsAdmin = ViewBag.IsAdmin ?? false;
+    int selectedSalesPersonId = (int)ViewBag.SelectedSalesPersonId;
+}
+
+<div style="padding:20px;">
+    @using (@Html.BeginForm("UpdateClient", "CRM", FormMethod.Post, new { id = "crmForm" }))
+    {
+        <div class="datacontent-subsection">
+            <h2>Edit Customer Relationship Manager</h2>
+            <input type="hidden" name="Id" id="Id" value="@Model.Id" />
+            <!-- SalesPerson ComboBox -->
+            <div style="margin:15px 0px;">
+                @Html.DevExpress().ComboBox(s =>
+                {
+                    s.Name = "SalesPersonId";
+                    s.ClientEnabled = IsAdmin;
+                    s.Properties.ValueField = "Id";
+                    s.Properties.ValueType = typeof(int);
+                    s.Properties.TextField = "DisplayName";
+                    s.Properties.Caption = "Salesperson";
+                    s.Properties.CaptionCellStyle.Width = 150;
+                    s.Properties.ClientSideEvents.ValueChanged = "onSalesPersonChange";
+                }).BindList(ViewBag.SalesPersons).Bind(ViewBag.SelectedSalesPersonId).GetHtml()
+            </div>
+            <div style="margin:15px 0px;">
+                <table class="concertTable" border="0">
+                    <tr>
+                        <td>
+                            @Html.DevExpress().ComboBox(s =>
+                            {
+                                s.Name = "CustomerId";
+                                s.Properties.ValueField = "Id";
+                                s.Properties.ValueType = typeof(int);
+                                s.Properties.TextField = "Name";
+                                s.Properties.Caption = "Customer";
+                                s.Properties.CaptionCellStyle.Width = 150;
+                                s.Properties.ClientSideEvents.ValueChanged = "onCustomerChange";
+                            }).BindList(ViewBag.Customers).Bind(ViewBag.SelectedCustomerId).GetHtml()
+                        </td>
+                        <td>
+                            @Html.DevExpress().ComboBox(s =>
+                            {
+                                s.Name = "Concern";
+                                s.Properties.ValueField = "Text";
+                                s.Properties.TextField = "Text";
+                                s.Properties.Caption = "Concern";
+                                s.Properties.CaptionCellStyle.Width = 150;
+                                s.Properties.CaptionCellStyle.CssClass = "right-align-caption";
+                            }).BindList(new List<SelectListItem>
+                            {
+                                new SelectListItem { Value = "", Text = "Select option" },
+                                new SelectListItem { Value = "Monitor", Text = "Monitor" },
+                                new SelectListItem { Value = "Critical", Text = "Critical" }
+                            }).Bind(Model.Concern).GetHtml()
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Name -->
+            <div style="margin:15px 0px;">
+                @Html.DevExpress().TextBox(s =>
+                {
+                    s.Name = "Name";
+                    s.Properties.Caption = "Name";
+                    s.Properties.CaptionCellStyle.Width = 150;
+                }).Bind(Model.Name).GetHtml()
+            </div>
+
+            <!-- Title -->
+            <div style="margin:15px 0px;">
+                @Html.DevExpress().TextBox(s =>
+                {
+                    s.Name = "Title";
+                    s.Properties.Caption = "Title";
+                    s.Properties.CaptionCellStyle.Width = 150;
+                }).Bind(Model.Title).GetHtml()
+            </div>
+
+            <!-- Area of Responsibility -->
+            <div style="margin:15px 0px;">
+                @Html.DevExpress().TextBox(s =>
+                {
+                    s.Name = "AreaOfResponsibility";
+                    s.Properties.Caption = "Area of Responsibility";
+                    s.Properties.CaptionCellStyle.Width = 150;
+                }).Bind(Model.AreaOfResponsibility).GetHtml()
+            </div>
+
+
+            <div style="margin:15px 0px;">
+                <div class="datacontent-subsection">
+                    <div id="phoneContainer">
+                        @if (Model != null && Model.Phones.Count > 0)
+                        {
+                            for (int i = 0; i < Model.Phones.Count; i++)
+                            {
+                                <div class="field-group">
+                                    @Html.DevExpress().TextBox(s =>
+                               {
+                                   s.Name = string.Format("Phones[{0}]", i);
+                                   s.Properties.Caption = i == 0 ? "Phone" : " ";
+                                   s.Properties.CaptionCellStyle.Width = 150;
+                               }).Bind(Model.Phones[i]).GetHtml()
+                                    @if (i == 0)
+                                    {
+                                        <button type="button" class="add-btn" onclick="addField('phoneContainer', 'Phones','textbox')">+</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="remove-btn" onclick="removeField(this)">-</button>
+                                    }
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="field-group">
+                                @Html.DevExpress().TextBox(s =>
+                                   {
+                                       s.Name = "Phones[0]";
+                                       s.Properties.Caption = "Phone";
+                                       s.Properties.CaptionCellStyle.Width = 150;
+                                   }).GetHtml()
+                                <button type="button" class="add-btn" onclick="addField('phoneContainer', 'Phones','textbox')">+</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!-- Dynamic Emails -->
+                <div style="margin:15px 0px;">
+                    <div id="emailContainer">
+                        @if (Model != null && Model.Emails.Count > 0)
+                        {
+                            for (int i = 0; i < Model.Emails.Count; i++)
+                            {
+                                <div class="field-group">
+                                    @Html.DevExpress().TextBox(s =>
+                                    {
+                                        s.Name = string.Format("Emails[{0}]", i);
+                                        s.Properties.Caption = i == 0 ? "Email" : " ";
+                                        s.Properties.CaptionCellStyle.Width = 150;
+                                    }).Bind(Model.Emails[i]).GetHtml()
+                                    @if (i == 0)
+                                    {
+                                        <button type="button" class="add-btn" onclick="addField('emailContainer', 'Emails', 'textbox')">+</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="remove-btn" onclick="removeField(this)">-</button>
+                                    }
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="field-group">
+                                @Html.DevExpress().TextBox(s =>
+                                {
+                                    s.Name = "Emails[0]";
+                                    s.Properties.Caption = "Email";
+                                    s.Properties.CaptionCellStyle.Width = 150;
+                                }).GetHtml()
+                                <button type="button" class="add-btn" onclick="addField('emailContainer', 'Emails', 'textbox')">+</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Dynamic Addresses -->
+                <div style="margin:15px 0px;">
+                    <h3>Address</h3>
+                    <table id="cst_table" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Address Line 1</th>
+                                <th>Address Line 2</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Country</th>
+                                <th>Pincode</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cst_tbl_body">
+                            @if (Model != null && Model.Addresses.Count > 0)
+                            {
+                                for (int i = 0; i < Model.Addresses.Count; i++)
+                                {
+                                    <tr>
+                                        <td><input type="text" name="Addresses[@i][AddressLine1]" value="@Model.Addresses[i].AddressLine1" class="form-control" required /></td>
+                                        <td><input type="text" name="Addresses[@i][AddressLine2]" value="@Model.Addresses[i].AddressLine2" class="form-control" required /></td>
+                                        <td><input type="text" name="Addresses[@i][City]" value="@Model.Addresses[i].City" class="form-control" required /></td>
+                                        <td><input type="text" name="Addresses[@i][State]" value="@Model.Addresses[i].State" class="form-control" required /></td>
+                                        <td><input type="text" name="Addresses[@i][Country]" value="@Model.Addresses[i].Country" class="form-control" required /></td>
+                                        <td><input type="text" name="Addresses[@i][Pincode]" value="@Model.Addresses[i].Pincode" class="form-control" required /></td>
+                                        <td>
+                                            @if (i == 0)
+                                            {
+                                                <button type="button" class="add-btn float-right" onclick="addAddressRow()">+</button>
+                                            }
+                                            else
+                                            {
+                                                <button type="button" class="remove-btn" onclick="removeAddressRow(this)">-</button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td><input type="text" name="Addresses[0][AddressLine1]" value="" class="form-control" required /></td>
+                                    <td><input type="text" name="Addresses[0][AddressLine2]" value="" class="form-control" required /></td>
+                                    <td><input type="text" name="Addresses[0][City]" value="" class="form-control" required /></td>
+                                    <td><input type="text" name="Addresses[0][State]" value="" class="form-control" required /></td>
+                                    <td><input type="text" name="Addresses[0][Country]" value="" class="form-control" required /></td>
+                                    <td><input type="text" name="Addresses[0][Pincode]" value="" class="form-control" required /></td>
+                                    <td>
+                                        <button type="button" class="add-btn float-right" onclick="addAddressRow()">+</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin:15px 0px;">
+                    <div class="datacontent-subsection">
+                        <div style="margin-top:40px;">
+                            <h3>Notes</h3>
+                        </div>
+                        <div id="notesContainer">
+                            <div>
+                                <div id="editor-wrapper">
+                                    @for (int i = 0; i < Model.Notes.Count; i++)
+                                    {
+                                        <div class="editor-container" id="editorContainer_@i">
+                                            <textarea id="editor_@i" name="Notes[@i]">@Model.Notes[i]</textarea>
+                                            @if (i == 0)
+                                            {
+                                                <button type="button" class="add-btn" onclick="addEditor()">+</button>
+                                            }
+                                            else
+                                            {
+                                                <button type="button" class="remove-btn" onclick="removeEditor('editorContainer_@i', 'editor_@i')">-</button>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        @*<div id="notesContainer">
+            @for (int i = 0; i < Model.Notes.Count; i++)
+            {
+                <div class="note-editor field-group" id="note_@i">
+                    <textarea class="tinymce-editor" name="Notes[@i]">@Model.Notes[@i]</textarea>
+                    @if (i == 0)
+                    {
+                        <button type="button" id="addNote" class="add-btn ">+</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-danger delete-note remove-btn" data-id="@i">-</button>
+                    }
+                </div>
+            }
+        </div>*@
+                    </div>
+                </div>
+                <div style="margin:15px 0px;">
+                    @Html.DevExpress().TextBox(s =>
+                    {
+                        s.Name = "LinkedInUrl";
+                        s.Properties.Caption = "LinkedIn URL";
+                        s.Properties.CaptionCellStyle.Width = 150;
+                    }).Bind(Model.LinkedInUrl).GetHtml()
+                </div>
+                <div style="margin:15px 0px;">
+                    @Html.DevExpress().Memo(s =>
+                    {
+                        s.Name = "Strategy";
+                        s.Properties.Caption = "Strategy";
+                        s.Properties.CaptionCellStyle.Width = 150;
+                    }).Bind(Model.Strategy).GetHtml()
+                </div>
+                <!-- Submit Button -->
+                @Html.DevExpress().Button(s =>
+                {
+                    s.Name = "SaveButton";
+                    s.Text = "Save Changes";
+                    s.ClientSideEvents.Click = "function(s, e) { submitForm(); }";
+                }).GetHtml()
+            </div>
+        </div>
+    }
+    <script>
+        function initializeTinyMCE(selector) {
+            tinymce.init({
+                selector: selector.startsWith('#') ? selector : `#${selector}`, 
+                height: 300,
+                menubar: false,
+                plugins: 'lists link image table code',
+                toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | code'
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {            
+            document.querySelectorAll('.editor-container textarea').forEach(function (textarea) {
+                initializeTinyMCE(textarea.id);
+            });
+        });
+
+        function addEditor() {
+            var index = document.querySelectorAll('.editor-container').length;
+            var editorId = 'editor_' + index;
+            var editorContainer = document.createElement('div');
+            editorContainer.className = 'editor-container';
+            editorContainer.id = 'editorContainer_' + index;
+            editorContainer.innerHTML = `
+                <textarea id="${editorId}" name="Notes[${index}]"></textarea>
+                <button type="button" class="remove-btn" onclick="removeEditor('${editorContainer.id}', '${editorId}')">-</button>
+            `;
+
+            document.getElementById("editor-wrapper").appendChild(editorContainer);
+            initializeTinyMCE(`#${editorId}`);
+        }
+
+        function removeEditor(containerId, editorId) {
+            tinymce.get(editorId)?.remove();
+            document.getElementById(containerId).remove();
+        }
+    </script>
+
+    <!-- JavaScript -->
+    @*<script>
+            function initializeTinyMCE(selector) {
+                tinymce.init({
+                    selector: selector,
+                    height: 300,
+                    menubar: false,
+                    plugins: 'advlist autolink lists link charmap print preview',
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+                });
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                initializeTinyMCE('.tinymce-editor');
+            });
+
+            document.getElementById("addNote").addEventListener("click", function () {
+                debugger
+                var notesContainer = document.getElementById("notesContainer");
+                var index = document.querySelectorAll('.note-editor').length;
+                var newNote = document.createElement("div");
+                newNote.classList.add("note-editor,field-group");
+                newNote.id = "Notes_" + index;
+                newNote.innerHTML = `
+                            <textarea name="Notes[${index}]" id="Notes_${index}" class="tinymce-editor"></textarea>
+                            <button type="button" class="btn btn-danger delete-note" data-id="${index}">Delete</button>
+                        `;
+                notesContainer.appendChild(newNote);
+
+                // Use setTimeout to ensure the new element is recognized
+                //setTimeout(function () {
+
+                //}, 100);
+                initializeTinyMCE(`#Notes_${index}`);
+            });
+
+            document.addEventListener("click", function (event) {
+                if (event.target.classList.contains("delete-note")) {
+                    var noteId = event.target.getAttribute("data-id");
+                    var noteElement = document.getElementById("note_" + noteId);
+
+                    // Remove TinyMCE instance before deleting the element
+                    var textarea = noteElement.querySelector(".tinymce-editor");
+                    if (textarea) {
+                        tinymce.get(textarea.id)?.remove();
+                    }
+
+                    noteElement.remove();
+                }
+            });
+        </script>*@
+    <script>
+        function submitForm() {
+            document.getElementById("crmForm").submit();
+        }
+
+        function addField(containerId, name, type) {
+            var index = document.querySelectorAll(`#${containerId} .field-group`).length;
+            var newField = "";
+            if (type == 'textbox') {
+                newField = `<div class="field-group" style="padding-left:150px;">
+                                                                                                     <input type="${type}" name="${name}[${index}]" class="form-control" required style="width: 163px;margin-left: 5px;" />
+                                                                                                     <button type="button" class="remove-btn" onclick="removeField(this)">-</button>
+                                                                                                 </div>`;
+            }
+            else {
+                newField = `<div class="field-group" style="padding-left:156px;">
+                                                                                       <textarea name="${name}[${index}]" class="form-control" required></textarea>
+                                                                                        <button type="button" class="remove-btn" onclick="removeField(this)">-</button>
+                                                                                   </div>`;
+            }
+            document.getElementById(containerId).insertAdjacentHTML('beforeend', newField);
+        }
+
+        function addRemoveField(component_id) {
+            var index = document.querySelectorAll(`#${containerId} .field-group`).length;
+            var newField = `<div class="field-group">
+                                                                                                                             <input type="${type}" name="${name}[${index}]" class="form-control" required />
+                                                                                                                             <button type="button" class="remove-btn" onclick="removeField(this)">-</button>
+                                                                                                                         </div>`;
+            document.getElementById(containerId).insertAdjacentHTML('beforeend', newField);
+        }
+
+        function addAddressRow() {
+            var index = document.querySelectorAll("#cst_tbl_body tr").length;
+            var container = document.getElementById("cst_tbl_body");
+            var newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                                                                                                                                            <td><input type="text" name="Addresses[${index}][AddressLine1]" class="form-control" required /></td>
+                                                                                                                                            <td><input type="text" name="Addresses[${index}][AddressLine2]" class="form-control" required /></td>
+                                                                                                                                            <td><input type="text" name="Addresses[${index}][City]" class="form-control" required /></td>
+                                                                                                                                            <td><input type="text" name="Addresses[${index}][State]" class="form-control" required /></td>
+                                                                                                                                            <td><input type="text" name="Addresses[${index}][Country]" class="form-control" required /></td>
+                                                                                                                                            <td><input type="text" name="Addresses[${index}][Pincode]" class="form-control" required /></td>
+                                                                                                                                            <td><button type="button" class="btn btn-danger btn-sm remove-btn" onclick="removeAddressRow(this)">-</button></td>
+                                                                                                                                        `;
+            container.appendChild(newRow);
+        }
+
+        function removeField(button) { button.closest('.field-group').remove(); }
+        function removeAddressRow(button) { button.closest('tr').remove(); }
+    </script>
+
+    <style>
+        .right-align-caption {
+            text-align: right !important;
+        }
+
+        textarea {
+            width: 161px !important;
+        }
+
+        .field-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+
+        .add-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 1px 10px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 3px;
+        }
+
+        .remove-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 1px 12px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 3px;
+        }
+
+        .datacontent-subsection {
+            margin-bottom: 15px;
+        }
+
+        #cst_tbl_body td {
+            padding: 5px !important;
+        }
+
+        .editor-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .note-editor {
+            margin-bottom: 30px !important;
+        }
+    </style>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Genrev.Web.App.Customers.Models;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -281,8 +283,22 @@ namespace Genrev.Web.App
 
                 return items;
             }
+            public static List<CustomerDDLVM> GetCustomerListForDDL()
+            {
+                var context = AppService.Current.DataContext;
+                var customers = context.Customers.Where(x => x.CompanyID == AppService.Current.Account.PrimaryCompany.ID);
+                var items = new List<CustomerDDLVM>();
 
+                foreach (var c in customers)
+                {
+                    items.Add(new CustomerDDLVM()
+                    {
+                        ID = c.ID,
+                        Name = c.Name
+                    });
+                }
+                return items;
+            }
         }
-
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Genrev.Domain.DataSets
-{
+{   
     public abstract class DataAggregateBase
     {
 
@@ -19,11 +19,13 @@ namespace Genrev.Domain.DataSets
         public double? CallsForecast { get; set; }
         public double? CallsTarget { get; set; }
 
-        
-        public double? CallsDifference {
+
+        public double? CallsDifference
+        {
             get
             {
-                if (!CallsActual.HasValue) {
+                if (!CallsActual.HasValue)
+                {
                     CallsActual = 0;
                 }
                 if (!CallsForecast.HasValue)
@@ -35,7 +37,8 @@ namespace Genrev.Domain.DataSets
         }
 
 
-        public decimal? GrossProfitPercentDifference {
+        public decimal? GrossProfitPercentDifference
+        {
             get
             {
                 decimal grossProfitPercent;
@@ -46,7 +49,8 @@ namespace Genrev.Domain.DataSets
                     return null;
                 }
 
-                if (!GrossProfitPercent.HasValue) {
+                if (!GrossProfitPercent.HasValue)
+                {
                     grossProfitPercent = 0;
                 }
                 else
@@ -67,20 +71,24 @@ namespace Genrev.Domain.DataSets
             }
         }
 
-        public decimal? GrossProfitPercentVariance {
+        public decimal? GrossProfitPercentVariance
+        {
             get
             {
-                if (!GrossProfitPercentForecast.HasValue) {
+                if (!GrossProfitPercentForecast.HasValue)
+                {
                     return null;
                 }
-                if (GrossProfitPercentForecast.Value == 0) {
+                if (GrossProfitPercentForecast.Value == 0)
+                {
                     return null;
                 }
                 return (GrossProfitPercentDifference.Value / GrossProfitPercentForecast.Value) * 100;
             }
         }
 
-        public decimal? GrossProfitDollarsDifference {
+        public decimal? GrossProfitDollarsDifference
+        {
             get
             {
                 decimal grossProfitDollars;
@@ -91,7 +99,8 @@ namespace Genrev.Domain.DataSets
                     return null;
                 }
 
-                if (!GrossProfitDollars.HasValue) {
+                if (!GrossProfitDollars.HasValue)
+                {
                     grossProfitDollars = 0;
                 }
                 else
@@ -106,29 +115,37 @@ namespace Genrev.Domain.DataSets
                 {
                     grossProfitDollarsForecast = GrossProfitDollarsForecast.Value;
                 }
-                return grossProfitDollars - grossProfitDollarsForecast;
+                return Math.Ceiling(grossProfitDollars - grossProfitDollarsForecast);
             }
         }
 
-        public decimal? GrossProfitDollarsVariance {
+        public decimal? GrossProfitDollarsVariance
+        {
             get
             {
-                if (!GrossProfitDollarsForecast.HasValue) {
+                if (!GrossProfitDollars.HasValue)
+                {
+                    return null;
+                }
+                if (!GrossProfitDollarsForecast.HasValue)
+                {
                     return null;
                 }
                 if (GrossProfitDollarsForecast.Value == 0)
                 {
                     return null;
                 }
-                return GrossProfitDollarsDifference.Value / GrossProfitDollarsForecast.Value;
+                return GrossProfitDollars.Value / GrossProfitDollarsForecast.Value;
             }
         }
 
 
-        public decimal? SalesDifference {
+        public decimal? SalesDifference
+        {
             get
             {
-                if (!SalesActual.HasValue && !SalesForecast.HasValue) {
+                if (!SalesActual.HasValue && !SalesForecast.HasValue)
+                {
                     return null;
                 }
                 if (!SalesActual.HasValue)
@@ -143,7 +160,8 @@ namespace Genrev.Domain.DataSets
             }
         }
 
-        public decimal? SalesVariance {
+        public decimal? SalesVariance
+        {
             get
             {
                 if (!SalesForecast.HasValue)
@@ -154,18 +172,20 @@ namespace Genrev.Domain.DataSets
                 {
                     return null;
                 }
-                return SalesDifference.Value / SalesForecast.Value;
+                return SalesActual.Value / SalesForecast.Value;
             }
         }
 
-        public decimal? GrossProfitDollars {
+        public decimal? GrossProfitDollars
+        {
             get
             {
                 return SalesActual - CostActual;
             }
         }
 
-        public decimal? GrossProfitDollarsForecast {
+        public decimal? GrossProfitDollarsForecast
+        {
             get
             {
                 return SalesForecast - CostForecast;
@@ -180,25 +200,31 @@ namespace Genrev.Domain.DataSets
             }
         }
 
-        public decimal? GrossProfitPercent {
+        public decimal? GrossProfitPercent
+        {
             get
             {
-                try {
+                try
+                {
                     return (SalesActual - CostActual) / SalesActual * 100;
                 }
-                catch (DivideByZeroException) {
+                catch (DivideByZeroException)
+                {
                     return 0;
                 }
             }
         }
 
-        public decimal? GrossProfitPercentForecast {
+        public decimal? GrossProfitPercentForecast
+        {
             get
             {
-                try {
+                try
+                {
                     return (SalesForecast - CostForecast) / SalesForecast * 100;
                 }
-                catch (DivideByZeroException) {
+                catch (DivideByZeroException)
+                {
                     return 0;
                 }
             }

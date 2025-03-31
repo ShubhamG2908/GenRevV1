@@ -585,10 +585,10 @@ namespace Genrev.Web.App.Data
 
         private DataService _service;
 
-        public DataController()
-        {
-            _service = new DataService();
-        }
+        //public DataController()
+        //{
+        //    _service = new DataService();
+        //}
 
     }
 }

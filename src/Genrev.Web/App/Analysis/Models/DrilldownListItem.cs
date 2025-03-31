@@ -11,6 +11,7 @@ namespace Genrev.Web.App.Analysis.Models
 
         public string CompanyName { get; set; }
         public decimal? MarketShare { get; set; }
+        public decimal? Potential { get; set; }
         public string Industry { get; set; }
         public string CustomerType { get; set; }
         public string AccountType { get; set; }
@@ -52,6 +53,7 @@ namespace Genrev.Web.App.Analysis.Models
             model.Period = data.Period;
             model.CompanyName = data.CustomerName;
             model.MarketShare = data.MarketShare;
+            model.Potential = data.Potential;
             model.SalesProfessional = data.PersonFirstName + " " + data.PersonLastName;
 
             if (AppService.Current.Settings.ProductFeatureEnabled)

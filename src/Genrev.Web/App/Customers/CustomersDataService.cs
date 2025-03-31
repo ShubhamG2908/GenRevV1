@@ -1,4 +1,5 @@
 ﻿using Genrev.Web.App.Customers.Models;
+
 using System.Collections.Generic;
 using System.Linq;
 
@@ -57,6 +58,26 @@ namespace Genrev.Web.App.Customers
                 {
                     c.Selected = true;
                 }
+                model.Add(c);
+            }
+            return model;
+        }
+        public List<CustomerDDLVM> GetCustomerListItemsByPersonnelId(int personnelID)
+        {
+            var model = new List<CustomerDDLVM>();
+            //var persons = AppService.Current.Person.Personnel;
+            //var account = AppService.Current.Account;
+
+            var customerIDs = AppService.Current.DataContext.GetDownstreamCustomerIDs(personnelID);
+            var mappedCustomers = AppService.Current.DataContext.Customers.Where(c => customerIDs.Contains(c.ID)).ToList();
+
+            //var person = account.PrimaryCompany.Personnel.Where(x => x.ID == personnelID).Single();
+            //var mappedCustomers = personnelID == 1 ? account.PrimaryCompany.Customers.ToList() : account.PrimaryCompany.Customers.Where(x => x.Personnel.Contains(person)).ToList();
+            foreach (var dc in mappedCustomers)
+            {
+                var c = new Models.CustomerDDLVM();
+                c.ID = dc.ID;
+                c.Name = dc.Name;
                 model.Add(c);
             }
             return model;

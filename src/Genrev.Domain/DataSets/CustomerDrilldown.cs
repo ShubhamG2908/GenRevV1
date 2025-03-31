@@ -51,6 +51,7 @@ namespace Genrev.Domain.DataSets
             CalendarYear = vm.CalendarYear;
             CustomerName = vm.CustomerName;
             MarketShare = vm.MarketShare;
+            Potential = vm.Potential;
             PersonnelID = vm.PersonnelID;
             PersonFirstName = vm.PersonFirstName;
             PersonLastName = vm.PersonLastName;
@@ -79,6 +80,7 @@ namespace Genrev.Domain.DataSets
         public string CustomerName { get; set; }
 
         public decimal? MarketShare { get; set; }
+        public decimal? Potential { get; set; }
 
         public int? PersonnelID { get; set; }
         public string PersonFirstName { get; set; }

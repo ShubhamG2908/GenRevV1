@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DevExpress.Web;
+
+using System;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -6,6 +8,13 @@ namespace Genrev.Web.App.Analysis
 {
     public class AnalysisController : Dymeng.Web.Mvc.DevExpress.ContentAreaController
     {
+        protected static decimal salesActualTotal;
+        protected static decimal salesForecastTotal;
+        protected static decimal potentialTotal;
+        protected static decimal GPDActualTotal;
+        protected static decimal GPDForecastTotal;
+        protected static decimal GPPActualTotal;
+        protected static decimal GPPForecastTotal;
         public ActionResult Index()
         {
             return ActualVsForecast();
@@ -60,6 +69,109 @@ namespace Genrev.Web.App.Analysis
             model.Items = _service.GetDrilldownListItems(fy.StartDate, fy.EndDate);
 
             return PartialView("DrilldownGrid", model);
+        }
+        public static void OnCustomSummaryCalculate(object sender, DevExpress.Data.CustomSummaryEventArgs e)
+        {
+            if (e.Item is ASPxSummaryItem summaryItem)
+            {
+                if (e.SummaryProcess == DevExpress.Data.CustomSummaryProcess.Start)
+                {
+                    salesActualTotal = 0;
+                    salesForecastTotal = 0;
+                    potentialTotal = 0;
+                    GPDActualTotal = 0;
+                    GPDForecastTotal = 0;
+                    GPPActualTotal = 0;
+                    GPPForecastTotal = 0;
+                }
+                if (e.SummaryProcess == DevExpress.Data.CustomSummaryProcess.Calculate)
+                {
+                    var prop = e.Row.GetType().GetProperty("SalesActual");
+                    if (prop != null)
+                    {
+                        object value = prop.GetValue(e.Row);
+                        if (value != null)
+                            salesActualTotal += Convert.ToDecimal(value);
+                    }
+                    var prop2 = e.Row.GetType().GetProperty("SalesForecast");
+                    if (prop2 != null)
+                    {
+                        object value = prop2.GetValue(e.Row);
+                        if (value != null)
+                            salesForecastTotal += Convert.ToDecimal(value);
+                    }
+                    var prop3 = e.Row.GetType().GetProperty("Potential");
+                    if (prop3 != null)
+                    {
+                        object value = prop3.GetValue(e.Row);
+                        if (value != null)
+                            potentialTotal += Convert.ToDecimal(value);
+                    }
+                    var prop4 = e.Row.GetType().GetProperty("GPDActual");
+                    if (prop4 != null)
+                    {
+                        object value = prop4.GetValue(e.Row);
+                        if (value != null)
+                            GPDActualTotal += Convert.ToDecimal(value);
+                    }
+                    var prop5 = e.Row.GetType().GetProperty("GPDForecast");
+                    if (prop5 != null)
+                    {
+                        object value = prop5.GetValue(e.Row);
+                        if (value != null)
+                            GPDForecastTotal += Convert.ToDecimal(value);
+                    }
+                    var prop6 = e.Row.GetType().GetProperty("GPPActual");
+                    if (prop6 != null)
+                    {
+                        object value = prop6.GetValue(e.Row);
+                        if (value != null)
+                            GPPActualTotal += Convert.ToDecimal(value);
+                    }
+                    var prop7 = e.Row.GetType().GetProperty("GPPForecast");
+                    if (prop7 != null)
+                    {
+                        object value = prop7.GetValue(e.Row);
+                        if (value != null)
+                            GPPForecastTotal += Convert.ToDecimal(value);
+                    }
+                    //if (summaryItem.FieldName == "SalesVariance" && e.FieldValue != null)
+                    //{
+                    //    salesVarianceTotal += Convert.ToDecimal(e.FieldValue);
+                    //}
+                }
+                if (e.SummaryProcess == DevExpress.Data.CustomSummaryProcess.Finalize)
+                {
+                    if (summaryItem.FieldName == "SalesVariance")
+                    {
+                        e.TotalValue = salesForecastTotal > 0 ? salesActualTotal / salesForecastTotal : 0;
+                    }
+                    if (summaryItem.FieldName == "Potential")
+                    {
+                        e.TotalValue = potentialTotal > 0 ? salesForecastTotal / potentialTotal : 0;
+                    }
+                    if (summaryItem.FieldName == "GPDVariance")
+                    {
+                        e.TotalValue = GPDForecastTotal > 0 ? GPDActualTotal / GPDForecastTotal : 0;
+                    }
+                    if (summaryItem.FieldName == "GPPForecast")
+                    {
+                        e.TotalValue = salesForecastTotal > 0 ? GPDForecastTotal / salesForecastTotal : 0;
+                    }
+                    if (summaryItem.FieldName == "GPPActual")
+                    {
+                        e.TotalValue = salesActualTotal > 0 ? GPDActualTotal / salesActualTotal : 0;
+                    }
+                    if (summaryItem.FieldName == "GPPDifference")
+                    {
+                        e.TotalValue = (salesActualTotal > 0 ? GPDActualTotal / salesActualTotal : 0) - (salesForecastTotal > 0 ? GPDForecastTotal / salesForecastTotal : 0);
+                    }
+                    if (summaryItem.FieldName == "MarketShare")
+                    {
+                        e.TotalValue = potentialTotal > 0 ? salesForecastTotal / potentialTotal : 0;
+                    }
+                }
+            }
         }
         #endregion
 
@@ -792,9 +904,6 @@ namespace Genrev.Web.App.Analysis
 
             return GetView("Opportunities", model);
         }
-
-
-
 
         [Route("Analysis/Opportunities/Data/Salesperson")]
         public string OpportunitiesDataSalesperson(int? salespersonID, int? year)

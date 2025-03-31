@@ -1,17 +1,30 @@
-﻿using System;
+﻿using Genrev.Web.App.Customers;
+using Genrev.Web.App.Services;
+
+using System;
+using System.Configuration;
 using System.Web.Mvc;
 
 namespace Genrev.Web.App.Home
 {
     [Authorize]
     public class HomeController : Dymeng.Web.Mvc.DevExpress.ContentAreaController
-    {
+    {        
+        private readonly CRMService _crmService;        
+
+        public HomeController()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["GenrevContext"].ConnectionString;            
+            _crmService = new CRMService(connectionString);
+        }
         public ActionResult Index() {
             return RedirectToAction("Dashboard");
         }
 
         public ActionResult Dashboard() {
-            return GetView("Dashboard");
+            var results = _crmService.GetCRMRecords();
+            return View(results);
+            //return GetView("Dashboard");
         }
 
         public ActionResult Search() {
@@ -27,7 +40,7 @@ namespace Genrev.Web.App.Home
             var fy = Domain.FiscalYear.GetCurrent(currentDate, fyEndingMonth);
 
             return Data.TopBottomMatrix.GetTopBottomMatrixJSON(fy.StartDate, fy.EndDate);
-        }
+        }      
 
         [Route("Home/Dashboard/ChartData/CurrentYear/SalesVsForecast")]
         public string DashChartDataCurrentYearSalesVsForecast(DateTime currentDate) {

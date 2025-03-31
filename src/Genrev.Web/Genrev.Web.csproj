@@ -50,6 +50,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.1.66\lib\net461\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetOpenAuth.AspNet, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetOpenAuth.AspNet.4.3.4.13329\lib\net45-full\DotNetOpenAuth.AspNet.dll</HintPath>
     </Reference>
@@ -89,8 +92,8 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.1\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
@@ -308,6 +311,126 @@
     <Content Include="client\scripts\lib\highcharts-nodata.v5.0.0.js" />
     <Content Include="client\scripts\lib\highcharts.v4.2.6.js" />
     <Content Include="client\scripts\lib\history.v4.2.7.js" />
+    <Content Include="client\scripts\lib\textEditor\icons\default\icons.min.js" />
+    <Content Include="client\scripts\lib\textEditor\models\dom\model.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\accordion\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\advlist\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\anchor\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\autolink\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\autoresize\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\autosave\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\charmap\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\codesample\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\code\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\directionality\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\emoticons\js\emojiimages.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\emoticons\js\emojiimages.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\emoticons\js\emojis.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\emoticons\js\emojis.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\emoticons\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\fullscreen\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\ar.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\bg_BG.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\ca.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\cs.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\da.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\de.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\el.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\en.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\es.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\eu.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\fa.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\fi.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\fr_FR.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\he_IL.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\hi.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\hr.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\hu_HU.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\id.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\it.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\ja.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\kk.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\ko_KR.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\ms.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\nb_NO.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\nl.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\pl.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\pt_BR.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\pt_PT.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\ro.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\ru.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\sk.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\sl_SI.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\sv_SE.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\th_TH.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\tr.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\uk.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\vi.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\zh_CN.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\js\i18n\keynav\zh_TW.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\help\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\image\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\importcss\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\insertdatetime\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\link\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\lists\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\media\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\nonbreaking\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\pagebreak\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\preview\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\quickbars\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\save\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\searchreplace\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\table\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\visualblocks\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\visualchars\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\plugins\wordcount\plugin.min.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\content\dark\content.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\content\dark\content.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\content\default\content.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\content\default\content.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\content\document\content.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\content\document\content.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\content\tinymce-5-dark\content.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\content\tinymce-5-dark\content.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\content\tinymce-5\content.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\content\tinymce-5\content.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\content\writer\content.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\content\writer\content.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\oxide-dark\content.inline.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\oxide-dark\content.inline.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\oxide-dark\content.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\oxide-dark\content.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\oxide-dark\skin.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\oxide-dark\skin.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\oxide-dark\skin.shadowdom.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\oxide-dark\skin.shadowdom.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\oxide\content.inline.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\oxide\content.inline.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\oxide\content.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\oxide\content.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\oxide\skin.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\oxide\skin.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\oxide\skin.shadowdom.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\oxide\skin.shadowdom.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\tinymce-5-dark\content.inline.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\tinymce-5-dark\content.inline.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\tinymce-5-dark\content.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\tinymce-5-dark\content.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\tinymce-5-dark\skin.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\tinymce-5-dark\skin.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\tinymce-5-dark\skin.shadowdom.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\tinymce-5-dark\skin.shadowdom.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\tinymce-5\content.inline.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\tinymce-5\content.inline.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\tinymce-5\content.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\tinymce-5\content.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\tinymce-5\skin.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\tinymce-5\skin.min.css" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\tinymce-5\skin.shadowdom.js" />
+    <Content Include="client\scripts\lib\textEditor\skins\ui\tinymce-5\skin.shadowdom.min.css" />
+    <Content Include="client\scripts\lib\textEditor\themes\silver\theme.min.js" />
+    <Content Include="client\scripts\lib\textEditor\tinymce.min.js" />
     <Content Include="client\scripts\require.v2.2.0.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -424,7 +547,13 @@
     <Content Include="App\Analysis\Views\Historic2.cshtml" />
     <Content Include="App\Data\Views\ImportForecastDataPopup.cshtml" />
     <Content Include="App_Data\ImportTemplates\GRImportTemplate_ForecastData.csv" />
+    <Content Include="App\CRM\Views\Index.cshtml" />
+    <Content Include="App\CRM\Views\AddClient.cshtml" />
+    <Content Include="App\CRM\Views\EditClient.cshtml" />
+    <Content Include="client\scripts\lib\textEditor\langs\README.md" />
+    <Content Include="client\scripts\lib\textEditor\license.md" />
     <None Include="client\scripts\_references.js" />
+    <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
     <Content Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
     <Content Include="packages.config" />
@@ -468,6 +597,8 @@
     <Content Include="App\Dialogs\Views\ConfirmPopup.cshtml" />
     <Content Include="App\Dialogs\Views\ConfirmPopupContent.cshtml" />
     <None Include="Properties\PublishProfiles\Genrev Local Publish.pubxml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -493,6 +624,7 @@
     <Compile Include="App\Analysis\Models\OpportunitiesVM.cs" />
     <Compile Include="App\Analysis\Models\SalesCallsVM.cs" />
     <Compile Include="App\CommonListItems.cs" />
+    <Compile Include="App\CRM\CRMController.cs" />
     <Compile Include="App\Customers\CustomersController.cs" />
     <Compile Include="App\Customers\CustomersDataService.cs" />
     <Compile Include="App\Customers\Models\AddCustomerVM.cs" />
@@ -510,6 +642,7 @@
     <Compile Include="App\Customers\Models\MappingVM.cs" />
     <Compile Include="App\Customers\Models\TypesListItemVM.cs" />
     <Compile Include="App\Data\DataController.cs" />
+    <Compile Include="App\CRM\CRMService.cs" />
     <Compile Include="App\Data\DataService.cs" />
     <Compile Include="App\Data\DataUploadValidation.cs" />
     <Compile Include="App\Data\Models\Forecast\ForecastDetailVM.cs" />
@@ -596,6 +729,12 @@
       <Project>{5fbcedb3-1b8b-4d42-ba68-3dda2fc167c5}</Project>
       <Name>Genrev.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="client\scripts\lib\textEditor\tinymce.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

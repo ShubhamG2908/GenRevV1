@@ -149,17 +149,16 @@ define(function () {
                 return s;
             },
 
-            renderPie: function (title, seriesName, seriesData, containerName) {
-
+            renderPie: function (title, seriesName, seriesData, containerName) {                
                 var base = Charts.GetBase();
-                
+                var total = seriesData.reduce((sum, item) => sum + item.y, 0);
                 var options = {
 
                     chart: {
                         type: 'pie',
                         height: 225
                     },
-                    title: { text: title },
+                    title: { text: `${title} (${Genrev.FormatMoney(total)})` }, 
                     tooltip: {
                         formatter: page.charts.tooltipFormatter
                     },

@@ -1,4 +1,5 @@
 @model Genrev.Web.App.Analysis.Models.DrilldownVM
+@using Genrev.Web.App.Analysis;
 
 @Html.DevExpress().GridView(
     s =>
@@ -34,18 +35,37 @@
         s.TotalSummary.Add(new ASPxSummaryItem("SalesActual", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "SalesActual" });
         s.TotalSummary.Add(new ASPxSummaryItem("SalesForecast", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "SalesForecast" });
         s.TotalSummary.Add(new ASPxSummaryItem("SalesDifference", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "SalesDifference" });
-        //s.TotalSummary.Add(new ASPxSummaryItem("SalesVariance", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "SalesVariance" });
+        s.TotalSummary.Add(new ASPxSummaryItem("SalesVariance", DevExpress.Data.SummaryItemType.Custom) { ShowInColumn = "SalesVariance" });
         s.TotalSummary.Add(new ASPxSummaryItem("GPDActual", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "GPDActual" });
         s.TotalSummary.Add(new ASPxSummaryItem("GPDForecast", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "GPDForecast" });
         s.TotalSummary.Add(new ASPxSummaryItem("GPDDifference", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "GPDDifference" });
-        //s.TotalSummary.Add(new ASPxSummaryItem("GPDVariance", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPDVariance" });
-        //s.TotalSummary.Add(new ASPxSummaryItem("GPPActual", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPPActual" });
-        //s.TotalSummary.Add(new ASPxSummaryItem("GPPForecast", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPPForecast" });
-        //s.TotalSummary.Add(new ASPxSummaryItem("GPPDifference", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPPDifference" });
+        s.TotalSummary.Add(new ASPxSummaryItem("GPDVariance", DevExpress.Data.SummaryItemType.Custom) { ShowInColumn = "GPDVariance" });
+        s.TotalSummary.Add(new ASPxSummaryItem("GPPActual", DevExpress.Data.SummaryItemType.Custom) { ShowInColumn = "GPPActual" });
+        s.TotalSummary.Add(new ASPxSummaryItem("GPPForecast", DevExpress.Data.SummaryItemType.Custom) { ShowInColumn = "GPPForecast" });
+        s.TotalSummary.Add(new ASPxSummaryItem("GPPDifference", DevExpress.Data.SummaryItemType.Custom) { ShowInColumn = "GPPDifference" });
         //s.TotalSummary.Add(new ASPxSummaryItem("GPPVariance", DevExpress.Data.SummaryItemType.Average) { ShowInColumn = "GPPVariance" });
         s.TotalSummary.Add(new ASPxSummaryItem("CallsActual", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "CallsActual" });
         s.TotalSummary.Add(new ASPxSummaryItem("CallsForecast", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "CallsForecast" });
         s.TotalSummary.Add(new ASPxSummaryItem("CallsDifference", DevExpress.Data.SummaryItemType.Sum) { ShowInColumn = "CallsDifference" });
+        s.TotalSummary.Add(new ASPxSummaryItem("MarketShare", DevExpress.Data.SummaryItemType.Custom) { ShowInColumn = "MarketShare" });
+
+        s.CustomSummaryCalculate += AnalysisController.OnCustomSummaryCalculate;
+
+        s.HtmlFooterCellPrepared = (sender, e) =>
+        {
+            GridViewDataColumn column = e.Column as GridViewDataColumn;
+            ASPxGridView grid = e.Column.Grid;
+            if (column == null) return;
+
+            foreach (ASPxSummaryItem summaryItem in grid.TotalSummary)
+            {
+                if (summaryItem.ShowInColumn == e.Column.Name)
+                {
+                    decimal? summaryValue = Convert.ToDecimal(e.GetSummaryValue(summaryItem));
+                    e.Cell.ForeColor = summaryValue < 0 ? System.Drawing.Color.Red : System.Drawing.Color.Black;
+                }
+            }
+        };
 
         s.DataBound = (sender, e) =>
         {

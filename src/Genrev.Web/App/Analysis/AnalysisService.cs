@@ -105,6 +105,7 @@ namespace Genrev.Web.App.Analysis
                     CostActual = y.Sum(x => x.CostActual),
                     CostForecast = y.Sum(x => x.CostForecast),
                     MarketShare = y.Sum(x => x.MarketShare),
+                    Potential = y.Sum(x => x.Potential),
                 }).ToList();
 
             var items = new List<Models.DrilldownListItem>();

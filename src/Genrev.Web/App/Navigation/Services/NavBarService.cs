@@ -22,9 +22,6 @@ namespace Genrev.Web.App.Navigation.Services
             nav = new NavBarMV();
 
             // build navbar here based on user permissions
-
-
-
             var groupHome = new NavBarGroup();
             groupHome.ID = 0;
             groupHome.Text = "Home";
@@ -36,15 +33,8 @@ namespace Genrev.Web.App.Navigation.Services
                 ID = 0,
                 Text = "Dashboard",
                 Url = "/Home/Dashboard",
-                Title = "Home - Dashboard"
-                
-
+                Title = "Home - Dashboard"                
             });
-
-
-
-
-
             var groupAnalysis = new NavBarGroup();
             groupAnalysis.ID = 1;
             groupAnalysis.Text = "Analysis";
@@ -66,7 +56,6 @@ namespace Genrev.Web.App.Navigation.Services
                 Url = "/Analysis/Historic",
                 Title = "Analysis - Historic"
             });
-
 
             groupAnalysis.Items.Add(new NavBarGroupItem()
             {
@@ -91,12 +80,6 @@ namespace Genrev.Web.App.Navigation.Services
                 Url = "/Analysis/Drilldown",
                 Title = "Analyis - Drilldown"
             });
-
-
-
-
-
-
 
             var groupData = new NavBarGroup();
             groupData.ID = 2;
@@ -150,66 +133,63 @@ namespace Genrev.Web.App.Navigation.Services
                 });
             }
 
-
-
-
-
             var groupSubscription = new NavBarGroup();
             groupSubscription.ID = 3;
             groupSubscription.Text = "Account";
             groupSubscription.Expanded = false;
             groupSubscription.Items = new List<NavBarGroupItem>();
 
-
-            groupSubscription.Items.Add(new NavBarGroupItem()
-            {
-                ID = 0,
-                Text = "Your Account",
-                Url = "/Subscription",
-                Title = "Account - General"
-            });
-
-            groupSubscription.Items.Add(new NavBarGroupItem()
-            {
-                ID = 1,
-                Text = "Customers",
-                Url = "/Customers",
-                Title = "Customer Management"
-            });
-
-            if (AppService.Current.Settings.ProductFeatureEnabled)
+            if (AppService.Current.IsSysAdmin())
             {
                 groupSubscription.Items.Add(new NavBarGroupItem()
                 {
-                    ID = 2,
-                    Text = "Products",
-                    Url = "/Products",
-                    Title = "Product Management"
+                    ID = 0,
+                    Text = "Your Account",
+                    Url = "/Subscription",
+                    Title = "Account - General"
                 });
-            }
+
+                groupSubscription.Items.Add(new NavBarGroupItem()
+                {
+                    ID = 1,
+                    Text = "Customers",
+                    Url = "/Customers",
+                    Title = "Customer Management"
+                });
+
+                if (AppService.Current.Settings.ProductFeatureEnabled)
+                {
+                    groupSubscription.Items.Add(new NavBarGroupItem()
+                    {
+                        ID = 2,
+                        Text = "Products",
+                        Url = "/Products",
+                        Title = "Product Management"
+                    });
+                }
+
+                groupSubscription.Items.Add(new NavBarGroupItem()
+                {
+                    ID = 2,
+                    Text = "Personnel",
+                    Url = "/Personnel",
+                    Title = "Personnel Management"
+                });
+            }            
 
             groupSubscription.Items.Add(new NavBarGroupItem()
             {
-                ID = 2,
-                Text = "Personnel",
-                Url = "/Personnel",
-                Title = "Personnel Management"
+                ID = 3,
+                Text = "CRM",
+                Url = "/CRM",
+                Title = "Customer Relationship Management"
             });
-
-
-
-
             nav.Groups = new List<NavBarGroup>();
             nav.Groups.Add(groupHome);
             nav.Groups.Add(groupAnalysis);
             nav.Groups.Add(groupData);
 
-            if (AppService.Current.IsSysAdmin())
-            {
-                nav.Groups.Add(groupSubscription);
-            }
-
-
+            nav.Groups.Add(groupSubscription);
 
             setNavBarCache(nav, username);
             return nav;

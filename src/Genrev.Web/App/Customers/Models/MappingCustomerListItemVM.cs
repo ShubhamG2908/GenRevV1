@@ -13,4 +13,18 @@ namespace Genrev.Web.App.Customers.Models
         public string Name { get; set; }
         
     }
+    public class CustomerDDLVM
+    {
+        public int ID { get; set; }
+        public bool Selected { get; set; }
+        public string Name { get; set; }
+
+    }
+    public class SalesPersonDDLVM
+    {
+        public int ID { get; set; }
+        public bool Selected { get; set; }
+        public string Name { get; set; }
+
+    }
 }

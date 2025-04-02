@@ -25,9 +25,9 @@ namespace Genrev.Web.App.Services
             {
                 string query = @"
                     INSERT INTO CRM (SalesPersonId, CustomerId, Name, Title, AreaOfResponsibility, 
-                                     LinkedInUrl, Strategy, StrategyDate, Concern, CreatedAt, UpdatedAt) 
+                                     LinkedInUrl, Concern, CreatedAt, UpdatedAt) 
                     VALUES (@SalesPersonId, @CustomerId, @Name, @Title, @AreaOfResponsibility, 
-                            @LinkedInUrl, @Strategy, @StrategyDate, @Concern, GETDATE(), NULL);
+                            @LinkedInUrl, @Concern, GETDATE(), NULL);
                     SELECT CAST(SCOPE_IDENTITY() as int);";
 
                 id = connection.ExecuteScalar<int>(query, new
@@ -38,8 +38,6 @@ namespace Genrev.Web.App.Services
                     model.Title,
                     model.AreaOfResponsibility,
                     model.LinkedInUrl,
-                    model.Strategy,
-                    model.StrategyDate,
                     Concern = model.Concern ?? (object)DBNull.Value
                 });
             }
@@ -58,9 +56,7 @@ namespace Genrev.Web.App.Services
                         Name = @Name, 
                         Title = @Title, 
                         AreaOfResponsibility = @AreaOfResponsibility, 
-                        LinkedInUrl = @LinkedInUrl, 
-                        Strategy = @Strategy, 
-                        StrategyDate = @StrategyDate, 
+                        LinkedInUrl = @LinkedInUrl,                                                 
                         Concern = @Concern, 
                         UpdatedAt = GETDATE()
                     WHERE Id = @Id;";
@@ -74,8 +70,6 @@ namespace Genrev.Web.App.Services
                     model.Title,
                     model.AreaOfResponsibility,
                     model.LinkedInUrl,
-                    model.Strategy,
-                    model.StrategyDate,
                     Concern = model.Concern ?? (object)DBNull.Value
                 });
 
@@ -163,11 +157,14 @@ namespace Genrev.Web.App.Services
                         (SELECT TOP 1 CONCAT(AddressLine1, ', ', AddressLine2, ', ', City, ', ', State, ', ', Pincode, ', ', Country) 
                          FROM CRM_Address WHERE CRMId = c.Id ORDER BY Id) AS FirstAddress,
                         (SELECT TOP 1 CONCAT(p.PersonFirstName, ' ', p.PersonLastName) FROM Personnel p WHERE p.Id = c.SalesPersonId) AS SalesPersonName,
-                        (SELECT TOP 1 cc.CustomerName FROM CompanyCustomers cc WHERE cc.Id = c.CustomerId) AS CustomerName
+                        (SELECT TOP 1 cc.CustomerName FROM CompanyCustomers cc WHERE cc.Id = c.CustomerId) AS CustomerName,
+                        (SELECT TOP 1 i.IndustryName FROM CompanyIndustries i WHERE i.Id = cc.CustomerIndustryID) AS IndustryName
                     FROM CRM c
+                    JOIN CompanyCustomers cc ON c.CustomerId = cc.Id
                     WHERE SalesPersonId IN (" + string.Join(",", personnelIds) + ")";
 
-                return connection.Query<CRMRecordDTO>(query).ToList();
+                var result = connection.Query<CRMRecordDTO>(query).ToList();
+                return result;
             }
         }
         public List<CRMRecordDTO> GetCRMRecordsBySalesPersonIdAndCustomerId(int salesPersonId, int customerId)
@@ -237,6 +234,41 @@ namespace Genrev.Web.App.Services
                 return connection.QueryFirstOrDefault<string>(query, new { CustomerID = customerId }) ?? string.Empty;
             }
         }
+        public void SaveFileMetadata(int crmId, string fileName, string filePath)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                string query = @"
+                INSERT INTO CRM_Files (CRMId, FileName, FilePath, CreatedAt) 
+                VALUES (@CRMId, @FileName, @FilePath, GETDATE());";
 
+                connection.Execute(query, new
+                {
+                    CRMId = crmId,
+                    FileName = fileName,
+                    FilePath = filePath
+                });
+            }
+        }
+        public List<CRMFileViewModel> GetFilesByCRMId(int crmId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                string query = @"
+                    SELECT Id, CRMId, FileName, FilePath, CreatedAt
+                    FROM CRM_Files
+                    WHERE CRMId = @CRMId;";
+
+                return connection.Query<CRMFileViewModel>(query, new { CRMId = crmId }).ToList();
+            }
+        }
+        public void DeleteFile(int Id)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                string query = "DELETE FROM CRM_Files WHERE Id = @Id";
+                connection.Execute(query, new { Id = Id });
+            }
+        }
     }
 }

@@ -7,12 +7,15 @@ namespace Genrev.Web.App.Data
 {
     public class DataController : Dymeng.Web.Mvc.DevExpress.ContentAreaController
     {
-
+        private DataService _service;
+        public DataController()
+        {
+            _service = new DataService();
+        }
         public ActionResult Index()
         {
             return Management();
         }
-
 
         #region FORECAST LOCK
         public ActionResult ForecastLock()
@@ -405,10 +408,7 @@ namespace Genrev.Web.App.Data
 
         #endregion
 
-
-
         #region MANAGEMENT
-
 
         [Authorize(Roles = "sysadmin")]
         public ActionResult Management()
@@ -581,14 +581,6 @@ namespace Genrev.Web.App.Data
             return null;
         }
 
-        #endregion
-
-        private DataService _service;
-
-        //public DataController()
-        //{
-        //    _service = new DataService();
-        //}
-
+        #endregion        
     }
 }

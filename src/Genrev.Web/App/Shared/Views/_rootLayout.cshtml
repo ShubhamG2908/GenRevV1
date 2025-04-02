@@ -173,7 +173,17 @@ function onCustomerChange(s, e) {
         }   // end EnsureAppLoaded
 
     </script>
-
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            var crmLink = document.querySelector('a[href="/CRM"]');
+            if (crmLink) {
+                crmLink.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    window.location.href = "/CRM";
+                });
+            }
+        });
+    </script>
 </head>
 <body>
     @Html.DevExpress().Splitter(settings => {

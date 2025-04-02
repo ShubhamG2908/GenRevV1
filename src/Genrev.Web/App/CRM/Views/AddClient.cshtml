@@ -9,120 +9,134 @@
 }
 
 <div style="padding:20px;">
-    @using (@Html.BeginForm("Save", "CRM", FormMethod.Post, new { id = "crmForm" }))
+    @using (@Html.BeginForm("Save", "CRM", FormMethod.Post, new { id = "crmForm", enctype = "multipart/form-data" }))
     {
         <div class="datacontent-subsection">
             <h2>Customer Relationship Management</h2>
             @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
-            <!-- SalesPerson ComboBox -->
-            <div style="margin:15px 0px; display: inline-block; width: 48%;">
-                @Html.DevExpress().ComboBox(s =>
-                {
-                    s.Name = "SalesPersonId";
-                    s.ClientEnabled = IsAdmin;
-                    s.Properties.ValueField = "Id";
-                    s.Properties.ValueType = typeof(int);
-                    s.Properties.TextField = "DisplayName";
-                    s.Properties.Caption = "Salesperson";
-                    s.Properties.CaptionCellStyle.Width = 150;
-                    s.Properties.ClientSideEvents.ValueChanged = "onSalesPersonChange";
-                }).BindList(ViewBag.SalesPersons).Bind(ViewBag.SelectedSalesPersonId).GetHtml()
-            </div>
 
-            <div style="margin:15px 0px;">
-                <table class="concertTable" border="0">
-                    <tr>
-                        <td>
+            <table class='table table-bordered responsive-table'>
+                <tbody>
+                    <tr class="tr">
+                        <td class="td">
                             @Html.DevExpress().ComboBox(s =>
                             {
-                            s.Name = "CustomerId";
-                            s.Properties.ValueField = "Id";
-                            s.Properties.ValueType = typeof(int);
-                            s.Properties.TextField = "Name";
-                            s.Properties.Caption = "Customer";
-                            s.Properties.CaptionCellStyle.Width = 150;
-                            s.Properties.ClientSideEvents.ValueChanged = "onCustomerChange";
-                            }).BindList(ViewBag.Customers).Bind(ViewBag.SelectedCustomerId).GetHtml()
+                                s.Name = "SalesPersonId";
+                                s.ClientEnabled = IsAdmin;
+                                s.Properties.ValueField = "Id";
+                                s.Properties.ValueType = typeof(int);
+                                s.Properties.TextField = "DisplayName";
+                                s.Properties.Caption = "Salesperson";
+                                s.Properties.CaptionCellStyle.Width = 150;
+                                s.Properties.ClientSideEvents.ValueChanged = "onSalesPersonChange";
+                            }).BindList(ViewBag.SalesPersons).Bind(ViewBag.SelectedSalesPersonId).GetHtml()
                         </td>
-                        <td>
+                        <td class="td">
                             @Html.DevExpress().ComboBox(s =>
-                       {
-                           s.Name = "Concern";
-                           s.Properties.ValueField = "Text";
-                           s.Properties.TextField = "Text";
-                           s.Properties.Caption = "Concern";
-                           s.Properties.CaptionCellStyle.Width = 150;
-                           s.Properties.CaptionCellStyle.CssClass = "right-align-caption";
-                       }).BindList(new List<SelectListItem>
 {
-                            new SelectListItem { Value = "", Text = "Select option" },
-                            new SelectListItem { Value = "Monitor", Text = "Monitor" },
-                            new SelectListItem { Value = "Critical", Text = "Critical" }
+s.Name = "CustomerId";
+s.Properties.ValueField = "Id";
+s.Properties.ValueType = typeof(int);
+s.Properties.TextField = "Name";
+s.Properties.Caption = "Customer";
+s.Properties.CaptionCellStyle.Width = 150;
+s.Properties.ClientSideEvents.ValueChanged = "onCustomerChange";
+}).BindList(ViewBag.Customers).Bind(ViewBag.SelectedCustomerId).GetHtml()
+                        </td>
+                        <td class="td">
+                            @Html.DevExpress().ComboBox(s =>
+{
+s.Name = "Concern";
+s.Properties.ValueField = "Text";
+s.Properties.TextField = "Text";
+s.Properties.Caption = "Concern";
+s.Properties.CaptionCellStyle.Width = 150;
+}).BindList(new List<SelectListItem>
+{
+new SelectListItem { Value = "", Text = "" },
+new SelectListItem { Value = "Monitor", Text = "Monitor" },
+new SelectListItem { Value = "Critical", Text = "Critical" }
 }).GetHtml()
                         </td>
                     </tr>
-                </table>
-            </div>
+                    <tr class="tr">
+                        <td class="td">
+                            @Html.DevExpress().TextBox(s =>
+{
+    s.Name = "Name";
+    s.Properties.Caption = "Contact Name";
+    s.Properties.CaptionCellStyle.Width = 150;
+}).Bind(Model.Name).GetHtml()
+                        </td>
+                        <td class="td">
+                            @Html.DevExpress().TextBox(s =>
+{
+    s.Name = "Title";
+    s.Properties.Caption = "Contact Title";
+    s.Properties.CaptionCellStyle.Width = 150;
+}).Bind(Model.Title).GetHtml()
+                        </td>
+                        <td class="td">
+                            @Html.DevExpress().TextBox(s =>
+{
+    s.Name = "AreaOfResponsibility";
+    s.Properties.Caption = "Area of Responsibility";
+    s.Properties.CaptionCellStyle.Width = 150;
+}).Bind(Model.AreaOfResponsibility).GetHtml()
+                        </td>
+                    </tr>
+                    <tr class="tr">
+                        <td class="td">
+                            <div class="datacontent-subsection">
+                                <div id="phoneContainer">
+                                    <div class="field-group">
+                                        @Html.DevExpress().TextBox(s =>
+                                        {
+                                            s.Name = "Phones[0]";
+                                            s.Properties.Caption = "Phone";
+                                            s.Properties.CaptionCellStyle.Width = 150;
+                                        }).GetHtml()
+                                        <button type="button" class="add-btn" onclick="addField('phoneContainer', 'Phones','textbox')">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="td">
+                            <div class="datacontent-subsection">
+                                <div id="emailContainer">
+                                    <div class="field-group">
+                                        @Html.DevExpress().TextBox(s =>
+                                        {
+                                            s.Name = "Emails[0]";
+                                            s.Properties.Caption = "Email";
+                                            s.Properties.CaptionCellStyle.Width = 150;
+                                        }).GetHtml()
+                                        <button type="button" class="add-btn" onclick="addField('emailContainer', 'Emails','textbox')">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="td">
+                            @Html.DevExpress().TextBox(s =>
+{
+    s.Name = "LinkedInUrl";
+    s.Properties.Caption = "Contact LI URL";
+    s.Properties.CaptionCellStyle.Width = 150;
+}).Bind(Model.LinkedInUrl).GetHtml()
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="margin:15px 0px;">
 
-            <!-- Name -->
-            <div style="margin:15px 0px;">
-                @Html.DevExpress().TextBox(s =>
-                {
-                    s.Name = "Name";
-                    s.Properties.Caption = "Name";
-                    s.Properties.CaptionCellStyle.Width = 150;
-                }).Bind(Model.Name).GetHtml()
             </div>
             <div style="margin:15px 0px;">
-                @Html.DevExpress().TextBox(s =>
-                {
-                    s.Name = "Title";
-                    s.Properties.Caption = "Title";
-                    s.Properties.CaptionCellStyle.Width = 150;
-                }).Bind(Model.Title).GetHtml()
-            </div>
-            <div style="margin:15px 0px;">
-                @Html.DevExpress().TextBox(s =>
-                {
-                    s.Name = "AreaOfResponsibility";
-                    s.Properties.Caption = "Area of Responsibility";
-                    s.Properties.CaptionCellStyle.Width = 150;
-                }).Bind(Model.AreaOfResponsibility).GetHtml()
-            </div>
-            <div style="margin:15px 0px;">
-                <div class="datacontent-subsection">
-                    <div id="phoneContainer">
-                        <div class="field-group">
-                            @Html.DevExpress().TextBox(s =>
-                            {
-                                s.Name = "Phones[0]";
-                                s.Properties.Caption = "Phone";
-                                s.Properties.CaptionCellStyle.Width = 150;
-                            }).GetHtml()
-                            <button type="button" class="add-btn" onclick="addField('phoneContainer', 'Phones','textbox')">+</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div style="margin:15px 0px;">
-                <div class="datacontent-subsection">
-                    <div id="emailContainer">
-                        <div class="field-group">
-                            @Html.DevExpress().TextBox(s =>
-                            {
-                                s.Name = "Emails[0]";
-                                s.Properties.Caption = "Email";
-                                s.Properties.CaptionCellStyle.Width = 150;
-                            }).GetHtml()
-                            <button type="button" class="add-btn" onclick="addField('emailContainer', 'Emails','textbox')">+</button>
-                        </div>
-                    </div>
-                </div>
+
             </div>
             <div style="margin:15px 0px;">
                 <div class="datacontent-subsection">
                     <div>
-                        <h3>Address</h3>
+                        <h3 style="font-size:12px;">Address:</h3>
                     </div>
                     <table id="cst_table" class="table table-bordered">
                         <thead>
@@ -153,12 +167,26 @@
                 </div>
             </div>
             <div style="margin:15px 0px;">
+                <div style="margin-top:40px;">
+                    <h3 style="font-size:12px;">Strategy:</h3>
+                </div>
+                @Html.DevExpress().Memo(s =>
+           {
+               s.Name = "Strategy";
+               s.Properties.CaptionCellStyle.Width = 150;
+               s.Width = Unit.Percentage(100);
+               s.Properties.Rows = 5;
+               s.ControlStyle.CssClass = "full-width-textarea";
+               s.Enabled = false;
+           }).Bind(Model.Strategy).GetHtml()
+            </div>
+            <div style="margin:15px 0px;">
                 <div class="datacontent-subsection">
                     <div style="margin-top:40px;">
-                        <h3>Notes</h3>
+                        <h3 style="font-size:12px;">Notes:</h3>
                     </div>
                     <div id="notesContainer">
-                        <div class="field-group">
+                        <div>
                             <div id="editor-wrapper">
                                 <div class="editor-container" id="editorContainer_0">
                                     <textarea id="editor_0" name="Notes[0]"></textarea>
@@ -170,20 +198,8 @@
                 </div>
             </div>
             <div style="margin:15px 0px;">
-                @Html.DevExpress().TextBox(s =>
-                {
-                    s.Name = "LinkedInUrl";
-                    s.Properties.Caption = "LinkedIn URL";
-                    s.Properties.CaptionCellStyle.Width = 150;
-                }).Bind(Model.LinkedInUrl).GetHtml()
-            </div>
-            <div style="margin:15px 0px;">
-                @Html.DevExpress().Memo(s =>
-                {
-                    s.Name = "Strategy";
-                    s.Properties.Caption = "Strategy";
-                    s.Properties.CaptionCellStyle.Width = 150;
-                }).Bind(Model.Strategy).GetHtml()
+                <h3 style="font-size:12px;">Upload Files:</h3>
+                <input type="file" name="uploadedFiles" id="uploadedFiles" multiple />
             </div>
             @Html.DevExpress().Button(s => { s.Name = "SaveButton"; s.Text = "Save Changes"; s.ClientSideEvents.Click = "function(s, e) { submitForm(); }"; }).GetHtml()
             <script>
@@ -205,9 +221,9 @@
                     editorContainer.id = 'editorContainer_' + index;
 
                     editorContainer.innerHTML = `
-        <textarea id="${editorId}" name="Notes[${index}]"></textarea>
-        <button type="button" class="remove-btn" onclick="removeEditor('${editorContainer.id}', '${editorId}')">-</button>
-    `;
+                                                                                                                                                                                                                                            <textarea id="${editorId}" name="Notes[${index}]"></textarea>
+                                                                                                                                                                                                                                            <button type="button" class="remove-btn" onclick="removeEditor('${editorContainer.id}', '${editorId}')">-</button>
+                                                                                                                                                                                                                                        `;
                     document.getElementById("editor-wrapper").appendChild(editorContainer);
 
                     tinymce.init({
@@ -220,12 +236,10 @@
                 }
 
                 function removeEditor(containerId, editorId) {
-                    tinymce.get(editorId)?.remove(); // Remove TinyMCE instance
-                    document.getElementById(containerId).remove(); // Remove container from DOM
+                    tinymce.get(editorId)?.remove();
+                    document.getElementById(containerId).remove();
                 }
             </script>
-
-
             <script>
                 function submitForm() {
                     document.getElementById("crmForm").submit();
@@ -236,16 +250,16 @@
                     if (type == 'textbox') {
                         newField =
                             `<div class="field-group" style="padding-left: 156px;">
-                                                                                                                                                                                                                                                                                                                                <input type="text" name="${name}[${index}]" class="form-control" required style="width: 162px;" />
-                                                                                                                                                                                                                                                                                                                                <button type="button" class="remove-btn" onclick="removeField(this)">-</button>
-                                                                                                                                                                                                                                                                                                                            </div>`;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <input type="text" name="${name}[${index}]" class="form-control" required style="width: 162px;" />
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <button type="button" class="remove-btn" onclick="removeField(this)">-</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>`;
                     }
                     else {
                         newField =
                             `<div class="field-group" style="padding-left: 156px;">
-                                                                                                                                                                                                                                                                                                                                            <textarea name="${name}[${index}]" class="form-control" required></textarea>
-                                                                                                                                                                                                                                                                                                                                            <button type="button" class="remove-btn" onclick="removeField(this)">-</button>
-                                                                                                                                                                                                                                                                                                                                        </div>`;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <textarea name="${name}[${index}]" class="form-control" required></textarea>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button type="button" class="remove-btn" onclick="removeField(this)">-</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>`;
                     }
                     $("#" + containerId).append(newField);
                 }
@@ -260,14 +274,14 @@
                     var newRow = document.createElement("tr");
 
                     newRow.innerHTML = `
-                                                                                                                                                                        <td><input type="text" name="Addresses[${index}][AddressLine1]" class="form-control" required /></td>
-                                                                                                                                                                        <td><input type="text" name="Addresses[${index}][AddressLine2]" class="form-control" required /></td>
-                                                                                                                                                                        <td><input type="text" name="Addresses[${index}][City]" class="form-control" required /></td>
-                                                                                                                                                                        <td><input type="text" name="Addresses[${index}][State]" class="form-control" required /></td>
-                                                                                                                                                                        <td><input type="text" name="Addresses[${index}][Country]" class="form-control" required /></td>
-                                                                                                                                                                        <td><input type="text" name="Addresses[${index}][Pincode]" class="form-control" required /></td>
-                                                                                                                                                                        <td><button type="button" class="btn btn-danger btn-sm remove-btn" onclick="removeAddressRow(this)">-</button></td>
-                                                                                                                                                                    `;
+                                                                                                                                                                                                                                                                                                                                                                                                            <td><input type="text" name="Addresses[${index}][AddressLine1]" class="form-control" required /></td>
+                                                                                                                                                                                                                                                                                                                                                                                                            <td><input type="text" name="Addresses[${index}][AddressLine2]" class="form-control" required /></td>
+                                                                                                                                                                                                                                                                                                                                                                                                            <td><input type="text" name="Addresses[${index}][City]" class="form-control" required /></td>
+                                                                                                                                                                                                                                                                                                                                                                                                            <td><input type="text" name="Addresses[${index}][State]" class="form-control" required /></td>
+                                                                                                                                                                                                                                                                                                                                                                                                            <td><input type="text" name="Addresses[${index}][Country]" class="form-control" required /></td>
+                                                                                                                                                                                                                                                                                                                                                                                                            <td><input type="text" name="Addresses[${index}][Pincode]" class="form-control" required /></td>
+                                                                                                                                                                                                                                                                                                                                                                                                            <td><button type="button" class="btn btn-danger btn-sm remove-btn" onclick="removeAddressRow(this)">-</button></td>
+                                                                                                                                                                                                                                                                                                                                                                                                        `;
                     container.appendChild(newRow);
                 }
                 function removeAddressRow(button) {
@@ -279,16 +293,7 @@
     }
 </div>
 
-<!-- CSS for Alignment -->
 <style>
-    .right-align-caption {
-        text-align: right !important;
-    }
-
-    textarea {
-        width: 161px !important;
-    }
-
     .field-group {
         display: flex;
         align-items: center;
@@ -327,7 +332,77 @@
     .editor-container {
         display: flex;
         align-items: center;
-        gap: 10px; 
+        gap: 10px;
         margin-bottom: 30px;
     }
+
+    .full-width-textarea textarea {
+        width: 100% !important;
+        resize: both;
+        min-height: 100px;
+    }
+
+    .tox.tox-tinymce {
+        width: 100% !important;
+        border: 1px solid #ddd !important;
+    }
+
+    .responsive-table {
+        width: 100%;
+        max-width: 100%;
+        border-collapse: collapse;
+    }
+
+        .responsive-table th.th, .responsive-table td.td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .responsive-table.withBorder th.th, .responsive-table.withBorder td.td {
+            border: 1px solid #ddd !important;
+        }
+
+    @@media (max-width: 768px) {
+        .responsive-table, .responsive-table thead, .responsive-table tbody,
+        .responsive-table th.th, .responsive-table td.td, .responsive-table tr.tr {
+            display: block;
+            width: 100%;
+        }
+
+            .responsive-table thead {
+                display: none;
+            }
+
+            .responsive-table tr.tr {
+                margin-bottom: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .responsive-table td.td {
+                text-align: left;
+                padding-left: 50%;
+                position: relative;
+                display: block;
+                vertical-align: top !important;
+            }
+
+                .responsive-table td.td:before {
+                    content: attr(data-label);
+                    position: absolute;
+                    left: 10px;
+                    width: 45%;
+                    padding-right: 10px;
+                    text-align: left;
+                    font-weight: bold;
+                }
+    }
+
+    .tox:not([dir=rtl]) .tox-statusbar__branding {
+        display: none;
+    }
+
+    .dxeDisabled_Glass, .dxeDisabled_Glass td.dxe {
+        color: black !important;
+    }
 </style>
+

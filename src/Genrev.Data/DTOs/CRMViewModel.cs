@@ -30,6 +30,7 @@ namespace Genrev.Data.DTOs
         [StringLength(500, ErrorMessage = "LinkedIn URL cannot exceed 500 characters")]
         public string LinkedInUrl { get; set; }
         public string Concern { get; set; }
+        public List<CRMFileViewModel> UploadedFiles { get; set; } = new List<CRMFileViewModel>();                                                           
         public List<CRMContactViewModel> Contacts { get; set; } = new List<CRMContactViewModel>();
 
 
@@ -100,11 +101,21 @@ namespace Genrev.Data.DTOs
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string Phone { get; set; }
-        public string Email { get; set; } 
-        public string Notes { get; set; } 
-        public string FirstAddress { get; set; } 
+        public string Email { get; set; }
+        public string Notes { get; set; }
+        public string FirstAddress { get; set; }
         public string SalesPersonName { get; set; }
-        public string CustomerName { get; set; } 
-        public string Concern { get; set; } 
+        public string CustomerName { get; set; }
+        public string Concern { get; set; }
+        public string IndustryName { get; set; }
     }
+    public class CRMFileViewModel
+    {
+        public int Id { get; set; }
+        public int CRMId { get; set; }
+        public string FileName { get; set; }
+        public string FilePath { get; set; }
+        public DateTime CreatedAt { get; set; }
+    }
+
 }

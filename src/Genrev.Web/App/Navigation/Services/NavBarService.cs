@@ -175,8 +175,8 @@ namespace Genrev.Web.App.Navigation.Services
                     Url = "/Personnel",
                     Title = "Personnel Management"
                 });
-            }            
-
+            }
+            
             groupSubscription.Items.Add(new NavBarGroupItem()
             {
                 ID = 3,

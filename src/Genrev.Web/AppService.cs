@@ -274,7 +274,13 @@ namespace Genrev.Web
                         return System.Configuration.ConfigurationManager.AppSettings["FileUploadDirectory"];
                     }
                 }
-
+                public string CRMFileUploadDirectory
+                {
+                    get
+                    {
+                        return System.Configuration.ConfigurationManager.AppSettings["CRMFileUploadDirectory"];
+                    }
+                }
             }
             
 

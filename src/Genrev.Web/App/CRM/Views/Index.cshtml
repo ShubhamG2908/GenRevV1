@@ -17,7 +17,7 @@
 
             s.Name = "CRM_Clients";
             s.SettingsBehavior.AllowSort = false;
-            s.SettingsBehavior.AllowAutoFilter = false; 
+            s.SettingsBehavior.AllowAutoFilter = false;
             s.Settings.ShowHeaderFilterButton = false;
 
             var    col = s.Columns.Add("colCustomerName");
@@ -25,15 +25,15 @@
             col.FieldName = "CustomerName";
 
             col = s.Columns.Add("colAccountTypeCount");
-            col.Caption = "Sales Person";
+            col.Caption = "Salesperson";
             col.FieldName = "SalesPersonName";
 
             col = s.Columns.Add("colName");
-            col.Caption = "Name";
+            col.Caption = "Contact Name";
             col.FieldName = "Name";
 
             col = s.Columns.Add("colTitle");
-            col.Caption = "Title";
+            col.Caption = "Contact Title";
             col.FieldName = "Title";
 
             col = s.Columns.Add("colPhone");
@@ -53,8 +53,12 @@
             col.FieldName = "Concern";
 
             col = s.Columns.Add("colAccountTypeCount");
-            col.Caption = "LinkedIn Url";
+            col.Caption = "Contact LI URL";
             col.FieldName = "LinkedInUrl";
+
+            col = s.Columns.Add("colIndustryName");
+            col.Caption = "Industry";
+            col.FieldName = "IndustryName";
 
             s.Columns.Add(c =>
             {

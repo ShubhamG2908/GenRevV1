@@ -50,7 +50,23 @@
         s.TotalSummary.Add(new ASPxSummaryItem("MarketShare", DevExpress.Data.SummaryItemType.Custom) { ShowInColumn = "MarketShare" });
 
         s.CustomSummaryCalculate += AnalysisController.OnCustomSummaryCalculate;
+        s.HtmlDataCellPrepared = (sender, e) =>
+        {
+            if (e.DataColumn.FieldName == "GPPDifference")
+            {
+                decimal cellValue;
+                string cellText = e.CellValue != null ? e.CellValue.ToString() : string.Empty;
 
+                if (decimal.TryParse(cellText, out cellValue))
+                {
+                    e.Cell.ForeColor = cellValue < 0 ? System.Drawing.Color.Red : System.Drawing.Color.Black;
+                }
+            }
+            if (e.CellValue != null && (e.CellValue.ToString() == "0" || e.CellValue.ToString() == "0.0" || e.CellValue.ToString() == "0.00" || e.CellValue.ToString() == "0.0000"))
+            {
+                e.Cell.Text = string.Empty;
+            }
+        };
         s.HtmlFooterCellPrepared = (sender, e) =>
         {
             GridViewDataColumn column = e.Column as GridViewDataColumn;
@@ -151,6 +167,19 @@
                         e.Cell.ForeColor = System.Drawing.Color.Red;
                     else
                         e.Cell.ForeColor = System.Drawing.Color.Black;
+
+                    // Apply background color based on value for SalesVariance and GPDVariance columns
+                    if (column.FieldName == "SalesVariance" || column.FieldName == "GPDVariance")
+                    {
+                        if (summaryValue >= 1.0m)
+                            e.Cell.CssClass = "drill-var-good";
+                        else if (summaryValue >= 0.9m && summaryValue < 1.0m)
+                            e.Cell.CssClass = "drill-var-ok";
+                        else if (summaryValue < 0.9m)
+                            e.Cell.CssClass = "drill-var-bad";
+                        else
+                            e.Cell.CssClass = "drill-var-none";
+                    }
                 }
             }
         };
@@ -280,7 +309,7 @@
             c.FieldName = "SalesVariance";
             c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             c.Settings.AllowGroup = DefaultBoolean.False;
-            c.PropertiesEdit.DisplayFormatString = "p2";
+            c.PropertiesEdit.DisplayFormatString = "p1";
             c.Settings.AllowHeaderFilter = DefaultBoolean.True;
             c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
         });
@@ -325,7 +354,7 @@
             c.FieldName = "GPDVariance";
             c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             c.Settings.AllowGroup = DefaultBoolean.False;
-            c.PropertiesEdit.DisplayFormatString = "p2";
+            c.PropertiesEdit.DisplayFormatString = "p1";
             c.Settings.AllowHeaderFilter = DefaultBoolean.True;
             c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
         });
@@ -337,7 +366,7 @@
             c.FieldName = "GPPForecast";
             c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             c.Settings.AllowGroup = DefaultBoolean.False;
-            c.PropertiesEdit.DisplayFormatString = "p2";
+            c.PropertiesEdit.DisplayFormatString = "p1";
             c.Settings.AllowHeaderFilter = DefaultBoolean.True;
             c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
         });
@@ -348,7 +377,7 @@
             c.FieldName = "GPPActual";
             c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             c.Settings.AllowGroup = DefaultBoolean.False;
-            c.PropertiesEdit.DisplayFormatString = "p2";
+            c.PropertiesEdit.DisplayFormatString = "p1";
             c.Settings.AllowHeaderFilter = DefaultBoolean.True;
             c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
         });
@@ -359,7 +388,7 @@
             c.FieldName = "GPPDifference";
             c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             c.Settings.AllowGroup = DefaultBoolean.False;
-            c.PropertiesEdit.DisplayFormatString = "p2";
+            c.PropertiesEdit.DisplayFormatString = "p1";
             c.Settings.AllowHeaderFilter = DefaultBoolean.True;
             c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
         });
@@ -370,7 +399,7 @@
             c.FieldName = "GPPVariance";
             c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             c.Settings.AllowGroup = DefaultBoolean.False;
-            c.PropertiesEdit.DisplayFormatString = "p2";
+            c.PropertiesEdit.DisplayFormatString = "p1";
             c.Settings.AllowHeaderFilter = DefaultBoolean.True;
             c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
         });
@@ -411,12 +440,12 @@
             c.Caption = "Market Share";
             c.FieldName = "MarketShare";
             c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
-            c.PropertiesEdit.DisplayFormatString = "p2";
+            c.PropertiesEdit.DisplayFormatString = "p1";
             c.Settings.AllowHeaderFilter = DefaultBoolean.True;
             c.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
         });
 
-        // SALES VARIANCE FORMATTING       
+        // SALES VARIANCE FORMATTING
         s.FormatConditions.AddHighlight(r =>
         {
             r.FieldName = "SalesVariance";
@@ -447,7 +476,7 @@
         });
 
 
-        // GPD VARIANCE FORMATTING       
+        // GPD VARIANCE FORMATTING
         s.FormatConditions.AddHighlight(r =>
         {
             r.FieldName = "GPDVariance";
@@ -479,7 +508,7 @@
 
 
 
-        // GPP VARIANCE FORMATTING        
+        // GPP VARIANCE FORMATTING
         s.FormatConditions.AddHighlight(r =>
         {
             r.FieldName = "GPPVariance";

@@ -5,7 +5,13 @@
         public static DevExpress.Web.UploadControlValidationSettings Settings = new DevExpress.Web.UploadControlValidationSettings()
         {
             AllowedFileExtensions = new string[] { ".csv" },
-            MaxFileSize = 4194304            
+            MaxFileSize = 4194304
+        };
+
+        public static DevExpress.Web.UploadControlValidationSettings CRMSettings = new DevExpress.Web.UploadControlValidationSettings()
+        {
+            AllowedFileExtensions = new string[] { ".*" },
+            MaxFileSize = 4194304
         };
     }
 }

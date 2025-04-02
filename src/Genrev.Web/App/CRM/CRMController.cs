@@ -6,7 +6,9 @@ using Genrev.Web.App.Services;
 
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Genrev.Web.App.CRM
@@ -59,7 +61,7 @@ namespace Genrev.Web.App.CRM
                 int selectedCustomerId = customers.Any() ? crmDetails.CustomerId : 0;
                 ViewBag.SelectedCustomerId = selectedCustomerId;
                 crmDetails.Strategy = _crmService.GetStrategyByCustomerId(crmDetails.CustomerId);
-                // Return the view with the fetched CRM details
+                crmDetails.UploadedFiles = _crmService.GetFilesByCRMId(crmDetails.Id);
                 return View(crmDetails);
             }
 
@@ -97,8 +99,9 @@ namespace Genrev.Web.App.CRM
 
         [ValidateInput(false)]
         [HttpPost]
-        public ActionResult Save(CRMViewModel model)
+        public ActionResult Save(CRMViewModel model, IEnumerable<HttpPostedFileBase> uploadedFiles)
         {
+            ModelState.Remove(nameof(model.UploadedFiles));
             if (ModelState.IsValid)
             {
                 //var existingData = _crmService.GetCRMRecordsBySalesPersonIdAndCustomerId(model.SalesPersonId, model.CustomerId);
@@ -152,6 +155,30 @@ namespace Genrev.Web.App.CRM
                 {
                     _crmService.SaveAddresses(crmId, model.Addresses);
                 }
+                // Save uploaded files
+                if (uploadedFiles != null && uploadedFiles.Any())
+                {
+                    foreach (var file in uploadedFiles)
+                    {
+                        if (file != null && file.ContentLength > 0)
+                        {
+                            var fileName = Path.GetFileName(file.FileName);
+                            string path = AppService.Current.Settings.CRMFileUploadDirectory;
+                            string absolutePath = System.Web.Hosting.HostingEnvironment.MapPath("~/" + path);
+                            string fullPath = path + "\\" + fileName;
+                            string fullPathwithFile = path + "\\" + fileName;
+                            fullPath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~"), fullPath);
+                            if (!Directory.Exists(absolutePath))
+                            {
+                                Directory.CreateDirectory(absolutePath);
+                            }
+                            file.SaveAs(fullPath);
+
+                            // Save file metadata to the database
+                            _crmService.SaveFileMetadata(crmId, fileName, fullPathwithFile);
+                        }
+                    }
+                }
                 return RedirectToAction("Index");
             }
 
@@ -164,8 +191,9 @@ namespace Genrev.Web.App.CRM
         }
         [ValidateInput(false)]
         [HttpPost]
-        public ActionResult UpdateClient(CRMViewModel model)
+        public ActionResult UpdateClient(CRMViewModel model, IEnumerable<HttpPostedFileBase> uploadedFiles)
         {
+            ModelState.Remove(nameof(model.UploadedFiles));
             if (!ModelState.IsValid)
             {
                 // Reload the dropdown lists if validation fails
@@ -192,6 +220,23 @@ namespace Genrev.Web.App.CRM
             bool isUpdated = _crmService.UpdateCRMEntry(model);
             if (isUpdated)
             {
+                if (uploadedFiles != null && uploadedFiles.Any())
+                {
+                    foreach (var file in uploadedFiles)
+                    {
+                        if (file != null && file.ContentLength > 0)
+                        {
+                            var fileName = Path.GetFileName(file.FileName);
+                            string path = AppService.Current.Settings.CRMFileUploadDirectory;
+                            string fullPath = path + "\\" + fileName;
+                            fullPath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~"), fullPath);
+                            file.SaveAs(fullPath);
+
+                            // Save file metadata to the database
+                            _crmService.SaveFileMetadata(model.Id, fileName, path);
+                        }
+                    }
+                }
                 return RedirectToAction("Index");
             }
 
@@ -214,6 +259,16 @@ namespace Genrev.Web.App.CRM
             string strategy = _crmService.GetStrategyByCustomerId(customerId);
             return Json(new { strategy }, JsonRequestBehavior.AllowGet);
         }
-
+        [HttpPost]
+        public ActionResult DeleteFile(int Id)
+        {
+            _crmService.DeleteFile(Id);
+            return Json(new { success = true });
+        }
+        public ActionResult GetFilesByCRMId(int crmId)
+        {
+            var files = _crmService.GetFilesByCRMId(crmId);
+            return Json(files, JsonRequestBehavior.AllowGet);
+        }
     }
 }

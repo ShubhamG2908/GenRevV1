@@ -552,6 +552,7 @@
     <Content Include="App\CRM\Views\EditClient.cshtml" />
     <Content Include="client\scripts\lib\textEditor\langs\README.md" />
     <Content Include="client\scripts\lib\textEditor\license.md" />
+    <Content Include="App\CRM\Views\CRMGrid.cshtml" />
     <None Include="client\scripts\_references.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />

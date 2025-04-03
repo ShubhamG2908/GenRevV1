@@ -29,8 +29,9 @@ namespace Genrev.Web.App.CRM
 
         public ActionResult Index()
         {
-            var results = _crmService.GetCRMRecords();
-            return View(results);
+            CRMViewModel model = new CRMViewModel();
+            model.CRMListItems = _crmService.GetCRMRecords();
+            return View(model);
         }
 
         public ActionResult EditClient(int Id)
@@ -102,6 +103,7 @@ namespace Genrev.Web.App.CRM
         public ActionResult Save(CRMViewModel model, IEnumerable<HttpPostedFileBase> uploadedFiles)
         {
             ModelState.Remove(nameof(model.UploadedFiles));
+            ModelState.Remove(nameof(model.CRMListItems));
             if (ModelState.IsValid)
             {
                 //var existingData = _crmService.GetCRMRecordsBySalesPersonIdAndCustomerId(model.SalesPersonId, model.CustomerId);
@@ -194,6 +196,7 @@ namespace Genrev.Web.App.CRM
         public ActionResult UpdateClient(CRMViewModel model, IEnumerable<HttpPostedFileBase> uploadedFiles)
         {
             ModelState.Remove(nameof(model.UploadedFiles));
+            ModelState.Remove(nameof(model.CRMListItems));
             if (!ModelState.IsValid)
             {
                 // Reload the dropdown lists if validation fails
@@ -269,6 +272,13 @@ namespace Genrev.Web.App.CRM
         {
             var files = _crmService.GetFilesByCRMId(crmId);
             return Json(files, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult CRMGridCallback()
+        {
+            var model = new CRMViewModel();
+            model.CRMListItems = _crmService.GetCRMRecords();
+            return PartialView("CRMGrid", model);
         }
     }
 }

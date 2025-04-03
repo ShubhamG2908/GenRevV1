@@ -1,74 +1,15 @@
-﻿@model IEnumerable<Genrev.Data.DTOs.CRMRecordDTO>
+﻿@model Genrev.Data.DTOs.CRMViewModel
 
 <div style="padding:20px;">
     @Html.DevExpress().Button(
-        s =>
-        {
-            s.Name = "CRMAddNewButton";
-            s.Text = "Add New";
-            s.ClientSideEvents.Click = "function(s, e) { window.location.href = '/CRM/AddClient'; }";
-        }
-    ).GetHtml()
+            s =>
+            {
+                s.Name = "CRMAddNewButton";
+                s.Text = "Add New";
+                s.ClientSideEvents.Click = "function(s, e) { window.location.href = '/CRM/AddClient'; }";
+            }
+        ).GetHtml()
     <br /><br />
 
-    @Html.DevExpress().GridView(
-        s =>
-        {
-
-            s.Name = "CRM_Clients";
-            s.SettingsBehavior.AllowSort = false;
-            s.SettingsBehavior.AllowAutoFilter = false;
-            s.Settings.ShowHeaderFilterButton = false;
-
-            var    col = s.Columns.Add("colCustomerName");
-            col.Caption = "Customer";
-            col.FieldName = "CustomerName";
-
-            col = s.Columns.Add("colAccountTypeCount");
-            col.Caption = "Salesperson";
-            col.FieldName = "SalesPersonName";
-
-            col = s.Columns.Add("colName");
-            col.Caption = "Contact Name";
-            col.FieldName = "Name";
-
-            col = s.Columns.Add("colTitle");
-            col.Caption = "Contact Title";
-            col.FieldName = "Title";
-
-            col = s.Columns.Add("colPhone");
-            col.Caption = "Phone";
-            col.FieldName = "Phone";
-
-            col = s.Columns.Add("colEmail");
-            col.Caption = "Email";
-            col.FieldName = "Email";
-
-            col = s.Columns.Add("colAreaOfResponsibility");
-            col.Caption = "Area Of Responsibility";
-            col.FieldName = "AreaOfResponsibility";
-
-            col = s.Columns.Add("colConcern");
-            col.Caption = "Concern";
-            col.FieldName = "Concern";
-
-            col = s.Columns.Add("colAccountTypeCount");
-            col.Caption = "Contact LI URL";
-            col.FieldName = "LinkedInUrl";
-
-            col = s.Columns.Add("colIndustryName");
-            col.Caption = "Industry";
-            col.FieldName = "IndustryName";
-
-            s.Columns.Add(c =>
-            {
-                c.Caption = "Action";
-                c.SetDataItemTemplateContent(tc =>
-                {
-                    var crmId = DataBinder.Eval(tc.DataItem, "Id"); // Ensure this matches your DTO property
-                    ViewContext.Writer.Write(string.Format("<a href='/CRM/EditClient?Id={0}' class='btn btn-primary'>Edit</a>", crmId));
-                });
-            });
-        }
-    ).Bind(Model).GetHtml()
+    @Html.Partial("CRMGrid", Model)
 </div>

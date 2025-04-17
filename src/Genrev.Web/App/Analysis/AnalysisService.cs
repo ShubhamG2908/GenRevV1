@@ -104,7 +104,7 @@ namespace Genrev.Web.App.Analysis
                     SalesForecast = y.Sum(x => x.SalesForecast),
                     CostActual = y.Sum(x => x.CostActual),
                     CostForecast = y.Sum(x => x.CostForecast),
-                    MarketShare = y.Sum(x => x.MarketShare),
+                    MarketShare = y.Sum(x => x.Potential ?? 0) == 0 ? 0 : (y.Sum(x => x.SalesForecast ?? 0) / y.Sum(x => x.Potential ?? 0)),
                     Potential = y.Sum(x => x.Potential),
                 }).ToList();
 
@@ -1126,9 +1126,9 @@ namespace Genrev.Web.App.Analysis
 
                 dynamic model = new ExpandoObject();
 
-                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential, z = x.MarketShare }).ToList();
-                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity, z = x.MarketShare }).ToList();
-                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity, z = x.MarketShare }).ToList();
+                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential, z = x.MarketShare, forecast = x.Forecast }).ToList();
+                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity, z = x.MarketShare, forecast = x.Forecast }).ToList();
+                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity, z = x.MarketShare, forecast = x.Forecast }).ToList();
 
                 JObject o = JObject.FromObject(model);
 
@@ -1149,9 +1149,9 @@ namespace Genrev.Web.App.Analysis
 
                 dynamic model = new ExpandoObject();
 
-                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential, z = x.MarketShare }).ToList();
-                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity, z = x.MarketShare }).ToList();
-                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity, z = x.MarketShare }).ToList();
+                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential, z = x.MarketShare, forecast = x.Forecast }).ToList();
+                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity, z = x.MarketShare, forecast = x.Forecast }).ToList();
+                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity, z = x.MarketShare, forecast = x.Forecast }).ToList();
 
                 JObject o = JObject.FromObject(model);
 
@@ -1172,9 +1172,9 @@ namespace Genrev.Web.App.Analysis
 
                 dynamic model = new ExpandoObject();
 
-                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential, z = x.MarketShare }).ToList();
-                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity, z = x.MarketShare }).ToList();
-                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity, z = x.MarketShare }).ToList();
+                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential, z = x.MarketShare, forecast = x.Forecast }).ToList();
+                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity, z = x.MarketShare, forecast = x.Forecast }).ToList();
+                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity, z = x.MarketShare, forecast = x.Forecast }).ToList();
 
                 JObject o = JObject.FromObject(model);
 
@@ -1195,9 +1195,9 @@ namespace Genrev.Web.App.Analysis
 
                 dynamic model = new ExpandoObject();
 
-                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential, z = x.MarketShare }).ToList();
-                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity, z = x.MarketShare }).ToList();
-                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity, z = x.MarketShare }).ToList();
+                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential, z = x.MarketShare, forecast = x.Forecast }).ToList();
+                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity, z = x.MarketShare, forecast = x.Forecast }).ToList();
+                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity, z = x.MarketShare, forecast = x.Forecast }).ToList();
 
                 JObject o = JObject.FromObject(model);
 
@@ -1218,9 +1218,9 @@ namespace Genrev.Web.App.Analysis
 
                 dynamic model = new ExpandoObject();
 
-                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential, z = x.MarketShare }).ToList();
-                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity, z = x.MarketShare }).ToList();
-                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity, z = x.MarketShare }).ToList();
+                model.potential = potential.Select(x => new { name = x.GroupEntityName, y = x.Potential, z = x.MarketShare, forecast = x.Forecast }).ToList();
+                model.current = current.Select(x => new { name = x.GroupEntityName, y = x.CurrentOpportunity, z = x.MarketShare, forecast = x.Forecast }).ToList();
+                model.future = future.Select(x => new { name = x.GroupEntityName, y = x.FutureOpportunity, z = x.MarketShare, forecast = x.Forecast }).ToList();
 
                 JObject o = JObject.FromObject(model);
 
@@ -1245,13 +1245,13 @@ namespace Genrev.Web.App.Analysis
                         return Domain.DataSets.OpportunitiesAggregate.TruncateList(tempList, maxCount, true);
 
                     case "current":
-                        tempList = data.Where(x => x.Potential > 0);
-                        tempList = tempList.OrderByDescending(x => x.Potential);
+                        tempList = data.Where(x => x.CurrentOpportunity > 0);
+                        tempList = tempList.OrderByDescending(x => x.CurrentOpportunity);
                         return Domain.DataSets.OpportunitiesAggregate.TruncateList(tempList, maxCount, true);
 
                     case "future":
-                        tempList = data.Where(x => x.Potential > 0);
-                        tempList = tempList.OrderByDescending(x => x.Potential);
+                        tempList = data.Where(x => x.FutureOpportunity > 0);
+                        tempList = tempList.OrderByDescending(x => x.FutureOpportunity);
                         return Domain.DataSets.OpportunitiesAggregate.TruncateList(tempList, maxCount, true);
 
                     default:

@@ -61,7 +61,7 @@
 
     <script>
     $(document).ready(function () {
-    var selectedSalesPersonId = @ViewBag.SelectedSalesPersonId;
+    var selectedSalesPersonId = '@ViewBag.SelectedSalesPersonId';
 
     if (selectedSalesPersonId) {
         loadCustomers(selectedSalesPersonId);

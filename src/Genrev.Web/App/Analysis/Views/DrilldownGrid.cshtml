@@ -62,7 +62,7 @@
                     e.Cell.ForeColor = cellValue < 0 ? System.Drawing.Color.Red : System.Drawing.Color.Black;
                 }
             }
-            if (e.CellValue != null && (e.CellValue.ToString() == "0" || e.CellValue.ToString() == "0.0" || e.CellValue.ToString() == "0.00" || e.CellValue.ToString() == "0.0000"))
+            if (e.CellValue != null && (e.CellValue.ToString() == "0" || e.CellValue.ToString() == "0.0" || e.CellValue.ToString() == "0.00" || e.CellValue.ToString() == "0.0000" || e.CellValue.ToString() == "0.000000"))
             {
                 e.Cell.Text = string.Empty;
             }

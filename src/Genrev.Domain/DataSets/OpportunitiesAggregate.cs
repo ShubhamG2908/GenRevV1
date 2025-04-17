@@ -12,6 +12,7 @@ namespace Genrev.Domain.DataSets
         public decimal CurrentOpportunity { get; set; }
         public decimal FutureOpportunity { get; set; }
         public decimal MarketShare { get; set; }
+        public decimal Forecast { get; set; }
 
 
 
@@ -35,6 +36,7 @@ namespace Genrev.Domain.DataSets
                 combinedElements.CurrentOpportunity = nonvisibleList.Sum(x => x.CurrentOpportunity);
                 combinedElements.FutureOpportunity = nonvisibleList.Sum(x => x.FutureOpportunity);
                 combinedElements.MarketShare = nonvisibleList.Sum(x => x.MarketShare);
+                combinedElements.Forecast = nonvisibleList.Sum(x => x.Forecast);
 
                 var finalList = truncatedList.ToList();
                 finalList.Add(combinedElements);

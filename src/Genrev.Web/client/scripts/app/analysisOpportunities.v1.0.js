@@ -137,23 +137,24 @@ define(function () {
 
         charts: {
 
-
-            tooltipFormatter: function() {
+            tooltipFormatter: function () {                                
+                var salesForecast = this.point.forecast || 0;
+                var totalSalesForecast = this.series.data.reduce((sum, point) => sum + point.forecast, 0);
+                var contributionPercent = totalSalesForecast ? (salesForecast / totalSalesForecast * 100) : 0;                
 
                 var s = '<b>' + this.point.name + '</b><br />';
-                s += '<hr>'
+                s += '<hr>';
                 s += 'Dollars: ' + Genrev.FormatMoney(this.point.y) + '<br />';
-                s += 'Percent: ' + Math.round(this.point.percentage) + '%<br />';
-                s += 'Market Share: ' + Math.round(this.point.z) + '%';
+                s += 'Contribution Percent: ' + contributionPercent.toFixed(1) + '%<br />';
+                s += 'Market Share: ' + this.point.z.toFixed(1) + '%';
 
                 return s;
             },
-
-            renderPie: function (title, seriesName, seriesData, containerName) {                
+            
+            renderPie: function (title, seriesName, seriesData, containerName) {
                 var base = Charts.GetBase();
                 var total = seriesData.reduce((sum, item) => sum + item.y, 0);
                 var options = {
-
                     chart: {
                         type: 'pie',
                         height: 225
@@ -171,7 +172,6 @@ define(function () {
                 var final = merge(base, options);
 
                 $("#" + containerName).highcharts(final);
-
             }
 
         },

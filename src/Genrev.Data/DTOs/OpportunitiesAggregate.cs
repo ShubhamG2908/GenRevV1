@@ -8,5 +8,6 @@
         public decimal CurrentOpportunity { get; set; }
         public decimal FutureOpportunity { get; set; }
         public decimal MarketShare { get; set; }
+        public decimal Forecast { get; set; }
     }
 }

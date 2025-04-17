@@ -354,9 +354,10 @@
         tinymce.init({
             selector: selector.startsWith('#') ? selector : `#${selector}`,
             height: 300,
+            statusbar: false,
             menubar: false,
             plugins: 'lists link image table code',
-            toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | code'
+            toolbar: 'undo redo | bold italic underline | fontfamily | backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | code'
         });
     }
 

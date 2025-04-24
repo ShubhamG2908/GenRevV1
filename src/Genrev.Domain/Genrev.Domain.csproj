@@ -53,6 +53,7 @@
     <Compile Include="Accounts\IpAddressRange.cs" />
     <Compile Include="Collections\EntityCollection.cs" />
     <Compile Include="Companies\AccountType.cs" />
+    <Compile Include="Companies\AreaOfResponsibility.cs" />
     <Compile Include="Companies\Company.cs" />
     <Compile Include="Companies\Customer.cs" />
     <Compile Include="Companies\CustomerType.cs" />

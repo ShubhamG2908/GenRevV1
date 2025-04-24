@@ -362,7 +362,7 @@
         s.Columns.Add(c =>
         {
             c.Name = "GPPForecast";
-            c.Caption = "GPP Forecast";
+            c.Caption = "GMP Forecast";
             c.FieldName = "GPPForecast";
             c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             c.Settings.AllowGroup = DefaultBoolean.False;
@@ -373,7 +373,7 @@
         s.Columns.Add(c =>
         {
             c.Name = "GPPActual";
-            c.Caption = "GPP Actual";
+            c.Caption = "GMP Actual";
             c.FieldName = "GPPActual";
             c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             c.Settings.AllowGroup = DefaultBoolean.False;
@@ -384,7 +384,7 @@
         s.Columns.Add(c =>
         {
             c.Name = "GPPDifference";
-            c.Caption = "GPP Difference";
+            c.Caption = "GMP Difference";
             c.FieldName = "GPPDifference";
             c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             c.Settings.AllowGroup = DefaultBoolean.False;
@@ -395,7 +395,7 @@
         s.Columns.Add(c =>
         {
             c.Name = "GPPVariance";
-            c.Caption = "GPP Variance";
+            c.Caption = "GMP Variance";
             c.FieldName = "GPPVariance";
             c.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
             c.Settings.AllowGroup = DefaultBoolean.False;
@@ -591,7 +591,7 @@
             vw.Write("</td><td style='padding-left: 20px;'>");
             Html.DevExpress().CheckBox(cb => { cb.Name = "ShowGPD"; cb.Text = "GPD"; }).Bind(Model.ShowColumnGroupGPD).Render();
             vw.Write("</td><td style='padding-left: 20px;'>");
-            Html.DevExpress().CheckBox(cb => { cb.Name = "ShowGPP"; cb.Text = "GPP"; }).Bind(Model.ShowColumnGroupGPP).Render();
+            Html.DevExpress().CheckBox(cb => { cb.Name = "ShowGPP"; cb.Text = "GMP"; }).Bind(Model.ShowColumnGroupGPP).Render();
             vw.Write("</td><td style='padding-left: 20px;'>");
             Html.DevExpress().CheckBox(cb => { cb.Name = "ShowCalls"; cb.Text = "Calls"; }).Bind(Model.ShowColumnGroupCalls).Render();
             vw.Write("</td><td style='padding-left: 20px;'>");

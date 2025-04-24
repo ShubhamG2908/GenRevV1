@@ -414,13 +414,13 @@ define(function () {
                                             
                                             var s = this.x + '<br /><hr />';
                                             s = s + '<b>GPD:</b> ' + Genrev.FormatMoney(gpd) + '<br />';
-                                            s = s + '<b>GPP:</b> ' + Genrev.FormatPercent(gpp);
+                                            s = s + '<b>GMP:</b> ' + Genrev.FormatPercent(gpp);
                                             
                                             return s;
                                         }
                                     },
 
-                                    title: { text: 'Sales Historic (GPP & GPD)' },
+                                    title: { text: 'Sales Historic (GMP & GPD)' },
                                     xAxis: {
                                         categories: data.categories
                                     },
@@ -432,7 +432,7 @@ define(function () {
                                             }
                                         }
                                     }, {
-                                        title: { text: 'Gross Profit Percent' },
+                                        title: { text: 'Gross Margin Percent' },
                                         labels: {
                                             format: "{value}%"
                                         },
@@ -583,13 +583,13 @@ define(function () {
 
                                             var s = this.x + '<br /><hr />';
                                             s = s + '<b>GPD:</b> ' + Genrev.FormatMoney(gpd) + '<br />';
-                                            s = s + '<b>GPP:</b> ' + Genrev.FormatPercent(gpp);
+                                            s = s + '<b>GMP:</b> ' + Genrev.FormatPercent(gpp);
 
                                             return s;
                                         }
                                     },
 
-                                    title: { text: 'Sales Historic (GPP & GPD)' },
+                                    title: { text: 'Sales Historic (GMP & GPD)' },
                                     xAxis: {
                                         categories: data.categories
                                     },
@@ -601,7 +601,7 @@ define(function () {
                                             }
                                         }
                                     }, {
-                                        title: { text: 'Gross Profit Percent' },
+                                        title: { text: 'Gross Margin Percent' },
                                         labels: {
                                             format: "{value}%"
                                         },
@@ -754,13 +754,13 @@ define(function () {
 
                                             var s = this.x + '<br /><hr />';
                                             s = s + '<b>GPD:</b> ' + Genrev.FormatMoney(gpd) + '<br />';
-                                            s = s + '<b>GPP:</b> ' + Genrev.FormatPercent(gpp);
+                                            s = s + '<b>GMP:</b> ' + Genrev.FormatPercent(gpp);
 
                                             return s;
                                         }
                                     },
 
-                                    title: { text: 'Sales Historic (GPP & GPD)' },
+                                    title: { text: 'Sales Historic (GMP & GPD)' },
                                     xAxis: {
                                         categories: data.categories
                                     },
@@ -772,7 +772,7 @@ define(function () {
                                             }
                                         }
                                     }, {
-                                        title: { text: 'Gross Profit Percent' },
+                                        title: { text: 'Gross Margin Percent' },
                                         labels: {
                                             format: "{value}%"
                                         },
@@ -924,13 +924,13 @@ define(function () {
 
                                             var s = this.x + '<br /><hr />';
                                             s = s + '<b>GPD:</b> ' + Genrev.FormatMoney(gpd) + '<br />';
-                                            s = s + '<b>GPP:</b> ' + Genrev.FormatPercent(gpp);
+                                            s = s + '<b>GMP:</b> ' + Genrev.FormatPercent(gpp);
 
                                             return s;
                                         }
                                     },
 
-                                    title: { text: 'Sales Historic (GPP & GPD)' },
+                                    title: { text: 'Sales Historic (GMP & GPD)' },
                                     xAxis: {
                                         categories: data.categories
                                     },
@@ -942,7 +942,7 @@ define(function () {
                                             }
                                         }
                                     }, {
-                                        title: { text: 'Gross Profit Percent' },
+                                        title: { text: 'Gross Margin Percent' },
                                         labels: {
                                             format: "{value}%"
                                         },
@@ -1094,13 +1094,13 @@ define(function () {
 
                                             var s = this.x + '<br /><hr />';
                                             s = s + '<b>GPD:</b> ' + Genrev.FormatMoney(gpd) + '<br />';
-                                            s = s + '<b>GPP:</b> ' + Genrev.FormatPercent(gpp);
+                                            s = s + '<b>GMP:</b> ' + Genrev.FormatPercent(gpp);
 
                                             return s;
                                         }
                                     },
 
-                                    title: { text: 'Sales Historic (GPP & GPD)' },
+                                    title: { text: 'Sales Historic (GMP & GPD)' },
                                     xAxis: {
                                         categories: data.categories
                                     },
@@ -1112,7 +1112,7 @@ define(function () {
                                             }
                                         }
                                     }, {
-                                        title: { text: 'Gross Profit Percent' },
+                                        title: { text: 'Gross Margin Percent' },
                                         labels: {
                                             format: "{value}%"
                                         },
@@ -1264,13 +1264,13 @@ define(function () {
 
                                             var s = this.x + '<br /><hr />';
                                             s = s + '<b>GPD:</b> ' + Genrev.FormatMoney(gpd) + '<br />';
-                                            s = s + '<b>GPP:</b> ' + Genrev.FormatPercent(gpp);
+                                            s = s + '<b>GMP:</b> ' + Genrev.FormatPercent(gpp);
 
                                             return s;
                                         }
                                     },
 
-                                    title: { text: 'Sales Historic (GPP & GPD)' },
+                                    title: { text: 'Sales Historic (GMP & GPD)' },
                                     xAxis: {
                                         categories: data.categories
                                     },
@@ -1282,7 +1282,7 @@ define(function () {
                                             }
                                         }
                                     }, {
-                                        title: { text: 'Gross Profit Percent' },
+                                        title: { text: 'Gross Margin Percent' },
                                         labels: {
                                             format: "{value}%"
                                         },

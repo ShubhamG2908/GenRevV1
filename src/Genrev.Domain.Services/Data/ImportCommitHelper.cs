@@ -51,6 +51,10 @@ namespace Genrev.DomainServices.Data
                     context.UpsertForecastDataStagingToLive(accountID);
                     break;
 
+                case ImportType.AreaOfResponsibility:
+                    context.UpsertAreaOfResponsibilitiesStagingToLive(accountID);
+                    break;
+
                 default:
                     throw new InvalidOperationException("ImportType not registered");
             }

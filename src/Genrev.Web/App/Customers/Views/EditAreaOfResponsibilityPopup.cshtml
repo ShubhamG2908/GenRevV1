@@ -1,0 +1,32 @@
+﻿@model Genrev.Web.App.Customers.Models.EditAreaOfResponsibilityVM
+
+<h3>Edit Area of Responsibility (@Model.Name)</h3>
+
+@Html.HiddenFor(m => m.ID)
+
+@Html.DevExpress().TextBox(
+    s => {
+        s.Name = "CustomerAreaOfResponsibilityEditName";
+        s.Properties.Caption = "Name";
+        s.Properties.CaptionCellStyle.Width = 100;
+        s.Properties.CaptionStyle.CssClass = "label-required";
+    }
+).Bind(Model.Name).GetHtml()
+
+<div class="clearfix spacer-10"></div>
+<div style="float:left;">
+    @Html.DevExpress().Button(s => { s.Name = "CustomerAreaOfResponsibilityDeleteButton"; s.Text = "Delete"; s.ControlStyle.ForeColor = System.Drawing.Color.Red; }).GetHtml()
+</div>
+
+<table style="float: right;">
+    <tr>
+        <td>
+            @Html.DevExpress().Button(s => { s.Name = "CustomerAreaOfResponsibilityEditOkButton"; s.Text = "OK"; }).GetHtml()
+        </td>
+        <td style="padding-left: 5px;">
+            @Html.DevExpress().Button(s => { s.Name = "CustomerAreaOfResponsibilityEditCancelButton"; s.Text = "Cancel"; }).GetHtml()
+        </td>
+    </tr>
+</table>
+
+

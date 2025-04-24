@@ -96,10 +96,12 @@ define(function () {
         },  // end genrev.viewas
 
         formatMoney: function (value, places) {
-
+            debugger
             // assume places is 0 for now
             var n = Number(value);
-            return "$" + numberWithCommas(roundAwayFromZero(n));
+            console.log(window.GenrevCurrency);
+            var symbol = window.GenrevCurrency  ? window.GenrevCurrency : "$";
+            return symbol + numberWithCommas(roundAwayFromZero(n));
 
             function numberWithCommas(x) {
                 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

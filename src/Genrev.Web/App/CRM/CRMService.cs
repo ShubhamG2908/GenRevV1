@@ -24,9 +24,9 @@ namespace Genrev.Web.App.Services
             using (var connection = new SqlConnection(_connectionString))
             {
                 string query = @"
-                    INSERT INTO CRM (SalesPersonId, CustomerId, Name, Title, AreaOfResponsibility, 
+                    INSERT INTO CRM (SalesPersonId, CustomerId, Name, Title, AreaOfResponsibilityId, 
                                      LinkedInUrl, Concern, CreatedAt, UpdatedAt) 
-                    VALUES (@SalesPersonId, @CustomerId, @Name, @Title, @AreaOfResponsibility, 
+                    VALUES (@SalesPersonId, @CustomerId, @Name, @Title, @AreaOfResponsibilityId, 
                             @LinkedInUrl, @Concern, GETDATE(), NULL);
                     SELECT CAST(SCOPE_IDENTITY() as int);";
 
@@ -36,7 +36,7 @@ namespace Genrev.Web.App.Services
                     model.CustomerId,
                     model.Name,
                     model.Title,
-                    model.AreaOfResponsibility,
+                    model.AreaOfResponsibilityId,
                     model.LinkedInUrl,
                     Concern = model.Concern ?? (object)DBNull.Value
                 });
@@ -55,7 +55,7 @@ namespace Genrev.Web.App.Services
                         CustomerId = @CustomerId, 
                         Name = @Name, 
                         Title = @Title, 
-                        AreaOfResponsibility = @AreaOfResponsibility, 
+                        AreaOfResponsibilityId = @AreaOfResponsibilityId, 
                         LinkedInUrl = @LinkedInUrl,                                                 
                         Concern = @Concern, 
                         UpdatedAt = GETDATE()
@@ -68,7 +68,7 @@ namespace Genrev.Web.App.Services
                     model.CustomerId,
                     model.Name,
                     model.Title,
-                    model.AreaOfResponsibility,
+                    model.AreaOfResponsibilityId,
                     model.LinkedInUrl,
                     Concern = model.Concern ?? (object)DBNull.Value
                 });
@@ -148,20 +148,21 @@ namespace Genrev.Web.App.Services
             using (var connection = new SqlConnection(_connectionString))
             {
                 string query = @"
-                    SELECT 
-                        c.Id, c.SalesPersonId, c.CustomerId, c.Name, c.Title, c.AreaOfResponsibility, 
-                        c.LinkedInUrl, c.Strategy, c.StrategyDate,c.Concern, c.CreatedAt, c.UpdatedAt,
-                        (SELECT TOP 1 ContactValue FROM CRM_Contacts WHERE CRMId = c.Id AND ContactType = 'Phone' ORDER BY Id) AS Phone,
-                        (SELECT TOP 1 ContactValue FROM CRM_Contacts WHERE CRMId = c.Id AND ContactType = 'Email' ORDER BY Id) AS Email,
-                        (SELECT TOP 1 ContactValue FROM CRM_Contacts WHERE CRMId = c.Id AND ContactType = 'Notes' ORDER BY Id) AS Notes,
-                        (SELECT TOP 1 CONCAT(AddressLine1, ', ', AddressLine2, ', ', City, ', ', State, ', ', Pincode, ', ', Country) 
-                         FROM CRM_Address WHERE CRMId = c.Id ORDER BY Id) AS FirstAddress,
-                        (SELECT TOP 1 CONCAT(p.PersonFirstName, ' ', p.PersonLastName) FROM Personnel p WHERE p.Id = c.SalesPersonId) AS SalesPersonName,
-                        (SELECT TOP 1 cc.CustomerName FROM CompanyCustomers cc WHERE cc.Id = c.CustomerId) AS CustomerName,
-                        (SELECT TOP 1 i.IndustryName FROM CompanyIndustries i WHERE i.Id = cc.CustomerIndustryID) AS IndustryName
-                    FROM CRM c
-                    JOIN CompanyCustomers cc ON c.CustomerId = cc.Id
-                    WHERE SalesPersonId IN (" + string.Join(",", personnelIds) + ")";
+                 SELECT 
+                 c.Id, c.SalesPersonId, c.CustomerId, c.Name, c.Title, c.AreaOfResponsibilityId, aor.[Name] as AreaOfResponsibilityName, 
+                 c.LinkedInUrl, c.Strategy, c.StrategyDate,c.Concern, c.CreatedAt, c.UpdatedAt,
+                 (SELECT TOP 1 ContactValue FROM CRM_Contacts WHERE CRMId = c.Id AND ContactType = 'Phone' ORDER BY Id) AS Phone,
+                 (SELECT TOP 1 ContactValue FROM CRM_Contacts WHERE CRMId = c.Id AND ContactType = 'Email' ORDER BY Id) AS Email,
+                 (SELECT TOP 1 ContactValue FROM CRM_Contacts WHERE CRMId = c.Id AND ContactType = 'Notes' ORDER BY Id) AS Notes,
+                 (SELECT TOP 1 CONCAT(AddressLine1, ', ', AddressLine2, ', ', City, ', ', State, ', ', Pincode, ', ', Country) 
+                 FROM CRM_Address WHERE CRMId = c.Id ORDER BY Id) AS FirstAddress,
+                 (SELECT TOP 1 CONCAT(p.PersonFirstName, ' ', p.PersonLastName) FROM Personnel p WHERE p.Id = c.SalesPersonId) AS SalesPersonName,
+                 (SELECT TOP 1 cc.CustomerName FROM CompanyCustomers cc WHERE cc.Id = c.CustomerId) AS CustomerName,
+                 (SELECT TOP 1 i.IndustryName FROM CompanyIndustries i WHERE i.Id = cc.CustomerIndustryID) AS IndustryName
+                 FROM CRM c
+                 JOIN CompanyCustomers cc ON c.CustomerId = cc.Id
+                 LEFT JOIN CompanyAreaOfResponsibilities aor ON c.AreaOfResponsibilityId = aor.Id
+                 WHERE SalesPersonId IN (" + string.Join(",", personnelIds) + ")";
 
                 var result = connection.Query<CRMRecordDTO>(query).ToList();
                 return result;
@@ -187,10 +188,11 @@ namespace Genrev.Web.App.Services
             {
                 // Query to fetch the main CRM record
                 string crmQuery = @"
-            SELECT Id, SalesPersonId, CustomerId, Name, Title, AreaOfResponsibility, 
-                   LinkedInUrl, Strategy, StrategyDate, Concern, CreatedAt, UpdatedAt
-            FROM CRM 
-            WHERE Id = @CRMId;";
+                                                    SELECT c.Id, c.SalesPersonId, c.CustomerId, c.[Name], c.Title, c.AreaOfResponsibilityId, aor.[Name] as AreaOfResponsibilityName,
+                                               c.LinkedInUrl, c.Strategy, c.StrategyDate, c.Concern, c.CreatedAt, c.UpdatedAt
+                                        FROM CRM c
+                                        LEFT JOIN CompanyAreaOfResponsibilities aor ON c.AreaOfResponsibilityId = aor.Id
+                                        WHERE c.Id = @CRMId;";
 
                 // Query to fetch all contact details for this CRM record
                 string contactsQuery = @"

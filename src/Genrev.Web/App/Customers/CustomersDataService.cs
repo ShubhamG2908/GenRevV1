@@ -1,5 +1,6 @@
 ﻿using Genrev.Web.App.Customers.Models;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -129,6 +130,71 @@ namespace Genrev.Web.App.Customers
             dataContext = context;
         }
 
+
+        public List<Models.AreaOfResponsibilityListItemVM> GetAreaOfResponsibilities(int companyID)
+        {
+            var model = new List<Models.AreaOfResponsibilityListItemVM>();
+            var areaofresponsibilities = dataContext.CompanyAreaOfResponsibilities.Where(x => x.CompanyID == companyID).ToList();
+            foreach (var ind in areaofresponsibilities)
+            {
+                model.Add(new Models.AreaOfResponsibilityListItemVM()
+                {
+                    ID = ind.ID,
+                    Name = ind.Name
+                });
+            }
+            return model.ToList();
+        }
+        public AreaOfResponsibilityListItemVM DetailAreaOfResponsibilities(int id)
+        {
+            var area = dataContext.CompanyAreaOfResponsibilities.Find(id);
+            if (area == null) throw new Exception("Not found.");
+            return new AreaOfResponsibilityListItemVM()
+            {
+                ID = area.ID,
+                Name = area.Name
+            };
+        }
+        public AreaOfResponsibilityListItemVM DetailAreaOfResponsibilitiesByName(string name)
+        {
+            var area = dataContext.CompanyAreaOfResponsibilities.Where(w => w.Name == name).FirstOrDefault();
+            if (area == null) throw new Exception("Not found.");
+            return new AreaOfResponsibilityListItemVM()
+            {
+                ID = area.ID,
+                Name = area.Name
+            };
+        }
+        public void AddAreaOfResponsibility(string name, int companyID)
+        {
+            var existing = dataContext.CompanyAreaOfResponsibilities.FirstOrDefault(x => x.Name == name && x.CompanyID == companyID);
+            if (existing != null)
+            {
+                throw new Exception("This area of responsibility already exists.");
+            }
+            dataContext.CompanyAreaOfResponsibilities.Add(new Domain.Companies.AreaOfResponsibility
+            {
+                CompanyID = companyID,
+                Name = name
+            });
+            dataContext.SaveChanges();
+        }
+
+        public void EditAreaOfResponsibility(int id, string name)
+        {
+            var area = dataContext.CompanyAreaOfResponsibilities.Find(id);
+            if (area == null) throw new Exception("Not found.");
+            area.Name = name;
+            dataContext.SaveChanges();
+        }
+
+        public void DeleteAreaOfResponsibility(int id)
+        {
+            var area = dataContext.CompanyAreaOfResponsibilities.Find(id);
+            if (area == null) throw new Exception("Not found.");
+            dataContext.CompanyAreaOfResponsibilities.Remove(area);
+            dataContext.SaveChanges();
+        }
 
     }
 }

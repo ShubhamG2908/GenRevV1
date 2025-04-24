@@ -103,6 +103,9 @@ namespace Genrev.DomainServices.Data
                 case ImportType.ForecastData:
                     errors = stagingHelper.ImportToForecastDataStaging(table);
                     break;
+                case ImportType.AreaOfResponsibility:
+                    errors = stagingHelper.ImportToAreaOfResponsibilityStaging(table);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException("The specified import type isn't registered");
             }

@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Genrev.Domain.Accounts;
+using Genrev.Domain.Data.Staging;
 using Genrev.Domain.Products;
 
 namespace Genrev.Domain.Companies
 {
     public class Company
-    {
+    {        
 
         public int ID { get; set; }
         public DateTime DateCreated { get; set; }
@@ -20,6 +21,7 @@ namespace Genrev.Domain.Companies
         public string FullName { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
+        public string CountryCode { get; set; }
 
         public Month FiscalYearEndMonth { get; set; }
 
@@ -29,6 +31,7 @@ namespace Genrev.Domain.Companies
         public virtual ICollection<Person> Personnel { get; set; }
         public virtual ICollection<Role> Roles { get; set; }
         public virtual ICollection<Industry> Industries { get; set; }
+        public virtual ICollection<AreaOfResponsibility> AreaOfResponsibilities { get; set; }
         public virtual ICollection<CustomerType> CustomerTypes { get; set; }
         public virtual ICollection<AccountType> AccountTypes { get; set; }
         public virtual ICollection<Customer> Customers { get; set; }

@@ -70,6 +70,12 @@ namespace Genrev.Web
         public Domain.Accounts.Account Account {
             get
             {
+                if (!HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    HttpContext.Current.Response.Redirect("/Account/Login");
+                    HttpContext.Current.Response.End();
+                    return null;
+                }
                 return User.User.Account;
             }
         }
@@ -177,13 +183,18 @@ namespace Genrev.Web
                 public Domain.Users.User User {
                     get
                     {
+                        if (!HttpContext.Current.User.Identity.IsAuthenticated)
+                        {
+                            HttpContext.Current.Response.Redirect("/Account/Login");
+                            HttpContext.Current.Response.End();
+                            return null;
+                        }
                         try {
                             return AppService.Current.DataContext.Users.Where(x => x.Email == UserName).Single();
                         }
                         catch {
                             return new Data.GenrevContext().Users.Where(x => x.Email == UserName).Single();
                         }
-
                     }
                 }
 

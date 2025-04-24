@@ -7,17 +7,18 @@ define(function () {
     ******************************************/
 
     var Interface = {
-        
+
         Initialize: function (pageControlName, callback) { customers.initialize(pageControlName, callback); },
 
         Types: { Init: function () { customers.types.initialize(); } },
         Industries: { Init: function () { customers.industries.initialize(); } },
+        areaOfResponsibilities: { Init: function () { customers.areaOfResponsibilities.initialize(); } },
         Customers: { Init: function () { customers.customers.initialize(); } },
         Mappings: { Init: function () { customers.mappings.initialize(); } },
         Classifications: { Init: function () { customers.classifications.initialize(); } }
 
     }   // end Customers.Interface
-    
+
     var customers = {
 
         initialize: function (pageControlName, callback) {
@@ -25,7 +26,7 @@ define(function () {
             var p = customers.pageBase;
             p.object = DevEx.Controls.GetByName(pageControlName);
             p.objectName = pageControlName;
-            
+
             // wire up events
             p.object.BeginCallback.AddHandler(function (s, e) { customers.pageBase.beginCallback(s, e); });
             p.object.ActiveTabChanging.AddHandler(function (s, e) { customers.pageBase.activeTabChanging(s, e); });
@@ -36,7 +37,7 @@ define(function () {
             if (App.IsCallback(callback)) {
                 callback();
             }
-            
+
         },  // end customers.initialize
 
         pageBase: {
@@ -63,7 +64,7 @@ define(function () {
 
         customers: {
 
-            Model: function() {
+            Model: function () {
                 return {
                     id: null,
                     name: null,
@@ -76,16 +77,16 @@ define(function () {
                     phone: null,
                     typeID: null,
                     industryID: null,
-                    accountTypeID: null
+                    accountTypeID: null                    
                 }
             },
 
-            addNew: function(model, cbSuccess, cbFailure) {
-                                
+            addNew: function (model, cbSuccess, cbFailure) {
+
                 var valid = true;
 
                 App.Try(function () { model.name = model.name.trim(); });
-                
+
                 if (model.name == null || model.name == "" || model.name == undefined) {
                     valid = false;
                 }
@@ -128,18 +129,18 @@ define(function () {
                         App.Errors.ShowGeneral();
                         App.Callback(cbFailure);
                     }
-                    
+
                 });
 
 
 
             },  // end customers.customers.addNew
 
-            edit: function(id) {
+            edit: function (id) {
                 customers.customers.popups.edit.show(id);
             },
 
-            editDirect: function(model, cbSuccess) {
+            editDirect: function (model, cbSuccess) {
 
                 var valid = true;
 
@@ -192,7 +193,7 @@ define(function () {
                 });
             },
 
-            remove: function(id, cbSuccess, cbError) {
+            remove: function (id, cbSuccess, cbError) {
 
                 App.Confirm("Are you sure you want to delete this customer and all of the associated data?", function () {
                     $.ajax({
@@ -216,7 +217,7 @@ define(function () {
                 object: null,
                 objectName: null,
 
-                init: function(gridName) {
+                init: function (gridName) {
 
                     var grid = customers.customers.grid;
                     grid.object = DevEx.Controls.GetByName(gridName);
@@ -226,19 +227,19 @@ define(function () {
                     grid.events.addWindowResizeStretchGridHandler(grid.object);
                     grid.events.addRowDoubleClickHandler(grid.object);
                     grid.events.addEndCallbackHandler(grid.object);
-                    
+
                 },
 
                 refresh: function () {
                     var g = customers.customers.grid;
-                    g.object.Refresh();                   
+                    g.object.Refresh();
                 },
 
 
                 events: {
 
                     addEndCallbackHandler(grid) {
-                        grid.EndCallback.AddHandler(function(s, e) {
+                        grid.EndCallback.AddHandler(function (s, e) {
                             // relink stuff...
                             var ge = customers.customers.grid.events;
                             ge.addWindowResizeStretchGridHandler(s);
@@ -253,7 +254,7 @@ define(function () {
                     },
 
                     addRowDoubleClickHandler(grid) {
-                        $("[data-dym-cell='CustomersGrid']").dblclick(function() {
+                        $("[data-dym-cell='CustomersGrid']").dblclick(function () {
                             var cell = $(this);
                             var index = cell.attr('data-dym-visibleIndex');
                             var id = DevEx.Grid.GetFocusedKey(DevEx.Controls.GetByName("CustomersGrid"));
@@ -263,7 +264,7 @@ define(function () {
 
                 },
 
-                stretchHeight: function(grid) {
+                stretchHeight: function (grid) {
                     console.log('stretching height');
                     var splitter = DevEx.Controls.GetByName("ContentSplitter");
                     var h = splitter.GetPane(1).GetClientHeight();
@@ -277,12 +278,12 @@ define(function () {
                 }   // end customers.grid.stretchHeight
 
             },  // end customers.customers.grid
-            
+
             popups: {
 
                 edit: {
 
-                    show: function(id) {
+                    show: function (id) {
 
                         App.Popup.Show({
                             url: "/Customers/EditCustomerPopup",
@@ -363,7 +364,7 @@ define(function () {
                             opened: function () {
 
                                 DevEx.Controls.GetByName("CustomerAddNewOkButton").Click.AddHandler(function (s, e) {
-                                    
+
                                     var model = new customers.customers.Model();
 
                                     model.name = DevEx.Controls.GetValue("AddCustomerName");
@@ -377,7 +378,7 @@ define(function () {
                                     model.typeID = DevEx.Controls.GetValue("AddCustomerCustomerType");
                                     model.industryID = DevEx.Controls.GetValue("AddCustomerIndustry");
                                     model.accountTypeID = DevEx.Controls.GetValue("AddCustomerAccountType");
-                                    
+
                                     customers.customers.addNew(model, function () {
                                         App.Popup.Hide('ok');
                                     });
@@ -437,6 +438,7 @@ define(function () {
 
                 cls.types.initialize();
                 cls.industries.initialize();
+                cls.areaOfResponsibilities.initialize();
                 cls.accountTypes.initialize();
 
                 var msgDismiss = $("#cust-class-header-msg-close").on('click', function () {
@@ -444,15 +446,15 @@ define(function () {
                 });
 
             },
-            
+
             types: {
 
                 edit: function (id) {
                     customers.classifications.types.popups.edit.show(id);
                 },
 
-                remove: function(id, cbSuccess) {
-                    
+                remove: function (id, cbSuccess) {
+
                     App.Confirm("Are you sure you want to delete this Customer Type?", function () {
                         $.ajax({
                             type: 'POST',
@@ -469,8 +471,8 @@ define(function () {
 
                 },
 
-                editDirect: function(id, value, cbSuccess) {
-                    
+                editDirect: function (id, value, cbSuccess) {
+
                     $.ajax({
                         type: 'POST',
                         url: '/Customers/EditCustomerType',
@@ -483,7 +485,7 @@ define(function () {
                                 App.Callback(cbSuccess);
                             } else {
                                 App.Errors.Show(res);
-                            }                            
+                            }
                         },
                         error: function () {
                             App.Errors.ShowGeneral();
@@ -519,10 +521,10 @@ define(function () {
 
                                     DevEx.Controls.GetByName("CustomerTypeEditOkButton").Click.AddHandler(function (s, e) {
 
-                                        
+
                                         var value = DevEx.Controls.GetValue("CustomerTypeEditName");
-                                        
-                                        customers.classifications.types.editDirect(id, value, function() {
+
+                                        customers.classifications.types.editDirect(id, value, function () {
                                             App.Popup.Hide('ok');
                                         });
                                     });
@@ -548,7 +550,7 @@ define(function () {
                 },
 
                 grid: null,
-                
+
                 addType: function (value) {
 
                     console.log('adding type');
@@ -576,7 +578,7 @@ define(function () {
                         success: function (res) {
 
                             if (res == "ok") {
-                                
+
                             } else {
                                 // assume response is "ERR: message"
                                 App.Errors.Show(res.substr(4));
@@ -609,7 +611,7 @@ define(function () {
                     ctg.rowDoubleClick.addHandler(function (s, e) {
                         customers.classifications.types.edit(e.clickedIndex);
                     });
-                    
+
                     var btn = DevEx.Controls.GetByName("AddCustomerTypeButton");
                     btn.Click.AddHandler(function (s, e) {
                         customers.classifications.types.events.addTypeClick();
@@ -619,14 +621,185 @@ define(function () {
                 }   // end customers.classifications.types.initialize
 
             },  // end customers.classifications.types
-            
+            areaOfResponsibilities: {
+
+                edit: function (id) {
+                    customers.classifications.areaOfResponsibilities.popups.edit.show(id);
+                },
+
+                remove: function (id, cbSuccess) {
+
+                    App.Confirm("Are you sure you want to delete this Area of Responsibility?", function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Customers/DeleteAreaOfResponsibility',
+                            data: { id: id },
+                            success: function (res) {
+                                App.Callback(cbSuccess);
+                            },
+                            error: function () {
+                                App.Errors.ShowGeneral();
+                            }
+                        });
+                    });
+
+                },
+
+                editDirect: function (id, value, cbSuccess) {
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Customers/EditAreaOfResponsibility',
+                        data: {
+                            id: id,
+                            name: value
+                        },
+                        success: function (res) {
+                            if (res == "ok") {
+                                App.Callback(cbSuccess);
+                            } else {
+                                App.Errors.Show(res);
+                            }
+                        },
+                        error: function () {
+                            App.Errors.ShowGeneral();
+                        }
+                    });
+
+                },
+
+                popups: {
+
+                    edit: {
+                        show: function (id) {
+
+                            App.Popup.Show({
+                                url: "/Customers/EditAreaOfResponsibilityPopup",
+                                type: 'GET',
+                                data: { id: id },
+                                options: {
+                                    width: 300,
+                                    height: 200,
+                                    title: "Edit Area of Responsibility",
+                                    allowDrag: true,
+                                    allowResize: false
+                                },
+                                opened: function () {
+
+
+                                    DevEx.Controls.GetByName("CustomerAreaOfResponsibilityDeleteButton").Click.AddHandler(function (s, e) {
+                                        customers.classifications.areaOfResponsibilities.remove(id, function () {
+                                            App.Popup.Hide('ok');
+                                        });
+                                    });
+
+                                    DevEx.Controls.GetByName("CustomerAreaOfResponsibilityEditOkButton").Click.AddHandler(function (s, e) {
+                                        debugger
+                                        var value = DevEx.Controls.GetValue("CustomerAreaOfResponsibilityEditName");
+
+                                        customers.classifications.areaOfResponsibilities.editDirect(id, value, function () {
+                                            App.Popup.Hide('ok');
+                                        });
+                                    });
+
+                                    DevEx.Controls.GetByName("CustomerAreaOfResponsibilityEditCancelButton").Click.AddHandler(function (s, e) {
+                                        App.Popup.Hide('cancelled');
+                                    });
+
+                                },
+                                done: function (r) {
+                                    if (r == "ok") {
+                                        customers.classifications.areaOfResponsibilities.grid.refresh();
+                                    }
+                                },
+                                error: function (r) {
+                                    App.Errors.ShowGeneral();
+                                }
+                            });
+
+                        }
+                    }
+
+                },
+
+                grid: null,
+
+                addAreaOfResponsibility: function (value) {
+
+                    console.log('adding Area Of Responsibility');
+
+                    var valid = true;
+
+                    App.Try(function () { value = value.trim(); });
+
+                    if (value == null || value == "" || value == undefined) {
+                        valid = false;
+                    }
+
+                    if (!valid) {
+                        App.Errors.Show("Please supply a name to add");
+                        return;
+                    }
+
+                    // we're good on frontend validation, attempt backend submission
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Customers/AddAreaOfResponsibility',
+                        data: {
+                            name: value
+                        },
+                        success: function (res) {
+
+                            if (res == "ok") {
+
+                            } else {
+                                // assume response is "ERR: message"
+                                App.Errors.Show(res.substr(4));
+                            }
+
+                        },
+                        error: function () {
+                            App.Errors.ShowGeneral();
+                        }
+                    });
+                },
+
+                events: {
+
+                    addAreaOfResponsibilityClick: function () {
+                        var value = DevEx.Controls.GetByName("AddAreaOfResponsibility").GetValue();
+                        customers.classifications.areaOfResponsibilities.addAreaOfResponsibility(value);
+                    }
+
+                }, 
+
+                initialize: function () {
+
+                    var ctg = new devex.Grid({ name: 'CustomerAreaOfResponsibilitiesGrid' });
+                    customers.classifications.areaOfResponsibilities.grid = ctg;
+
+                    ctg.rowDoubleClick.addHandler(function (s, e) {
+                        debugger
+                        customers.classifications.areaOfResponsibilities.edit(e.clickedIndex);
+                    });
+
+                    var btn = DevEx.Controls.GetByName("AddAreaOfResponsibilityButton");
+                    btn.Click.AddHandler(function (s, e) {
+                        customers.classifications.areaOfResponsibilities.events.addAreaOfResponsibilityClick();
+                        debugger
+                        ctg.refresh();
+                    });
+
+                }
+
+            },
             industries: {
-                
-                edit: function(id) {
+
+                edit: function (id) {
                     customers.classifications.industries.popups.edit.show(id);
                 },
 
-                remove: function(id, cbSuccess) {
+                remove: function (id, cbSuccess) {
 
                     App.Confirm("Are you sure you want to delete this Industry?", function () {
                         $.ajax({
@@ -647,8 +820,8 @@ define(function () {
                     });
                 },
 
-                editDirect: function(id, value, cbSuccess) {
-                    
+                editDirect: function (id, value, cbSuccess) {
+
                     $.ajax({
                         type: 'POST',
                         url: '/Customers/EditIndustry',
@@ -668,7 +841,7 @@ define(function () {
                         }
                     });
                 },
-                
+
                 popups: {
 
                     edit: {
@@ -695,7 +868,7 @@ define(function () {
                                     });
 
                                     DevEx.Controls.GetByName("CustomerIndustryEditOkButton").Click.AddHandler(function (s, e) {
-                                        
+
                                         var value = DevEx.Controls.GetValue("CustomerIndustryEditName");
 
                                         customers.classifications.industries.editDirect(id, value, function () {
@@ -721,7 +894,7 @@ define(function () {
                     }
 
                 },
-                
+
                 grid: null,
 
                 addIndustry: function (value) {
@@ -762,7 +935,7 @@ define(function () {
                     });
 
                 },  // end customers.classifications.industries.addIndustry
-                
+
                 events: {
 
                     addIndustryClick: function () {
@@ -791,7 +964,7 @@ define(function () {
                 }   // end customers.classifications.industries.initialize
 
 
-            },  // end customers.classifications.industries
+            },  // end customers.classifications.industries            
 
             accountTypes: {
 
@@ -842,14 +1015,14 @@ define(function () {
                     });
 
                 },
-                
+
                 popups: {
 
 
                     edit: {
 
 
-                        show: function(id) {
+                        show: function (id) {
 
                             App.Popup.Show({
                                 url: "/Customers/EditAccountTypePopup",
@@ -905,7 +1078,7 @@ define(function () {
                 },
 
                 grid: null,
-                
+
                 addType: function (value) {
 
                     var valid = true;
@@ -931,7 +1104,7 @@ define(function () {
                         success: function (res) {
 
                             if (res == "ok") {
-                                
+
                             } else {
                                 // assume response is "ERR: message"
                                 App.Errors.Show(res.substr(4));
@@ -957,7 +1130,7 @@ define(function () {
                 },  // end customers.classifications.types.events
 
                 initialize: function () {
-                    
+
                     var atg = new devex.Grid({ name: 'AccountTypesGrid' });
                     customers.classifications.accountTypes.grid = atg;
 
@@ -974,18 +1147,18 @@ define(function () {
                 }   // end customers.classifications.accountTypes.initialize
 
             },  // end customers.classifications.accountTypes
-            
+
         },  // end customers.classifications
 
         mappings: {
 
-            
-            setSelection: function(personnelID, supressHide)  {
+
+            setSelection: function (personnelID, supressHide) {
 
                 if (personnelID == null) {
                     return;
                 }
-                    
+
                 $.ajax({
                     type: 'GET',
                     url: "/Customers/GetMappingCustomerList",
@@ -1013,7 +1186,7 @@ define(function () {
             personnelGrid: {
                 // this is loaded by default with page
 
-                currentID: function() {
+                currentID: function () {
                     return DevEx.Grid.GetFocusedKey(DevEx.Controls.GetByName(customers.mappings.personnelGrid.objectName));
                 },
 
@@ -1021,7 +1194,7 @@ define(function () {
                 objectName: null,
 
                 events: {
-                    
+
                     focusedRowChanged: function (s, e) {
                         var id = customers.mappings.personnelGrid.currentID();
                         customers.mappings.setSelection(id);
@@ -1051,7 +1224,7 @@ define(function () {
                 object: null,
                 objectName: null,
 
-                toggleSelection: function(customerID) {
+                toggleSelection: function (customerID) {
 
 
                     $.ajax({
@@ -1069,7 +1242,7 @@ define(function () {
                                 // refactor later... (see also, personnel ReportsTo grid)
 
                                 customers.mappings.setSelection(customers.mappings.personnelGrid.currentID(), true);
-                                
+
                             } else {
                                 App.Errors.ShowGeneral();
                             }
@@ -1084,7 +1257,7 @@ define(function () {
 
                 },  // end customers.mappings.customersGrid.toggleSelection
 
-                loadContent: function(content, supressHide) {
+                loadContent: function (content, supressHide) {
                     // run this each time the grid needs to be rebuilt
                     var el = $("#" + customers.mappings.customersGrid.containerElementID);
 
@@ -1105,13 +1278,13 @@ define(function () {
                             var control = DevEx.Controls.GetByName("CustomerMappingsCustomerGrid");
                             customers.mappings.customersGrid.object = control;
                             customers.mappings.customersGrid.events.reloadGrid(control);
-                            
+
                             el.show(250);
                         });
 
                     }
 
-                    
+
 
                 },  // end customers.mappings.customersGrid.loadContent
 
@@ -1122,14 +1295,14 @@ define(function () {
 
                 events: {
 
-                    reloadGrid: function(grid) {
+                    reloadGrid: function (grid) {
 
                         grid.BeginCallback.AddHandler(function (s, e) { customers.mappings.customersGrid.events.beginCallback(s, e); });
                         $('[data-dym-cellClick="CustomerMappingsGrid"]').click(function () { customers.mappings.customersGrid.events.cellClick($(this)); });
 
                     },
 
-                    cellClick: function(cell) {
+                    cellClick: function (cell) {
 
                         var index = cell.attr('data-dym-visibleIndex');
                         var field = cell.attr('data-dym-fieldName');
@@ -1156,7 +1329,7 @@ define(function () {
                 customers.mappings.customersGrid.init("MappingsCustomersGridContainer");
                 customers.mappings.personnelGrid.init("CustomerMappingsPersonnelGrid");
 
-                
+
 
 
 

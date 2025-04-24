@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dymeng.Data;
 using Dymeng.Validation;
-using System.Data;
-using Dymeng.Data;
+
 using Genrev.Domain.Data.Staging;
-using System.Linq;
 using Genrev.Domain.DataSets;
+
+using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
-using System.Data.Entity;
 using System.Globalization;
-using Serilog;
+using System.Linq;
 
 namespace Genrev.DomainServices.Data
 {
@@ -77,6 +77,13 @@ namespace Genrev.DomainServices.Data
             return table;
 
         }
+        public DataTable GetAreaOfResponsibilityStagingTable()
+        {
+            var table = new DataTable();
+            table.Columns.Add("ID");
+            table.Columns.Add("Name");
+            return table;
+        }
 
         public DataTable GetCustomerStagingTable()
         {
@@ -135,6 +142,10 @@ namespace Genrev.DomainServices.Data
         {
             return table.Columns.Count == 2;
         }
+        public bool CheckAreaOfResponsibilityStagingTable(DataTable table)
+        {
+            return table.Columns.Count == 2;
+        }
 
         public bool CheckCustomerStagingTable(DataTable table)
         {
@@ -145,11 +156,6 @@ namespace Genrev.DomainServices.Data
         {
             return table.Columns.Count == 6;
         }
-
-
-
-
-
 
         public List<ValidationError> ImportToPersonnelStaging(DataTable table)
         {
@@ -303,6 +309,38 @@ namespace Genrev.DomainServices.Data
 
                 context.StagedIndustryTypes.RemoveRange(context.StagedIndustryTypes);
                 context.StagedIndustryTypes.AddRange(industryTypes);
+                context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                validationHelper.AddGeneralExceptionError(e, ref errors);
+            }
+
+            return errors;
+        }
+
+        public List<ValidationError> ImportToAreaOfResponsibilityStaging(DataTable table)
+        {
+            var errors = validationHelper.ValidateAreaOfResponsibilityDataTable(table);
+
+            if (errors.Count > 0)
+            {
+                return errors;
+            }
+
+            var areaOfResponsibilities = new List<AreaOfResponsibilityStaging>();
+            try
+            {
+                foreach (DataRow row in table.Rows)
+                {
+                    var areaOfResponsibility = new AreaOfResponsibilityStaging();
+                    areaOfResponsibility.ClientID = row.ToStringValue(0);
+                    areaOfResponsibility.Name = row.ToStringValue(1);
+                    areaOfResponsibilities.Add(areaOfResponsibility);
+                }
+
+                context.StagedAreaOfResponsibilities.RemoveRange(context.StagedAreaOfResponsibilities);
+                context.StagedAreaOfResponsibilities.AddRange(areaOfResponsibilities);
                 context.SaveChanges();
             }
             catch (Exception e)
@@ -609,6 +647,6 @@ namespace Genrev.DomainServices.Data
             {                
                 return DateTime.MinValue;
             }
-        }
+        }        
     }
 }

@@ -450,8 +450,8 @@ define(function () {
                                             
                                             s = s + "<hr />";
 
-                                            s = s + '<b>GPP Actual:</b> ' + Genrev.FormatPercent(gppa) + '<br />';
-                                            s = s + '<b>GPP Forecast:</b> ' + Genrev.FormatPercent(gppf) + '<br />';
+                                            s = s + '<b>GMP Actual:</b> ' + Genrev.FormatPercent(gppa) + '<br />';
+                                            s = s + '<b>GMP Forecast:</b> ' + Genrev.FormatPercent(gppf) + '<br />';
                                             s = s + '<b>Difference:</b> ';
 
                                             if (gppd < 0) {
@@ -466,7 +466,7 @@ define(function () {
                                         }
                                     },
 
-                                    title: { text: 'Actual vs. Forecast (GPP & GPD)' },
+                                    title: { text: 'Actual vs. Forecast (GMP & GPD)' },
                                     xAxis: {
                                         categories: data.categories
                                     },
@@ -478,7 +478,7 @@ define(function () {
                                             }
                                         }
                                     }, {
-                                        title: { text: 'Gross Profit Percent (GPP)' },
+                                        title: { text: 'Gross Margin Percent (GMP)' },
                                         labels: {
                                             format: "{value}%"
                                         },
@@ -669,8 +669,8 @@ define(function () {
 
                                             s = s + "<hr />";
 
-                                            s = s + '<b>GPP Actual:</b> ' + Genrev.FormatPercent(gppa) + '<br />';
-                                            s = s + '<b>GPP Forecast:</b> ' + Genrev.FormatPercent(gppf) + '<br />';
+                                            s = s + '<b>GMP Actual:</b> ' + Genrev.FormatPercent(gppa) + '<br />';
+                                            s = s + '<b>GMP Forecast:</b> ' + Genrev.FormatPercent(gppf) + '<br />';
                                             s = s + '<b>Difference:</b> ';
 
                                             if (gppd < 0) {
@@ -685,7 +685,7 @@ define(function () {
                                         }
                                     },
 
-                                    title: { text: 'Actual vs. Forecast (GPP & GPD)' },
+                                    title: { text: 'Actual vs. Forecast (GMP & GPD)' },
                                     xAxis: {
                                         categories: data.categories
                                     },
@@ -697,7 +697,7 @@ define(function () {
                                             }
                                         }
                                     }, {
-                                        title: { text: 'Gross Profit Percent (GPP)' },
+                                        title: { text: 'Gross Margin Percent (GMP)' },
                                         labels: {
                                             format: "{value}%"
                                         },
@@ -890,8 +890,8 @@ define(function () {
 
                                             s = s + "<hr />";
 
-                                            s = s + '<b>GPP Actual:</b> ' + Genrev.FormatPercent(gppa) + '<br />';
-                                            s = s + '<b>GPP Forecast:</b> ' + Genrev.FormatPercent(gppf) + '<br />';
+                                            s = s + '<b>GMP Actual:</b> ' + Genrev.FormatPercent(gppa) + '<br />';
+                                            s = s + '<b>GMP Forecast:</b> ' + Genrev.FormatPercent(gppf) + '<br />';
                                             s = s + '<b>Difference:</b> ';
 
                                             if (gppd < 0) {
@@ -906,7 +906,7 @@ define(function () {
                                         }
                                     },
 
-                                    title: { text: 'Actual vs. Forecast (GPP & GPD)' },
+                                    title: { text: 'Actual vs. Forecast (GMP & GPD)' },
                                     xAxis: {
                                         categories: data.categories
                                     },
@@ -918,7 +918,7 @@ define(function () {
                                             }
                                         }
                                     }, {
-                                        title: { text: 'Gross Profit Percent (GPP)' },
+                                        title: { text: 'Gross Margin Percent (GMP)' },
                                         labels: {
                                             format: "{value}%"
                                         },
@@ -1110,8 +1110,8 @@ define(function () {
 
                                             s = s + "<hr />";
 
-                                            s = s + '<b>GPP Actual:</b> ' + Genrev.FormatPercent(gppa) + '<br />';
-                                            s = s + '<b>GPP Forecast:</b> ' + Genrev.FormatPercent(gppf) + '<br />';
+                                            s = s + '<b>GMP Actual:</b> ' + Genrev.FormatPercent(gppa) + '<br />';
+                                            s = s + '<b>GMP Forecast:</b> ' + Genrev.FormatPercent(gppf) + '<br />';
                                             s = s + '<b>Difference:</b> ';
 
                                             if (gppd < 0) {
@@ -1126,7 +1126,7 @@ define(function () {
                                         }
                                     },
 
-                                    title: { text: 'Actual vs. Forecast (GPP & GPD)' },
+                                    title: { text: 'Actual vs. Forecast (GMP & GPD)' },
                                     xAxis: {
                                         categories: data.categories
                                     },
@@ -1138,7 +1138,7 @@ define(function () {
                                             }
                                         }
                                     }, {
-                                        title: { text: 'Gross Profit Percent (GPP)' },
+                                        title: { text: 'Gross Margin Percent (GMP)' },
                                         labels: {
                                             format: "{value}%"
                                         },
@@ -1326,8 +1326,8 @@ define(function () {
 
                                             s = s + "<hr />";
 
-                                            s = s + '<b>GPP Actual:</b> ' + Genrev.FormatPercent(gppa) + '<br />';
-                                            s = s + '<b>GPP Forecast:</b> ' + Genrev.FormatPercent(gppf) + '<br />';
+                                            s = s + '<b>GMP Actual:</b> ' + Genrev.FormatPercent(gppa) + '<br />';
+                                            s = s + '<b>GMP Forecast:</b> ' + Genrev.FormatPercent(gppf) + '<br />';
                                             s = s + '<b>Difference:</b> ';
 
                                             if (gppd < 0) {
@@ -1342,7 +1342,7 @@ define(function () {
                                         }
                                     },
 
-                                    title: { text: 'Actual vs. Forecast (GPP & GPD)' },
+                                    title: { text: 'Actual vs. Forecast (GMP & GPD)' },
                                     xAxis: {
                                         categories: data.categories
                                     },
@@ -1354,7 +1354,7 @@ define(function () {
                                             }
                                         }
                                     }, {
-                                        title: { text: 'Gross Profit Percent (GPP)' },
+                                        title: { text: 'Gross Margin Percent (GMP)' },
                                         labels: {
                                             format: "{value}%"
                                         },
@@ -1542,8 +1542,8 @@ define(function () {
 
                                             s = s + "<hr />";
 
-                                            s = s + '<b>GPP Actual:</b> ' + Genrev.FormatPercent(gppa) + '<br />';
-                                            s = s + '<b>GPP Forecast:</b> ' + Genrev.FormatPercent(gppf) + '<br />';
+                                            s = s + '<b>GMP Actual:</b> ' + Genrev.FormatPercent(gppa) + '<br />';
+                                            s = s + '<b>GMP Forecast:</b> ' + Genrev.FormatPercent(gppf) + '<br />';
                                             s = s + '<b>Difference:</b> ';
 
                                             if (gppd < 0) {
@@ -1558,7 +1558,7 @@ define(function () {
                                         }
                                     },
 
-                                    title: { text: 'Actual vs. Forecast (GPP & GPD)' },
+                                    title: { text: 'Actual vs. Forecast (GMP & GPD)' },
                                     xAxis: {
                                         categories: data.categories
                                     },
@@ -1570,7 +1570,7 @@ define(function () {
                                             }
                                         }
                                     }, {
-                                        title: { text: 'Gross Profit Percent (GPP)' },
+                                        title: { text: 'Gross Margin Percent (GMP)' },
                                         labels: {
                                             format: "{value}%"
                                         },

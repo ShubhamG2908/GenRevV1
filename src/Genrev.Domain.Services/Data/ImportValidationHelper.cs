@@ -24,6 +24,7 @@ namespace Genrev.DomainServices.Data
         AtRiskMustBeZeroOrMore,
         CustomerTypeNameRequired,
         IndustryTypeNameRequired,
+        AreaOfResponsibilityNameRequired,
         CompanyNameRequired,
         CompanyCodeRequired,
         FiscalMonthEndOutOfRange,
@@ -214,6 +215,30 @@ namespace Genrev.DomainServices.Data
                     addError(ImportValidationError.IndustryTypeNameRequired, ref errors);
                 }
 
+            }
+
+            return errors;
+        }
+
+        public List<ValidationError> ValidateAreaOfResponsibilityDataTable(DataTable table)
+        {
+
+            var errors = new List<ValidationError>();
+
+            foreach (DataRow row in table.Rows)
+            {
+
+                string s = row.ToStringValue(0);    // clientID
+                if (string.IsNullOrWhiteSpace(s))
+                {
+                    addError(ImportValidationError.ClientIDRequired, ref errors);
+                }
+
+                s = row.ToStringValue(1);   // Name
+                if (string.IsNullOrWhiteSpace(s))
+                {
+                    addError(ImportValidationError.AreaOfResponsibilityNameRequired, ref errors);
+                }
             }
 
             return errors;
@@ -596,6 +621,9 @@ namespace Genrev.DomainServices.Data
                 case ImportValidationError.AccountTypeNameRequired:
                 case ImportValidationError.CustomerTypeNameRequired:
                 case ImportValidationError.IndustryTypeNameRequired:
+                    error.Message = "Name is required.";
+                    break;
+                case ImportValidationError.AreaOfResponsibilityNameRequired:
                     error.Message = "Name is required.";
                     break;
 

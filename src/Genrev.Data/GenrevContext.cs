@@ -57,6 +57,7 @@ namespace Genrev.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CustomerType> CustomerTypes { get; set; }
         public DbSet<Industry> Industries { get; set; }
+        public DbSet<AreaOfResponsibility> CompanyAreaOfResponsibilities { get; set; }
         public DbSet<Person> Personnel { get; set; }
         public DbSet<PersonnelAvailability> PersonnelAvailability { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -93,6 +94,7 @@ namespace Genrev.Data
         public DbSet<AccountTypeStaging> StagedAccountTypes { get; set; }
         public DbSet<CustomerTypeStaging> StagedCustomerTypes { get; set; }
         public DbSet<IndustryTypeStaging> StagedIndustryTypes { get; set; }
+        public DbSet<AreaOfResponsibilityStaging> StagedAreaOfResponsibilities { get; set; }
 
         public DbSet<CustomerStaging> StagedCustomers { get; set; }
         public DbSet<MonthlyDataStaging> StagedMonthlyData { get; set; }
@@ -223,6 +225,11 @@ namespace Genrev.Data
 
         public void UpsertIndustryTypesStagingToLive(int accountID) {
             Database.ExecuteSqlCommand("EXEC staging.UpsertIndustryTypesToLive @AccountID", new SqlParameter("@AccountID", accountID));
+        }
+
+        public void UpsertAreaOfResponsibilitiesStagingToLive(int accountID)
+        {
+            Database.ExecuteSqlCommand("EXEC staging.UpsertAreaOfResponsibilitiesToLive @AccountID", new SqlParameter("@AccountID", accountID));
         }
 
         public void UpsertMonthlyDataStagingToLive(int accountID) {
@@ -405,6 +412,7 @@ namespace Genrev.Data
             modelBuilder.Entity<Customer>().Property(e => e.Phone).HasColumnName("CustomerPhone");
             modelBuilder.Entity<Customer>().Property(e => e.TypeID).HasColumnName("CustomerTypeID");
             modelBuilder.Entity<Customer>().Property(e => e.IndustryID).HasColumnName("CustomerIndustryID");
+            modelBuilder.Entity<Customer>().Property(e => e.ID).HasColumnName("ID");
             modelBuilder.Entity<Customer>().Property(e => e.AccountTypeID).HasColumnName("CustomerAccountTypeID");
             modelBuilder.Entity<Customer>()
                 .HasMany(p => p.Personnel)
@@ -452,6 +460,9 @@ namespace Genrev.Data
 
             modelBuilder.Entity<Industry>().ToTable("CompanyIndustries");
             modelBuilder.Entity<Industry>().Property(e => e.Name).HasColumnName("IndustryName");
+
+            modelBuilder.Entity<AreaOfResponsibility>().ToTable("CompanyAreaOfResponsibilities");
+            modelBuilder.Entity<AreaOfResponsibility>().Property(e => e.Name).HasColumnName("Name");
 
             modelBuilder.Entity<AccountType>().ToTable("CompanyAccountTypes");
             modelBuilder.Entity<AccountType>().Property(e => e.Name).HasColumnName("AccountTypeName");
@@ -560,6 +571,10 @@ namespace Genrev.Data
             modelBuilder.Entity<IndustryTypeStaging>().ToTable("IndustryTypes", STAGING_SCHEMA);
             modelBuilder.Entity<IndustryTypeStaging>().Property(x => x.ClientID).HasColumnName("TypeClientID");
             modelBuilder.Entity<IndustryTypeStaging>().Property(x => x.Name).HasColumnName("TypeName");
+
+            modelBuilder.Entity<AreaOfResponsibilityStaging>().ToTable("AreaOfResponsibilities", STAGING_SCHEMA);
+            modelBuilder.Entity<AreaOfResponsibilityStaging>().Property(x => x.ClientID).HasColumnName("ClientID");
+            modelBuilder.Entity<AreaOfResponsibilityStaging>().Property(x => x.Name).HasColumnName("Name");
 
             modelBuilder.Entity<CustomerStaging>().ToTable("Customers", STAGING_SCHEMA);
             modelBuilder.Entity<CustomerStaging>().Property(x => x.ClientID).HasColumnName("CustomerClientID");

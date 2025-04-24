@@ -213,6 +213,9 @@ namespace Genrev.Web.App.Data
                     case "forecastData":
                         filename += "ForecastData.csv";
                         break;
+                    case "areaOfResponsibility":
+                        filename += "AreaOfResponsibility.csv";
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException("Type not registered");
                 }
@@ -403,6 +406,27 @@ namespace Genrev.Web.App.Data
                     }
                 });
 
+            return null;
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        [Authorize(Roles = "sysadmin")]
+        public ActionResult UploadAreaOfResponsibility()
+        {
+            string[] errors;
+            DevExpress.Web.UploadedFile[] files = DevExpress.Web.Mvc.UploadControlExtension.GetUploadedFiles(
+                "uploadAreaOfResponsibility",
+                DataUploadValidation.Settings,
+                out errors,
+                (sender, e) =>
+                {
+                    var validationErrors = _service.ProcessFileImport(Domain.Data.ImportType.AreaOfResponsibility, e.UploadedFile);
+                    e.UploadedFile.IsValid = validationErrors.Count == 0 ? true : false;
+                    if (validationErrors.Count > 0)
+                    {
+                        e.ErrorText = getCompiledValidationMessages(validationErrors);
+                    }
+                });
             return null;
         }
 

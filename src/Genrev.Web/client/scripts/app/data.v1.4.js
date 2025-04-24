@@ -68,6 +68,7 @@ define(function () {
                 $('#template-dl-accountTypes').click(function (e) { return getFile(e, 'accountTypes'); });
                 $('#template-dl-customerTypes').click(function (e) { return getFile(e, 'customerTypes'); });
                 $('#template-dl-industryTypes').click(function (e) { return getFile(e, 'industryTypes'); });
+                $('#template-dl-areaOfResponsibility').click(function (e) { return getFile(e, 'areaOfResponsibility'); });
                 $('#template-dl-customers').click(function (e) { return getFile(e, 'customers'); });
                 $('#template-dl-monthlyData').click(function (e) { return getFile(e, 'monthlyData'); });
 

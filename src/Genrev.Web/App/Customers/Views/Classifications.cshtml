@@ -14,18 +14,22 @@
 
     <div class="dg-row">
 
-        <div class="dg-col-4">
+        <div class="dg-col-3">
             @Html.Partial("Types", Model.Types)
         </div>
 
-        <div class="dg-col-4">
+        <div class="dg-col-3">
             @Html.Partial("Industries", Model.Industries)
         </div>
 
-        <div class="dg-col-4">
+        <div class="dg-col-3">
             @Html.Partial("AccountTypes", Model.AccountTypes)
         </div>
 
+        <div class="dg-col-3">
+            @Html.Partial("AreaOfResponsibility" +
+           "", Model.AreaOfResponsibilities)
+        </div>
     </div>
 
 

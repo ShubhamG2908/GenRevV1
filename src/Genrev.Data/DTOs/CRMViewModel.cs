@@ -10,6 +10,8 @@ namespace Genrev.Data.DTOs
         public int Id { get; set; }
         public int SalesPersonId { get; set; }
         public int CustomerId { get; set; }
+        public int AreaOfResponsibilityId { get; set; }
+        public string AreaOfResponsibilityName { get; set; }
 
         [Required(ErrorMessage = "Name is required")]
         [StringLength(255, ErrorMessage = "Name cannot exceed 255 characters")]
@@ -18,9 +20,6 @@ namespace Genrev.Data.DTOs
         [Required(ErrorMessage = "Title is required")]
         [StringLength(255, ErrorMessage = "Title cannot exceed 255 characters")]
         public string Title { get; set; }
-
-        [StringLength(255, ErrorMessage = "Area of Responsibility cannot exceed 255 characters")]
-        public string AreaOfResponsibility { get; set; }
 
         public string Strategy { get; set; }
 
@@ -31,7 +30,7 @@ namespace Genrev.Data.DTOs
         public string LinkedInUrl { get; set; }
         public string Concern { get; set; }
         public List<CRMFileViewModel> UploadedFiles { get; set; } = new List<CRMFileViewModel>();
-        public List<CRMRecordDTO> CRMListItems { get; set; }= new List<CRMRecordDTO>();
+        public List<CRMRecordDTO> CRMListItems { get; set; } = new List<CRMRecordDTO>();
         public List<CRMContactViewModel> Contacts { get; set; } = new List<CRMContactViewModel>();
         public List<AddressViewModel> Addresses { get; set; } = new List<AddressViewModel>();
 
@@ -93,7 +92,8 @@ namespace Genrev.Data.DTOs
         public int CustomerId { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
-        public string AreaOfResponsibility { get; set; }
+        public int AreaOfResponsibilityId { get; set; }
+        public string AreaOfResponsibilityName { get; set; }
         public string LinkedInUrl { get; set; }
         public string Strategy { get; set; }
         public DateTime? StrategyDate { get; set; }

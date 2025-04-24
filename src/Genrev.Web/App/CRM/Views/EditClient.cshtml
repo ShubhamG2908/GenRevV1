@@ -78,12 +78,15 @@
                        }).Bind(Model.Title).GetHtml()
                         </td>
                         <td class="td">
-                            @Html.DevExpress().TextBox(s =>
-                       {
-                           s.Name = "AreaOfResponsibility";
-                           s.Properties.Caption = "Area of Responsibility";
-                           s.Properties.CaptionCellStyle.Width = 150;
-                       }).Bind(Model.AreaOfResponsibility).GetHtml()
+                            @Html.DevExpress().ComboBox(s =>
+                            {
+                                s.Name = "AreaOfResponsibilityId";
+                                s.Properties.ValueField = "ID";
+                                s.Properties.ValueType = typeof(int);
+                                s.Properties.TextField = "Name";
+                                s.Properties.Caption = "Area of Responsibility";
+                                s.Properties.CaptionCellStyle.Width = 150;
+                            }).BindList(ViewBag.AreaOfResponsibilities).Bind(ViewBag.SelectedAreaOfResponsibilities).GetHtml()
                         </td>
                     </tr>
                     <tr class="tr">

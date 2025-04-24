@@ -562,7 +562,7 @@ define(['devex', 'core'], function () {
                                     type: 'column'
                                 },
                                 title: {
-                                    text: 'Gross Profit Percent'
+                                    text: 'Gross Margin Percent'
                                 },
                                 rangeSelector: {
                                     enabled: true
@@ -572,7 +572,7 @@ define(['devex', 'core'], function () {
                                 },
                                 yAxis: {
                                     title: {
-                                        text: 'Gross Profit Percent'
+                                        text: 'Gross Margin Percent'
                                     },
                                     labels: {
                                         

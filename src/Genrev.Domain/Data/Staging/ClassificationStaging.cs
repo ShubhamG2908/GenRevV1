@@ -24,4 +24,11 @@
         public string Name { get; set; }
     }
 
+    public class AreaOfResponsibilityStaging
+    {
+        public int ID { get; set; }
+        public string ClientID { get; set; }
+        public string Name { get; set; }
+    }
+
 }

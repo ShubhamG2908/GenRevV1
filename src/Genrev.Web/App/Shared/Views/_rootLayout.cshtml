@@ -61,7 +61,8 @@
 
     <script>
     $(document).ready(function () {
-    var selectedSalesPersonId = '@ViewBag.SelectedSalesPersonId';
+        var selectedSalesPersonId = '@ViewBag.SelectedSalesPersonId';
+     window.GenrevCurrency = '@Html.Raw(Session["GenRevCountryCode"] != null ? Session["GenRevCountryCode"].ToString() : "$")';
 
     if (selectedSalesPersonId) {
         loadCustomers(selectedSalesPersonId);

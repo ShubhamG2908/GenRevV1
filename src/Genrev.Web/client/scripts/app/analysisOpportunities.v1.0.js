@@ -141,7 +141,7 @@ define(function () {
                 var salesForecast = this.point.forecast || 0;
                 var totalSalesForecast = this.series.data.reduce((sum, point) => sum + point.forecast, 0);
                 var contributionPercent = totalSalesForecast ? (salesForecast / totalSalesForecast * 100) : 0;                
-
+                debugger
                 var s = '<b>' + this.point.name + '</b><br />';
                 s += '<hr>';
                 s += 'Dollars: ' + Genrev.FormatMoney(this.point.y) + '<br />';

@@ -63,6 +63,11 @@ namespace Genrev.Web.App.CRM
                 ViewBag.SelectedCustomerId = selectedCustomerId;
                 crmDetails.Strategy = _crmService.GetStrategyByCustomerId(crmDetails.CustomerId);
                 crmDetails.UploadedFiles = _crmService.GetFilesByCRMId(crmDetails.Id);
+
+                var areaOfResponsibilities = _customerDataservice.GetAreaOfResponsibilities(AppService.Current.Account.PrimaryCompany.ID);
+                ViewBag.AreaOfResponsibilities = areaOfResponsibilities;
+                var selectedAORId = areaOfResponsibilities.Any() ? crmDetails.AreaOfResponsibilityId : 0;
+                ViewBag.SelectedAreaOfResponsibilities = selectedAORId;
                 return View(crmDetails);
             }
 
@@ -73,6 +78,10 @@ namespace Genrev.Web.App.CRM
         {
             var salesPersons = CommonListItems.DataService.GetPersonnelCommonList();
             ViewBag.SalesPersons = salesPersons;
+            var areaOfResponsibilities = _customerDataservice.GetAreaOfResponsibilities(AppService.Current.Account.PrimaryCompany.ID);
+            ViewBag.AreaOfResponsibilities = areaOfResponsibilities;
+            var selectedAORId = areaOfResponsibilities.Any() ? areaOfResponsibilities.First().ID : 0;
+            ViewBag.SelectedAreaOfResponsibilities = selectedAORId;
 
             bool IsAdmin = User.IsInRole("sysadmin");
             ViewBag.IsAdmin = IsAdmin;
@@ -87,9 +96,9 @@ namespace Genrev.Web.App.CRM
             List<CustomerDDLVM> customers = _customerDataservice.GetCustomerListItemsByPersonnelId(selectedSalesPersonId);
             ViewBag.Customers = new List<CustomerDDLVM>();
             var selectedCustomerId = customers.Any() ? customers.First().ID : 0;
-            ViewBag.SelectedCustomerId = selectedCustomerId;
+            ViewBag.SelectedCustomerId = selectedAORId;
 
-            return View(new CRMViewModel { SalesPersonId = selectedSalesPersonId, CustomerId = selectedCustomerId });
+            return View(new CRMViewModel { SalesPersonId = selectedSalesPersonId, CustomerId = selectedAORId });
         }
 
         public JsonResult GetCustomersBySalesPerson(int salesPersonId)

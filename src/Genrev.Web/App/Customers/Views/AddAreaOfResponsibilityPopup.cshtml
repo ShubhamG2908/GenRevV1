@@ -1,0 +1,20 @@
+﻿@model Genrev.Web.App.Customers.Models.EditAreaOfResponsibilityVM
+
+<h3>Add Area of Responsibility</h3>
+
+@Html.HiddenFor(m => m.ID)
+
+@Html.DevExpress().TextBox(
+    s =>
+    {
+        s.Name = "AreaOfResponsibilityName";
+        s.Properties.Caption = "Name";
+        s.Properties.CaptionCellStyle.Width = 100;
+        s.Properties.CaptionStyle.CssClass = "label-required";
+    }
+).Bind(Model.Name).GetHtml()
+
+<div>
+    <button onclick="saveAreaOfResponsibility()">Save</button>
+    <button onclick="cancel()">Cancel</button>
+</div>

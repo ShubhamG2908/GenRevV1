@@ -18,10 +18,12 @@ namespace Genrev.Web.App.Home
             _crmService = new CRMService(connectionString);
         }
         public ActionResult Index() {
+
             return RedirectToAction("Dashboard");
         }
 
-        public ActionResult Dashboard() {
+        public ActionResult Dashboard()
+        {
             var results = _crmService.GetCRMRecords();
             return View(results);
             //return GetView("Dashboard");

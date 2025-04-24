@@ -54,7 +54,7 @@
         col.Caption = "Email";
         col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
 
-        col = s.Columns.Add("AreaOfResponsibility");
+        col = s.Columns.Add("AreaOfResponsibilityName");
         col.Caption = "Area Of Responsibility";
         col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
 
@@ -76,7 +76,7 @@
             c.SetDataItemTemplateContent(tc =>
             {
                 var crmId = DataBinder.Eval(tc.DataItem, "Id"); // Ensure this matches your DTO property
-                ViewContext.Writer.Write(string.Format("<a href='/CRM/EditClient?Id={0}' class='btn btn-primary'>Edit</a>", crmId));
+                ViewContext.Writer.Write(string.Format("<a href='/CRM/EditClient?Id={0}' class='btn btn-primary'>View/Edit</a>", crmId));
             });
         });
     }

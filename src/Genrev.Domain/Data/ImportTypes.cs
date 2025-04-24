@@ -10,6 +10,7 @@
         IndustryTypes,
         Customers,
         MonthlyData,
-        ForecastData
+        ForecastData,
+        AreaOfResponsibility
     }
 }

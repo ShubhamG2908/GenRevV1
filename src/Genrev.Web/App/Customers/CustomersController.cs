@@ -9,6 +9,8 @@ using Dymeng.Web.Mvc.DevExpress;
 using Genrev.Domain;
 using Genrev.Web.App.Customers;
 
+using static DotNetOpenAuth.OpenId.Extensions.AttributeExchange.WellKnownAttributes;
+
 namespace Genrev.Web.App.Customers
 {
 
@@ -72,6 +74,20 @@ namespace Genrev.Web.App.Customers
             model.Name = type.Name;
 
             return PartialView("EditTypePopup", model);
+        }
+
+        [HttpGet]
+        public ActionResult EditAreaOfResponsibilityPopup(int id)
+        {
+            var model = new Models.EditAreaOfResponsibilityVM();
+            var obj = service.DetailAreaOfResponsibilities(id);
+
+            service.GetAreaOfResponsibilities(AppService.Current.Account.PrimaryCompany.ID);
+
+            model.ID = id;
+            model.Name = obj.Name;
+
+            return PartialView("EditAreaOfResponsibilityPopup", model);
         }
 
         [HttpGet]
@@ -148,10 +164,12 @@ namespace Genrev.Web.App.Customers
             var types = dataContext.CustomerTypes.Where(x => x.CompanyID == accountID).ToList();
             var industries = dataContext.Industries.Where(x => x.CompanyID == accountID).ToList();
             var accountTypes = dataContext.AccountTypes.Where(x => x.CompanyID == accountID).ToList();
+            var areaOfResponsibilities = service.GetAreaOfResponsibilities(accountID);
 
             model.Industries = new List<Models.IndustryListItemVM>();
             model.Types = new List<Models.TypesListItemVM>();
             model.AccountTypes = new List<Models.AccountTypeListItemVM>();
+            model.AreaOfResponsibilities = new List<Models.AreaOfResponsibilityListItemVM>();
 
             foreach (var industry in industries)
             {
@@ -181,6 +199,14 @@ namespace Genrev.Web.App.Customers
                 });
             }
 
+            foreach (var areaOfResponsibility in areaOfResponsibilities)
+            {
+                model.AreaOfResponsibilities.Add(new Models.AreaOfResponsibilityListItemVM()
+                {
+                    ID = areaOfResponsibility.ID,
+                    Name = areaOfResponsibility.Name
+                });
+            }
             return PartialView("Classifications", model);
         }
 
@@ -288,6 +314,15 @@ namespace Genrev.Web.App.Customers
 
             return PartialView("IndustriesGrid", model);
         }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult AreaOfResponsibilitiesCallback()
+        {
+
+            var account = AppService.Current.Account;
+            var model = service.GetAreaOfResponsibilities(account.PrimaryCompany.ID);
+            return PartialView("AreaOfResponsibilitiesGrid", model);
+        }        
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult CustomerTypesCallback()
@@ -484,7 +519,7 @@ namespace Genrev.Web.App.Customers
 
             t.Name = name;
             t.CallsPerMonthGoal = callsPerMonth;
-           
+
             dataContext.SaveChanges();
 
             return Content("ok");
@@ -545,6 +580,41 @@ namespace Genrev.Web.App.Customers
 
             return Content("ok");
 
+        }
+
+        [HttpPost]
+        public ActionResult AddAreaOfResponsibility(string name)
+        {
+            var company = AppService.Current.Account.PrimaryCompany;
+            var existing = service.DetailAreaOfResponsibilitiesByName(name);
+
+            if (existing != null)
+            {
+                return Content("This area of responsibility already exists.");
+            }
+
+            service.AddAreaOfResponsibility(name, company.ID);
+            return Content("ok");
+        }
+
+        [HttpPost]
+        public ActionResult EditAreaOfResponsibility(int id, string name)
+        {
+            var area = service.DetailAreaOfResponsibilities(id);
+            if (area == null) return Content("Not found.");
+
+            service.EditAreaOfResponsibility(id, name);
+            return Content("ok");
+        }
+
+        [HttpPost]
+        public ActionResult DeleteAreaOfResponsibility(int id)
+        {
+            var area = service.DetailAreaOfResponsibilities(id);
+            if (area == null) return Content("Not found.");
+
+            service.DeleteAreaOfResponsibility(id);
+            return Content("ok");
         }
 
         [HttpPost]

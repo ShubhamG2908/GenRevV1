@@ -189,7 +189,7 @@ namespace Genrev.Web.App.Analysis
                 gpdSeries.yAxis = 0;
 
                 dynamic gppSeries = new ExpandoObject();
-                gppSeries.name = "Gross Profit Percent";
+                gppSeries.name = "Gross Margin Percent";
                 gppSeries.data = model.Select(x => x.GrossProfitPercent).ToList();
                 gppSeries.yAxis = 1;
 
@@ -247,7 +247,7 @@ namespace Genrev.Web.App.Analysis
                 gpdSeries.yAxis = 0;
 
                 dynamic gppSeries = new ExpandoObject();
-                gppSeries.name = "Gross Profit Percent";
+                gppSeries.name = "Gross Margin Percent";
                 gppSeries.data = model.Select(x => x.GrossProfitPercent).ToList();
                 gppSeries.yAxis = 1;
 
@@ -304,7 +304,7 @@ namespace Genrev.Web.App.Analysis
                 gpdSeries.yAxis = 0;
 
                 dynamic gppSeries = new ExpandoObject();
-                gppSeries.name = "Gross Profit Percent";
+                gppSeries.name = "Gross Margin Percent";
                 gppSeries.data = model.Select(x => x.GrossProfitPercent).ToList();
                 gppSeries.yAxis = 1;
 
@@ -363,7 +363,7 @@ namespace Genrev.Web.App.Analysis
                 gpdSeries.yAxis = 0;
 
                 dynamic gppSeries = new ExpandoObject();
-                gppSeries.name = "Gross Profit Percent";
+                gppSeries.name = "Gross Margin Percent";
                 gppSeries.data = model.Select(x => x.GrossProfitPercent).ToList();
                 gppSeries.yAxis = 1;
 
@@ -428,7 +428,7 @@ namespace Genrev.Web.App.Analysis
                 gpdSeries.yAxis = 0;
 
                 dynamic gppSeries = new ExpandoObject();
-                gppSeries.name = "Gross Profit Percent";
+                gppSeries.name = "Gross Margin Percent";
                 gppSeries.data = model.Select(x => x.GrossProfitPercent).ToList();
                 gppSeries.yAxis = 1;
 
@@ -487,7 +487,7 @@ namespace Genrev.Web.App.Analysis
                 gpdSeries.yAxis = 0;
 
                 dynamic gppSeries = new ExpandoObject();
-                gppSeries.name = "Gross Profit Percent";
+                gppSeries.name = "Gross Margin Percent";
                 gppSeries.data = model.Select(x => x.GrossProfitPercent).ToList();
                 gppSeries.yAxis = 1;
 
@@ -618,12 +618,12 @@ namespace Genrev.Web.App.Analysis
                 gpdfSeries.yAxis = 0;
 
                 dynamic gppSeries = new ExpandoObject();
-                gppSeries.name = "Actual GPP (%)";
+                gppSeries.name = "Actual GMP (%)";
                 gppSeries.data = model.Select(x => x.GrossProfitPercent).ToList();
                 gppSeries.yAxis = 1;
 
                 dynamic gppfSeries = new ExpandoObject();
-                gppfSeries.name = "Forecasted GPP (%)";
+                gppfSeries.name = "Forecasted GMP (%)";
                 gppfSeries.data = model.Select(x => x.GrossProfitPercentForecast).ToList();
                 gppfSeries.yAxis = 1;
 
@@ -709,12 +709,12 @@ namespace Genrev.Web.App.Analysis
                 gpdfSeries.yAxis = 0;
 
                 dynamic gppSeries = new ExpandoObject();
-                gppSeries.name = "Actual GPP (%)";
+                gppSeries.name = "Actual GMP (%)";
                 gppSeries.data = model.Select(x => x.GrossProfitPercent).ToList();
                 gppSeries.yAxis = 1;
 
                 dynamic gppfSeries = new ExpandoObject();
-                gppfSeries.name = "Forecasted GPP (%)";
+                gppfSeries.name = "Forecasted GMP (%)";
                 gppfSeries.data = model.Select(x => x.GrossProfitPercentForecast).ToList();
                 gppfSeries.yAxis = 1;
 
@@ -799,12 +799,12 @@ namespace Genrev.Web.App.Analysis
                 gpdfSeries.yAxis = 0;
 
                 dynamic gppSeries = new ExpandoObject();
-                gppSeries.name = "Actual GPP (%)";
+                gppSeries.name = "Actual GMP (%)";
                 gppSeries.data = model.Select(x => x.GrossProfitPercent).ToList();
                 gppSeries.yAxis = 1;
 
                 dynamic gppfSeries = new ExpandoObject();
-                gppfSeries.name = "Forecasted GPP (%)";
+                gppfSeries.name = "Forecasted GMP (%)";
                 gppfSeries.data = model.Select(x => x.GrossProfitPercentForecast).ToList();
                 gppfSeries.yAxis = 1;
 
@@ -891,12 +891,12 @@ namespace Genrev.Web.App.Analysis
                 gpdfSeries.yAxis = 0;
 
                 dynamic gppSeries = new ExpandoObject();
-                gppSeries.name = "Actual GPP (%)";
+                gppSeries.name = "Actual GMP (%)";
                 gppSeries.data = model.Select(x => x.GrossProfitPercent).ToList();
                 gppSeries.yAxis = 1;
 
                 dynamic gppfSeries = new ExpandoObject();
-                gppfSeries.name = "Forecasted GPP (%)";
+                gppfSeries.name = "Forecasted GMP (%)";
                 gppfSeries.data = model.Select(x => x.GrossProfitPercentForecast).ToList();
                 gppfSeries.yAxis = 1;
 
@@ -983,12 +983,12 @@ namespace Genrev.Web.App.Analysis
                 gpdfSeries.yAxis = 0;
 
                 dynamic gppSeries = new ExpandoObject();
-                gppSeries.name = "Actual GPP (%)";
+                gppSeries.name = "Actual GMP (%)";
                 gppSeries.data = model.Select(x => x.GrossProfitPercent).ToList();
                 gppSeries.yAxis = 1;
 
                 dynamic gppfSeries = new ExpandoObject();
-                gppfSeries.name = "Forecasted GPP (%)";
+                gppfSeries.name = "Forecasted GMP (%)";
                 gppfSeries.data = model.Select(x => x.GrossProfitPercentForecast).ToList();
                 gppfSeries.yAxis = 1;
 
@@ -1076,12 +1076,12 @@ namespace Genrev.Web.App.Analysis
                 gpdfSeries.yAxis = 0;
 
                 dynamic gppSeries = new ExpandoObject();
-                gppSeries.name = "Actual GPP (%)";
+                gppSeries.name = "Actual GMP (%)";
                 gppSeries.data = model.Select(x => x.GrossProfitPercent).ToList();
                 gppSeries.yAxis = 1;
 
                 dynamic gppfSeries = new ExpandoObject();
-                gppfSeries.name = "Forecasted GPP (%)";
+                gppfSeries.name = "Forecasted GMP (%)";
                 gppfSeries.data = model.Select(x => x.GrossProfitPercentForecast).ToList();
                 gppfSeries.yAxis = 1;
 

@@ -10,12 +10,14 @@ namespace Genrev.Web.App.Navigation.Services
     public class NavBarService
     {
 
-        public static NavBarMV GetNavBarVM() {
+        public static NavBarMV GetNavBarVM()
+        {
 
 
             string username = HttpContext.Current.User.Identity.Name;
             var nav = setFromCache(username);
-            if (nav != null) {
+            if (nav != null)
+            {
                 return nav;
             }
 
@@ -33,7 +35,7 @@ namespace Genrev.Web.App.Navigation.Services
                 ID = 0,
                 Text = "Dashboard",
                 Url = "/Home/Dashboard",
-                Title = "Home - Dashboard"                
+                Title = "Home - Dashboard"
             });
             var groupAnalysis = new NavBarGroup();
             groupAnalysis.ID = 1;
@@ -176,32 +178,41 @@ namespace Genrev.Web.App.Navigation.Services
                     Title = "Personnel Management"
                 });
             }
-            
-            groupSubscription.Items.Add(new NavBarGroupItem()
+
+            var groupCRM = new NavBarGroup();
+            groupCRM.ID = 0;
+            groupCRM.Text = "CRM";
+            groupCRM.Expanded = false;
+            groupCRM.Items = new List<NavBarGroupItem>();
+
+            groupCRM.Items.Add(new NavBarGroupItem()
             {
-                ID = 3,
+                ID = 4,
                 Text = "CRM",
                 Url = "/CRM",
                 Title = "Customer Relationship Management"
             });
+
             nav.Groups = new List<NavBarGroup>();
             nav.Groups.Add(groupHome);
             nav.Groups.Add(groupAnalysis);
             nav.Groups.Add(groupData);
-
             nav.Groups.Add(groupSubscription);
+            nav.Groups.Add(groupCRM);
 
             setNavBarCache(nav, username);
             return nav;
 
         }
 
-        private static NavBarMV setFromCache(string username) {
+        private static NavBarMV setFromCache(string username)
+        {
             string key = "WebApp_NavBar_UserName_" + username;
             return MemoryCache.Default.Get(key) as NavBarMV;
         }
 
-        private static void setNavBarCache(NavBarMV navbar, string username) {
+        private static void setNavBarCache(NavBarMV navbar, string username)
+        {
             string key = "WebApp_NavBar_UserName_" + username;
             MemoryCache.Default.Set(
                 key,
@@ -210,7 +221,8 @@ namespace Genrev.Web.App.Navigation.Services
                 );
         }
 
-        public static void InvalidateNavBarCache(string username) {
+        public static void InvalidateNavBarCache(string username)
+        {
             string key = "WebApp_NavBar_UserName_" + username;
             MemoryCache.Default.Remove(key);
         }

@@ -359,7 +359,7 @@ define(function () {
                                         title: { text: 'Dollars' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     },
@@ -474,7 +474,7 @@ define(function () {
                                         title: { text: 'Gross Profit Dollars (GPD)' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     }, {
@@ -578,7 +578,7 @@ define(function () {
                                         title: { text: 'Dollars' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     },
@@ -693,7 +693,7 @@ define(function () {
                                         title: { text: 'Gross Profit Dollars (GPD)' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     }, {
@@ -798,7 +798,7 @@ define(function () {
                                         title: { text: 'Dollars' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     },
@@ -914,7 +914,7 @@ define(function () {
                                         title: { text: 'Gross Profit Dollars (GPD)' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     }, {
@@ -1018,7 +1018,7 @@ define(function () {
                                         title: { text: 'Dollars' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     },
@@ -1134,7 +1134,7 @@ define(function () {
                                         title: { text: 'Gross Profit Dollars (GPD)' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     }, {
@@ -1239,7 +1239,7 @@ define(function () {
                                         title: { text: 'Dollars' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     },
@@ -1350,7 +1350,7 @@ define(function () {
                                         title: { text: 'Gross Profit Dollars (GPD)' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     }, {
@@ -1455,7 +1455,7 @@ define(function () {
                                         title: { text: 'Dollars' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     },
@@ -1566,7 +1566,7 @@ define(function () {
                                         title: { text: 'Gross Profit Dollars (GPD)' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     }, {

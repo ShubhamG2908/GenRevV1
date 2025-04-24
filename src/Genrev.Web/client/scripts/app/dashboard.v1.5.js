@@ -282,8 +282,6 @@ define(['devex', 'core'], function () {
 
                             dashboard.currentYear.projections.selectors.init();
 
-                            dashboard.currentYear.topBottom.load();
-
                         },
                         error: function (res) {
                             dashboard.currentYear.projections.showError(res);
@@ -396,11 +394,11 @@ define(['devex', 'core'], function () {
                                 },
                                 yAxis: {
                                     title: {
-                                        text: "Gross Dollars"
+                                        text: "Gross Amount"
                                     },
                                     labels: {
                                         formatter: function () {
-                                            return "$" + this.axis.defaultLabelFormatter.call(this);
+                                            return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                         }
                                     }
                                 },
@@ -498,7 +496,7 @@ define(['devex', 'core'], function () {
                                     },
                                     labels: {
                                         formatter: function () {
-                                            return "$" + this.axis.defaultLabelFormatter.call(this);
+                                            return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                         }
                                     }
                                 },
@@ -595,86 +593,7 @@ define(['devex', 'core'], function () {
                 }   // end dashboard.currentYear.grossProfitPercent.load
 
             },   // end dashboard.currentYear.grossProfitPercent
-
-            topBottom: {
-
-                load: function () {
-
-                    $.ajax({
-                        type: 'GET',
-                        url: config.currentYear.topBottom.dataUrl,
-                        data: { currentDate: new Date().toISOString() },
-                        success: function (res) {
-
-                            var tb = dashboard.currentYear.topBottom;
-                            var data = JSON.parse(res);
-
-                            tb.loadTopCustomers(data.topCustomers);
-                            tb.loadTopSalespersons(data.topSalespersons);
-                            tb.loadBottomCustomers(data.bottomCustomers);
-                            tb.loadBottomSalespersons(data.bottomSalespersons);
-                        }
-                    });
-
-                },   // end dashboard.currentYear.topBottom.load
-
-                loadTopCustomers: function (data) {
-
-                    $('#' + config.currentYear.topBottom.topCustomerHeaderID).show();
-                    var parent = $('#' + config.currentYear.topBottom.topCustomerListID);
-                    parent.html("");
-
-                    for (var i = 0; i < data.length; i++) {
-                        var d = data[i];
-                        var e = '<li class="tb-list-item" data-dym-id="' + d.EntityID + '"><span class="tb-list-name">' + d.EntityName + '</span><span class="tb-list-value number-good">' + Genrev.FormatMoney(d.EntityValue) + '</span></li>';
-                        parent.append(e);
-                    }
-
-                },
-
-                loadBottomCustomers: function (data) {
-
-                    $('#' + config.currentYear.topBottom.bottomCustomerHeaderID).show();
-                    var parent = $('#' + config.currentYear.topBottom.bottomCustomerListID);
-                    parent.html("");
-
-                    for (var i = 0; i < data.length; i++) {
-                        var d = data[i];
-                        var e = '<li class="tb-list-item" data-dym-id="' + d.EntityID + '"><span class="tb-list-name">' + d.EntityName + '</span><span class="tb-list-value number-bad">' + Genrev.FormatMoney(d.EntityValue) + '</span></li>';
-                        parent.append(e);
-                    }
-                    
-                },
-
-                loadTopSalespersons: function (data) {
-
-                    $('#' + config.currentYear.topBottom.topSPHeaderID).show();
-                    var parent = $('#' + config.currentYear.topBottom.topSPListID);
-                    parent.html("");
-
-                    for (var i = 0; i < data.length; i++) {
-                        var d = data[i];
-                        var e = '<li class="tb-list-item" data-dym-id="' + d.EntityID + '"><span class="tb-list-name">' + d.EntityName + '</span><span class="tb-list-value number-good">' + Genrev.FormatMoney(d.EntityValue) + '</span></li>';
-                        parent.append(e);
-                    }
-
-                },
-
-                loadBottomSalespersons: function (data) {
-
-                    $('#' + config.currentYear.topBottom.bottomSPHeaderID).show();
-                    var parent = $('#' + config.currentYear.topBottom.bottomSPListID);
-                    parent.html("");
-
-                    for (var i = 0; i < data.length; i++) {
-                        var d = data[i];
-                        var e = '<li class="tb-list-item" data-dym-id="' + d.EntityID + '"><span class="tb-list-name">' + d.EntityName + '</span><span class="tb-list-value number-bad">' + Genrev.FormatMoney(d.EntityValue) + '</span></li>';
-                        parent.append(e);
-                    }
-
-                }
-
-            }   // end dashboard.currentYear.topBottom
+            
 
         },  // end dashboard.currentYear
 

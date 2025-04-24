@@ -357,10 +357,10 @@ define(function () {
                                         categories: data.categories
                                     },
                                     yAxis: {
-                                        title: { text: 'Gross Dollars' },
+                                        title: { text: 'Gross Amount' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     },
@@ -428,7 +428,7 @@ define(function () {
                                         title: { text: 'Gross Profit Dollars' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     }, {
@@ -526,10 +526,10 @@ define(function () {
                                         categories: data.categories
                                     },
                                     yAxis: {
-                                        title: { text: 'Gross Dollars' },
+                                        title: { text: 'Gross Amount' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     },
@@ -597,7 +597,7 @@ define(function () {
                                         title: { text: 'Gross Profit Dollars' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     }, {
@@ -696,10 +696,10 @@ define(function () {
                                         categories: data.categories
                                     },
                                     yAxis: {
-                                        title: { text: 'Gross Dollars' },
+                                        title: { text: 'Gross Amount' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     },
@@ -768,7 +768,7 @@ define(function () {
                                         title: { text: 'Gross Profit Dollars' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     }, {
@@ -866,10 +866,10 @@ define(function () {
                                         categories: data.categories
                                     },
                                     yAxis: {
-                                        title: { text: 'Gross Dollars' },
+                                        title: { text: 'Gross Amount' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     },
@@ -938,7 +938,7 @@ define(function () {
                                         title: { text: 'Gross Profit Dollars' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     }, {
@@ -1036,10 +1036,10 @@ define(function () {
                                         categories: data.categories
                                     },
                                     yAxis: {
-                                        title: { text: 'Gross Dollars' },
+                                        title: { text: 'Gross Amount' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     },
@@ -1108,7 +1108,7 @@ define(function () {
                                         title: { text: 'Gross Profit Dollars' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     }, {
@@ -1206,10 +1206,10 @@ define(function () {
                                         categories: data.categories
                                     },
                                     yAxis: {
-                                        title: { text: 'Gross Dollars' },
+                                        title: { text: 'Gross Amount' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     },
@@ -1278,7 +1278,7 @@ define(function () {
                                         title: { text: 'Gross Profit Dollars' },
                                         labels: {
                                             formatter: function () {
-                                                return "$" + this.axis.defaultLabelFormatter.call(this);
+                                                return window.GenrevCurrency  + this.axis.defaultLabelFormatter.call(this);
                                             }
                                         }
                                     }, {

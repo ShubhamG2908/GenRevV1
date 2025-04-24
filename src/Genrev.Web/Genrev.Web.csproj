@@ -557,6 +557,8 @@
     <Content Include="App\Customers\Views\AreaOfResponsibility.cshtml" />
     <Content Include="App\Customers\Views\AddAreaOfResponsibilityPopup.cshtml" />
     <Content Include="App\Customers\Views\AreaOfResponsibilitiesGrid.cshtml" />
+    <Content Include="App\Home\Views\_SalesBySalespersonGridPartial.cshtml" />
+    <Content Include="App\Home\Views\_SalesByCustomerGridPartial.cshtml" />
     <None Include="client\scripts\_references.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
@@ -690,6 +692,7 @@
     <Compile Include="App\Home\Charts\CurrentYearSalesVsForecast.cs" />
     <Compile Include="App\Home\Data\CurrentYearProjections.cs" />
     <Compile Include="App\Home\Data\TopBottomMatrix.cs" />
+    <Compile Include="App\Home\Data\TopBottomSales.cs" />
     <Compile Include="App\Home\HomeController.cs" />
     <Compile Include="App\Internal\InternalController.cs" />
     <Compile Include="App\MemberBar\MemberBarController.cs" />

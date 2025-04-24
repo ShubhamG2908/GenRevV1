@@ -144,7 +144,7 @@ define(function () {
                 debugger
                 var s = '<b>' + this.point.name + '</b><br />';
                 s += '<hr>';
-                s += 'Dollars: ' + Genrev.FormatMoney(this.point.y) + '<br />';
+                s += 'Amount: ' + Genrev.FormatMoney(this.point.y) + '<br />';
                 s += 'Contribution Percent: ' + contributionPercent.toFixed(1) + '%<br />';
                 s += 'Market Share: ' + this.point.z.toFixed(1) + '%';
 

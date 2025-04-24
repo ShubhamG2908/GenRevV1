@@ -95,11 +95,8 @@ define(function () {
 
         },  // end genrev.viewas
 
-        formatMoney: function (value, places) {
-            debugger
-            // assume places is 0 for now
-            var n = Number(value);
-            console.log(window.GenrevCurrency);
+        formatMoney: function (value, places) {                        
+            var n = Number(value);            
             var symbol = window.GenrevCurrency  ? window.GenrevCurrency : "$";
             return symbol + numberWithCommas(roundAwayFromZero(n));
 

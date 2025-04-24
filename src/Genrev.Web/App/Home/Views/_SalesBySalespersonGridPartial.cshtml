@@ -1,0 +1,33 @@
+@Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "SalesBySalespersonGrid";
+    settings.KeyFieldName = "SalespersonID";
+    settings.CallbackRouteValues = new { Controller = "Home", Action = "SalesBySalespersonGridCallback" };
+    settings.Width = Unit.Percentage(100);
+    settings.SettingsPager.Visible = true;
+    settings.SettingsPager.Position = PagerPosition.Bottom;
+    settings.SettingsPager.FirstPageButton.Visible = true;
+    settings.SettingsPager.LastPageButton.Visible = true;
+    settings.SettingsPager.PageSizeItemSettings.Visible = true;
+    settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "30", "50", "100" };
+
+    settings.SettingsBehavior.AllowSort = true;
+
+    settings.Styles.Header.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "SalespersonName";
+        c.Caption = "Salesperson";
+        c.Width = Unit.Percentage(50);
+    });
+
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "SalesAmount";
+        c.Caption = "Sales Amount";
+        c.PropertiesEdit.DisplayFormatString = "C0";
+        c.Width = Unit.Percentage(50);
+    });
+
+}).Bind(Model).GetHtml()

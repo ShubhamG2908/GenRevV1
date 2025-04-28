@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -172,21 +173,33 @@ namespace Genrev.Web.App.CRM
                     foreach (var file in uploadedFiles)
                     {
                         if (file != null && file.ContentLength > 0)
-                        {
-                            var fileName = Path.GetFileName(file.FileName);
+                        {                           
+                            var originalFileName = Path.GetFileName(file.FileName);
+                            var sanitizedFileName = Regex.Replace(originalFileName, @"[^a-zA-Z0-9_.]+", "_");
+
                             string path = AppService.Current.Settings.CRMFileUploadDirectory;
                             string absolutePath = System.Web.Hosting.HostingEnvironment.MapPath("~/" + path);
-                            string fullPath = path + "\\" + fileName;
-                            string fullPathwithFile = path + "\\" + fileName;
-                            fullPath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~"), fullPath);
+
                             if (!Directory.Exists(absolutePath))
                             {
                                 Directory.CreateDirectory(absolutePath);
                             }
-                            file.SaveAs(fullPath);
+                            
+                            string fileNameWithoutExt = Path.GetFileNameWithoutExtension(sanitizedFileName);
+                            string extension = Path.GetExtension(sanitizedFileName);
+                            string fullPath = Path.Combine(absolutePath, sanitizedFileName);
+                            
+                            int count = 1;
+                            while (System.IO.File.Exists(fullPath))
+                            {
+                                sanitizedFileName = $"{fileNameWithoutExt}({count}){extension}";
+                                fullPath = Path.Combine(absolutePath, sanitizedFileName);
+                                count++;
+                            }
 
-                            // Save file metadata to the database
-                            _crmService.SaveFileMetadata(crmId, fileName, fullPathwithFile);
+                            file.SaveAs(fullPath);
+                            
+                            _crmService.SaveFileMetadata(crmId, sanitizedFileName, Path.Combine(path));
                         }
                     }
                 }
@@ -237,15 +250,35 @@ namespace Genrev.Web.App.CRM
                     foreach (var file in uploadedFiles)
                     {
                         if (file != null && file.ContentLength > 0)
-                        {
-                            var fileName = Path.GetFileName(file.FileName);
+                        {                           
+                            var originalFileName = Path.GetFileName(file.FileName);
+                            var sanitizedFileName = Regex.Replace(originalFileName, @"[^a-zA-Z0-9_.]+", "_");
+
                             string path = AppService.Current.Settings.CRMFileUploadDirectory;
-                            string fullPath = path + "\\" + fileName;
-                            fullPath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~"), fullPath);
+                            string absolutePath = System.Web.Hosting.HostingEnvironment.MapPath("~/" + path);
+
+                            if (!Directory.Exists(absolutePath))
+                            {
+                                Directory.CreateDirectory(absolutePath);
+                            }
+
+                            // Split filename and extension
+                            string fileNameWithoutExt = Path.GetFileNameWithoutExtension(sanitizedFileName);
+                            string extension = Path.GetExtension(sanitizedFileName);
+                            string fullPath = Path.Combine(absolutePath, sanitizedFileName);
+
+                            // Append number if file exists
+                            int count = 1;
+                            while (System.IO.File.Exists(fullPath))
+                            {
+                                sanitizedFileName  = $"{fileNameWithoutExt}({count}){extension}";
+                                fullPath = Path.Combine(absolutePath, sanitizedFileName);
+                                count++;
+                            }
                             file.SaveAs(fullPath);
 
-                            // Save file metadata to the database
-                            _crmService.SaveFileMetadata(model.Id, fileName, path);
+                            // Save sanitized file name and path to the database
+                            _crmService.SaveFileMetadata(model.Id, sanitizedFileName, Path.Combine(path));
                         }
                     }
                 }

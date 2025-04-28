@@ -303,21 +303,27 @@
                         <tbody>
                             @foreach (var file in Model.UploadedFiles)
                             {
-                                string absoluteFilePath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~"), file.FilePath, file.FileName);
+                                string absoluteFilePath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~"), file.FilePath);
                                 <tr class="tr">
                                     <td class="td">
                                         @{
-                                            string relativeFilePath = Url.Content("~/" + file.FilePath + "/" + file.FileName);
+                                            string relativeFilePath = Url.Content("~/" + file.FilePath + "/" + file.FileName);                                            
                                             if (!System.IO.File.Exists(Server.MapPath(relativeFilePath)))
                                             {
-                                                // If the file does not exist, try to find the file with a different name pattern
-                                                var directory = System.IO.Path.GetDirectoryName(Server.MapPath(relativeFilePath));
-                                                var fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(file.FileName);
-                                                var extension = System.IO.Path.GetExtension(file.FileName);
-                                                var files = System.IO.Directory.GetFiles(directory, fileNameWithoutExtension + "(*)" + extension);
-                                                if (files.Length > 0)
+                                                try
+                                                {                                                    
+                                                    var directory = System.IO.Path.GetDirectoryName(Server.MapPath("/"));
+                                                    var fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(file.FileName);
+                                                    var extension = System.IO.Path.GetExtension(file.FileName);
+                                                    var fileName = fileNameWithoutExtension + "(*)" + extension;
+                                                    var files = System.IO.Directory.GetFiles(directory + relativeFilePath + "/" + fileName);
+                                                    if (files.Length > 0)
+                                                    {
+                                                        relativeFilePath = Url.Content("~/" + file.FilePath + "/" + System.IO.Path.GetFileName(files[0]));
+                                                    }
+                                                }
+                                                catch (Exception)
                                                 {
-                                                    relativeFilePath = Url.Content("~/" + file.FilePath + "/" + System.IO.Path.GetFileName(files[0]));
                                                 }
                                             }
                                         }

@@ -1,84 +1,106 @@
 ﻿@model Genrev.Data.DTOs.CRMViewModel
 
 @Html.DevExpress().GridView(
-    s =>
-    {
+  s =>
+  {
+      s.Name = "CRMGrid";
+      s.KeyFieldName = "ID";
+      s.CallbackRouteValues = new { Controller = "CRM", Action = "CRMGridCallback" };
+      s.SettingsBehavior.AllowFocusedRow = true;
+      s.SettingsBehavior.AllowSelectByRowClick = true;
+      s.SettingsBehavior.AllowSelectSingleRowOnly = true;
+      s.SettingsLoadingPanel.Mode = GridViewLoadingPanelMode.Disabled;
+      s.Settings.VerticalScrollBarMode = ScrollBarMode.Hidden; // Disable scrollbar to allow full height
+      s.SettingsPager.Visible = true;
+      s.SettingsPager.Position = PagerPosition.Bottom;
+      s.SettingsPager.FirstPageButton.Visible = true;
+      s.SettingsPager.LastPageButton.Visible = true;
+      s.SettingsPager.PageSizeItemSettings.Visible = true;
+      s.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "30", "50", "100" };
+      s.Settings.ShowFilterRow = true;
+      s.Settings.ShowHeaderFilterButton = true;
 
-        s.Name = "CRMGrid";
-        s.KeyFieldName = "ID";
-        s.CallbackRouteValues = new { Controller = "CRM", Action = "CRMGridCallback" };
-        s.SettingsBehavior.AllowFocusedRow = true;
-        s.SettingsBehavior.AllowSelectByRowClick = true;
-        s.SettingsBehavior.AllowSelectSingleRowOnly = true;
-        s.SettingsLoadingPanel.Mode = GridViewLoadingPanelMode.Disabled;
-        s.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
-        s.SettingsPager.Visible = true;
-        s.SettingsPager.Position = PagerPosition.Bottom;
-        s.SettingsPager.FirstPageButton.Visible = true;
-        s.SettingsPager.LastPageButton.Visible = true;
-        s.SettingsPager.PageSizeItemSettings.Visible = true;
-        s.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "30", "50", "100" };
-        s.Settings.ShowFilterRow = true;
-        s.Settings.ShowHeaderFilterButton = true;
+      s.Width = Unit.Percentage(100);
+      s.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCells;
 
-        s.Width = Unit.Percentage(100);        
+      s.HtmlDataCellPrepared = (sender, e) =>
+      {
+          e.Cell.Attributes.Add("data-dym-cell", s.Name);
+          e.Cell.Attributes.Add("data-dym-visibleIndex", e.VisibleIndex.ToString());
+      };
 
-        s.HtmlDataCellPrepared = (sender, e) =>
-        {
-            e.Cell.Attributes.Add("data-dym-cell", s.Name);
-            e.Cell.Attributes.Add("data-dym-visibleIndex", e.VisibleIndex.ToString());
-        };
+      s.ClientSideEvents.EndCallback = "adjustGridHeight";
 
-        var col = s.Columns.Add("CustomerName");
-        col.Caption = "Customer";
-        col.FieldName = "CustomerName";
-        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      var col = s.Columns.Add("CustomerName");
+      col.Caption = "Customer";
+      col.FieldName = "CustomerName";
+      col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
+      col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
 
-        col = s.Columns.Add("SalesPersonName");
-        col.Caption = "Salesperson";
-        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col = s.Columns.Add("SalesPersonName");
+      col.Caption = "Salesperson";
+      col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
+      col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
 
-        col = s.Columns.Add("Name");
-        col.Caption = "Contact Name";
-        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col = s.Columns.Add("Name");
+      col.Caption = "Contact Name";
+      col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
+      col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
 
-        col = s.Columns.Add("Title");
-        col.Caption = "Contact Title";
-        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col = s.Columns.Add("Title");
+      col.Caption = "Contact Title";
+      col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
+      col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
 
-        col = s.Columns.Add("Phone");
-        col.Caption = "Phone";
-        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col = s.Columns.Add("Phone");
+      col.Caption = "Phone";
+      col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
+      col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
 
-        col = s.Columns.Add("Email");
-        col.Caption = "Email";
-        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col = s.Columns.Add("Email");
+      col.Caption = "Email";
+      col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
+      col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
 
-        col = s.Columns.Add("AreaOfResponsibilityName");
-        col.Caption = "Area Of Responsibility";
-        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col = s.Columns.Add("AreaOfResponsibilityName");
+      col.Caption = "Area Of Responsibility";
+      col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
+      col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
 
-        col = s.Columns.Add("Concern");
-        col.Caption = "Concern";
-        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col = s.Columns.Add("Concern");
+      col.Caption = "Concern";
+      col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
+      col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
 
-        col = s.Columns.Add("LinkedInUrl");
-        col.Caption = "Contact LI URL";
-        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col = s.Columns.Add("LinkedInUrl");
+      col.Caption = "Contact LI URL";
+      col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
+      col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
 
-        col = s.Columns.Add("IndustryName");
-        col.Caption = "Industry";
-        col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col = s.Columns.Add("IndustryName");
+      col.Caption = "Industry";
+      col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+      col.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
+      col.Settings.AutoFilterCondition = AutoFilterCondition.Contains;
 
-        s.Columns.Add(c =>
-        {
-            c.Caption = "Action";
-            c.SetDataItemTemplateContent(tc =>
-            {
-                var crmId = DataBinder.Eval(tc.DataItem, "Id"); // Ensure this matches your DTO property
-                ViewContext.Writer.Write(string.Format("<a href='/CRM/EditClient?Id={0}' class='btn btn-primary'>View/Edit</a>", crmId));
-            });
-        });
-    }
+      s.Columns.Add(c =>
+      {
+          c.Caption = "Action";
+          c.SetDataItemTemplateContent(tc =>
+          {
+              var crmId = DataBinder.Eval(tc.DataItem, "Id");
+              ViewContext.Writer.Write(string.Format("<a href='/CRM/EditClient?Id={0}' class='btn btn-primary'>View/Edit</a>", crmId));
+          });
+      });
+  }
 
 ).Bind(Model.CRMListItems).GetHtml()

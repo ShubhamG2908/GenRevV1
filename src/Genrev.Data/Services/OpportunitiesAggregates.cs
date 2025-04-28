@@ -121,6 +121,7 @@ namespace Genrev.Data.Services
                 item.CurrentOpportunity = d.CurrentOpportunity;
                 item.FutureOpportunity = d.FutureOpportunity;
                 item.MarketShare = d.MarketShare;
+                item.Forecast = d.Forecast;
                 results.Add(item);
             }
 

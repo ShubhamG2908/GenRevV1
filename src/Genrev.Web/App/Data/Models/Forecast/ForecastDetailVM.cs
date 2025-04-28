@@ -28,7 +28,7 @@ namespace Genrev.Web.App.Data.Models.Forecast
                 },
                 new  ColumnDefinition {
                     Name = "GPP",
-                    Caption = "GPP",
+                    Caption = "GMP",
                     Fields = new FieldDefinition[] {
                         new FieldDefinition {
                             FieldName = "GPPForecast",

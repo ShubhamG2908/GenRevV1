@@ -322,7 +322,7 @@ namespace Genrev.Web.App.Customers
             var account = AppService.Current.Account;
             var model = service.GetAreaOfResponsibilities(account.PrimaryCompany.ID);
             return PartialView("AreaOfResponsibilitiesGrid", model);
-        }        
+        }
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult CustomerTypesCallback()
@@ -613,7 +613,11 @@ namespace Genrev.Web.App.Customers
             var area = service.DetailAreaOfResponsibilities(id);
             if (area == null) return Content("Not found.");
 
-            service.DeleteAreaOfResponsibility(id);
+            var result = service.DeleteAreaOfResponsibility(id);
+            if (result > 0)
+            {
+                return Content("You cannot delete this record as it is associated with CRM records.");
+            }
             return Content("ok");
         }
 

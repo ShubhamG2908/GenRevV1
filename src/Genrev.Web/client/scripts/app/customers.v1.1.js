@@ -77,7 +77,7 @@ define(function () {
                     phone: null,
                     typeID: null,
                     industryID: null,
-                    accountTypeID: null                    
+                    accountTypeID: null
                 }
             },
 
@@ -635,7 +635,11 @@ define(function () {
                             url: '/Customers/DeleteAreaOfResponsibility',
                             data: { id: id },
                             success: function (res) {
-                                App.Callback(cbSuccess);
+                                if (res == "ok") {
+                                    App.Callback(cbSuccess);
+                                } else {
+                                    App.Errors.Show(res);
+                                }
                             },
                             error: function () {
                                 App.Errors.ShowGeneral();
@@ -693,10 +697,8 @@ define(function () {
                                         });
                                     });
 
-                                    DevEx.Controls.GetByName("CustomerAreaOfResponsibilityEditOkButton").Click.AddHandler(function (s, e) {
-                                        debugger
+                                    DevEx.Controls.GetByName("CustomerAreaOfResponsibilityEditOkButton").Click.AddHandler(function (s, e) {                                        
                                         var value = DevEx.Controls.GetValue("CustomerAreaOfResponsibilityEditName");
-
                                         customers.classifications.areaOfResponsibilities.editDirect(id, value, function () {
                                             App.Popup.Hide('ok');
                                         });
@@ -726,8 +728,6 @@ define(function () {
 
                 addAreaOfResponsibility: function (value) {
 
-                    console.log('adding Area Of Responsibility');
-
                     var valid = true;
 
                     App.Try(function () { value = value.trim(); });
@@ -749,14 +749,11 @@ define(function () {
                             name: value
                         },
                         success: function (res) {
-
                             if (res == "ok") {
-
-                            } else {
-                                // assume response is "ERR: message"
-                                App.Errors.Show(res.substr(4));
+                                App.Callback(cbSuccess);
+                            } else {                                
+                                App.Errors.Show(res);
                             }
-
                         },
                         error: function () {
                             App.Errors.ShowGeneral();
@@ -771,7 +768,7 @@ define(function () {
                         customers.classifications.areaOfResponsibilities.addAreaOfResponsibility(value);
                     }
 
-                }, 
+                },
 
                 initialize: function () {
 
@@ -779,19 +776,16 @@ define(function () {
                     customers.classifications.areaOfResponsibilities.grid = ctg;
 
                     ctg.rowDoubleClick.addHandler(function (s, e) {
-                        debugger
                         customers.classifications.areaOfResponsibilities.edit(e.clickedIndex);
                     });
 
                     var btn = DevEx.Controls.GetByName("AddAreaOfResponsibilityButton");
                     btn.Click.AddHandler(function (s, e) {
                         customers.classifications.areaOfResponsibilities.events.addAreaOfResponsibilityClick();
-                        debugger
                         ctg.refresh();
                     });
 
                 }
-
             },
             industries: {
 

@@ -1,7 +1,11 @@
-﻿using Genrev.Web.App.Customers.Models;
+﻿using Dapper;
+
+using Genrev.Web.App.Customers.Models;
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace Genrev.Web.App.Customers
@@ -158,7 +162,7 @@ namespace Genrev.Web.App.Customers
         public AreaOfResponsibilityListItemVM DetailAreaOfResponsibilitiesByName(string name)
         {
             var area = dataContext.CompanyAreaOfResponsibilities.Where(w => w.Name == name).FirstOrDefault();
-            if (area == null) throw new Exception("Not found.");
+            if (area == null) return null;
             return new AreaOfResponsibilityListItemVM()
             {
                 ID = area.ID,
@@ -188,13 +192,25 @@ namespace Genrev.Web.App.Customers
             dataContext.SaveChanges();
         }
 
-        public void DeleteAreaOfResponsibility(int id)
-        {
+        public int DeleteAreaOfResponsibility(int id)
+        {          
+            string connectionString = ConfigurationManager.ConnectionStrings["GenrevContext"].ConnectionString;
+            using (var connection = new SqlConnection(connectionString))
+            {
+                string query = @"SELECT COUNT(1) FROM CRM WHERE AreaOfResponsibilityID = @AreaOfResponsibilityID";
+
+                int recordCount = connection.ExecuteScalar<int>(query, new { AreaOfResponsibilityID = id });
+                if (recordCount > 0)
+                {
+                    return recordCount;
+                }
+            }
+
             var area = dataContext.CompanyAreaOfResponsibilities.Find(id);
             if (area == null) throw new Exception("Not found.");
             dataContext.CompanyAreaOfResponsibilities.Remove(area);
             dataContext.SaveChanges();
+            return 0;
         }
-
     }
 }

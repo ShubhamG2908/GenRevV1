@@ -24,7 +24,21 @@
 
     <script type="text/javascript" src="~/client/scripts/require.v2.2.0.js"></script>
     <script src="~/client/scripts/lib/textEditor/tinymce.min.js"></script>
+    <script>
+        function adjustGridHeight() {
+            var grid = document.getElementById("CRMGrid");
+            if (grid) {
+                var rowCount = grid.querySelectorAll(".dxgvDataRow").length;
+                var rowHeight = 40; // Approximate row height in pixels
+                var headerHeight = 50; // Approximate header height in pixels
+                var pagerHeight = 50; // Approximate pager height in pixels
+                grid.style.height = (rowCount * rowHeight + headerHeight + pagerHeight) + "px";
+            }
+        }
 
+        // Call adjustGridHeight on page load
+        document.addEventListener("DOMContentLoaded", adjustGridHeight);
+    </script>
     <script>
         $("#crmForm").submit(function () {
             // Collect phone numbers

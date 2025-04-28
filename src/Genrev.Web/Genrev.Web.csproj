@@ -559,6 +559,7 @@
     <Content Include="App\Customers\Views\AreaOfResponsibilitiesGrid.cshtml" />
     <Content Include="App\Home\Views\_SalesBySalespersonGridPartial.cshtml" />
     <Content Include="App\Home\Views\_SalesByCustomerGridPartial.cshtml" />
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_AreaOfResponsibility.csv" />
     <None Include="client\scripts\_references.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />

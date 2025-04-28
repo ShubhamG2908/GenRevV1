@@ -20,7 +20,7 @@
     {
         c.FieldName = "CustomerName";
         c.Caption = "Customer";
-        c.Width = Unit.Percentage(50);
+        c.Width = Unit.Percentage(33.33);
     });
 
     settings.Columns.Add(c =>
@@ -28,7 +28,15 @@
         c.FieldName = "SalesAmount";
         c.Caption = "Sales Amount";
         c.PropertiesEdit.DisplayFormatString = "C0";
-        c.Width = Unit.Percentage(50);
+        c.Width = Unit.Percentage(33.33);
     });
+
+    settings.Columns.Add(c =>
+{
+    c.FieldName = "YTDForecast";
+    c.Caption = "Year-to-date Forecast";
+    c.PropertiesEdit.DisplayFormatString = "C0";
+    c.Width = Unit.Percentage(33.33);
+});
 
 }).Bind(Model).GetHtml()

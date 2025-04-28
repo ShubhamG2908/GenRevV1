@@ -181,16 +181,16 @@ namespace Genrev.Web.App.Navigation.Services
 
             var groupCRM = new NavBarGroup();
             groupCRM.ID = 0;
-            groupCRM.Text = "CRM";
+            groupCRM.Text = "Notes & Documents";
             groupCRM.Expanded = false;
             groupCRM.Items = new List<NavBarGroupItem>();
 
             groupCRM.Items.Add(new NavBarGroupItem()
             {
                 ID = 4,
-                Text = "CRM",
+                Text = "Notes & Documents",
                 Url = "/CRM",
-                Title = "Customer Relationship Management"
+                Title = "Notes & Documents"
             });
 
             nav.Groups = new List<NavBarGroup>();

@@ -15,27 +15,27 @@ namespace Genrev.Web.App.Home.Data
         {
             var model = AppService.Current.DataContext.GetTopBottomMatrix(startDate, endDate, AppService.Current.ViewContext.PersonnelIDs);
 
-            dynamic topCustomers = new ExpandoObject();            
-            dynamic topSalespersons = new ExpandoObject();            
+            dynamic topCustomers = new ExpandoObject();
+            dynamic topSalespersons = new ExpandoObject();
 
             topCustomers = model
                 .Where(
                     x => x.Entity == "Customer"
                     && x.Factor == "Sales")
                 .OrderByDescending(x => x.EntityValue)
-                .ToList();            
+                .ToList();
 
             topSalespersons = model
                 .Where(
                     x => x.Entity == "Salesperson"
                     && x.Factor == "Sales")
                 .OrderByDescending(x => x.EntityValue)
-                .ToList();           
+                .ToList();
 
             JObject jObj = JObject.FromObject(new
             {
-                topCustomers = topCustomers,                
-                topSalespersons = topSalespersons,                
+                topCustomers = topCustomers,
+                topSalespersons = topSalespersons,
             });
 
             return jObj.ToString();
@@ -52,7 +52,8 @@ namespace Genrev.Web.App.Home.Data
                 {
                     CustomerID = s.EntityID,
                     CustomerName = s.EntityName,
-                    SalesAmount = s.EntityValue ?? 0
+                    SalesAmount = s.EntityValue ?? 0,
+                    YTDForecast = s.YTDForecast ?? 0
                 }).ToList();
         }
         public static List<SalesBySalesperson> GetSalesBySalesperson(DateTime startDate, DateTime endDate)
@@ -67,7 +68,8 @@ namespace Genrev.Web.App.Home.Data
                 {
                     SalespersonID = s.EntityID,
                     SalespersonName = s.EntityName,
-                    SalesAmount = s.EntityValue ?? 0
+                    SalesAmount = s.EntityValue ?? 0,
+                    YTDForecast = s.YTDForecast ?? 0
                 }).ToList();
         }
     }

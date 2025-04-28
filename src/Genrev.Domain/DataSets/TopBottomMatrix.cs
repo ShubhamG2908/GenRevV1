@@ -38,6 +38,7 @@ namespace Genrev.Domain.DataSets
         /// Value of the metric
         /// </summary>
         public decimal? EntityValue { get; set; }
+        public decimal? YTDForecast { get; set; }
 
     }
 }

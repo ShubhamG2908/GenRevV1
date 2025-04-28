@@ -16,6 +16,7 @@ namespace Genrev.Web.App.Home.Data
         public int CustomerID { get; set; }
         public string CustomerName { get; set; }
         public decimal SalesAmount { get; set; }
+        public decimal YTDForecast { get; set; }
     }
 
     public class SalesBySalesperson
@@ -23,6 +24,7 @@ namespace Genrev.Web.App.Home.Data
         public int SalespersonID { get; set; }
         public string SalespersonName { get; set; }
         public decimal SalesAmount { get; set; }
+        public decimal YTDForecast { get; set; }
     }
 
 }

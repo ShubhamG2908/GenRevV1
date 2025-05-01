@@ -322,5 +322,11 @@ namespace Genrev.Web.App.CRM
             model.CRMListItems = _crmService.GetCRMRecords();
             return PartialView("CRMGrid", model);
         }
+        [HttpGet]
+        public ActionResult DeleteClient(int Id)
+        {
+            _crmService.DeleteCRMRecord(Id);
+            return RedirectToAction("Index");
+        }
     }
 }

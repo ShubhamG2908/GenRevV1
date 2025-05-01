@@ -4,6 +4,8 @@ using Dymeng.Validation;
 using Genrev.Domain.Data.Staging;
 using Genrev.Domain.DataSets;
 
+using Serilog;
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -438,7 +440,7 @@ namespace Genrev.DomainServices.Data
             {
                 return errors;
             }
-
+            Log.Debug("ImportToMonthlyDataStaging - date format: " + DateTime.Now);
             var data = new List<MonthlyDataStaging>();
             int rowIndex = 0;
             foreach (DataRow row in table.Rows)
@@ -579,17 +581,17 @@ namespace Genrev.DomainServices.Data
             };
             context.CustomerData.Add(customerData);
             context.SaveChanges();
-        }        
+        }
         private static DateTime ConvertToDateTimeMonthly(string dateValue)
-        {            
-            dateValue = dateValue.Trim();            
+        {
+            dateValue = dateValue.Trim();
             string[] formats;
 
 #if DEBUG
             formats = new string[]
             {
-            "MM/dd/yyyy HH:mm:ss",            
-            "MM/dd/yyyy hh:mm:ss tt",                        
+            "MM/dd/yyyy HH:mm:ss",
+            "MM/dd/yyyy hh:mm:ss tt",
             "yyyy/MM/dd HH:mm:ss",
             "MM/dd/yyyy",
              "M/d/yyyy h:mm:ss tt"
@@ -597,6 +599,7 @@ namespace Genrev.DomainServices.Data
 #else
         formats = new string[]
             {
+            "MM/dd/yyyy HH:mm:ss",
             "dd-MM-yyyy HH:mm:ss",            
             "dd-MM-yyyy hh:mm:ss tt",                        
             "yyyy-MM-dd HH:mm:ss",
@@ -611,26 +614,27 @@ namespace Genrev.DomainServices.Data
                 return parsedDate;
             }
             else
-            {                
+            {
                 return DateTime.MinValue;
             }
         }
         private static DateTime ConvertToDateTimeForecast(string dateValue)
-        {            
-            dateValue = dateValue.Trim();            
+        {
+            dateValue = dateValue.Trim();
             string[] formats;
 
 #if DEBUG
             formats = new string[]
         {
-            "MM/dd/yyyy HH:mm:ss",            
-            "MM/dd/yyyy hh:mm:ss tt",            
+            "MM/dd/yyyy HH:mm:ss",
+            "MM/dd/yyyy hh:mm:ss tt",
             "yyyy/MM/dd HH:mm:ss",
-            "MM/dd/yyyy",            
+            "MM/dd/yyyy",
         };
 #else
         formats = new string[]
             {
+            "MM/dd/yyyy HH:mm:ss",
             "MM-dd-yyyy HH:mm:ss",            
             "MM-dd-yyyy hh:mm:ss tt",            
             "yyyy-MM-dd HH:mm:ss",
@@ -644,9 +648,9 @@ namespace Genrev.DomainServices.Data
                 return parsedDate;
             }
             else
-            {                
+            {
                 return DateTime.MinValue;
             }
-        }        
+        }
     }
 }

@@ -21,7 +21,6 @@ namespace Genrev.Web.App.Home
         }
         public ActionResult Index()
         {
-
             return RedirectToAction("Dashboard");
         }
 

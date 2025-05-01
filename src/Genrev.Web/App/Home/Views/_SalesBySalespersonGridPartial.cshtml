@@ -1,60 +1,67 @@
 @Html.DevExpress().GridView(settings =>
 {
-    settings.Name = "SalesBySalespersonGrid";
-    settings.KeyFieldName = "SalespersonID";
-    settings.CallbackRouteValues = new { Controller = "Home", Action = "SalesBySalespersonGridCallback" };
-    settings.Width = Unit.Percentage(100);
-    settings.SettingsPager.Visible = true;
-    settings.SettingsPager.Position = PagerPosition.Bottom;
-    settings.SettingsPager.FirstPageButton.Visible = true;
-    settings.SettingsPager.LastPageButton.Visible = true;
-    settings.SettingsPager.PageSizeItemSettings.Visible = true;
-    settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "30", "50", "100" };
+   settings.Name = "SalesBySalespersonGrid";
+   settings.KeyFieldName = "SalespersonID";
+   settings.CallbackRouteValues = new { Controller = "Home", Action = "SalesBySalespersonGridCallback" };
+   settings.Width = Unit.Percentage(100);
+   settings.SettingsPager.Visible = true;
+   settings.SettingsPager.Position = PagerPosition.Bottom;
+   settings.SettingsPager.FirstPageButton.Visible = true;
+   settings.SettingsPager.LastPageButton.Visible = true;
+   settings.SettingsPager.PageSizeItemSettings.Visible = true;
+   settings.SettingsPager.PageSizeItemSettings.Items = new string[] { "10", "20", "30", "50", "100" };
 
-    settings.SettingsBehavior.AllowSort = true;
+   settings.SettingsBehavior.AllowSort = true;
 
-    settings.Styles.Header.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+   settings.Styles.Header.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
 
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "SalespersonName";
-        c.Caption = "Salesperson";
-        c.Width = Unit.Percentage(25);
-    });
+   settings.Columns.Add(c =>
+   {
+       c.FieldName = "SalespersonName";
+       c.Caption = "Salesperson";
+       c.Width = Unit.Percentage(25);
+   });
 
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "YTDActual";
-        c.Caption = "Year-to-Date Actual";
-        c.PropertiesEdit.DisplayFormatString = "C0";
-        c.Width = Unit.Percentage(25);
-    });
+   settings.Columns.Add(c =>
+   {
+       c.FieldName = "YTDActual";
+       c.Caption = "Year-to-Date Actual";
+       c.PropertiesEdit.DisplayFormatString = "C0";
+       c.Width = Unit.Percentage(25);
+   });
 
-    settings.Columns.Add(c =>
-    {
-        c.FieldName = "YTDForecast";
-        c.Caption = "Year-to-Date Forecast";
-        c.PropertiesEdit.DisplayFormatString = "C0";
-        c.Width = Unit.Percentage(25);
-    });
+   settings.Columns.Add(c =>
+   {
+       c.FieldName = "YTDForecast";
+       c.Caption = "Year-to-Date Forecast";
+       c.PropertiesEdit.DisplayFormatString = "C0";
+       c.Width = Unit.Percentage(25);
+   });
 
-    settings.Columns.Add(c =>
-{
-    c.FieldName = "YTDDifference";
-    c.Caption = "Difference";
-    c.PropertiesEdit.DisplayFormatString = "C0";
-    c.Width = Unit.Percentage(25);
-});
-    settings.HtmlDataCellPrepared = (sender, e) =>
-    {
-        if (e.DataColumn.FieldName == "YTDDifference")
-        {
-            decimal cellValue;
-            string cellText = e.CellValue != null ? e.CellValue.ToString() : string.Empty;
-            if (decimal.TryParse(cellText, out cellValue))
-            {
-                e.Cell.ForeColor = cellValue < 0 ? System.Drawing.Color.Red : System.Drawing.Color.Black;
-            }
-        }
-    };
+   settings.Columns.Add(c =>
+   {
+       c.FieldName = "YTDDifference";
+       c.Caption = "Difference";
+       c.PropertiesEdit.DisplayFormatString = "C0";
+       c.Width = Unit.Percentage(25);
+   });
+
+   settings.HtmlDataCellPrepared = (sender, e) =>
+   {
+       if (e.DataColumn.FieldName == "YTDDifference")
+       {
+           decimal cellValue;
+           string cellText = e.CellValue != null ? e.CellValue.ToString() : string.Empty;
+           if (decimal.TryParse(cellText, out cellValue))
+           {
+               e.Cell.ForeColor = cellValue < 0 ? System.Drawing.Color.Red : System.Drawing.Color.Black;
+           }
+       }
+   };
+
+   settings.Settings.ShowFooter = true;
+
+   settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "YTDActual").DisplayFormat = "Total: {0:C0}";
+   settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "YTDForecast").DisplayFormat = "Total: {0:C0}";
+   settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "YTDDifference").DisplayFormat = "Total: {0:C0}";
 }).Bind(Model).GetHtml()

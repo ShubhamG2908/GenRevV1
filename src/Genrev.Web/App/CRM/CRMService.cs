@@ -272,5 +272,47 @@ namespace Genrev.Web.App.Services
                 connection.Execute(query, new { Id = Id });
             }
         }
+        public void DeleteCRMAddresses(int crmId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                string query = "DELETE FROM CRM_Address WHERE CRMId = @CRMId";
+                connection.Execute(query, new { CRMId = crmId });
+            }
+        }
+
+        public void DeleteCRMContacts(int crmId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                string query = "DELETE FROM CRM_Contacts WHERE CRMId = @CRMId";
+                connection.Execute(query, new { CRMId = crmId });
+            }
+        }
+
+        public void DeleteCRMFiles(int crmId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                string query = "DELETE FROM CRM_Files WHERE CRMId = @CRMId";
+                connection.Execute(query, new { CRMId = crmId });
+            }
+        }
+        public void DeleteCRMRecord(int crmId) {
+            using (var connection = new SqlConnection(_connectionString)) {
+                // Delete from CRM table
+                string deleteCRMQuery = "DELETE FROM CRM WHERE Id = @CRMId";
+                connection.Execute(deleteCRMQuery, new { CRMId = crmId });
+    
+                // Delete related contacts
+                DeleteCRMContacts(crmId);
+    
+                // Delete related addresses
+                DeleteCRMAddresses(crmId);
+    
+                // Delete related files
+                DeleteCRMFiles(crmId);
+            }
+        }
     }
 }

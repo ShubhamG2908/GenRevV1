@@ -95,10 +95,13 @@
       s.Columns.Add(c =>
       {
           c.Caption = "Action";
+          c.Width = Unit.Pixel(110);
           c.SetDataItemTemplateContent(tc =>
           {
               var crmId = DataBinder.Eval(tc.DataItem, "Id");
-              ViewContext.Writer.Write(string.Format("<a href='/CRM/EditClient?Id={0}' class='btn btn-primary'>View/Edit</a>", crmId));
+              ViewContext.Writer.Write(string.Format("<a href='/CRM/EditClient?Id={0}' class='btn btn-primary'>View/Edit</a>&nbsp;|&nbsp;", crmId));              
+              ViewContext.Writer.Write(string.Format("<a href='/CRM/DeleteClient?Id={0}' class='btn btn-danger' onclick='return confirm(\"Are you sure you want to delete this record?\");'>Delete</a>", crmId));
+
           });
       });
   }

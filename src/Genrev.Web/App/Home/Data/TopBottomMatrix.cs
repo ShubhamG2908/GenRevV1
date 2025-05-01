@@ -22,14 +22,14 @@ namespace Genrev.Web.App.Home.Data
                 .Where(
                     x => x.Entity == "Customer"
                     && x.Factor == "Sales")
-                .OrderByDescending(x => x.EntityValue)
+                .OrderByDescending(x => x.YTDActual)
                 .ToList();
 
             topSalespersons = model
                 .Where(
                     x => x.Entity == "Salesperson"
                     && x.Factor == "Sales")
-                .OrderByDescending(x => x.EntityValue)
+                .OrderByDescending(x => x.YTDActual)
                 .ToList();
 
             JObject jObj = JObject.FromObject(new
@@ -47,13 +47,14 @@ namespace Genrev.Web.App.Home.Data
                 .Where(
                     x => x.Entity == "Customer"
                     && x.Factor == "Sales")
-                .OrderByDescending(x => x.EntityValue)
+                .OrderByDescending(x => x.YTDActual)
                 .Select(s => new SalesByCustomer()
                 {
                     CustomerID = s.EntityID,
                     CustomerName = s.EntityName,
-                    SalesAmount = s.EntityValue ?? 0,
-                    YTDForecast = s.YTDForecast ?? 0
+                    YTDActual = s.YTDActual ?? 0,
+                    YTDForecast = s.YTDForecast ?? 0,
+                    YTDDifference = (s.YTDActual - s.YTDForecast) ?? 0
                 }).ToList();
         }
         public static List<SalesBySalesperson> GetSalesBySalesperson(DateTime startDate, DateTime endDate)
@@ -63,13 +64,14 @@ namespace Genrev.Web.App.Home.Data
                 .Where(
                    x => x.Entity == "Salesperson"
                     && x.Factor == "Sales")
-                .OrderByDescending(x => x.EntityValue)
+                .OrderByDescending(x => x.YTDActual)
                 .Select(s => new SalesBySalesperson()
                 {
                     SalespersonID = s.EntityID,
                     SalespersonName = s.EntityName,
-                    SalesAmount = s.EntityValue ?? 0,
-                    YTDForecast = s.YTDForecast ?? 0
+                    YTDActual = s.YTDActual ?? 0,
+                    YTDForecast = s.YTDForecast ?? 0,
+                    YTDDifference = (s.YTDActual - s.YTDForecast) ?? 0
                 }).ToList();
         }
     }

@@ -5,8 +5,8 @@ using System.Collections.Generic;
 namespace Genrev.Web.App.Home.Data
 {
     public class DashboardViewModel
-    {        
-            public List<CRMRecordDTO> CRMRecords { get; set; }
+    {
+        public List<CRMRecordDTO> CRMRecords { get; set; }
         public List<SalesByCustomer> SalesByCustomer { get; set; }
         public List<SalesBySalesperson> SalesBySalesperson { get; set; }
     }
@@ -15,16 +15,18 @@ namespace Genrev.Web.App.Home.Data
     {
         public int CustomerID { get; set; }
         public string CustomerName { get; set; }
-        public decimal SalesAmount { get; set; }
+        public decimal YTDActual { get; set; }
         public decimal YTDForecast { get; set; }
+        public decimal YTDDifference { get; set; }
     }
 
     public class SalesBySalesperson
     {
         public int SalespersonID { get; set; }
         public string SalespersonName { get; set; }
-        public decimal SalesAmount { get; set; }
+        public decimal YTDActual { get; set; }
         public decimal YTDForecast { get; set; }
+        public decimal YTDDifference { get; set; }
     }
 
 }

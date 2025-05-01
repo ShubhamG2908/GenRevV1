@@ -37,8 +37,9 @@ namespace Genrev.Domain.DataSets
         /// <summary>
         /// Value of the metric
         /// </summary>
-        public decimal? EntityValue { get; set; }
+        public decimal? YTDActual { get; set; }
         public decimal? YTDForecast { get; set; }
+        public decimal? YTDDifference { get; set; }
 
     }
 }

@@ -20,23 +20,42 @@
     {
         c.FieldName = "CustomerName";
         c.Caption = "Customer";
-        c.Width = Unit.Percentage(33.33);
+        c.Width = Unit.Percentage(25);
     });
 
     settings.Columns.Add(c =>
     {
-        c.FieldName = "SalesAmount";
-        c.Caption = "Sales Amount";
+        c.FieldName = "YTDActual";
+        c.Caption = "Year-to-Date Actual";
         c.PropertiesEdit.DisplayFormatString = "C0";
-        c.Width = Unit.Percentage(33.33);
+        c.Width = Unit.Percentage(25);
     });
 
     settings.Columns.Add(c =>
-{
-    c.FieldName = "YTDForecast";
-    c.Caption = "Year-to-date Forecast";
-    c.PropertiesEdit.DisplayFormatString = "C0";
-    c.Width = Unit.Percentage(33.33);
-});
+    {
+        c.FieldName = "YTDForecast";
+        c.Caption = "Year-to-Date Forecast";
+        c.PropertiesEdit.DisplayFormatString = "C0";
+        c.Width = Unit.Percentage(25);
+    });
 
+    settings.Columns.Add(c =>
+    {
+        c.FieldName = "YTDDifference";
+        c.Caption = "Difference";
+        c.PropertiesEdit.DisplayFormatString = "C0";
+        c.Width = Unit.Percentage(25);
+    });
+    settings.HtmlDataCellPrepared = (sender, e) =>
+    {
+        if (e.DataColumn.FieldName == "YTDDifference")
+        {
+            decimal cellValue;
+            string cellText = e.CellValue != null ? e.CellValue.ToString() : string.Empty;
+            if (decimal.TryParse(cellText, out cellValue))
+            {
+                e.Cell.ForeColor = cellValue < 0 ? System.Drawing.Color.Red : System.Drawing.Color.Black;
+            }
+        }
+    };
 }).Bind(Model).GetHtml()

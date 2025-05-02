@@ -40,6 +40,28 @@
         document.addEventListener("DOMContentLoaded", adjustGridHeight);
     </script>
     <script>
+function moveFooterSums() {    
+    var grid1 = document.querySelector('#SalesByCustomerGrid');
+    var footer1 = grid1.querySelector('#SalesByCustomerGrid_DXFooterRow');
+    var header1 = grid1.querySelector('#SalesByCustomerGrid_DXHeadersRow0');
+    if (footer1 && header1) {        
+        header1.insertAdjacentElement('afterend', footer1);
+    }
+
+    var grid2 = document.querySelector('#SalesBySalespersonGrid');
+    var footer2 = grid2.querySelector('#SalesBySalespersonGrid_DXFooterRow');
+    var header2 = grid2.querySelector('#SalesBySalespersonGrid_DXHeadersRow0');
+    if (footer2 && header2) {        
+        header2.insertAdjacentElement('afterend', footer2);
+    }
+}
+        function onSalesByCustomerSalespersonGridEndCallback(s, e) {
+            moveFooterSums();
+        }
+// Ensure the function is called after the grid is fully loaded
+window.addEventListener('load', moveFooterSums);
+</script>
+    <script>
         $("#crmForm").submit(function () {
             // Collect phone numbers
             var phoneNumbers = [];

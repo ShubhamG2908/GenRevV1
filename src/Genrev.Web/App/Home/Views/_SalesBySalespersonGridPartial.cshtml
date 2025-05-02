@@ -1,3 +1,5 @@
+@using System.Web.UI.WebControls
+@using System.Drawing
 @Html.DevExpress().GridView(settings =>
 {
    settings.Name = "SalesBySalespersonGrid";
@@ -61,7 +63,33 @@
 
    settings.Settings.ShowFooter = true;
 
-   settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "YTDActual").DisplayFormat = "Total: {0:C0}";
-   settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "YTDForecast").DisplayFormat = "Total: {0:C0}";
-   settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "YTDDifference").DisplayFormat = "Total: {0:C0}";
+   settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "YTDActual").DisplayFormat = "{0:C0}";
+   settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "YTDForecast").DisplayFormat = "{0:C0}";
+   settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Sum, "YTDDifference").DisplayFormat = "{0:C0}";
+    settings.HtmlFooterCellPrepared = (sender, e) =>
+{
+    var column = e.Column as DevExpress.Web.GridViewDataColumn;
+    if (column == null)
+        return;
+
+    var grid = e.Column.Grid;
+
+    foreach (DevExpress.Web.ASPxSummaryItem summaryItem in grid.TotalSummary)
+    {
+        if (summaryItem.FieldName == column.FieldName)
+        {
+            object value = e.GetSummaryValue(summaryItem);
+            if (value != null)
+            {
+                decimal summaryValue;
+                if (decimal.TryParse(value.ToString(), out summaryValue))
+                {
+                    e.Cell.ForeColor = summaryValue < 0 ? Color.Red : Color.Black;
+                }
+            }
+            break;
+        }
+    }
+};
+    settings.ClientSideEvents.EndCallback = "onSalesByCustomerSalespersonGridEndCallback";
 }).Bind(Model).GetHtml()

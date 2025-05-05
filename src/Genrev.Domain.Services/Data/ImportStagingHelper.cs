@@ -1,11 +1,8 @@
 ﻿using Dymeng.Data;
 using Dymeng.Validation;
-
 using Genrev.Domain.Data.Staging;
 using Genrev.Domain.DataSets;
-
 using Serilog;
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -28,12 +25,8 @@ namespace Genrev.DomainServices.Data
             validationHelper = new ImportValidationHelper();
         }
 
-
-
-
         public DataTable GetPersonnelStagingTable()
         {
-
             var table = new DataTable();
 
             table.Columns.Add("ID");

@@ -9,6 +9,7 @@ using Genrev.DomainServices.Data;
 using Genrev.Domain;
 using Genrev.Domain.DataSets;
 using System.Data.Entity.Migrations;
+using Serilog;
 
 namespace Genrev.Web.App.Data
 {
@@ -493,6 +494,7 @@ namespace Genrev.Web.App.Data
                 var err = new Dymeng.Validation.ValidationError();
                 err.ID = -1;
                 err.Message = "There seems to be an issue with the file format.  Please verify the CSV format and try again.  Contact your administrator if the problem persists.";
+                Log.Debug("ProcessFileImport: " + e.Message);
                 if (AppService.Current.Settings.DisplayDetailedErrors)
                 {
                     err.Message += "\r\n\r\n" + e.ToString();

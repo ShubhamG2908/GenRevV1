@@ -599,7 +599,9 @@ namespace Genrev.DomainServices.Data
 #else
         formats = new string[]
             {
+            "dd/MM/yyyy HH:mm:ss",
             "MM/dd/yyyy HH:mm:ss",
+            "MM-dd-yyyy HH:mm:ss",
             "dd-MM-yyyy HH:mm:ss",            
             "dd-MM-yyyy hh:mm:ss tt",                        
             "yyyy-MM-dd HH:mm:ss",
@@ -607,7 +609,7 @@ namespace Genrev.DomainServices.Data
             "M/d/yyyy h:mm:ss tt"
             };
 #endif
-
+            Log.Debug("dataValue: " + dateValue);
             DateTime parsedDate;
             if (DateTime.TryParseExact(dateValue, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
             {
@@ -635,6 +637,9 @@ namespace Genrev.DomainServices.Data
         formats = new string[]
             {
             "MM/dd/yyyy HH:mm:ss",
+            "MM-dd-yyyy HH:mm:ss",
+            "dd/MM/yyyy HH:mm:ss",
+            "MM/dd/yyyy HH:mm:ss",
             "MM-dd-yyyy HH:mm:ss",            
             "MM-dd-yyyy hh:mm:ss tt",            
             "yyyy-MM-dd HH:mm:ss",
@@ -642,6 +647,7 @@ namespace Genrev.DomainServices.Data
             };
 #endif
 
+            Log.Debug("ConvertToDateTimeForecast - dataValue: " + dateValue);
             DateTime parsedDate;
             if (DateTime.TryParseExact(dateValue, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
             {

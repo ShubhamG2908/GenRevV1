@@ -12,6 +12,7 @@ using Dymeng.Data;
 using Dymeng.Data.Csv;
 using Dymeng.Validation;
 using System.Globalization;
+using Serilog;
 
 
 namespace Genrev.DomainServices.Data
@@ -47,6 +48,11 @@ namespace Genrev.DomainServices.Data
                 dataTable.Locale = CultureInfo.InvariantCulture;
                 oleDbDataAdapter.Fill(dataTable);
                 return dataTable;
+            }
+            catch (Exception e)
+            {
+                Log.Debug("LoadCsvToTable: " + e.Message.ToString());
+                return null;
             }
             finally
             {

@@ -562,7 +562,7 @@ namespace Genrev.Web.App.Data
         {
             if (updateValues.DeleteKeys.Count > 0)
             {
-                _service.MatrixGridBatchDelete(updateValues.DeleteKeys);
+                _service.MatrixGridBatchDelete(updateValues.DeleteKeys, true);
             }
 
             if (updateValues.Insert.Count > 0)

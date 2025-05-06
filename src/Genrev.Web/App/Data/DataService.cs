@@ -290,6 +290,9 @@ namespace Genrev.Web.App.Data
                     where c.CompanyID == company.ID
                         && d.Period >= fiscalYear.StartDate
                         && d.Period <= fiscalYear.EndDate
+                        && (d.SalesActual == null || d.SalesActual != 0)
+                        && (d.CostActual == null || d.CostActual != 0)
+                        && (d.CallsActual == null || d.CallsActual != 0)
                     orderby d.Period, d.CustomerID, d.PersonnelID, d.ProductID
                     select d;
 
@@ -336,32 +339,43 @@ namespace Genrev.Web.App.Data
 
         }
 
-        internal void MatrixGridBatchDelete(List<int> deleteKeys)
+        internal void MatrixGridBatchDelete(List<int> deleteKeys, bool isFromDailyData = false)
         {
-
             var context = AppService.Current.DataContext;
 
             foreach (int id in deleteKeys)
             {
+                var d = context.CustomerData.Find(id);
 
-                var d = new Domain.DataSets.CustomerData() { ID = id };
-
-                try
+                if (d == null)
                 {
-                    context.CustomerData.Attach(d);
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e.ToString());
-                    d = context.CustomerData.Find(id);
+                    continue;
                 }
 
-                context.CustomerData.Remove(d);
+                if (isFromDailyData)
+                {
+                    d.SalesActual = 0;
+                    d.CostActual = 0;
+                    d.CallsActual = 0;
+                }
+                else
+                {
+                    try
+                    {
+                        context.CustomerData.Attach(d);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.ToString());
+                        d = context.CustomerData.Find(id);
+                    }
+
+                    context.CustomerData.Remove(d);
+                }
             }
 
             context.SaveChanges();
             AppCache.InvalidateAll();
-
         }
 
         internal void MatrixGridBatchInsert(List<MatrixByCostGridItem> insert)

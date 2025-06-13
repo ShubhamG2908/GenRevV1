@@ -591,14 +591,10 @@ namespace Genrev.DomainServices.Data
             };
 #else
         formats = new string[]
-            {
-            "dd/MM/yyyy HH:mm:ss",
+            {            
             "MM/dd/yyyy HH:mm:ss",
-            "MM-dd-yyyy HH:mm:ss",
-            "dd-MM-yyyy HH:mm:ss",            
-            "dd-MM-yyyy hh:mm:ss tt",                        
-            "yyyy-MM-dd HH:mm:ss",
-            "dd-MM-yyyy",            
+            "MM-dd-yyyy HH:mm:ss",            
+            "yyyy-MM-dd HH:mm:ss",            
             "M/d/yyyy h:mm:ss tt"
             };
 #endif

@@ -70,7 +70,6 @@ define(function () {
             selectionChanged: function(id, name) {
 
                 var returnUrl = window.location.pathname;
-
                 $.ajax({
                     type: 'post',
                     url: '/Internal/UpdateViewContext',
@@ -79,8 +78,8 @@ define(function () {
                         returnUrl: returnUrl
                     },
                     success: function (res) {
-                        Shell.SetContent(res);
-                        $("#va-content-current-name").text(name)
+                        //Shell.SetContent(res);
+                        window.location.href = returnUrl;
                     },
                     error: function (res) {
                         App.Errors.ShowGeneral();

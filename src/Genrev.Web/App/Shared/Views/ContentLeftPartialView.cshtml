@@ -18,8 +18,7 @@
 
             s.AutoCollapse = false;
 
-            // create a dummy event so our later attached handlers wire correctly
-            s.ClientSideEvents.ItemClick = "function(s, e) { var x = 1; }";
+            s.ClientSideEvents.ItemClick = "function(s, e) { var url = e.item.GetNavigateUrl();  if (url)window.location.href = url;}";
 
             var model = NavBarService.GetNavBarVM();
 

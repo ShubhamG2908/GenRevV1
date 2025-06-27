@@ -61,10 +61,6 @@ namespace Genrev.Web.App.CRM
                 // Select the CRM record's CustomerId or fallback to the first available customer
                 int selectedCustomerId = customers.Any() ? crmDetails.CustomerId : 0;
                 ViewBag.SelectedCustomerId = selectedCustomerId;
-                foreach (var item in customers)
-                {
-                    item.Selected = item.ID == selectedCustomerId;
-                }                
                 ViewBag.Customers = customers;
                 crmDetails.Strategy = _crmService.GetStrategyByCustomerId(crmDetails.CustomerId);
                 crmDetails.UploadedFiles = _crmService.GetFilesByCRMId(crmDetails.Id);

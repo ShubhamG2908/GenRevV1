@@ -592,11 +592,19 @@ namespace Genrev.Web.App.Data
 			try
 			{
 				return _context.Database.SqlQuery<string>(
-					@"select 
-						ISNULL(Trim(p2.PersonFirstName +' '+p2.PersonLastName),'N/A') as SelectedPerson 
-						from Personnel p1
-						Left join Personnel p2 on p2.ID=p1.SelectedUser
-						Where P1.ID=@PersonnelId",
+                    @"SELECT 
+						(
+							SELECT 
+								TRIM(pTemp.PersonFirstName + ' ' + pTemp.PersonLastName)
+							FROM Personnel pTemp
+							WHERE pTemp.ID = 
+								CASE 
+									WHEN p1.SelectedUser IS NULL THEN 1 
+									ELSE p1.SelectedUser 
+								END
+						) AS SelectedPerson
+					FROM Personnel p1
+					WHERE p1.ID = @PersonnelId",
 					new SqlParameter("@PersonnelId", personnelId)
 				).FirstOrDefault();
 			}

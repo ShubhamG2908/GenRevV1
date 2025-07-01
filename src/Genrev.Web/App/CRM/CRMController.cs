@@ -59,12 +59,9 @@ namespace Genrev.Web.App.CRM
                 // Get customers assigned to the selected salesperson
                 List <CustomerDDLVM> customers = _customerDataservice.GetCustomerListItemsByPersonnelId(selectedSalesPersonId);
 
-				// Select the CRM record's CustomerId or fallback to the first available customer
-				//int selectedCustomerId = customers.Any() ? crmDetails.CustomerId : 0;
-				//int selectedCustomerId = customers.Any(c => c.ID == crmDetails.CustomerId)
-	            //? crmDetails.CustomerId
-	            //: customers.FirstOrDefault()?.ID ?? 0;
-
+                // Select the CRM record's CustomerId or fallback to the first available customer
+                int selectedCustomerId = customers.Any() ? crmDetails.CustomerId : 0;
+                ViewBag.SelectedCustomerId = selectedCustomerId;
                 ViewBag.Customers = customers;
                 crmDetails.Strategy = _crmService.GetStrategyByCustomerId(crmDetails.CustomerId);
                 crmDetails.UploadedFiles = _crmService.GetFilesByCRMId(crmDetails.Id);

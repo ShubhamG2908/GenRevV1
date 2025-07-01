@@ -96,20 +96,22 @@ window.addEventListener('load', moveFooterSums);
     </script>
 
     <script>
+        var selectedCustomerId = '@ViewBag.selectedCustomerId';
     $(document).ready(function () {
         var selectedSalesPersonId = '@ViewBag.SelectedSalesPersonId';
      window.GenrevCurrency = '@Html.Raw(Session["GenRevCountryCode"] != null ? Session["GenRevCountryCode"].ToString() : "$")';
 
-    if (selectedSalesPersonId) {
+        if (selectedSalesPersonId) {
         loadCustomers(selectedSalesPersonId);
     }
 });
 
 function onSalesPersonChange(s, e) {
     var selectedSalesPersonId = s.GetValue();
+
     loadCustomers(selectedSalesPersonId);
     }
-function loadCustomers(salesPersonId) {
+    function loadCustomers(salesPersonId) {
     $.ajax({
         url: '@Url.Action("GetCustomersBySalesPerson", "CRM")',
         type: 'GET',
@@ -122,7 +124,20 @@ function loadCustomers(salesPersonId) {
                 customerDropdown.AddItem(Text = item.Name, Value = item.ID);
             });
 
-            customerDropdown.SetSelectedIndex(0);
+            var exists = false;
+            for (var i = 0; i < customerDropdown.GetItemCount(); i++) {
+                var item = customerDropdown.GetItem(i);
+                if (item.value == selectedCustomerId) {
+                    exists = true;
+                    break;
+                }
+            }
+
+            if (exists) {
+                customerDropdown.SetValue(selectedCustomerId);
+            } else {
+                customerDropdown.SetSelectedIndex(0);
+            }
         }
     });
         }

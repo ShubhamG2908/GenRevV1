@@ -6,8 +6,12 @@
     List<SelectListItem> customersList = ((List<Genrev.Web.App.Customers.Models.CustomerDDLVM>)ViewBag.Customers)
     .Select(sp => new SelectListItem { Value = sp.ID.ToString(), Text = sp.Name }).ToList();
 
+    var customers = ViewBag.Customers as List<Genrev.Web.App.Customers.Models.CustomerDDLVM>;
+
+
     bool IsAdmin = ViewBag.IsAdmin ?? false;
     int selectedSalesPersonId = (int)ViewBag.SelectedSalesPersonId;
+    int selectedCustomerId = (int)ViewBag.SelectedCustomerId;
 }
 
 <div style="padding:20px;">
@@ -36,13 +40,15 @@
                             @Html.DevExpress().ComboBox(s =>
                        {
                            s.Name = "CustomerId";
-                           s.Properties.ValueField = "Id";
+                           s.ClientEnabled = IsAdmin;
+                           s.Properties.ValueField = "ID";
                            s.Properties.ValueType = typeof(int);
                            s.Properties.TextField = "Name";
                            s.Properties.Caption = "Customer";
                            s.Properties.CaptionCellStyle.Width = 150;
                            s.Properties.ClientSideEvents.ValueChanged = "onCustomerChange";
-                       }).BindList(ViewBag.Customers).Bind(ViewBag.SelectedCustomerId).GetHtml()
+                       }).BindList(ViewBag.customers).Bind(ViewBag.selectedCustomerId).GetHtml()
+                       @*}).BindList(ViewBag.Customers).Bind(ViewBag.SelectedCustomerId).GetHtml()*@
                         </td>
                         <td class="td">
                             @Html.DevExpress().ComboBox(s =>
@@ -53,11 +59,11 @@
                            s.Properties.Caption = "Concern";
                            s.Properties.CaptionCellStyle.Width = 150;
                        }).BindList(new List<SelectListItem>
-{
-    new SelectListItem { Value = "", Text = "" },
-    new SelectListItem { Value = "Monitor", Text = "Monitor" },
-    new SelectListItem { Value = "Critical", Text = "Critical" }
-}).Bind(Model.Concern).GetHtml()
+                        {
+                            new SelectListItem { Value = "", Text = "" },
+                            new SelectListItem { Value = "Monitor", Text = "Monitor" },
+                            new SelectListItem { Value = "Critical", Text = "Critical" }
+                        }).Bind(Model.Concern).GetHtml()
                         </td>
                     </tr>
                     <tr class="tr">

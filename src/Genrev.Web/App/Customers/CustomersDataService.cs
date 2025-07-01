@@ -74,7 +74,7 @@ namespace Genrev.Web.App.Customers
             //var account = AppService.Current.Account;
 
             var customerIDs = AppService.Current.DataContext.GetDownstreamCustomerIDs(personnelID);
-            var mappedCustomers = AppService.Current.DataContext.Customers.Where(c => customerIDs.Contains(c.ID)).ToList();
+            var mappedCustomers = AppService.Current.DataContext.Customers.Where(c => customerIDs.Any(z => z == c.ID)).ToList();
 
             //var person = account.PrimaryCompany.Personnel.Where(x => x.ID == personnelID).Single();
             //var mappedCustomers = personnelID == 1 ? account.PrimaryCompany.Customers.ToList() : account.PrimaryCompany.Customers.Where(x => x.Personnel.Contains(person)).ToList();

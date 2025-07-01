@@ -3,7 +3,7 @@ using Genrev.Web.App.Customers;
 using Genrev.Web.App.Customers.Models;
 using Genrev.Web.App.Data;
 using Genrev.Web.App.Services;
-
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -54,17 +54,17 @@ namespace Genrev.Web.App.CRM
                 int selectedSalesPersonId = crmDetails.SalesPersonId;
 
                 ViewBag.SelectedSalesPersonId = selectedSalesPersonId;
+                ViewBag.SelectedCustomerId = crmDetails.CustomerId;
 
                 // Get customers assigned to the selected salesperson
-                List<CustomerDDLVM> customers = _customerDataservice.GetCustomerListItemsByPersonnelId(selectedSalesPersonId);                
+                List <CustomerDDLVM> customers = _customerDataservice.GetCustomerListItemsByPersonnelId(selectedSalesPersonId);
 
-                // Select the CRM record's CustomerId or fallback to the first available customer
-                int selectedCustomerId = customers.Any() ? crmDetails.CustomerId : 0;
-                ViewBag.SelectedCustomerId = selectedCustomerId;
-                foreach (var item in customers)
-                {
-                    item.Selected = item.ID == selectedCustomerId;
-                }                
+				// Select the CRM record's CustomerId or fallback to the first available customer
+				//int selectedCustomerId = customers.Any() ? crmDetails.CustomerId : 0;
+				//int selectedCustomerId = customers.Any(c => c.ID == crmDetails.CustomerId)
+	            //? crmDetails.CustomerId
+	            //: customers.FirstOrDefault()?.ID ?? 0;
+
                 ViewBag.Customers = customers;
                 crmDetails.Strategy = _crmService.GetStrategyByCustomerId(crmDetails.CustomerId);
                 crmDetails.UploadedFiles = _crmService.GetFilesByCRMId(crmDetails.Id);
@@ -73,7 +73,7 @@ namespace Genrev.Web.App.CRM
                 ViewBag.AreaOfResponsibilities = areaOfResponsibilities;
                 var selectedAORId = areaOfResponsibilities.Any() ? crmDetails.AreaOfResponsibilityId : 0;
                 ViewBag.SelectedAreaOfResponsibilities = selectedAORId;
-                return View(crmDetails);
+				return View(crmDetails);
             }
 
             return RedirectToAction("Index"); // Redirect to Index if CRM details are null
@@ -101,7 +101,9 @@ namespace Genrev.Web.App.CRM
             List<CustomerDDLVM> customers = _customerDataservice.GetCustomerListItemsByPersonnelId(selectedSalesPersonId);
             ViewBag.Customers = new List<CustomerDDLVM>();
             var selectedCustomerId = customers.Any() ? customers.First().ID : 0;
-            ViewBag.SelectedCustomerId = selectedAORId;
+            //ViewBag.SelectedCustomerId = selectedAORId;
+            //------------------------------------------
+            ViewBag.SelectedCustomerId = selectedCustomerId;
 
             return View(new CRMViewModel { SalesPersonId = selectedSalesPersonId, CustomerId = selectedAORId });
         }

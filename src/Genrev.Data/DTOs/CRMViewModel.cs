@@ -10,6 +10,7 @@ namespace Genrev.Data.DTOs
         public int Id { get; set; }
         public int SalesPersonId { get; set; }
         public int CustomerId { get; set; }
+        public int CustId { get; set; }
         public int AreaOfResponsibilityId { get; set; }
         public string AreaOfResponsibilityName { get; set; }
 

@@ -117,8 +117,7 @@ namespace Genrev.Web.App.CRM
         {
             ModelState.Remove(nameof(model.UploadedFiles));
             ModelState.Remove(nameof(model.CRMListItems));
-            if (ModelState.IsValid)
-            {
+
                 //var existingData = _crmService.GetCRMRecordsBySalesPersonIdAndCustomerId(model.SalesPersonId, model.CustomerId);
                 //if (existingData.Count==0)
                 //{
@@ -207,14 +206,14 @@ namespace Genrev.Web.App.CRM
                     }
                 }
                 return RedirectToAction("Index");
-            }
+            
 
             // If ModelState is invalid, reload necessary data
             ViewBag.SalesPersons = CommonListItems.DataService.GetPersonnelCommonList();
             ViewBag.IsAdmin = User.IsInRole("sysadmin");
             ViewBag.Customers = _customerDataservice.GetCustomerListItemsByPersonnelId(model.SalesPersonId);
 
-            return View("Index", model);
+            return RedirectToAction("Index");
         }
         [ValidateInput(false)]
         [HttpPost]
@@ -222,27 +221,6 @@ namespace Genrev.Web.App.CRM
         {
             ModelState.Remove(nameof(model.UploadedFiles));
             ModelState.Remove(nameof(model.CRMListItems));
-            if (!ModelState.IsValid)
-            {
-                // Reload the dropdown lists if validation fails
-                var salesPersons = CommonListItems.DataService.GetPersonnelCommonList();
-                ViewBag.SalesPersons = salesPersons;
-
-                bool IsAdmin = User.IsInRole("sysadmin");
-                ViewBag.IsAdmin = IsAdmin;
-
-                int selectedSalesPersonId = IsAdmin
-                    ? salesPersons.FirstOrDefault()?.ID ?? 0
-                    : model.SalesPersonId;
-
-                ViewBag.SelectedSalesPersonId = selectedSalesPersonId;
-
-                List<CustomerDDLVM> customers = _customerDataservice.GetCustomerListItemsByPersonnelId(selectedSalesPersonId);
-                ViewBag.Customers = customers;
-                ViewBag.SelectedCustomerId = model.CustomerId;
-
-                return View("EditClient", model);
-            }
 
             // Update CRM entry
             bool isUpdated = _crmService.UpdateCRMEntry(model);

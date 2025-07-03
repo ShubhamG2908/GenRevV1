@@ -1,17 +1,46 @@
-﻿@model Genrev.Data.DTOs.CRMViewModel
+﻿@*@model Genrev.Data.DTOs.CRMViewModel
+    @{
+        List<SelectListItem> salesPersonList = ((List<Genrev.Web.App.CommonListItems.Person>)ViewBag.SalesPersons)
+        .Select(sp => new SelectListItem { Value = sp.ID.ToString(), Text = sp.DisplayName }).ToList();
+
+        List<SelectListItem> customersList = ((List<Genrev.Web.App.Customers.Models.CustomerDDLVM>)ViewBag.Customers)
+        .Select(sp => new SelectListItem { Value = sp.ID.ToString(), Text = sp.Name }).ToList();
+
+        var customers = ViewBag.Customers as List<Genrev.Web.App.Customers.Models.CustomerDDLVM>;
+
+
+        bool IsAdmin = ViewBag.IsAdmin ?? false;
+        int selectedSalesPersonId = (int)ViewBag.SelectedSalesPersonId;
+        int selectedCustomerId = (int)ViewBag.SelectedCustomerId;
+    }*@
+
+@model Genrev.Data.DTOs.CRMViewModel
+@* Removed duplicate @model statement above *@
 @{
-    List<SelectListItem> salesPersonList = ((List<Genrev.Web.App.CommonListItems.Person>)ViewBag.SalesPersons)
-    .Select(sp => new SelectListItem { Value = sp.ID.ToString(), Text = sp.DisplayName }).ToList();
+    // Null-safe ViewBag conversions with fallbacks to empty lists
+    var salesPersonsRaw = ViewBag.SalesPersons as List<Genrev.Web.App.CommonListItems.Person> ?? new List<Genrev.Web.App.CommonListItems.Person>();
+    var customersRaw = ViewBag.Customers as List<Genrev.Web.App.Customers.Models.CustomerDDLVM> ?? new List<Genrev.Web.App.Customers.Models.CustomerDDLVM>();
+    var areaOfResponsibilitiesRaw = ViewBag.AreaOfResponsibilities as List<SelectListItem> ?? new List<SelectListItem>();
 
-    List<SelectListItem> customersList = ((List<Genrev.Web.App.Customers.Models.CustomerDDLVM>)ViewBag.Customers)
-    .Select(sp => new SelectListItem { Value = sp.ID.ToString(), Text = sp.Name }).ToList();
+    // Safe list for SelectListItem mapping (you may remove if unused in controls)
+    List<SelectListItem> salesPersonList = salesPersonsRaw
+        .Select(sp => new SelectListItem { Value = sp.ID.ToString(), Text = sp.DisplayName }).ToList();
 
-    var customers = ViewBag.Customers as List<Genrev.Web.App.Customers.Models.CustomerDDLVM>;
+    List<SelectListItem> customersList = customersRaw
+        .Select(sp => new SelectListItem { Value = sp.ID.ToString(), Text = sp.Name }).ToList();
 
-
+    // Safe ViewBag reads
     bool IsAdmin = ViewBag.IsAdmin ?? false;
-    int selectedSalesPersonId = (int)ViewBag.SelectedSalesPersonId;
-    int selectedCustomerId = (int)ViewBag.SelectedCustomerId;
+    int selectedSalesPersonId = ViewBag.SelectedSalesPersonId != null ? (int)ViewBag.SelectedSalesPersonId : 0;
+    int selectedCustomerId = ViewBag.SelectedCustomerId != null ? (int)ViewBag.SelectedCustomerId : 0;
+    int selectedAreaOfResponsibilities = ViewBag.SelectedAreaOfResponsibilities != null ? (int)ViewBag.SelectedAreaOfResponsibilities : 0;
+
+    // Ensure model properties are not null (prevents .Count null exceptions)
+    if (Model.Phones == null) { Model.Phones = new List<string>(); }
+    if (Model.Emails == null) { Model.Emails = new List<string>(); }
+    if (Model.Notes == null) { Model.Notes = new List<string>(); }
+    if (Model.Addresses == null) { Model.Addresses = new List<Genrev.Data.DTOs.AddressViewModel>(); }
+    if (Model.UploadedFiles == null) { Model.UploadedFiles = new List<Genrev.Data.DTOs.CRMFileViewModel>(); }
 }
 
 <div style="padding:20px;">
@@ -48,7 +77,6 @@
                            s.Properties.CaptionCellStyle.Width = 150;
                            s.Properties.ClientSideEvents.ValueChanged = "onCustomerChange";
                        }).BindList(ViewBag.customers).Bind(ViewBag.selectedCustomerId).GetHtml()
-                       @*}).BindList(ViewBag.Customers).Bind(ViewBag.SelectedCustomerId).GetHtml()*@
                         </td>
                         <td class="td">
                             @Html.DevExpress().ComboBox(s =>
@@ -205,12 +233,12 @@
                             for (int i = 0; i < Model.Addresses.Count; i++)
                             {
                                 <tr>
-                                    <td><input type="text" name="Addresses[@i][AddressLine1]" value="@Model.Addresses[i].AddressLine1" class="form-control" required /></td>
-                                    <td><input type="text" name="Addresses[@i][AddressLine2]" value="@Model.Addresses[i].AddressLine2" class="form-control" required /></td>
-                                    <td><input type="text" name="Addresses[@i][City]" value="@Model.Addresses[i].City" class="form-control" required /></td>
-                                    <td><input type="text" name="Addresses[@i][State]" value="@Model.Addresses[i].State" class="form-control" required /></td>
-                                    <td><input type="text" name="Addresses[@i][Country]" value="@Model.Addresses[i].Country" class="form-control" required /></td>
-                                    <td><input type="text" name="Addresses[@i][Pincode]" value="@Model.Addresses[i].Pincode" class="form-control" required /></td>
+                                    <td><input type="text" name="Addresses[@i][AddressLine1]" value="@Model.Addresses[i].AddressLine1" class="form-control" /></td>
+                                    <td><input type="text" name="Addresses[@i][AddressLine2]" value="@Model.Addresses[i].AddressLine2" class="form-control" /></td>
+                                    <td><input type="text" name="Addresses[@i][City]" value="@Model.Addresses[i].City" class="form-control" /></td>
+                                    <td><input type="text" name="Addresses[@i][State]" value="@Model.Addresses[i].State" class="form-control" /></td>
+                                    <td><input type="text" name="Addresses[@i][Country]" value="@Model.Addresses[i].Country" class="form-control" /></td>
+                                    <td><input type="text" name="Addresses[@i][Pincode]" value="@Model.Addresses[i].Pincode" class="form-control" /></td>
                                     <td>
                                         @if (i == 0)
                                         {
@@ -227,12 +255,12 @@
                         else
                         {
                             <tr>
-                                <td><input type="text" name="Addresses[0][AddressLine1]" value="" class="form-control" required /></td>
-                                <td><input type="text" name="Addresses[0][AddressLine2]" value="" class="form-control" required /></td>
-                                <td><input type="text" name="Addresses[0][City]" value="" class="form-control" required /></td>
-                                <td><input type="text" name="Addresses[0][State]" value="" class="form-control" required /></td>
-                                <td><input type="text" name="Addresses[0][Country]" value="" class="form-control" required /></td>
-                                <td><input type="text" name="Addresses[0][Pincode]" value="" class="form-control" required /></td>
+                                <td><input type="text" name="Addresses[0][AddressLine1]" value="" class="form-control" /></td>
+                                <td><input type="text" name="Addresses[0][AddressLine2]" value="" class="form-control" /></td>
+                                <td><input type="text" name="Addresses[0][City]" value="" class="form-control" /></td>
+                                <td><input type="text" name="Addresses[0][State]" value="" class="form-control" /></td>
+                                <td><input type="text" name="Addresses[0][Country]" value="" class="form-control" /></td>
+                                <td><input type="text" name="Addresses[0][Pincode]" value="" class="form-control" /></td>
                                 <td>
                                     <button type="button" class="add-btn float-right" onclick="addAddressRow()">+</button>
                                 </td>
@@ -309,15 +337,19 @@
                         <tbody>
                             @foreach (var file in Model.UploadedFiles)
                             {
+                                if (file == null)
+                                {
+                                    continue;
+                                }
                                 string absoluteFilePath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~"), file.FilePath);
                                 <tr class="tr">
                                     <td class="td">
                                         @{
-                                            string relativeFilePath = Url.Content("~/" + file.FilePath + "/" + file.FileName);                                            
+                                            string relativeFilePath = Url.Content("~/" + file.FilePath + "/" + file.FileName);
                                             if (!System.IO.File.Exists(Server.MapPath(relativeFilePath)))
                                             {
                                                 try
-                                                {                                                    
+                                                {
                                                     var directory = System.IO.Path.GetDirectoryName(Server.MapPath("/"));
                                                     var fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(file.FileName);
                                                     var extension = System.IO.Path.GetExtension(file.FileName);
@@ -334,7 +366,6 @@
                                             }
                                         }
                                         <a href="@relativeFilePath" download>@file.FileName</a>
-                                        @*@file.FileName*@
                                     </td>
                                     <td class="td">
                                         <button type="button" class="remove-btn" onclick="deleteFile('@file.Id')">Delete</button>
@@ -412,13 +443,13 @@
         var newField = "";
         if (type == 'textbox') {
             newField = `<div class="field-group" style="padding-left:150px;">
-                                                                                                                         <input type="${type}" name="${name}[${index}]" class="form-control" required style="width: 163px;margin-left: 5px;" />
+                                                                                                                         <input type="${type}" name="${name}[${index}]" class="form-control"  style="width: 163px;margin-left: 5px;" />
                                                                                                                          <button type="button" class="remove-btn" onclick="removeField(this)">-</button>
                                                                                                                      </div>`;
         }
         else {
             newField = `<div class="field-group" style="padding-left:156px;">
-                                                                                                           <textarea name="${name}[${index}]" class="form-control" required></textarea>
+                                                                                                           <textarea name="${name}[${index}]" class="form-control" ></textarea>
                                                                                                             <button type="button" class="remove-btn" onclick="removeField(this)">-</button>
                                                                                                        </div>`;
         }
@@ -428,7 +459,7 @@
     function addRemoveField(component_id) {
         var index = document.querySelectorAll(`#${containerId} .field-group`).length;
         var newField = `<div class="field-group">
-                                                                                                                                                 <input type="${type}" name="${name}[${index}]" class="form-control" required />
+                                                                                                                                                 <input type="${type}" name="${name}[${index}]" class="form-control"  />
                                                                                                                                                  <button type="button" class="remove-btn" onclick="removeField(this)">-</button>
                                                                                                                                              </div>`;
         document.getElementById(containerId).insertAdjacentHTML('beforeend', newField);
@@ -439,12 +470,12 @@
         var container = document.getElementById("cst_tbl_body");
         var newRow = document.createElement("tr");
         newRow.innerHTML = `
-                                                                                                                                                                <td><input type="text" name="Addresses[${index}][AddressLine1]" class="form-control" required /></td>
-                                                                                                                                                                <td><input type="text" name="Addresses[${index}][AddressLine2]" class="form-control" required /></td>
-                                                                                                                                                                <td><input type="text" name="Addresses[${index}][City]" class="form-control" required /></td>
-                                                                                                                                                                <td><input type="text" name="Addresses[${index}][State]" class="form-control" required /></td>
-                                                                                                                                                                <td><input type="text" name="Addresses[${index}][Country]" class="form-control" required /></td>
-                                                                                                                                                                <td><input type="text" name="Addresses[${index}][Pincode]" class="form-control" required /></td>
+                                                                                                                                                                <td><input type="text" name="Addresses[${index}][AddressLine1]" class="form-control"  /></td>
+                                                                                                                                                                <td><input type="text" name="Addresses[${index}][AddressLine2]" class="form-control"  /></td>
+                                                                                                                                                                <td><input type="text" name="Addresses[${index}][City]" class="form-control"  /></td>
+                                                                                                                                                                <td><input type="text" name="Addresses[${index}][State]" class="form-control"  /></td>
+                                                                                                                                                                <td><input type="text" name="Addresses[${index}][Country]" class="form-control"  /></td>
+                                                                                                                                                                <td><input type="text" name="Addresses[${index}][Pincode]" class="form-control"  /></td>
                                                                                                                                                                 <td><button type="button" class="btn btn-danger btn-sm remove-btn" onclick="removeAddressRow(this)">-</button></td>
                                                                                                                                                             `;
         container.appendChild(newRow);

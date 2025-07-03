@@ -17,7 +17,7 @@ namespace Genrev.Web.App.MemberBar
 		{
 			dataContext = new Genrev.Data.GenrevContext();
 			_dataService = new DataService();
-		}	
+		}		
 		[HttpGet]
 		public ActionResult ViewAs()
 		{

@@ -1,21 +1,4 @@
-﻿@*@model Genrev.Data.DTOs.CRMViewModel
-    @{
-        List<SelectListItem> salesPersonList = ((List<Genrev.Web.App.CommonListItems.Person>)ViewBag.SalesPersons)
-        .Select(sp => new SelectListItem { Value = sp.ID.ToString(), Text = sp.DisplayName }).ToList();
-
-        List<SelectListItem> customersList = ((List<Genrev.Web.App.Customers.Models.CustomerDDLVM>)ViewBag.Customers)
-        .Select(sp => new SelectListItem { Value = sp.ID.ToString(), Text = sp.Name }).ToList();
-
-        var customers = ViewBag.Customers as List<Genrev.Web.App.Customers.Models.CustomerDDLVM>;
-
-
-        bool IsAdmin = ViewBag.IsAdmin ?? false;
-        int selectedSalesPersonId = (int)ViewBag.SelectedSalesPersonId;
-        int selectedCustomerId = (int)ViewBag.SelectedCustomerId;
-    }*@
-
-@model Genrev.Data.DTOs.CRMViewModel
-@* Removed duplicate @model statement above *@
+﻿@model Genrev.Data.DTOs.CRMViewModel
 @{
     // Null-safe ViewBag conversions with fallbacks to empty lists
     var salesPersonsRaw = ViewBag.SalesPersons as List<Genrev.Web.App.CommonListItems.Person> ?? new List<Genrev.Web.App.CommonListItems.Person>();

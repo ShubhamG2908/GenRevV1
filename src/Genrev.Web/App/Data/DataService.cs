@@ -144,32 +144,52 @@ namespace Genrev.Web.App.Data
 
 
 		#region FORECAST LOCK
-		public IEnumerable<object> GetForecastLocksByYear(int year)
+		public IEnumerable<object> GetForecastLocksByYear(int year,int companyId)
 		{
-			var items = _context.Database.SqlQuery<ForecastLockDTO>(@"SELECT 
-                    @Year AS Year,
-                    P.ID AS PersonnelID,
-                    P.PersonLastName AS PersonnelLastName,
-                    P.PersonFirstName AS PersonnelFirstName,
-                    CAST((
-	                    SELECT 
-                            CASE 
-                                WHEN Count(*) > 0 THEN 1
-                                ELSE 0
-                            END
-	                    FROM ForecastLocks AS FL
-	                    WHERE FL.PersonnelID = P.ID AND FL.Year = @Year
-                    ) AS bit) AS IsLocked
-                    FROM Personnel AS P 
-                    ORDER BY P.PersonLastName, P.PersonFirstName
-                ", new SqlParameter("@Year", year))
+			var items = _context.Database.SqlQuery<ForecastLockDTO>(@"
+						SELECT 
+							@Year AS Year,
+							P.ID AS PersonnelID,
+							P.PersonLastName AS PersonnelLastName,
+							P.PersonFirstName AS PersonnelFirstName,
+							CAST((
+								SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
+								FROM ForecastLocks AS FL
+								WHERE FL.PersonnelID = P.ID AND FL.Year = @Year
+							) AS bit) AS IsLocked
+						FROM Personnel AS P
+						WHERE P.CompanyID = @CompanyID
+						ORDER BY P.PersonLastName, P.PersonFirstName
+					", new System.Data.SqlClient.SqlParameter("@Year", year),
+				   new System.Data.SqlClient.SqlParameter("@CompanyID", companyId))
 				.ToList();
 			return items;
 		}
 
 
-		public bool AddForecastLock(int personnelID, int year)
+		//public bool AddForecastLock(int personnelID, int year)
+		//{
+		//	if (_context.ForecastLocks.Any(m => m.PersonnelID == personnelID && m.Year == year))
+		//	{
+		//		return false;
+		//	}
+		//	var forecastLock = new ForecastLock
+		//	{
+		//		PersonnelID = personnelID,
+		//		Year = year
+		//	};
+		//	_context.ForecastLocks.Add(forecastLock);
+		//	_context.SaveChanges();
+		//	return true;
+		//}
+		public bool AddForecastLock(int personnelID, int year, int companyId)
 		{
+			// ensure personnel belongs to the company
+			if (!_context.Personnel.Any(p => p.ID == personnelID && p.CompanyID == companyId))
+			{
+				return false;
+			}
+
 			if (_context.ForecastLocks.Any(m => m.PersonnelID == personnelID && m.Year == year))
 			{
 				return false;
@@ -185,8 +205,14 @@ namespace Genrev.Web.App.Data
 		}
 
 
-		public bool RemoveForecastLock(int personnelID, int year)
+		public bool RemoveForecastLock(int personnelID, int year, int companyId)
 		{
+			// ensure personnel belongs to the company
+			if (!_context.Personnel.Any(p => p.ID == personnelID && p.CompanyID == companyId))
+			{
+				return false;
+			}
+
 			var forecastLock = _context.ForecastLocks.SingleOrDefault(m => m.PersonnelID == personnelID && m.Year == year);
 			if (forecastLock == null)
 			{
@@ -196,6 +222,17 @@ namespace Genrev.Web.App.Data
 			_context.SaveChanges();
 			return true;
 		}
+		//public bool RemoveForecastLock(int personnelID, int year)
+		//{
+		//	var forecastLock = _context.ForecastLocks.SingleOrDefault(m => m.PersonnelID == personnelID && m.Year == year);
+		//	if (forecastLock == null)
+		//	{
+		//		return false;
+		//	}
+		//	_context.ForecastLocks.Remove(forecastLock);
+		//	_context.SaveChanges();
+		//	return true;
+		//}
 		#endregion
 
 

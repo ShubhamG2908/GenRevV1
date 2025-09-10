@@ -29,22 +29,25 @@ namespace Genrev.Web.App.Data
         [HttpGet]
         public ActionResult GetForecastLocks(int year)
         {
-            return Json(_service.GetForecastLocksByYear(year), JsonRequestBehavior.AllowGet);
-        }
+			int companyId = AppService.Current.Account.PrimaryCompany.ID;
+			return Json(_service.GetForecastLocksByYear(year, companyId), JsonRequestBehavior.AllowGet);
+		}
 
         [HttpPost]
         public ActionResult AddForecastLock(int personnelID, int year)
         {
-            var result = _service.AddForecastLock(personnelID, year);
-            return Json(result);
-        }
+			int companyId = AppService.Current.Account.PrimaryCompany.ID;
+			var result = _service.AddForecastLock(personnelID, year, companyId);
+			return Json(result);
+		}
 
         [HttpPost]
         public ActionResult RemoveForecastLock(int personnelID, int year)
         {
-            var result = _service.RemoveForecastLock(personnelID, year);
-            return Json(result);
-        }
+			int companyId = AppService.Current.Account.PrimaryCompany.ID;
+			var result = _service.RemoveForecastLock(personnelID, year, companyId);
+			return Json(result);
+		}
         #endregion
 
 

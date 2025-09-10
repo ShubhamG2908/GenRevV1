@@ -1276,16 +1276,71 @@ namespace Genrev.Web.App.Analysis
 
             public List<Models.CallPlanOverviewListItem> GetCallPlanOverviewListItems(int fiscalYear, int personID)
             {
-                var data = AppService.Current.DataContext.GetCallPlanOverviewByPersonnel(fiscalYear, personID);
-                var items = new List<Models.CallPlanOverviewListItem>();
+				var dataSet = AppService.Current.DataContext.GetCallPlanOverviewByPersonnel(fiscalYear, personID);
+				var rawItems = dataSet?.Items ?? new List<Domain.DataSets.CallPlanOverview>();
 
-                foreach (var d in data.Items)
-                {
-                    items.Add(Models.CallPlanOverviewListItem.FromCallPlanOverviewModel(d));
-                }
+				// Determine the company we should show account-types for
+				int companyID = AppService.Current.Account.PrimaryCompany.ID;
 
-                return items;
-            }
+				// Fetch only account types that belong to this company
+				var accountTypes = AppService.Current.DataContext.AccountTypes
+					.Where(at => at.CompanyID == companyID)
+					.OrderBy(at => at.Name)
+					.Select(at => at.Name)
+					.ToList();
+
+				var result = new List<Models.CallPlanOverviewListItem>();
+
+				// Aggregate raw items by AccountType to avoid duplicates (one row per account type)
+				var grouped = rawItems
+					.GroupBy(d => d.AccountType ?? string.Empty)
+					.ToDictionary(g => g.Key, g => new
+					{
+						YearlyCallPlan = g.Sum(x => x.YearlyCallPlan ?? 0),
+						GoalCount = g.Sum(x => x.GoalCount ?? 0),
+						NumberOfAccounts = g.Sum(x => x.NumberOfAccounts),
+						TotalCalls = g.Sum(x => x.TotalCalls ?? 0),
+						SalesForecast = g.Sum(x => x.SalesForecast ?? 0m)
+					});
+
+				// For each account type that belongs to the company, create a single list item.
+				foreach (var atName in accountTypes)
+				{
+					if (grouped.TryGetValue(atName, out var agg))
+					{
+						result.Add(new Models.CallPlanOverviewListItem
+						{
+							AccountType = atName,
+							YearlyCallPlan = agg.YearlyCallPlan,
+							GoalCount = agg.GoalCount,
+							AvgWeeklyCalls = agg.YearlyCallPlan / 52.0,
+							MonthlyCalls = agg.YearlyCallPlan / 12.0,
+							NumberOfAccounts = agg.NumberOfAccounts,
+							TotalCalls = agg.TotalCalls,
+							PercentOfTotalCalls = dataSet.TotalCalls == 0 ? 0 : (agg.TotalCalls / (double)dataSet.TotalCalls) * 100,
+							PercentOfTotalSales = dataSet.TotalSales == 0 ? 0 : (agg.SalesForecast / dataSet.TotalSales) * 100
+						});
+					}
+					else
+					{
+						// No data for this account-type for the selected person/year -> show an empty/zero row
+						result.Add(new Models.CallPlanOverviewListItem
+						{
+							AccountType = atName,
+							YearlyCallPlan = 0,
+							GoalCount = 0,
+							AvgWeeklyCalls = 0,
+							MonthlyCalls = 0,
+							NumberOfAccounts = 0,
+							TotalCalls = 0,
+							PercentOfTotalCalls = 0,
+							PercentOfTotalSales = 0
+						});
+					}
+				}
+
+				return result;
+			}
 
             internal string GetSalesCallsJSON(int salesperson, DateTime startDate, DateTime endDate)
             {

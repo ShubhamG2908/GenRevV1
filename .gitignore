@@ -401,5 +401,5 @@ FodyWeavers.xsd
 /src/.cr
 
 # Exclude Upload Folder
-/src/App_Data/[Uu]ploads
+/src/Genrev.Web/App_Data/[Uu]ploads
 

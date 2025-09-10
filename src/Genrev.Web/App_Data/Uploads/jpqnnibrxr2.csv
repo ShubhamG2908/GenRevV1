@@ -1,0 +1,38 @@
+CustomerID,Name,CustomerTypeID,AccountTypeID,IndustryTypeID,Address1,Address2,City,State,Country,Phone,PostalCode
+TN-01,All Start Peanuts LLC,CT-02,AT-01,IT-01,P.O. Box 39,"-",Wellman,Texas,United States,"-",79378
+TN-02,Continental Floral Greens,CT-04,AT-04,IT-04,804 Nw Martin Road,"-",Forest Grove,Oregon,United States,"-",97116
+TN-03,Desert Creek Ranch,CT-01,AT-04,IT-01,54000 Harman Road,"-",Brothers,Oregon,United States,"-",97712
+TN-04,FrankDick Farms,CT-02,AT-02,IT-01,261 County Road 402,"-",Seminole,Texas,United States,"-",79360
+TN-05,J&S Brothers Farms LLC,CT-02,AT-01,IT-02,385 Lincoln Mill Road,"-",Mullica Hill,New Jersey,United States,"-",8062
+TN-06,Martori Farms,CT-04,AT-01,IT-02,51240 Valley Road,"-",El Aguila,Arizona,United States,"-",85320
+TN-07,Acosta Farms Inc.,CT-04,AT-03,IT-04,21051 Sw 177Th Ave,"-",Miami,Florida,United States,"-",33187
+TN-08,"Alger Farms, Inc",CT-01,AT-04,IT-04,Po Box 1253,"-",Homestead,Florida,United States,"-",33030
+TN-09,Andersen Farms,CT-01,AT-04,IT-04,18455 Sw 272 St,"-",Homestead,Florida,United States,"-",33033
+TN-10,B&W Quality Growers,CT-04,AT-01,IT-02,7798 County Road 512,"-",Fellsmere,Florida,United States,"-",32498
+TN-11,"Continental Floral FL, LLC",CT-01,AT-04,IT-04,PO Box 38,"-",Glenwood,Florida,United States,"-",32722
+TN-12,Costa Farm,CT-05,AT-01,IT-04,"-","-","-","-",United States,"-",
+TN-13,"Everbloom Growers, Inc",CT-03,AT-04,IT-04,20450 Sw 248 Street,"-",Homestead,Florida,United States,"-",33031
+TN-14,Exotic Botanicals Inc.,CT-03,AT-04,IT-04,14750 Sw 216 St,"-",Miami,Florida,United States,"-",33170
+TN-15,FERNLEA Nurseries,CT-04,AT-04,IT-04,16700 Sw 184 St,"-",Miami,Florida,United States,"-",33187
+TN-16,FERNLEA NURSERIES JUPITER,CT-04,AT-04,IT-04,16000 Sw Pratt Whitney Road,"-",Stuart,Florida,United States,"-",34997
+TN-17,Florida Tuxedo Plants,CT-01,AT-04,IT-04,19650 Sw 167Th Aveneu,"-",Miami,Florida,United States,"-",33187
+TN-18,Morejon Farms LLC,CT-01,AT-04,IT-04,20550 Sw 280 St,"-",Homestead,Florida,United States,"-",33031
+TN-19,"Nature’s Quality Designs, LLC",CT-03,AT-04,IT-04,6800 Mount Plymouth Road,"-",Apopka,Florida,United States,"-",32712
+TN-20,"Nature's Way Farms, LLC",CT-01,AT-04,IT-04,20950 Sw 177 Avenue,"-",Miami,Florida,United States,"-",33187
+TN-21,Rivers Plant farm,CT-03,AT-04,IT-04,15755 Sw Ave,"-",Miami,Florida,United States,"-",33187
+TN-22,"United Nursery, LLC",CT-02,AT-04,IT-04,30401 Sw 217Th Avenue,"-",Homestead,Florida,United States,"-",33030
+TN-23,"Vera's Nursery, Inc",CT-04,AT-02,IT-04,20451 Sw 216Th Street,"-",Miami,Florida,United States,"-",33170
+TN-24,Casa Verde Farms,CT-03,AT-04,IT-02,2138 Trapping Brook Rd,"-",Wellsville,New York,United States,"-",
+TN-25,"Curaleaf Florida, LLC  - Miami",CT-01,AT-04,IT-05,10720 Caribbean Blvd. Ste. 500,"-",Cutler Bay,Florida,United States,"-",33189
+TN-26,"Curaleaf Florida, LLC- Mt. Dora",CT-01,AT-03,IT-05,10720 Caribbean Blvd. Ste. 500,"-",Cutler Bay,Florida,United States,"-",33189
+TN-27,Curaleaf- New Jersey,CT-01,AT-04,IT-02,200 South Route 73,"-",Hammonton,New Jersey,United States,"-",8037
+TN-28,"FLORIDA SPECIALTY FARMS, INC",CT-03,AT-04,IT-02,2950 Nw 74Th Avenue,"-",Miami,Florida,United States,"-",33122
+TN-29,Island Tropical Foliage,CT-01,AT-04,IT-04,17960 Sw 232 St,"-",Miami,Florida,United States,"-",33170
+TN-30,Jardines Mexico Nursery LLC,CT-03,AT-04,IT-04,19460 Sw 187 Ave,"-",Miami,Florida,United States,"-",33187
+TN-31,Southern Organics,CT-02,AT-01,IT-03,822  99Th Avenue North,"-",Naples,Florida,United States,"-",34108
+TN-32,Prides Corner Farms INC,CT-04,AT-03,IT-04,122 Waterman Road,"-",Lebanon,Connecticut,United States,"-",6249
+TN-33,Continental Floral Greens (California),CT-05,AT-04,IT-06,TBD,"-",TBD,TBD,United States,"-",11111
+TN-34,Continental North Carolina,CT-05,AT-04,IT-06,TBD,"-",TBD,TBD,United States,"-",11111
+TN-35,Executive Turf & Synergy Turf Supply,CT-05,AT-01,IT-06,TBD,"-",TBD,TBD,United States,"-",11111
+TN-36,First Choice Turf Supply LLC,CT-05,AT-01,IT-06,TBD,"-",TBD,TBD,United States,"-",11111
+TN-37,First Step Landscaping,CT-05,AT-04,IT-06,TBD,"-",TBD,TBD,United States,"-",11111

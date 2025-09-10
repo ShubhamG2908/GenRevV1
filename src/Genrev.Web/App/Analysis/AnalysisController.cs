@@ -1,5 +1,6 @@
 ﻿using DevExpress.Web;
-
+using Genrev.Domain;
+using Genrev.DomainServices.Data;
 using System;
 using System.Linq;
 using System.Web.Mvc;
@@ -8,7 +9,8 @@ namespace Genrev.Web.App.Analysis
 {
     public class AnalysisController : Dymeng.Web.Mvc.DevExpress.ContentAreaController
     {
-        protected static decimal salesActualTotal;
+		private readonly YearProvider _yearProvider = new YearProvider();
+		protected static decimal salesActualTotal;
         protected static decimal salesForecastTotal;
         protected static decimal potentialTotal;
         protected static decimal GPDActualTotal;
@@ -570,7 +572,10 @@ namespace Genrev.Web.App.Analysis
 
             var model = new Models.ActualVsForecastVM();
 
-            model.FiscalYearList = CommonListItems.DataService.GetFiscalYearList();
+            // Fix for the CS0029 error by mapping the Domain.FiscalYear to CommonListItems.FiscalYear
+            model.FiscalYearList = _yearProvider.GetDefaultYears()
+                .Select(y => new CommonListItems.FiscalYear { Number = y })
+                .ToList();
             model.PersonsFilterList.Insert(0, new CommonListItems.Person() { ID = -1, FirstName = "<All ", LastName = "Salespersons>" });
             model.IndustriesList.Insert(0, new CommonListItems.Industry() { ID = -1, Name = "<All Industries>" });
             model.CustomerTypesList.Insert(0, new CommonListItems.CustomerType() { ID = -1, Name = "<All Customer Types>" });
@@ -585,7 +590,9 @@ namespace Genrev.Web.App.Analysis
             model.ProductsList = model.ProductsList.OrderBy(x => x.SKU).ToList();
             model.CustomersList = model.CustomersList.OrderBy(x => x.Name).ToList();
 
-            model.DefaultFiscalYear = model.FiscalYearList?.Where(x => x.Number == model.FiscalYearList?.Max(y => y.Number)).SingleOrDefault();
+            model.DefaultFiscalYear = model.FiscalYearList?
+                .FirstOrDefault(x => x.Number == _yearProvider.GetDefaultYear())
+                ?? model.FiscalYearList?.FirstOrDefault();
             model.DefaultPerson = model.PersonsFilterList.Where(x => x.ID == -1).Single();
             model.DefaultIndustry = model.IndustriesList.Where(x => x.ID == -1).Single();
             model.DefaultCustomerType = model.CustomerTypesList.Where(x => x.ID == -1).Single();
@@ -877,35 +884,40 @@ namespace Genrev.Web.App.Analysis
         }
 
 
-        #endregion
+		#endregion
 
-        #region OPPORTUNITIES
-        /***********************
+		#region OPPORTUNITIES
+		/***********************
          * 
          * OPPORTUNITIES
          * 
          * ********************/
-        public ActionResult Opportunities()
-        {
+		public ActionResult Opportunities()
+		{
+			var model = new Models.OpportunitiesVM();
 
-            var model = new Models.OpportunitiesVM();
+			// Try to populate from DataService first; if it returns null/empty fall back to YearProvider
+			var fyList = CommonListItems.DataService.GetFiscalYearList();
+			if (fyList == null || !fyList.Any())
+			{
+				fyList = _yearProvider.GetDefaultYears()
+					.Select(y => new CommonListItems.FiscalYear { Number = y })
+					.ToList();
+			}
+			model.FiscalYearList = fyList;
 
-            model.FiscalYearList = CommonListItems.DataService.GetFiscalYearList();
-            model.PersonsFilterList.Insert(0, new CommonListItems.Person() { ID = -1, FirstName = "<All ", LastName = "Salespersons>" });
-            //model.IndustriesList.Insert(0, new CommonListItems.Industry() { ID = -1, Name = "<All Industries>" });
-            //model.CustomerTypesList.Insert(0, new CommonListItems.CustomerType() { ID = -1, Name = "<All Customer Types>" });
-            //model.AccountTypesList.Insert(0, new CommonListItems.AccountType() { ID = -1, Name = "<All Account Types>" });
+			model.PersonsFilterList.Insert(0, new CommonListItems.Person() { ID = -1, FirstName = "<All ", LastName = "Salespersons>" });
 
-            model.DefaultFiscalYear = model.FiscalYearList?.Where(x => x.Number == model.FiscalYearList?.Max(y => y.Number)).SingleOrDefault();
-            model.DefaultPerson = model.PersonsFilterList.Where(x => x.ID == -1).Single();
-            //model.DefaultIndustry = model.IndustriesList.Where(x => x.ID == -1).Single();
-            //model.DefaultCustomerType = model.CustomerTypesList.Where(x => x.ID == -1).Single();
-            //model.DefaultAccountType = model.AccountTypesList.Where(x => x.ID == -1).Single();
+			model.DefaultFiscalYear = model.FiscalYearList?
+				.FirstOrDefault(x => x.Number == _yearProvider.GetDefaultYear())
+				?? model.FiscalYearList?.FirstOrDefault();
 
-            return GetView("Opportunities", model);
-        }
+			model.DefaultPerson = model.PersonsFilterList.Where(x => x.ID == -1).Single();
 
-        [Route("Analysis/Opportunities/Data/Salesperson")]
+			return GetView("Opportunities", model);
+		}
+
+		[Route("Analysis/Opportunities/Data/Salesperson")]
         public string OpportunitiesDataSalesperson(int? salespersonID, int? year)
         {
 
@@ -1006,46 +1018,57 @@ namespace Genrev.Web.App.Analysis
 
         }
 
-        #endregion
+		#endregion
 
-        #region SALES CALLS
-        /***********************
+		#region SALES CALLS
+		/***********************
          * 
          * SALES CALLS
          * 
          * ********************/
-        public ActionResult SalesCalls()
-        {
+		public ActionResult SalesCalls()
+		{
 
-            var model = new Models.SalesCallsVM();
+			var model = new Models.SalesCallsVM();
 
-            model.FiscalYearList = CommonListItems.DataService.GetFiscalYearList();
-            model.PersonsFilterList.Insert(0, new CommonListItems.Person() { ID = -1, FirstName = "<All ", LastName = "Salespersons>" });
-            model.IndustriesList.Insert(0, new CommonListItems.Industry() { ID = -1, Name = "<All Industries>" });
-            model.CustomerTypesList.Insert(0, new CommonListItems.CustomerType() { ID = -1, Name = "<All Customer Types>" });
-            model.AccountTypesList.Insert(0, new CommonListItems.AccountType() { ID = -1, Name = "<All Account Types>" });
-            model.ProductsList.Insert(0, new CommonListItems.Product() { ID = -1, SKU = "<All SKUs>" });
-            model.CustomersList.Insert(0, new CommonListItems.Customer() { ID = -1, Name = "<All Customers>" });
+			// ensure FiscalYearList is populated (fallback to YearProvider if DataService returns nothing)
+			var fyList = CommonListItems.DataService.GetFiscalYearList();
+			if (fyList == null || !fyList.Any())
+			{
+				fyList = _yearProvider.GetDefaultYears()
+					.Select(y => new CommonListItems.FiscalYear { Number = y })
+					.ToList();
+			}
+			model.FiscalYearList = fyList;
 
-            model.PersonsFilterList = model.PersonsFilterList.OrderBy(x => x.LastName).ToList();
-            model.IndustriesList = model.IndustriesList.OrderBy(x => x.Name).ToList();
-            model.CustomerTypesList = model.CustomerTypesList.OrderBy(x => x.Name).ToList();
-            model.AccountTypesList = model.AccountTypesList.OrderBy(x => x.Name).ToList();
-            model.ProductsList = model.ProductsList.OrderBy(x => x.SKU).ToList();
-            model.CustomersList = model.CustomersList.OrderBy(x => x.Name).ToList();
+			model.PersonsFilterList.Insert(0, new CommonListItems.Person() { ID = -1, FirstName = "<All ", LastName = "Salespersons>" });
+			model.IndustriesList.Insert(0, new CommonListItems.Industry() { ID = -1, Name = "<All Industries>" });
+			model.CustomerTypesList.Insert(0, new CommonListItems.CustomerType() { ID = -1, Name = "<All Customer Types>" });
+			model.AccountTypesList.Insert(0, new CommonListItems.AccountType() { ID = -1, Name = "<All Account Types>" });
+			model.ProductsList.Insert(0, new CommonListItems.Product() { ID = -1, SKU = "<All SKUs>" });
+			model.CustomersList.Insert(0, new CommonListItems.Customer() { ID = -1, Name = "<All Customers>" });
 
-            model.DefaultFiscalYear = model.FiscalYearList?.Where(x => x.Number == model.FiscalYearList?.Max(y => y.Number)).SingleOrDefault();
-            model.DefaultPerson = model.PersonsFilterList.Where(x => x.ID == -1).Single();
-            model.DefaultIndustry = model.IndustriesList.Where(x => x.ID == -1).Single();
-            model.DefaultCustomerType = model.CustomerTypesList.Where(x => x.ID == -1).Single();
-            model.DefaultAccountType = model.AccountTypesList.Where(x => x.ID == -1).Single();
-            model.DefaultProduct = model.ProductsList.Where(x => x.ID == -1).Single();
-            model.DefaultCustomer = model.CustomersList.Where(x => x.ID == -1).Single();
+			model.PersonsFilterList = model.PersonsFilterList.OrderBy(x => x.LastName).ToList();
+			model.IndustriesList = model.IndustriesList.OrderBy(x => x.Name).ToList();
+			model.CustomerTypesList = model.CustomerTypesList.OrderBy(x => x.Name).ToList();
+			model.AccountTypesList = model.AccountTypesList.OrderBy(x => x.Name).ToList();
+			model.ProductsList = model.ProductsList.OrderBy(x => x.SKU).ToList();
+			model.CustomersList = model.CustomersList.OrderBy(x => x.Name).ToList();
 
-            return GetView("SalesCalls", model);
-        }
+			model.DefaultFiscalYear = model.FiscalYearList?
+				.FirstOrDefault(x => x.Number == _yearProvider.GetDefaultYear())
+				?? model.FiscalYearList?.FirstOrDefault();
+			model.DefaultPerson = model.PersonsFilterList.Where(x => x.ID == -1).Single();
+			model.DefaultIndustry = model.IndustriesList.Where(x => x.ID == -1).Single();
+			model.DefaultCustomerType = model.CustomerTypesList.Where(x => x.ID == -1).Single();
+			model.DefaultAccountType = model.AccountTypesList.Where(x => x.ID == -1).Single();
+			model.DefaultProduct = model.ProductsList.Where(x => x.ID == -1).Single();
+			model.DefaultCustomer = model.CustomersList.Where(x => x.ID == -1).Single();
 
-        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+			return GetView("SalesCalls", model);
+		}
+
+		[AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult AnalysisSalesCallsOverview(int? salespersonID, int? fiscalYear)
         {
             if (salespersonID == null || salespersonID == -1)

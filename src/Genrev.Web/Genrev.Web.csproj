@@ -211,53 +211,147 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="DevExpress.Data.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Web.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Web.ASPxHtmlEditor.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Web.ASPxSpellChecker.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Web.ASPxGantt.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Web.ASPxTreeList.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Web.ASPxThemes.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Web.ASPxPivotGrid.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Data.Desktop.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Utils.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Office.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.SpellChecker.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Charts.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.XtraCharts.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.XtraGauges.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.XtraGauges.v20.2.Presets, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Web.ASPxGauges.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.XtraCharts.v20.2.Web, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.RichEdit.v20.2.Export, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Printing.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Sparkline.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.CodeParser.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.XtraReports.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.XtraReports.v20.2.Web.WebForms, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.XtraReports.v20.2.Web, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.XtraPivotGrid.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.PivotGrid.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.XtraScheduler.v20.2.Core.Desktop, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.XtraScheduler.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Web.ASPxScheduler.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Spreadsheet.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.DataVisualization.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Web.ASPxSpreadsheet.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.RichEdit.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Pdf.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Web.ASPxRichEdit.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Xpo.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.DataAccess.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.TreeMap.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.XtraTreeMap.v20.2.UI, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.XtraTreeMap.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Dashboard.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Web.Resources.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Dashboard.v20.2.Web.WebForms, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Dashboard.v20.2.Web, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Dashboard.v20.2.Web.Mvc5, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Web.Mvc5.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Data.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Data.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Web.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxHtmlEditor.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Web.ASPxHtmlEditor.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxSpellChecker.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Web.ASPxSpellChecker.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxGantt.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Web.ASPxGantt.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxTreeList.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Web.ASPxTreeList.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxThemes.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Web.ASPxThemes.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxPivotGrid.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Web.ASPxPivotGrid.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.Desktop.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Data.Desktop.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Utils.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Office.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Office.v20.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.SpellChecker.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.SpellChecker.v20.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Charts.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Charts.v20.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.XtraCharts.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGauges.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.XtraGauges.v20.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGauges.v20.2.Presets, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.XtraGauges.v20.2.Presets.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxGauges.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Web.ASPxGauges.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v20.2.Web, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.XtraCharts.v20.2.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v20.2.Export, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.RichEdit.v20.2.Export.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Printing.v20.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Sparkline.v20.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.CodeParser.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.CodeParser.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.XtraReports.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v20.2.Web.WebForms, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.XtraReports.v20.2.Web.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v20.2.Web, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.XtraReports.v20.2.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPivotGrid.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.XtraPivotGrid.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.PivotGrid.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.PivotGrid.v20.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v20.2.Core.Desktop, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.XtraScheduler.v20.2.Core.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.XtraScheduler.v20.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxScheduler.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Web.ASPxScheduler.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Spreadsheet.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Spreadsheet.v20.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DataVisualization.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.DataVisualization.v20.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxSpreadsheet.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Web.ASPxSpreadsheet.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.RichEdit.v20.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Pdf.v20.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxRichEdit.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Web.ASPxRichEdit.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpo.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Xpo.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DataAccess.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.DataAccess.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.TreeMap.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.TreeMap.v20.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeMap.v20.2.UI, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.XtraTreeMap.v20.2.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeMap.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.XtraTreeMap.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Dashboard.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Dashboard.v20.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.Resources.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Web.Resources.v20.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Dashboard.v20.2.Web.WebForms, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Dashboard.v20.2.Web.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Dashboard.v20.2.Web, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Dashboard.v20.2.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Dashboard.v20.2.Web.Mvc5, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Dashboard.v20.2.Web.Mvc5.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.Mvc5.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>bin\DevExpress.Web.Mvc5.v20.2.dll</HintPath>
+    </Reference>
     <Reference Include="WebMatrix.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.3.2.7\lib\net45\WebMatrix.Data.dll</HintPath>
     </Reference>
@@ -266,6 +360,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_AccountTypes.csv" />
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_AreaOfResponsibility.csv" />
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_Companies.csv" />
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_Customers.csv" />
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_CustomerTypes.csv" />
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_ForecastData.csv" />
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_Industries.csv" />
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_MonthlyData.csv" />
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_Personnel.csv" />
+    <Content Include="App_Data\ImportTemplates\xmlExample_AccountTypesPostRequest - Copy.xml" />
+    <Content Include="App_Data\ImportTemplates\xmlExample_CustomerTypes.xml" />
+    <Content Include="App_Data\ImportTemplates\xmlExample_Customes.xml" />
+    <Content Include="App_Data\ImportTemplates\xmlExample_IndustryTypes.xml" />
+    <Content Include="App_Data\ImportTemplates\xmlExample_PersonnelPostRequest.xml" />
     <Content Include="client\content\down-double-16-light.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -513,24 +621,6 @@
     <Content Include="App\Personnel\Views\AvailabilityPopup.cshtml" />
     <Content Include="App\Personnel\Views\AvailabilityPopupGrid.cshtml" />
     <Content Include="App\Preferences\Views\Preferences.cshtml" />
-    <Content Include="App_Data\ImportTemplates\GRImportTemplate_AccountTypes.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\ImportTemplates\GRImportTemplate_Companies.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\ImportTemplates\GRImportTemplate_Customers.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\ImportTemplates\GRImportTemplate_CustomerTypes.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\ImportTemplates\GRImportTemplate_Industries.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\ImportTemplates\GRImportTemplate_Personnel.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="App\Analysis\Views\SalesCallPlanOverview.cshtml" />
     <Content Include="App\Shared\Views\FeatureDisabled.cshtml" />
     <Content Include="App\MemberBar\Views\FeedbackPopup.cshtml" />
@@ -539,14 +629,12 @@
     <Content Include="App\Analysis\Views\ActualVsForecastCustomerPage.cshtml" />
     <Content Include="App\Analysis\Views\HistoricCustomerPage.cshtml" />
     <Content Include="App\Analysis\Views\SalesCallsCustomerPage.cshtml" />
-    <Content Include="App_Data\ImportTemplates\GRImportTemplate_MonthlyData.csv" />
     <Content Include="App\Data\Views\DailyManagement.cshtml" />
     <Content Include="App\Data\Views\DailyManagementMatrix.cshtml" />
     <Content Include="App\Data\Views\DailyManagementMatrixByCostsGrid.cshtml" />
     <Content Include="App\Analysis\Views\HistoricAllInOnePage.cshtml" />
     <Content Include="App\Analysis\Views\Historic2.cshtml" />
     <Content Include="App\Data\Views\ImportForecastDataPopup.cshtml" />
-    <Content Include="App_Data\ImportTemplates\GRImportTemplate_ForecastData.csv" />
     <Content Include="App\CRM\Views\Index.cshtml" />
     <Content Include="App\CRM\Views\AddClient.cshtml" />
     <Content Include="App\CRM\Views\EditClient.cshtml" />
@@ -559,9 +647,87 @@
     <Content Include="App\Customers\Views\AreaOfResponsibilitiesGrid.cshtml" />
     <Content Include="App\Home\Views\_SalesBySalespersonGridPartial.cshtml" />
     <Content Include="App\Home\Views\_SalesByCustomerGridPartial.cshtml" />
-    <Content Include="App_Data\ImportTemplates\GRImportTemplate_AreaOfResponsibility.csv" />
+    <Content Include="App_Data\Uploads\055owdjcea4.csv" />
+    <Content Include="App_Data\Uploads\0bxdhvb5pm3.csv" />
+    <Content Include="App_Data\Uploads\0ccytogtvzg.csv" />
+    <Content Include="App_Data\Uploads\0u0zcsyctr4.csv" />
+    <Content Include="App_Data\Uploads\0w1se4odkz5.csv" />
+    <Content Include="App_Data\Uploads\1h1tmovrboy.csv" />
+    <Content Include="App_Data\Uploads\1j1cjlqn3mx.csv" />
+    <Content Include="App_Data\Uploads\1ur2wrnh41m.csv" />
+    <Content Include="App_Data\Uploads\21eajqole3r.csv" />
+    <Content Include="App_Data\Uploads\2ngcspyemlu.csv" />
+    <Content Include="App_Data\Uploads\2vp0zfctz2d.csv" />
+    <Content Include="App_Data\Uploads\3au33gbuvq3.csv" />
+    <Content Include="App_Data\Uploads\3c4scoebu4z.csv" />
+    <Content Include="App_Data\Uploads\3wxs4yiyupr.csv" />
+    <Content Include="App_Data\Uploads\434ec14awa1.csv" />
+    <Content Include="App_Data\Uploads\4iuq34q2lxk.csv" />
+    <Content Include="App_Data\Uploads\4mg1u033gre.csv" />
+    <Content Include="App_Data\Uploads\4sqh4v2x5ax.csv" />
+    <Content Include="App_Data\Uploads\5s2bb3merjk.csv" />
+    <Content Include="App_Data\Uploads\adrusoy1jfm.csv" />
+    <Content Include="App_Data\Uploads\awjqsqqm55t.csv" />
+    <Content Include="App_Data\Uploads\bfdu2504nfs.csv" />
+    <Content Include="App_Data\Uploads\bmbr4akn5ku.csv" />
+    <Content Include="App_Data\Uploads\c5xjgtjdhim.csv" />
+    <Content Include="App_Data\Uploads\cj5kvrufmn1.csv" />
+    <Content Include="App_Data\Uploads\dakuyxj2te2.csv" />
+    <Content Include="App_Data\Uploads\e10yrknv0lb.csv" />
+    <Content Include="App_Data\Uploads\e2go25bb22x.csv" />
+    <Content Include="App_Data\Uploads\fq1goq5be5x.csv" />
+    <Content Include="App_Data\Uploads\fqaznzjech5.csv" />
+    <Content Include="App_Data\Uploads\gvdsd2lpfu5.csv" />
+    <Content Include="App_Data\Uploads\hfcwwblyomx.csv" />
+    <Content Include="App_Data\Uploads\hu3beyzsygv.csv" />
+    <Content Include="App_Data\Uploads\iao4gayba5j.csv" />
+    <Content Include="App_Data\Uploads\ick0ygjoawd.csv" />
+    <Content Include="App_Data\Uploads\iokss4p0vqz.csv" />
+    <Content Include="App_Data\Uploads\ip0jwgjwgko.csv" />
+    <Content Include="App_Data\Uploads\jb5qchsrf4n.csv" />
+    <Content Include="App_Data\Uploads\jgc40tlydw4.csv" />
+    <Content Include="App_Data\Uploads\jm2istksvte.csv" />
+    <Content Include="App_Data\Uploads\jpqnnibrxr2.csv" />
+    <Content Include="App_Data\Uploads\jql1e2pkyji.csv" />
+    <Content Include="App_Data\Uploads\kk0eqqozcrm.csv" />
+    <Content Include="App_Data\Uploads\kpbkngje3ec.csv" />
+    <Content Include="App_Data\Uploads\kusryvb1nkv.csv" />
+    <Content Include="App_Data\Uploads\l2ohshm51wn.csv" />
+    <Content Include="App_Data\Uploads\l5x4mqkvfr1.csv" />
+    <Content Include="App_Data\Uploads\mtjbdlnrzan.csv" />
+    <Content Include="App_Data\Uploads\myllhhd2ydv.csv" />
+    <Content Include="App_Data\Uploads\n2anrpcrslh.csv" />
+    <Content Include="App_Data\Uploads\ng2umz44ior.csv" />
+    <Content Include="App_Data\Uploads\ophwnq2q25l.csv" />
+    <Content Include="App_Data\Uploads\qooloujd1cp.csv" />
+    <Content Include="App_Data\Uploads\qu0oriww32b.csv" />
+    <Content Include="App_Data\Uploads\qwnhkaolqju.csv" />
+    <Content Include="App_Data\Uploads\r5p0fhojbue.csv" />
+    <Content Include="App_Data\Uploads\rltyfxor2op.csv" />
+    <Content Include="App_Data\Uploads\rmhf2eg1atd.csv" />
+    <Content Include="App_Data\Uploads\rxje2ivjuml.csv" />
+    <Content Include="App_Data\Uploads\s3tv32pqoak.csv" />
+    <Content Include="App_Data\Uploads\u1hjqsfrdvi.csv" />
+    <Content Include="App_Data\Uploads\umlro5emwnp.csv" />
+    <Content Include="App_Data\Uploads\ut2bzcgsvw2.csv" />
+    <Content Include="App_Data\Uploads\v2t2kmykiyl.csv" />
+    <Content Include="App_Data\Uploads\vncnik2avjy.csv" />
+    <Content Include="App_Data\Uploads\vtlih43rz0t.csv" />
+    <Content Include="App_Data\Uploads\wnjaj1v3ay1.csv" />
+    <Content Include="App_Data\Uploads\xhowpzd4wuc.csv" />
+    <Content Include="App_Data\Uploads\xpxjryxwqfo.csv" />
+    <Content Include="App_Data\Uploads\ycnzrq2ckjs.csv" />
+    <Content Include="App_Data\Uploads\yikxzkaapvg.csv" />
+    <Content Include="App_Data\Uploads\ylnedrcrrbe.csv" />
+    <Content Include="App_Data\Uploads\ywkjizfhnqo.csv" />
+    <Content Include="App_Data\UploadTemp\dxupload_32a2449daaa5470c4b69440c6260c4b4smbb40jj.wnp.tmp" />
     <None Include="client\scripts\_references.js" />
     <Content Include="Content\Site.css" />
+    <Content Include="GenRevSP\CreateCompany.sql" />
+    <Content Include="GenRevSP\UpsertAccountTypesToLive_Company.sql" />
+    <Content Include="GenRevSP\UpsertCustomerTypesToLive_Customer.sql" />
+    <Content Include="GenRevSP\UpsertIndustryTypesToLive_Industry.sql" />
+    <Content Include="GenRevSP\UpsertPersonnelToLive_Personnel.sql" />
     <Content Include="Global.asax" />
     <Content Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
     <Content Include="packages.config" />
@@ -727,7 +893,6 @@
     <Compile Include="App\Subscription\SubscriptionController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\Uploads\" />
     <Folder Include="Content\CRMFiles\" />
   </ItemGroup>
   <ItemGroup>

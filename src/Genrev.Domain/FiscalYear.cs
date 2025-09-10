@@ -12,12 +12,13 @@ namespace Genrev.Domain
     {
 
         public const int NUMBER_OF_MONTHS = 12;
+		public int Number;
 
 
-        #region Properties & Fields
+		#region Properties & Fields
 
 
-        public DateTime StartDate { get; set; }
+		public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
         public FiscalQuarter Q1 { get; set; }

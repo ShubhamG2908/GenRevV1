@@ -1,34 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 
 namespace Genrev.DomainServices.Data
 {
     public class YearProvider
     {
+		public IEnumerable<int> GetDefaultYears()
+		{
+			int current = DateTime.Now.Year;
+			int pastYears = 5;
+			int futureYears = 5;
+			int start = current - pastYears;
+			int count = pastYears + futureYears + 1	; // inclusive of current
+			return Enumerable.Range(start, count);
+		}
 
-        public int GetDefaultYear()
-        {
-            return DateTime.UtcNow.Year;
-        }
+		public int GetDefaultYear()
+		{
+			return DateTime.UtcNow.Year;
+		}
 
-        public IEnumerable<int> GetDefaultYears()
-        {
-            var years = new List<int>();
-            var startYear = 19;
-            var endYear = 1;
-            int.TryParse(ConfigurationManager.AppSettings["YearMin"], out startYear);
-            int.TryParse(ConfigurationManager.AppSettings["YearMax"], out endYear);
-            int min = GetDefaultYear() - startYear;
-            var max = GetDefaultYear() + endYear;
-            while (min <= max)
-            {
-                years.Add(min);
-                min++;
-            }
-            years.Reverse();
-            return years;
-        }
+		// Optional overload if callers want custom ranges
+		public IEnumerable<int> GetDefaultYears(int pastYears, int futureYears)
+		{
+			int current = DateTime.Now.Year;
+			int start = current - Math.Max(0, pastYears);
+			int count = Math.Max(1, pastYears + futureYears + 1);
+			return Enumerable.Range(start, count);
+		}
 
-    }
+	}
 }

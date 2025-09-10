@@ -76,7 +76,7 @@ namespace Genrev.DomainServices.Data
             {
                 table = LoadCsvToTable(filePath, true);
                 table = DataTableTrimHelper.RemoveEmptyRows(table);
-                table = DataTableTrimHelper.RemoveEmptyColumns(table);
+                //table = DataTableTrimHelper.RemoveEmptyColumns(table);
             }
             catch (Exception e)
             {

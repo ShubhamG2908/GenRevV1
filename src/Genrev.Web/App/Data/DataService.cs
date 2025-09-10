@@ -167,21 +167,6 @@ namespace Genrev.Web.App.Data
 		}
 
 
-		//public bool AddForecastLock(int personnelID, int year)
-		//{
-		//	if (_context.ForecastLocks.Any(m => m.PersonnelID == personnelID && m.Year == year))
-		//	{
-		//		return false;
-		//	}
-		//	var forecastLock = new ForecastLock
-		//	{
-		//		PersonnelID = personnelID,
-		//		Year = year
-		//	};
-		//	_context.ForecastLocks.Add(forecastLock);
-		//	_context.SaveChanges();
-		//	return true;
-		//}
 		public bool AddForecastLock(int personnelID, int year, int companyId)
 		{
 			// ensure personnel belongs to the company
@@ -222,17 +207,6 @@ namespace Genrev.Web.App.Data
 			_context.SaveChanges();
 			return true;
 		}
-		//public bool RemoveForecastLock(int personnelID, int year)
-		//{
-		//	var forecastLock = _context.ForecastLocks.SingleOrDefault(m => m.PersonnelID == personnelID && m.Year == year);
-		//	if (forecastLock == null)
-		//	{
-		//		return false;
-		//	}
-		//	_context.ForecastLocks.Remove(forecastLock);
-		//	_context.SaveChanges();
-		//	return true;
-		//}
 		#endregion
 
 

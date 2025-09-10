@@ -1,8 +1,4 @@
-
-USE [GenRev06]
-GO
-
-CREATE OR ALTER PROCEDURE CreateUser
+CREATE OR ALTER PROCEDURE CreateCompany
     @Email NVARCHAR(128),
     @Password NVARCHAR(500),
     @SecurityQuestion NVARCHAR(500),

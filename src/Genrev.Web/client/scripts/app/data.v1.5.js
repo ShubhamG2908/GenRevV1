@@ -102,7 +102,7 @@ define(function () {
                         App.Errors.Show("Unable to import file:\n\n" + e.errorText);
                         return;
                     } else {
-                        App.Alert("Import Complete", DialogIcons.Ok);
+                        App.Alert("Import Complete and Records are Updated", DialogIcons.Ok);
                     }
                 }
             },

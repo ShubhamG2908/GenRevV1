@@ -499,7 +499,6 @@ namespace Genrev.Web.App.Data
 
 		public List<Dymeng.Validation.ValidationError> ProcessFileImport(ImportType importType, DevExpress.Web.UploadedFile file)
 		{
-
 			var errors = new List<Dymeng.Validation.ValidationError>();
 
 			string path = AppService.Current.Settings.FileUploadDirectory;
@@ -515,16 +514,53 @@ namespace Genrev.Web.App.Data
 			try
 			{
 				errors = csvImportHelper.ImportToStaging();
+
 				if (importType != ImportType.ForecastData)
-					importHelper.UpsertStagingToLive(importType, AppService.Current.Account.ID, true);
+				{
+					try
+					{
+						importHelper.UpsertStagingToLive(importType, AppService.Current.Account.ID, true);
+					}
+
+					catch (SqlException sqlEx)
+					{
+						
+						if (sqlEx.Number == 2601 || sqlEx.Number == 2627)
+						{
+							Log.Information("Import completed with duplicate-key(s): {Message}", sqlEx.Message);
+
+							return new List<Dymeng.Validation.ValidationError>();
+						}
+						else if (sqlEx.Number == 50000 || (sqlEx.Number >= 50001 && sqlEx.Number < 60000))
+						{
+							var err = new Dymeng.Validation.ValidationError();
+							err.ID = -1;
+							err.Message = sqlEx.Message;
+							errors.Add(err);
+							return errors;
+						}
+						else
+						{
+							var err = new Dymeng.Validation.ValidationError();
+							err.ID = -1;
+							err.Message = "We're sorry, we ran into a database error while processing the import.";
+							if (AppService.Current.Settings.DisplayDetailedErrors)
+							{
+								err.Message += "\r\n\r\n" + sqlEx.ToString();
+							}
+							errors.Add(err);
+							return errors;
+						}
+					}
+				}
+
 				AppCache.InvalidateAll();
 			}
-
 			catch (FormatException e)
 			{
 				var err = new Dymeng.Validation.ValidationError();
 				err.ID = -1;
-				err.Message = "There seems to be an issue with the file format.  Please verify the CSV format and try again.  Contact your administrator if the problem persists.";
+				err.Message = "There seems to be an issue with the file format. Please verify the CSV format and try again. Contact your administrator if the problem persists.";
 				Log.Debug("ProcessFileImport: " + e.Message);
 				if (AppService.Current.Settings.DisplayDetailedErrors)
 				{
@@ -533,14 +569,13 @@ namespace Genrev.Web.App.Data
 
 				errors.Add(err);
 			}
-
 			catch (Exception e)
 			{
 				System.Diagnostics.Debug.WriteLine(e.ToString());
 
 				var err = new Dymeng.Validation.ValidationError();
 				err.ID = -1;
-				err.Message = "We're sorry, we ran into an issue with this request.  Our development team has been notified.";
+				err.Message = "We're sorry, we ran into an issue with this request. Our development team has been notified.";
 				if (AppService.Current.Settings.DisplayDetailedErrors)
 				{
 					err.Message += "\r\n\r\n" + e.ToString();
@@ -551,6 +586,7 @@ namespace Genrev.Web.App.Data
 
 			return errors;
 		}
+
 
 		public int UpdateDefaultUser(int personnelId, int contextID)
 		{

@@ -402,7 +402,7 @@
     <Content Include="client\scripts\app\forecast.v1.0.js" />
     <Content Include="client\scripts\app\genrev.v1.4.js" />
     <Content Include="client\scripts\app\dashboard.v1.5.js" />
-    <Content Include="client\scripts\app\data.v1.4.js" />
+    <Content Include="client\scripts\app\data.v1.5.js" />
     <Content Include="client\scripts\app\owner.v1.0.js" />
     <Content Include="client\scripts\app\customers.v1.1.js" />
     <Content Include="client\scripts\app\preferences.v1.0.js" />

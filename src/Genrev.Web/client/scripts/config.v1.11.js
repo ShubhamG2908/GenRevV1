@@ -16,7 +16,7 @@
         core: '/client/scripts/app/core.v1.1',
         customers: '/client/scripts/app/customers.v1.1',
         dashboard: '/client/scripts/app/dashboard.v1.5',
-        data: '/client/scripts/app/data.v1.4',
+        data: '/client/scripts/app/data.v1.5',
         dailyDataManagement: '/client/scripts/app/dailyDataManagement.v1.0',
         devex: '/client/scripts/app/devex.v1.1',
         drilldown: '/client/scripts/app/drilldown.v1.0',

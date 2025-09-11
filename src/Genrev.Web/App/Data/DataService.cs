@@ -521,45 +521,36 @@ namespace Genrev.Web.App.Data
 					{
 						importHelper.UpsertStagingToLive(importType, AppService.Current.Account.ID, true);
 					}
+
 					catch (SqlException sqlEx)
 					{
-						var err = new Dymeng.Validation.ValidationError();
-						err.ID = -1;
-
-						// Unique constraint violation (SQL Server error codes)
+						
 						if (sqlEx.Number == 2601 || sqlEx.Number == 2627)
 						{
-							string dupInfo = string.Empty;
-							var marker = "The duplicate key value is";
-							var idx = sqlEx.Message.IndexOf(marker, StringComparison.OrdinalIgnoreCase);
-							if (idx >= 0)
-							{
-								var start = idx + marker.Length;
-								var end = sqlEx.Message.IndexOf('.', start);
-								if (end < 0) end = sqlEx.Message.Length;
-								dupInfo = sqlEx.Message.Substring(start, end - start).Trim();
-							}
+							Log.Information("Import completed with duplicate-key(s): {Message}", sqlEx.Message);
 
-							err.Message = "Import failed: one or more records already exist with the same Company and Account Type. Account Type must be unique per Company."
-										+ (string.IsNullOrWhiteSpace(dupInfo) ? string.Empty : $" Duplicate key: {dupInfo}.");
+							return new List<Dymeng.Validation.ValidationError>();
 						}
-						// Custom RAISERROR from stored procedure (default 50000 or custom via sp_addmessage)
 						else if (sqlEx.Number == 50000 || (sqlEx.Number >= 50001 && sqlEx.Number < 60000))
 						{
-							// Directly use the message thrown from the stored procedure
+							var err = new Dymeng.Validation.ValidationError();
+							err.ID = -1;
 							err.Message = sqlEx.Message;
+							errors.Add(err);
+							return errors;
 						}
 						else
 						{
+							var err = new Dymeng.Validation.ValidationError();
+							err.ID = -1;
 							err.Message = "We're sorry, we ran into a database error while processing the import.";
 							if (AppService.Current.Settings.DisplayDetailedErrors)
 							{
 								err.Message += "\r\n\r\n" + sqlEx.ToString();
 							}
+							errors.Add(err);
+							return errors;
 						}
-
-						errors.Add(err);
-						return errors;
 					}
 				}
 

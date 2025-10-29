@@ -208,7 +208,7 @@ namespace Genrev.Data
 
         // STAGING UPSERTS
         public void UpsertAccountTypesStagingToLive(int accountID) {
-            Database.ExecuteSqlCommand("EXEC staging.UpsertAccountTypesToLive_Company @AccountID", new SqlParameter("@AccountID", accountID));
+            Database.ExecuteSqlCommand("EXEC staging.UpsertAccountTypesToLive @AccountID", new SqlParameter("@AccountID", accountID));
         }
 
         public void UpsertCompaniesStagingToLive(int accountID) {
@@ -220,11 +220,11 @@ namespace Genrev.Data
         }
 
         public void UpsertCustomerTypesStagingToLive(int accountID) {
-            Database.ExecuteSqlCommand("EXEC staging.UpsertCustomerTypesToLive_Customer @AccountID", new SqlParameter("@AccountID", accountID));
+            Database.ExecuteSqlCommand("EXEC staging.UpsertCustomerTypesToLive @AccountID", new SqlParameter("@AccountID", accountID));
         }
 
         public void UpsertIndustryTypesStagingToLive(int accountID) {
-            Database.ExecuteSqlCommand("EXEC staging.UpsertIndustryTypesToLive_Industry @AccountID", new SqlParameter("@AccountID", accountID));
+            Database.ExecuteSqlCommand("EXEC staging.UpsertIndustryTypesToLive @AccountID", new SqlParameter("@AccountID", accountID));
         }
 
         public void UpsertAreaOfResponsibilitiesStagingToLive(int accountID)
@@ -237,7 +237,7 @@ namespace Genrev.Data
         }
 
         public void UpsertPersonnelStagingToLive(int accountID) {
-            Database.ExecuteSqlCommand("EXEC staging.UpsertPersonnelToLive_Personnel @AccountID", new SqlParameter("@AccountID", accountID));
+            Database.ExecuteSqlCommand("EXEC staging.UpsertPersonnelToLive @AccountID", new SqlParameter("@AccountID", accountID));
         }
         public void UpsertForecastDataStagingToLive(int accountID)
         {

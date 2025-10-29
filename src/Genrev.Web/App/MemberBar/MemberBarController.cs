@@ -37,7 +37,9 @@ namespace Genrev.Web.App.MemberBar
 		[HttpGet]
 		public ActionResult ViewAsPopupContent()
 		{
-			var model = AppService.Current.Person.Personnel;
+			var companyID = AppService.Current.Person.Person.CompanyID;
+
+			var model = AppService.Current.Person.Personnel.Where(p => p.CompanyID == companyID).ToList();
 			return PartialView("ViewAsPopupContent", model);
 		}
 

@@ -11,9 +11,6 @@ namespace Genrev.Web.App.Personnel
 {
 	public class PersonnelDataService
 	{
-
-
-
 		public void ToggleReportsTo(int sourcePersonID, int targetPersonID)
 		{
 

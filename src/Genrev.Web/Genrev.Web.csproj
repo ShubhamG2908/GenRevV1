@@ -720,10 +720,10 @@
     <Content Include="App_Data\Uploads\yikxzkaapvg.csv" />
     <Content Include="App_Data\Uploads\ylnedrcrrbe.csv" />
     <Content Include="App_Data\Uploads\ywkjizfhnqo.csv" />
-    <Content Include="App_Data\UploadTemp\dxupload_32a2449daaa5470c4b69440c6260c4b4smbb40jj.wnp.tmp" />
     <None Include="client\scripts\_references.js" />
     <Content Include="Content\Site.css" />
     <Content Include="GenRevSP\CreateCompany.sql" />
+    <Content Include="GenRevSP\GenrevSPBackup_11032025.sql" />
     <Content Include="GenRevSP\UpsertAccountTypesToLive_Company.sql" />
     <Content Include="GenRevSP\UpsertCustomerTypesToLive_Customer.sql" />
     <Content Include="GenRevSP\UpsertIndustryTypesToLive_Industry.sql" />
@@ -893,6 +893,7 @@
     <Compile Include="App\Subscription\SubscriptionController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\UploadTemp\" />
     <Folder Include="Content\CRMFiles\" />
   </ItemGroup>
   <ItemGroup>

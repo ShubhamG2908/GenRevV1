@@ -1,0 +1,38 @@
+CustomerID,Name,CustomerTypeID,AccountTypeID,IndustryTypeID,Address1,Address2,City,State,Country,Phone,PostalCode
+TN-01,All Start Peanuts LLC,CTN-02,ATN-01,ITN-01,P.O. Box 39,-,Wellman,Texas,United States,-,79378
+TN-02,Continental Floral Greens,CTN-04,ATN-04,ITN-04,804 Nw Martin Road,-,Forest Grove,Oregon,United States,-,97116
+TN-03,Desert Creek Ranch,CTN-01,ATN-04,ITN-01,54000 Harman Road,-,Brothers,Oregon,United States,-,97712
+TN-04,FrankDick Farms,CTN-02,ATN-02,ITN-01,261 County Road 402,-,Seminole,Texas,United States,-,79360
+TN-05,J&S Brothers Farms LLC,CTN-02,ATN-01,ITN-02,385 Lincoln Mill Road,-,Mullica Hill,New Jersey,United States,-,8062
+TN-06,Martori Farms,CTN-04,ATN-01,ITN-02,51240 Valley Road,-,El Aguila,Arizona,United States,-,85320
+TN-07,Acosta Farms Inc.,CTN-04,ATN-03,ITN-04,21051 Sw 177Th Ave,-,Miami,Florida,United States,-,33187
+TN-08,"Alger Farms, Inc",CTN-01,ATN-04,ITN-04,Po Box 1253,-,Homestead,Florida,United States,-,33030
+TN-09,Andersen Farms,CTN-01,ATN-04,ITN-04,18455 Sw 272 St,-,Homestead,Florida,United States,-,33033
+TN-10,B&W Quality Growers,CTN-04,ATN-01,ITN-02,7798 County Road 512,-,Fellsmere,Florida,United States,-,32498
+TN-11,"Continental Floral FL, LLC",CTN-01,ATN-04,ITN-04,PO Box 38,-,Glenwood,Florida,United States,-,32722
+TN-12,Costa Farm,CTN-05,ATN-01,ITN-04,-,-,-,-,United States,-,
+TN-13,"Everbloom Growers, Inc",CTN-03,ATN-04,ITN-04,20450 Sw 248 Street,-,Homestead,Florida,United States,-,33031
+TN-14,Exotic Botanicals Inc.,CTN-03,ATN-04,ITN-04,14750 Sw 216 St,-,Miami,Florida,United States,-,33170
+TN-15,FERNLEA Nurseries,CTN-04,ATN-04,ITN-04,16700 Sw 184 St,-,Miami,Florida,United States,-,33187
+TN-16,FERNLEA NURSERIES JUPITER,CTN-04,ATN-04,ITN-04,16000 Sw Pratt Whitney Road,-,Stuart,Florida,United States,-,34997
+TN-17,Florida Tuxedo Plants,CTN-01,ATN-04,ITN-04,19650 Sw 167Th Aveneu,-,Miami,Florida,United States,-,33187
+TN-18,Morejon Farms LLC,CTN-01,ATN-04,ITN-04,20550 Sw 280 St,-,Homestead,Florida,United States,-,33031
+TN-19,"Nature? Quality Designs, LLC",CTN-03,ATN-04,ITN-04,6800 Mount Plymouth Road,-,Apopka,Florida,United States,-,32712
+TN-20,"Nature's Way Farms, LLC",CTN-01,ATN-04,ITN-04,20950 Sw 177 Avenue,-,Miami,Florida,United States,-,33187
+TN-21,Rivers Plant farm,CTN-03,ATN-04,ITN-04,15755 Sw Ave,-,Miami,Florida,United States,-,33187
+TN-22,"United Nursery, LLC",CTN-02,ATN-04,ITN-04,30401 Sw 217Th Avenue,-,Homestead,Florida,United States,-,33030
+TN-23,"Vera's Nursery, Inc",CTN-04,ATN-02,ITN-04,20451 Sw 216Th Street,-,Miami,Florida,United States,-,33170
+TN-24,Casa Verde Farms,CTN-03,ATN-04,ITN-02,2138 Trapping Brook Rd,-,Wellsville,New York,United States,-,
+TN-25,"Curaleaf Florida, LLC  - Miami",CTN-01,ATN-04,ITN-05,10720 Caribbean Blvd. Ste. 500,-,Cutler Bay,Florida,United States,-,33189
+TN-26,"Curaleaf Florida, LLC- Mt. Dora",CTN-01,ATN-03,ITN-05,10720 Caribbean Blvd. Ste. 500,-,Cutler Bay,Florida,United States,-,33189
+TN-27,Curaleaf- New Jersey,CTN-01,ATN-04,ITN-02,200 South Route 73,-,Hammonton,New Jersey,United States,-,8037
+TN-28,"FLORIDA SPECIALTY FARMS, INC",CTN-03,ATN-04,ITN-02,2950 Nw 74Th Avenue,-,Miami,Florida,United States,-,33122
+TN-29,Island Tropical Foliage,CTN-01,ATN-04,ITN-04,17960 Sw 232 St,-,Miami,Florida,United States,-,33170
+TN-30,Jardines Mexico Nursery LLC,CTN-03,ATN-04,ITN-04,19460 Sw 187 Ave,-,Miami,Florida,United States,-,33187
+TN-31,Southern Organics,CTN-02,ATN-01,ITN-03,822  99Th Avenue North,-,Naples,Florida,United States,-,34108
+TN-32,Prides Corner Farms INC,CTN-04,ATN-03,ITN-04,122 Waterman Road,-,Lebanon,Connecticut,United States,-,6249
+TN-33,Continental Floral Greens (California),CTN-05,ATN-04,ITN-06,TBD,-,TBD,TBD,United States,-,11111
+TN-34,Continental North Carolina,CTN-05,ATN-04,ITN-06,TBD,-,TBD,TBD,United States,-,11111
+TN-35,Executive Turf & Synergy Turf Supply,CTN-05,ATN-01,ITN-06,TBD,-,TBD,TBD,United States,-,11111
+TN-36,First Choice Turf Supply LLC,CTN-05,ATN-01,ITN-06,TBD,-,TBD,TBD,United States,-,11111
+TN-37,First Step Landscaping,CTN-05,ATN-04,ITN-06,TBD,-,TBD,TBD,United States,-,11111

@@ -1,0 +1,22 @@
+CustomerID,Name,CustomerTypeID,AccountTypeID,IndustryTypeID,Address1,Address2,City,State,Country,Phone,PostalCode
+C-01,Cust1,CT-01,AT-03,IT-07,1000 Verplank Ave.,,Pittsburgh,PA,USA,412-123-4567,15122
+C-02,Cust2,CT-02,AT-11,IT-04,23 SW St.,,Cleveland ,OH,USA,216-123-4567,44101
+C-03,Cust3,CT-01,AT-10,IT-08,12 Main Street,,Buffalo ,NY,USA,716-123-4567,14201
+C-04,Cust4,CT-01,AT-05,IT-06,2601 Helter Blvd,Suite 200,San Francisco ,CA,USA,(415) 123-4567,94102
+C-05,Cust5,CT-03,AT-04,IT-03,97 Suburb Lane,Bldg 2A,Tampa,FL,USA,813-123-4567,33592
+C-06,Cust6,CT-01,AT-01,IT-02,36A North Revival,,Houston,TX,USA,2811234567,77001
+C-07,Cust7,CT-01,AT-13,IT-07,1425 JAMES ST,PO BOX 4001 STN A,Winnipeg,MB,Canada,2041234567,R2L 1H9 
+C-08,Cust8,CT-01,AT-12,IT-03,27 4th Ave,,Anchorage,AK,USA,9071234567,99501
+C-09,Cust9,CT-02,AT-02,IT-02,22 BBQ Lane,,Kansas City ,MO,USA,(816) 123-4567,64030
+C-10,Cust10,CT-02,AT-09,IT-08,56 Main Ave SE,,Charlotte,NC,USA,(704) 123-4567,28201
+C-11,Cust11,CT-04,AT-06,IT-5,1 New Street,,Birmingham ,AL,USA,(205) 123-4567,"	35201"
+C-12,Cust12,CT-01,AT-06,IT-06,44 Sunshine Blvd,,Tempe,AZ,USA,480-123-4567,85281
+C-13,Cust13,CT-01,AT-12,IT-05,4th St,,Minneapolis,MN,USA,(952) 123-4567,55401
+C-14,Cust14,CT-01,AT-12,IT-05,22 Cigar Lane,,San Diego,CA,USA,6191234567,92101
+C-15,Cust15,CT-01,AT-03,IT-08,20 Mission Blvd. E.,,Nashville,TN,USA,(615) 123-4567,37201
+C-16,Cust16,CT-01,AT-05,IT-02,Downtown 8th St.,,Boise,ID,USA,(208) 123-4567,83701
+C-17,Cust17,CT-01,AT-03,IT-08,1 Byrd St.,,Little Rock,AR,USA,501-123-4567,72201
+C-18,Cust18,CT-02,AT-13,IT-08,56 Queen St.,,Fredericton,NB,Canada,(506) 123-4567,E3C
+C-19,Cust19,CT-01,AT-09,IT-07,99 Inner Harbor Circle ,,Baltimore,MD,USA,(410) 123-4567,21201
+C-20,Cust20,CT-01,AT-09,IT-07,58th & 5th,,Philadelphia,PA,USA,(215) 123-4567,19092
+C-21,Cust21,CT-02,AT-13,IT-08,432 Chapel Street,Manchester WIP 6HQ,London,,England,011-44-7-555-456-321,EC

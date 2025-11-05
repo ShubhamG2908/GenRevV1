@@ -1,0 +1,14 @@
+AccountTypeID,Account Type Name,Calls Per Month Goal
+AT-01,High Potential,3
+AT-02,At Risk,2
+AT-03,Strategic/Key,3
+AT-04,Tech Development,1
+AT-05,Growth/Prod Dev./Risk,4
+AT-06,Product Dev.,2
+AT-07,Harvest,1
+AT-08,Other,1
+AT-09,Inside/Account Mgt.,1
+AT-10,Maintenance,1
+AT-11,Potential Now,1
+AT-12,Potential Future,1
+AT-13,New Business,1

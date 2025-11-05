@@ -1,4 +1,11 @@
-CREATE OR ALTER PROCEDURE CreateCompany
+USE [GenRev_03_11]
+GO
+/****** Object:  StoredProcedure [dbo].[CreateUser]    Script Date: 03-11-2025 14:13:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER   PROCEDURE [dbo].[CreateUser]
     @Email NVARCHAR(128),
     @Password NVARCHAR(500),
     @SecurityQuestion NVARCHAR(500),
@@ -21,11 +28,10 @@ BEGIN
         IF NOT EXISTS (SELECT 1 FROM dbo.Accounts WHERE AccountEmail = @Email)
         BEGIN
             INSERT INTO dbo.Accounts (
-                DateCreated, AccountStatus, AccountEmail, AccountApiEnabled,
-                AccountApiKey, AccountApiAllowIpBypass, AccountApiPassword
+                DateCreated, AccountStatus, AccountEmail
             )
             VALUES (
-                GETDATE(), 1, @Email, 0, NULL, 0, @Password
+                GETDATE(), 1, @Email
             );
             SET @AccountID = SCOPE_IDENTITY();
         END
@@ -91,6 +97,7 @@ BEGIN
             MemberPasswordQuestion,
             MemberPasswordAnswer,
             MemberLastActivityDateUTC,
+            MemberIsApproved,
             MemberCreationDateUTC,
             MemberLastLockoutDateUTC,
             MemberFailedPasswordAttemptCount,
@@ -104,12 +111,25 @@ BEGIN
             @SecurityQuestion,
             @SecurityAnswer,
             GETDATE(),
+            1,
             GETDATE(),
             '1900-01-01',
             0,
             0,
             '1900-01-01'
         );
+
+        -- Setp 6: Add New Role For Company
+        INSERT INTO Roles (CompanyID, RoleIsSysAdministrator, RoleIsSysSalesPro, RoleCode, RoleName, RoleDescription)
+        VALUES (@CompanyID, 1,0,'sa','sysadmin','System Administrator')
+        DECLARE @AdminRoleId INT = SCOPE_IDENTITY();
+
+        INSERT INTO Roles (CompanyID, RoleIsSysAdministrator, RoleIsSysSalesPro, RoleCode, RoleName, RoleDescription)
+        VALUES (@CompanyID, 0,1,'sp','salespro','Sales Professional')
+
+        -- Setp 7: Assing Admin Role To Person
+        INSERT INTO PersonnelRoles (DateCreated, PersonnelID, RoleID)
+        VALUES (GETDATE(), @PersonnelID, @AdminRoleId)
 
         COMMIT TRANSACTION;
     END TRY
@@ -130,16 +150,15 @@ END;
 
 
 
-
 EXEC CreateUser
-    @Email = 'admin4@example.com',
-    @Password = '123456789',
+    @Email = 'admin1@yourcompany.com',
+    @Password = 'aDDI1qNMnkt6YFM2aT6/EiV4FrE=',
     @SecurityQuestion = 'What is your favorite color?',
     @SecurityAnswer = 'Blue',
     @FirstName = 'admin',
-    @LastName = '4',
+    @LastName = '1',
     @Gender = 'M',
-    @CompanyName = 'Company 4',
-    @CompanyCode = 'CC4',
+    @CompanyName = 'Company 1',
+    @CompanyCode = 'CC1',
     @FiscalMonthEnd = 12,
-    @CountryCode = 'UK'
+    @CountryCode = 'US'

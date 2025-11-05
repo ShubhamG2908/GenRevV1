@@ -503,7 +503,15 @@ namespace Genrev.DomainServices.Data
 
                 //check for already exists
                 var singleCustomer = CustomerList.Where(w => w.ClientID == d.CustomerClientID).FirstOrDefault();
+                if(singleCustomer == null)
+                {
+                    singleCustomer = CustomerList.Where(w => w.Name == d.CustomerClientID).FirstOrDefault();
+				}
                 var singlePerson = PersonnelList.Where(w => w.ClientID == d.PersonClientID).FirstOrDefault();
+                if(singlePerson == null)
+                {
+                    singlePerson = PersonnelList.Where(w => w.CommonName.Trim() == d.PersonClientID.Trim()).FirstOrDefault();
+				}
                 CustomerData data = new CustomerData();
                 if (singleCustomer != null && singleCustomer.ID > 0 && singlePerson != null && singlePerson.ID > 0)
                 {
@@ -527,7 +535,7 @@ namespace Genrev.DomainServices.Data
                         InsertCustomerData(d, singleCustomer.ID, singlePerson.ID);
                     }
                 }
-            }
+                }
 
             return errors;
         }

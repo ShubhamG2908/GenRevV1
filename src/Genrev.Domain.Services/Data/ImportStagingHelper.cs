@@ -240,7 +240,7 @@ namespace Genrev.DomainServices.Data
             var accountTypes = new List<AccountTypeStaging>();
             try
             {
-                foreach (DataRow row in table.Rows)
+				foreach (DataRow row in table.Rows)
                 {
                     var accountType = new AccountTypeStaging();
                     accountType.ClientID = row.ToStringValue(0);
@@ -484,7 +484,12 @@ namespace Genrev.DomainServices.Data
 			var CustomerList = context.Customers.ToList();
 			var PersonnelList = context.Personnel.ToList();
 			var customerDataList = context.CustomerData.ToList();
-            Func<DataRow, string, int, object> getCell = (r, name, idx) =>
+			var missingCustomers = new HashSet<string>();
+			var missingSalespersons = new HashSet<string>();
+
+			string lastCustomer = null;
+			string lastSalesperson = null;
+			Func<DataRow, string, int, object> getCell = (r, name, idx) =>
             {
                 if (r.Table.Columns.Contains(name)) return r[name];
                 if (r.Table.Columns.Count > idx) return r[idx];
@@ -497,12 +502,42 @@ namespace Genrev.DomainServices.Data
                 if (firstCust == "CustomerID" || firstCust == "SalespersonID")
                     continue;
 
-                var d = new ForecastDataStaging();
+				if (!string.IsNullOrWhiteSpace(firstCust) && firstCust.ToUpper().Contains("GRAND TOTAL"))
+					continue;
 
-                d.CustomerClientID = (getCell(row, "CustomerID", 0) ?? getCell(row, "Customer", 0) ?? string.Empty).ToString();
-                d.PersonClientID = (getCell(row, "SalespersonID", 1) ?? getCell(row, "PersonnelID", 1) ?? getCell(row, "Salesperson", 1) ?? string.Empty).ToString();
+				var d = new ForecastDataStaging();
+				string customerValue = row.Table.Columns.Contains("Customer")
+					? row["Customer"]?.ToString()
+					: row.Table.Columns.Contains("CustomerID")
+						? row["CustomerID"]?.ToString()
+						: string.Empty;
 
-                d.Period = ConvertToDateTimeForecast((getCell(row, "Period", 2) ?? string.Empty).ToString().Trim());
+				string salespersonValue = row.Table.Columns.Contains("Salesperson")
+					? row["Salesperson"]?.ToString()
+					: row.Table.Columns.Contains("SalespersonID")
+						? row["SalespersonID"]?.ToString()
+						: string.Empty;
+
+				// If customer column empty, reuse previous customer
+				DateTime testDate;
+
+				if (!string.IsNullOrWhiteSpace(customerValue) &&
+					!DateTime.TryParse(customerValue, out testDate))
+				{
+					lastCustomer = customerValue.Trim();
+				}
+
+				d.CustomerClientID = lastCustomer;
+
+				if (!string.IsNullOrWhiteSpace(salespersonValue) &&
+	            !DateTime.TryParse(salespersonValue, out testDate))
+				{
+					lastSalesperson = salespersonValue.Trim();
+				}
+
+				d.PersonClientID = lastSalesperson;
+
+				d.Period = ConvertToDateTimeForecast((getCell(row, "Period", 2) ?? string.Empty).ToString().Trim());
                 if (d.Period == DateTime.MinValue) continue;
 
                 d.SalesForecast = ParseNullableDecimal(getCell(row, "SalesForecast", 3) ?? getCell(row, "Sales Forecast", 3));
@@ -527,18 +562,51 @@ namespace Genrev.DomainServices.Data
 
 
                 var singleCustomer = CustomerList.FirstOrDefault(w => w.ClientID == d.CustomerClientID);
-                if (singleCustomer == null)
-                {
-                    singleCustomer = CustomerList.FirstOrDefault(w => w.Name == d.CustomerClientID);
-                }
-                var singlePerson = PersonnelList.FirstOrDefault(w => w.ClientID == d.PersonClientID);
-                if (singlePerson == null)
-                {
-                    var personClientTrim = d.PersonClientID?.Trim();
-                    singlePerson = PersonnelList.FirstOrDefault(w => ((w.CommonName ?? string.Empty).Trim()) == personClientTrim);
-                }
+				if (singleCustomer == null)
+				{
+					singleCustomer = CustomerList.FirstOrDefault(w => w.Name == d.CustomerClientID);
 
-                CustomerData data = null;
+					if (singleCustomer == null)
+					{
+						if (!string.IsNullOrWhiteSpace(d.CustomerClientID) && !missingCustomers.Contains(d.CustomerClientID))
+						{
+							missingCustomers.Add(d.CustomerClientID);
+
+							errors.Add(new ValidationError
+							{
+								Message = $"Customer '{d.CustomerClientID}' does not exist in the Company."
+							});
+						}
+					}
+					else
+					{
+						errors.Add(new ValidationError
+						{
+							Message = $"Customer '{d.CustomerClientID}' exists in the Company."
+						});
+					}
+				}
+
+				var singlePerson = PersonnelList.FirstOrDefault(w => w.ClientID == d.PersonClientID);
+				if (singlePerson == null)
+				{
+					var personClientTrim = d.PersonClientID?.Trim();
+
+					singlePerson = PersonnelList.FirstOrDefault(w =>
+						((w.CommonName ?? string.Empty).Trim()) == personClientTrim);
+
+					if (!string.IsNullOrWhiteSpace(d.PersonClientID) && !missingSalespersons.Contains(d.PersonClientID))
+					{
+						missingSalespersons.Add(d.PersonClientID);
+
+						errors.Add(new ValidationError
+						{
+							Message = $"Salesperson '{d.PersonClientID}' does not exist in the Company."
+						});
+					}
+				}
+
+				CustomerData data = null;
                 if (singleCustomer != null && singleCustomer.ID > 0 && singlePerson != null && singlePerson.ID > 0)
                 {
                     data = customerDataList.FirstOrDefault(w => w.CustomerID == singleCustomer.ID && w.PersonnelID == singlePerson.ID && w.Period.Date == d.Period.Date);
@@ -549,7 +617,8 @@ namespace Genrev.DomainServices.Data
                     if (!personnelDownline.Contains(singleCustomer.ID))
                     {
                         errors.Add(new ValidationError() { Message = singleCustomer.ClientID + " is not mapped with " + singlePerson.ClientID });
-                        return errors;
+                        //return errors;
+                        continue;
                     }
                     if (data != null && data.ID > 0)
                     {
@@ -561,7 +630,13 @@ namespace Genrev.DomainServices.Data
                     }
                 }
             }
-
+			if (errors.Any())
+			{
+				errors.Insert(0, new ValidationError
+				{
+					Message = "Import completed with warnings. Some customers or salespersons were not found."
+				});
+			}
 			return errors;
 		}
 		private void UpdateCustomerData(CustomerData data, ForecastDataStaging obj, int customerId, int personnelId)

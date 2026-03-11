@@ -224,6 +224,13 @@ namespace Genrev.DomainServices.Data
 
 					string customerId = "";
 					string strategyValue = "";
+					string potentialValue = "";
+					string currentOppValue = "";
+					string futureOppValue = "";
+					string marketShareValue = "";
+					string atRiskValue = "";
+					string riskExplanationValue = "";
+
 
 					foreach (var map in columnIndexMapper)
 					{
@@ -239,33 +246,38 @@ namespace Genrev.DomainServices.Data
 						}
 
 						else if (map.Value.Item1.Equals("Strategy", StringComparison.OrdinalIgnoreCase))
-						{
 							strategyValue = value?.ToString();
-						}
 
 						else if (map.Value.Item1.Equals("Potential", StringComparison.OrdinalIgnoreCase))
-							row["Potential"] = CleanNumber(value);
+							potentialValue = value?.ToString();
 
 						else if (map.Value.Item1.Equals("Current Opportunity", StringComparison.OrdinalIgnoreCase))
-							row["CurrentOpportunity"] = CleanNumber(value);
+							currentOppValue = value?.ToString();
 
 						else if (map.Value.Item1.Equals("Future Opportunity", StringComparison.OrdinalIgnoreCase))
-							row["FutureOpportunity"] = CleanNumber(value);
+							futureOppValue = value?.ToString();
 
 						else if (map.Value.Item1.Equals("Market Share", StringComparison.OrdinalIgnoreCase))
-							row["MarketShare"] = CleanNumber(value);
+							marketShareValue = value?.ToString();
 
 						else if (map.Value.Item1.Equals("At Risk", StringComparison.OrdinalIgnoreCase))
-							row["AtRisk"] = CleanNumber(value);
+							atRiskValue = value?.ToString();
 
 						else if (map.Value.Item1.Equals("Risk Explanation", StringComparison.OrdinalIgnoreCase))
-							row["RiskExplanation"] = value;
+							riskExplanationValue = value?.ToString();
 					}
 
 					if (!string.IsNullOrWhiteSpace(customerId) &&
 						!strategyInsertedCustomers.Contains(customerId))
 					{
 						row["Strategy"] = strategyValue;
+
+						row["Potential"] = potentialValue;
+						row["CurrentOpportunity"] = currentOppValue;
+						row["FutureOpportunity"] = futureOppValue;
+						row["MarketShare"] = marketShareValue;
+						row["AtRisk"] = atRiskValue;
+						row["RiskExplanation"] = riskExplanationValue;
 						strategyInsertedCustomers.Add(customerId);
 					}
 					foreach (var col in monthGroup)

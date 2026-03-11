@@ -96,22 +96,10 @@ namespace Genrev.DomainServices.Data
 
 			return LoadCsvToTable(path, hasHeaders);
 		}
+
 		private DataTable ConvertForecasToCsvFormat(DataTable wide)
 		{
-
-			var headerValuesToExports = new List<string>()
-			{
-				 "Salesperson",
-				 "Customer Name",
-				 "Risk Explanation",
-				 "At Risk",
-				 "Market Share",
-				 "Future Opportunity",
-				 "Current Opportunity",
-				 "Potential",
-				 "Strategy"
-			};
-
+			// Output table schema
 			DataTable table = new DataTable();
 
 			table.Columns.Add("CustomerID");
@@ -131,10 +119,12 @@ namespace Genrev.DomainServices.Data
 			table.Columns.Add("AtRisk");
 			table.Columns.Add("RiskExplanation");
 
+			// Regex used to detect month name from header
 			var monthRegex = new Regex(
-				@"\b(Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|August|Sep|Sept|September|Oct|October|Nov|November|Dec|December)\b",
+				@"\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\b",
 				RegexOptions.IgnoreCase);
 
+			// Metric identification
 			var salesForecastRegex = new Regex(@"Sales\s*Forecast", RegexOptions.IgnoreCase);
 			var salesTargetRegex = new Regex(@"Sales\s*Target", RegexOptions.IgnoreCase);
 			var gppForecastRegex = new Regex(@"GPP\s*Forecast", RegexOptions.IgnoreCase);
@@ -142,66 +132,90 @@ namespace Genrev.DomainServices.Data
 			var callsForecastRegex = new Regex(@"Calls\s*Forecast", RegexOptions.IgnoreCase);
 			var callsTargetRegex = new Regex(@"Calls\s*Target", RegexOptions.IgnoreCase);
 
-			var columnMap = new Dictionary<string, Dictionary<string, int>>();
+			// Map column index → (MetricName , Month)
+			var columnIndexMapper = new Dictionary<int, (string Metric, string Month)>();
 
-			var columnIndexMapper = new Dictionary<int, (string, string)>();
+			// HEADER ROW from Excel (client requirement)
 			var headerRow = wide.Rows[2].ItemArray;
 
 			for (int i = 0; i < headerRow.Length; i++)
 			{
-				var text = headerRow[i].ToString().Trim();
-				if (headerValuesToExports.Contains(text))
-				{
-					columnIndexMapper.Add(i, (text, string.Empty));
-				}
+				var text = headerRow[i]?.ToString()?.Trim();
+
+				if (string.IsNullOrWhiteSpace(text))
+					continue;
+
+				// Static columns
+				if (text.Equals("Salesperson", StringComparison.OrdinalIgnoreCase))
+					columnIndexMapper.Add(i, ("Salesperson", ""));
+
+				else if (text.Equals("Customer Name", StringComparison.OrdinalIgnoreCase))
+					columnIndexMapper.Add(i, ("Customer", ""));
+
+				else if (text.Equals("Strategy", StringComparison.OrdinalIgnoreCase))
+					columnIndexMapper.Add(i, ("Strategy", ""));
+
+				else if (text.Equals("Potential", StringComparison.OrdinalIgnoreCase))
+					columnIndexMapper.Add(i, ("Potential", ""));
+
+				else if (text.Equals("Current Opportunity", StringComparison.OrdinalIgnoreCase))
+					columnIndexMapper.Add(i, ("CurrentOpportunity", ""));
+
+				else if (text.Equals("Future Opportunity", StringComparison.OrdinalIgnoreCase))
+					columnIndexMapper.Add(i, ("FutureOpportunity", ""));
+
+				else if (text.Equals("Market Share", StringComparison.OrdinalIgnoreCase))
+					columnIndexMapper.Add(i, ("MarketShare", ""));
+
+				else if (text.Equals("At Risk", StringComparison.OrdinalIgnoreCase))
+					columnIndexMapper.Add(i, ("AtRisk", ""));
+
+				else if (text.Equals("Risk Explanation", StringComparison.OrdinalIgnoreCase))
+					columnIndexMapper.Add(i, ("RiskExplanation", ""));
+
+				// Month based columns
 				else
 				{
-					var result = monthRegex.Match(text);
-					if (result.Success)
-					{
-						if (salesForecastRegex.IsMatch(text))
-						{
-							columnIndexMapper.Add(i, ("SalesForecast", result.Value.ToLower()));
-						}
-						else if (salesTargetRegex.IsMatch(text))
-						{
-							columnIndexMapper.Add(i, ("SalesTarget", result.Value.ToLower()));
-						}
-						else if (gppForecastRegex.IsMatch(text))
-						{
-							columnIndexMapper.Add(i, ("GppForecast", result.Value.ToLower()));
-						}
-						else if (gppTargetRegex.IsMatch(text))
-						{
-							columnIndexMapper.Add(i, ("GppTarget", result.Value.ToLower()));
-						}
-						else if (callsForecastRegex.IsMatch(text))
-						{
-							columnIndexMapper.Add(i, ("CallsForecast", result.Value.ToLower()));
-						}
-						else if (callsTargetRegex.IsMatch(text))
-						{
-							columnIndexMapper.Add(i, ("CallsTarget", result.Value.ToLower()));
-						}
-					}
-				}
+					var match = monthRegex.Match(text);
 
+					if (!match.Success)
+						continue;
+
+					var month = match.Value.ToLower();
+
+					if (salesForecastRegex.IsMatch(text))
+						columnIndexMapper.Add(i, ("SalesForecast", month));
+
+					else if (salesTargetRegex.IsMatch(text))
+						columnIndexMapper.Add(i, ("SalesTarget", month));
+
+					else if (gppForecastRegex.IsMatch(text))
+						columnIndexMapper.Add(i, ("GPPForecast", month));
+
+					else if (gppTargetRegex.IsMatch(text))
+						columnIndexMapper.Add(i, ("GPPTarget", month));
+
+					else if (callsForecastRegex.IsMatch(text))
+						columnIndexMapper.Add(i, ("CallsForecast", month));
+
+					else if (callsTargetRegex.IsMatch(text))
+						columnIndexMapper.Add(i, ("CallsTarget", month));
+				}
 			}
 
-			columnIndexMapper.GroupBy(x => x.Value.Item2);
-
+			// Determine year from Excel header
 			int year = 0;
-			int.TryParse(wide.Rows[0].ItemArray[1]?.ToString(), out year);
+			int.TryParse(wide.Rows[0][1]?.ToString(), out year);
 
 			if (year == 0)
-			{
 				year = DateTime.Now.Year;
-			}
 
+			// Group columns by month
 			var monthGroups = columnIndexMapper
-				.Where(x => !string.IsNullOrEmpty(x.Value.Item2))
-				.GroupBy(x => x.Value.Item2.ToLower());
+				.Where(x => !string.IsNullOrEmpty(x.Value.Month))
+				.GroupBy(x => x.Value.Month);
 
+			// Ensure strategy columns inserted only once per customer
 			HashSet<string> strategyInsertedCustomers = new HashSet<string>();
 
 			for (int i = 3; i < wide.Rows.Count; i++)
@@ -210,259 +224,91 @@ namespace Genrev.DomainServices.Data
 				{
 					DataRow row = table.NewRow();
 
-					string monthText = monthGroup.Key;
-
 					int monthNumber = DateTime.ParseExact(
-						monthText.Substring(0, 3),
+						monthGroup.Key.Substring(0, 3),
 						"MMM",
-						CultureInfo.InvariantCulture
-					).Month;
+						CultureInfo.InvariantCulture).Month;
 
-					DateTime periodDate = new DateTime(year, monthNumber, 1);
-
-					row["Period"] = periodDate.ToString("MM/dd/yyyy");
+					row["Period"] = new DateTime(year, monthNumber, 1).ToString("MM/dd/yyyy");
 
 					string customerId = "";
-					string strategyValue = "";
-					string potentialValue = "";
-					string currentOppValue = "";
-					string futureOppValue = "";
-					string marketShareValue = "";
-					string atRiskValue = "";
-					string riskExplanationValue = "";
 
+					string strategy = "";
+					string potential = "";
+					string currentOpp = "";
+					string futureOpp = "";
+					string marketShare = "";
+					string atRisk = "";
+					string riskExp = "";
 
+					// Read static columns
 					foreach (var map in columnIndexMapper)
 					{
 						object value = wide.Rows[i][map.Key];
 
-						if (map.Value.Item1.Equals("Salesperson", StringComparison.OrdinalIgnoreCase))
-							row["SalespersonID"] = value;
-
-						else if (map.Value.Item1.Equals("Customer Name", StringComparison.OrdinalIgnoreCase))
+						switch (map.Value.Metric)
 						{
-							customerId = value?.ToString();
-							row["CustomerID"] = customerId;
+							case "Salesperson":
+								row["SalespersonID"] = value;
+								break;
+
+							case "Customer":
+								customerId = value?.ToString();
+								row["CustomerID"] = customerId;
+								break;
+
+							case "Strategy":
+								strategy = value?.ToString();
+								break;
+
+							case "Potential":
+								potential = CleanNumber(value?.ToString());
+								break;
+
+							case "CurrentOpportunity":
+								currentOpp = CleanNumber(value?.ToString());
+								break;
+
+							case "FutureOpportunity":
+								futureOpp = CleanNumber(value?.ToString());
+								break;
+
+							case "MarketShare":
+								marketShare = CleanNumber(value?.ToString());
+								break;
+
+							case "AtRisk":
+								atRisk = CleanNumber(value?.ToString());
+								break;
+
+							case "RiskExplanation":
+								riskExp = value?.ToString();
+								break;
 						}
-
-						else if (map.Value.Item1.Equals("Strategy", StringComparison.OrdinalIgnoreCase))
-							strategyValue = value?.ToString();
-
-						else if (map.Value.Item1.Equals("Potential", StringComparison.OrdinalIgnoreCase))
-							potentialValue = value?.ToString();
-
-						else if (map.Value.Item1.Equals("Current Opportunity", StringComparison.OrdinalIgnoreCase))
-							currentOppValue = value?.ToString();
-
-						else if (map.Value.Item1.Equals("Future Opportunity", StringComparison.OrdinalIgnoreCase))
-							futureOppValue = value?.ToString();
-
-						else if (map.Value.Item1.Equals("Market Share", StringComparison.OrdinalIgnoreCase))
-							marketShareValue = value?.ToString();
-
-						else if (map.Value.Item1.Equals("At Risk", StringComparison.OrdinalIgnoreCase))
-							atRiskValue = value?.ToString();
-
-						else if (map.Value.Item1.Equals("Risk Explanation", StringComparison.OrdinalIgnoreCase))
-							riskExplanationValue = value?.ToString();
 					}
 
+					// Insert these fields only once per customer
 					if (!string.IsNullOrWhiteSpace(customerId) &&
 						!strategyInsertedCustomers.Contains(customerId))
 					{
-						row["Strategy"] = strategyValue;
+						row["Strategy"] = strategy;
+						row["Potential"] = potential;
+						row["CurrentOpportunity"] = currentOpp;
+						row["FutureOpportunity"] = futureOpp;
+						row["MarketShare"] = marketShare;
+						row["AtRisk"] = atRisk;
+						row["RiskExplanation"] = riskExp;
 
-						row["Potential"] = potentialValue;
-						row["CurrentOpportunity"] = currentOppValue;
-						row["FutureOpportunity"] = futureOppValue;
-						row["MarketShare"] = marketShareValue;
-						row["AtRisk"] = atRiskValue;
-						row["RiskExplanation"] = riskExplanationValue;
 						strategyInsertedCustomers.Add(customerId);
 					}
+
+					// Read month metrics
 					foreach (var col in monthGroup)
 					{
 						object value = wide.Rows[i][col.Key];
 
-						switch (col.Value.Item1)
-						{
-							case "SalesForecast":
-								row["SalesForecast"] = CleanNumber(value);
-								break;
-
-							case "SalesTarget":
-								row["SalesTarget"] = CleanNumber(value);
-								break;
-
-							case "GppForecast":
-								row["GPPForecast"] = CleanNumber(value);
-								break;
-
-							case "GppTarget":
-								row["GPPTarget"] = CleanNumber(value);
-								break;
-
-							case "CallsForecast":
-								row["CallsForecast"] = CleanNumber(value);
-								break;
-
-							case "CallsTarget":
-								row["CallsTarget"] = CleanNumber(value);
-								break;
-						}
+						row[col.Value.Metric] = CleanNumber(value);
 					}
-
-					table.Rows.Add(row);
-				}
-			}
-
-			string Normalize(string s)
-			{
-				if (string.IsNullOrWhiteSpace(s)) return "";
-				s = s.Replace("\u00A0", " ");
-				s = s.Trim();
-				if (s.Length > 0 && s[0] == '\uFEFF')
-					s = s.Substring(1);
-				return s;
-			}
-
-			for (int i = 0; i < wide.Columns.Count; i++)
-			{
-				string col = Normalize(wide.Columns[i].ColumnName);
-
-				var monthMatch = monthRegex.Match(col);
-				if (!monthMatch.Success)
-					continue;
-
-				string month = monthMatch.Groups[1].Value.Substring(0, 3);
-
-				if (!columnMap.ContainsKey(month))
-					columnMap[month] = new Dictionary<string, int>();
-
-				if (salesForecastRegex.IsMatch(col))
-					columnMap[month]["SalesForecast"] = i;
-
-				else if (salesTargetRegex.IsMatch(col))
-					columnMap[month]["SalesTarget"] = i;
-
-				else if (gppForecastRegex.IsMatch(col))
-					columnMap[month]["GPPForecast"] = i;
-
-				else if (gppTargetRegex.IsMatch(col))
-					columnMap[month]["GPPTarget"] = i;
-
-				else if (callsForecastRegex.IsMatch(col))
-					columnMap[month]["CallsForecast"] = i;
-
-				else if (callsTargetRegex.IsMatch(col))
-					columnMap[month]["CallsTarget"] = i;
-			}
-
-
-			Func<string, string> normKey = s =>
-			{
-				if (string.IsNullOrEmpty(s)) return "";
-				s = s.Replace("\u00A0", " ");
-				s = s.Trim().ToLowerInvariant();
-				return Regex.Replace(s, "\\s+", "");
-			};
-
-			var colIndex = new Dictionary<string, int>();
-
-			for (int i = 0; i < wide.Columns.Count; i++)
-			{
-				var key = normKey(wide.Columns[i].ColumnName);
-				if (!colIndex.ContainsKey(key))
-					colIndex[key] = i;
-			}
-
-			int FindIndex(params string[] names)
-			{
-				foreach (var name in names)
-				{
-					var key = normKey(name);
-
-					if (colIndex.ContainsKey(key))
-						return colIndex[key];
-
-					var found = colIndex.Keys.FirstOrDefault(k => k.Contains(key));
-					if (found != null)
-						return colIndex[found];
-				}
-				return -1;
-			}
-
-			int salespersonIdx = FindIndex("salesperson", "personnel");
-			int customerIdx = FindIndex("customername", "customer");
-
-			int strategyIdx = FindIndex("strategy");
-			int potentialIdx = FindIndex("potential");
-			int currentOppIdx = FindIndex("currentopportunity");
-			int futureOppIdx = FindIndex("futureopportunity");
-			int marketShareIdx = FindIndex("marketshare");
-			int atRiskIdx = FindIndex("atrisk");
-			int riskExpIdx = FindIndex("riskexplanation");
-
-			foreach (DataRow wr in wide.Rows)
-			{
-				string salesperson = salespersonIdx >= 0 ? wr[salespersonIdx]?.ToString()?.Trim() : null;
-				string customer = customerIdx >= 0 ? wr[customerIdx]?.ToString()?.Trim() : null;
-
-				if (string.IsNullOrWhiteSpace(salesperson))
-					continue;
-
-				if (string.Equals(customer, "GRAND TOTALS", StringComparison.OrdinalIgnoreCase))
-					break;
-
-				foreach (var month in columnMap.Keys.OrderBy(m =>
-						 DateTime.ParseExact(m, "MMM", CultureInfo.InvariantCulture).Month))
-				{
-					DataRow row = table.NewRow();
-
-					int monthNumber = DateTime.ParseExact(month, "MMM", CultureInfo.InvariantCulture).Month;
-
-					row["CustomerID"] = customer;
-					row["SalespersonID"] = salesperson;
-					row["Period"] = new DateTime(year, monthNumber, 1).ToString("M/d/yyyy");
-
-					if (columnMap[month].ContainsKey("SalesForecast"))
-						row["SalesForecast"] = CleanNumber(wr[columnMap[month]["SalesForecast"]]);
-
-					if (columnMap[month].ContainsKey("SalesTarget"))
-						row["SalesTarget"] = CleanNumber(wr[columnMap[month]["SalesTarget"]]);
-
-					if (columnMap[month].ContainsKey("GPPForecast"))
-						row["GPPForecast"] = CleanNumber(wr[columnMap[month]["GPPForecast"]]);
-
-					if (columnMap[month].ContainsKey("GPPTarget"))
-						row["GPPTarget"] = CleanNumber(wr[columnMap[month]["GPPTarget"]]);
-
-					if (columnMap[month].ContainsKey("CallsForecast"))
-						row["CallsForecast"] = CleanNumber(wr[columnMap[month]["CallsForecast"]]);
-
-					if (columnMap[month].ContainsKey("CallsTarget"))
-						row["CallsTarget"] = CleanNumber(wr[columnMap[month]["CallsTarget"]]);
-
-					if (strategyIdx >= 0)
-						row["Strategy"] = wr[strategyIdx];
-
-					if (potentialIdx >= 0)
-						row["Potential"] = CleanNumber(wr[potentialIdx]);
-
-					if (currentOppIdx >= 0)
-						row["CurrentOpportunity"] = CleanNumber(wr[currentOppIdx]);
-
-					if (futureOppIdx >= 0)
-						row["FutureOpportunity"] = CleanNumber(wr[futureOppIdx]);
-
-					if (marketShareIdx >= 0)
-						row["MarketShare"] = CleanNumber(wr[marketShareIdx]);
-
-					if (atRiskIdx >= 0)
-						row["AtRisk"] = CleanNumber(wr[atRiskIdx]);
-
-					if (riskExpIdx >= 0)
-						row["RiskExplanation"] = wr[riskExpIdx]?.ToString();
 
 					table.Rows.Add(row);
 				}
@@ -489,50 +335,6 @@ namespace Genrev.DomainServices.Data
 				return d.ToString(CultureInfo.InvariantCulture);
 
 			return "";
-		}
-
-		private void SanitizeForecastTable(DataTable table)
-		{
-			if (table == null) return;
-
-			for (int r = 1; r < table.Rows.Count; r++)
-			{
-				var row = table.Rows[r];
-
-				string period = row[2]?.ToString()?.Trim();
-
-				DateTime dt;
-
-				if (!DateTime.TryParse(period, out dt))
-				{
-					row[2] = new DateTime(DateTime.Now.Year, 1, 1)
-								.ToString("MM/dd/yyyy");
-				}
-				else
-				{
-					row[2] = dt.ToString("MM/dd/yyyy");
-				}
-
-				int[] numericCols = { 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14 };
-
-				foreach (int c in numericCols)
-				{
-					string s = row[c]?.ToString()?.Trim();
-
-					if (string.IsNullOrWhiteSpace(s))
-					{
-						row[c] = "";
-						continue;
-					}
-
-					decimal d;
-
-					if (!decimal.TryParse(s, out d))
-					{
-						row[c] = "";
-					}
-				}
-			}
 		}
 
 		public List<ValidationError> ImportToStaging()
@@ -657,7 +459,6 @@ namespace Genrev.DomainServices.Data
 				case ImportType.ForecastData:
 					try
 					{
-						SanitizeForecastTable(table);
 						errors = stagingHelper.ImportToForecastDataStaging(table);
 					}
 					catch (Exception ex)

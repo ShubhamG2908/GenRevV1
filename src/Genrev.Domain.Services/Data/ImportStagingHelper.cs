@@ -582,7 +582,7 @@ namespace Genrev.DomainServices.Data
 					{
 						errors.Add(new ValidationError
 						{
-							Message = $"Customer '{d.CustomerClientID}' exists in the Company."
+							Message = $"Customer '{d.CustomerClientID}' does not exists in the Company."
 						});
 					}
 				}

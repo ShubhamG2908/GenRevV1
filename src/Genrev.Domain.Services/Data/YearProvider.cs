@@ -10,9 +10,10 @@ namespace Genrev.DomainServices.Data
 		public IEnumerable<int> GetDefaultYears()
 		{
 			int current = DateTime.Now.Year;
+			int pastYears = 15;
 			int futureYears = 5;
-			int start = current;
-			int count =  futureYears + 1	; // inclusive of current
+			int start = current - pastYears;
+			int count = pastYears +  futureYears + 1	; // inclusive of current
 			return Enumerable.Range(start, count);
 		}
 

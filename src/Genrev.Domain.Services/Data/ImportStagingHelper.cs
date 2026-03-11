@@ -24,6 +24,33 @@ namespace Genrev.DomainServices.Data
             this.context = context;
             validationHelper = new ImportValidationHelper();
         }
+        private static decimal? ParseNullableDecimal(object cell)
+        {
+            if (cell == null) return null;
+            var s = (cell ?? string.Empty).ToString().Trim();
+            if (string.IsNullOrWhiteSpace(s)) return null;
+
+            decimal d;
+            if (decimal.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out d)) return d;
+
+            if (decimal.TryParse(s, NumberStyles.Any, CultureInfo.CurrentCulture, out d)) return d;
+
+            return null;
+        }
+
+        private static double? ParseNullableDouble(object cell)
+        {
+            if (cell == null) return null;
+            var s = (cell ?? string.Empty).ToString().Trim();
+            if (string.IsNullOrWhiteSpace(s)) return null;
+
+            double d;
+            if (double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out d)) return d;
+
+            if (double.TryParse(s, NumberStyles.Any, CultureInfo.CurrentCulture, out d)) return d;
+
+            return null;
+        }
 
         public DataTable GetPersonnelStagingTable()
         {
@@ -409,24 +436,6 @@ namespace Genrev.DomainServices.Data
 
         public List<ValidationError> ImportToMonthlyDataStaging(DataTable table)
         {
-
-            /* Expected Fields
-             * CustomerClientID (required)
-             * PersonnelClientID (required)
-             * ProductClientID
-             * SalesActual
-             * SalesTarget
-             * GPPActual
-             * GPPTarget
-             * CallsActual
-             * CallsTarget
-             * Potential
-             * CurrentOpportunity
-             * FutureOpportunity
-             */
-
-
-            // TODO: change this to the correct validation
             var errors = validationHelper.ValidateMonthlyDataTable(table);
 
             if (errors.Count > 0)
@@ -448,7 +457,7 @@ namespace Genrev.DomainServices.Data
                 var d = new MonthlyDataStaging();
                 d.CustomerClientID = row.ToStringValue(0);
                 d.PersonClientID = row.ToStringValue(1);
-                d.Period = ConvertToDateTimeMonthly(row.ToStringValue(2).Trim());
+                d.Period = ConvertToDateTimeMonthly((row.ToStringValue(2) ?? string.Empty).Trim());
                 d.SalesActual = (decimal?)row.ToDoubleOrNull(3);
                 d.CostActual = (decimal?)row.ToDoubleOrNull(4);
                 d.CallsActual = (double?)row.ToDoubleOrNull(5);
@@ -464,62 +473,78 @@ namespace Genrev.DomainServices.Data
             return errors;
         }
 
-        public List<ValidationError> ImportToForecastDataStaging(DataTable table)
-        {
-            var errors = validationHelper.ValidateForecastDataTable(table);
+		public List<ValidationError> ImportToForecastDataStaging(DataTable table)
+		{
+			var errors = validationHelper.ValidateForecastDataTable(table);
 
-            if (errors.Count > 0)
+			if (errors.Count > 0)
+			{
+				return errors;
+			}
+			var CustomerList = context.Customers.ToList();
+			var PersonnelList = context.Personnel.ToList();
+			var customerDataList = context.CustomerData.ToList();
+            Func<DataRow, string, int, object> getCell = (r, name, idx) =>
             {
-                return errors;
-            }
-            var CustomerList = context.Customers.ToList();
-            var PersonnelList = context.Personnel.ToList();
-            var customerDataList = context.CustomerData.ToList();
+                if (r.Table.Columns.Contains(name)) return r[name];
+                if (r.Table.Columns.Count > idx) return r[idx];
+                return null;
+            };
+
             foreach (DataRow row in table.Rows)
             {
-                // No need to skip first row because it will get only data rows not headers
-                if (row.ToStringValue(0) == "CustomerID" || row.ToStringValue(0) == "SalespersonID")
-                {
+                var firstCust = (getCell(row, "CustomerID", 0) ?? getCell(row, "Customer", 0) ?? string.Empty).ToString();
+                if (firstCust == "CustomerID" || firstCust == "SalespersonID")
                     continue;
-                }
 
                 var d = new ForecastDataStaging();
-                d.CustomerClientID = row.ToStringValue(0);
-                d.PersonClientID = row.ToStringValue(1);
-                d.Period = ConvertToDateTimeForecast(row.ToStringValue(2).Trim());
-                d.SalesForecast = (decimal?)row.ToDoubleOrNull(3);
-                d.SalesTarget = (decimal?)row.ToDoubleOrNull(4);
-                d.GPPForecast = (decimal?)row.ToDoubleOrNull(5);
-                d.GPPTarget = (decimal?)row.ToDoubleOrNull(6);
-                d.CallsForecast = row.ToDoubleOrNull(7);
-                d.CallsTarget = row.ToDoubleOrNull(8);
-                d.Strategy = row.ToStringValue(9);
-                d.Potential = (decimal?)row.ToDoubleOrNull(10);
-                d.CurrentOpportunity = (decimal?)row.ToDoubleOrNull(11);
-                d.FutureOpportunity = (decimal?)row.ToDoubleOrNull(12);
-                d.MarketShare = (decimal?)row.ToDoubleOrNull(13);
-                d.AtRisk = (decimal?)row.ToDoubleOrNull(14);
-                d.RiskExplanation = row.ToStringValue(15);
 
-                //check for already exists
-                var singleCustomer = CustomerList.Where(w => w.ClientID == d.CustomerClientID).FirstOrDefault();
-                if(singleCustomer == null)
+                d.CustomerClientID = (getCell(row, "CustomerID", 0) ?? getCell(row, "Customer", 0) ?? string.Empty).ToString();
+                d.PersonClientID = (getCell(row, "SalespersonID", 1) ?? getCell(row, "PersonnelID", 1) ?? getCell(row, "Salesperson", 1) ?? string.Empty).ToString();
+
+                d.Period = ConvertToDateTimeForecast((getCell(row, "Period", 2) ?? string.Empty).ToString().Trim());
+                if (d.Period == DateTime.MinValue) continue;
+
+                d.SalesForecast = ParseNullableDecimal(getCell(row, "SalesForecast", 3) ?? getCell(row, "Sales Forecast", 3));
+                d.SalesTarget = ParseNullableDecimal(getCell(row, "SalesTarget", 4) ?? getCell(row, "Sales Target", 4));
+
+                d.GPPForecast = ParseNullableDecimal(getCell(row, "GPPForecast", 5) ?? getCell(row, "GPP Forecast", 5));
+                d.GPPTarget = ParseNullableDecimal(getCell(row, "GPPTarget", 6) ?? getCell(row, "GPP Target", 6));
+
+                d.CallsForecast = ParseNullableDouble(getCell(row, "CallsForecast", 7) ?? getCell(row, "Calls Forecast", 7));
+                d.CallsTarget = ParseNullableDouble(getCell(row, "CallsTarget", 8) ?? getCell(row, "Calls Target", 8));
+
+                d.Strategy = (getCell(row, "Strategy", 9) ?? string.Empty).ToString();
+
+                d.Potential = ParseNullableDecimal(getCell(row, "Potential", 10));
+                d.CurrentOpportunity = ParseNullableDecimal(getCell(row, "CurrentOpportunity", 11) ?? getCell(row, "Current Opportunity", 11));
+                d.FutureOpportunity = ParseNullableDecimal(getCell(row, "FutureOpportunity", 12) ?? getCell(row, "Future Opportunity", 12));
+
+                d.MarketShare = ParseNullableDecimal(getCell(row, "MarketShare", 13) ?? getCell(row, "Market Share", 13));
+                d.AtRisk = ParseNullableDecimal(getCell(row, "AtRisk", 14) ?? getCell(row, "At Risk", 14));
+
+                d.RiskExplanation = (getCell(row, "RiskExplanation", 15) ?? getCell(row, "Risk Explanation", 15) ?? string.Empty).ToString();
+
+
+                var singleCustomer = CustomerList.FirstOrDefault(w => w.ClientID == d.CustomerClientID);
+                if (singleCustomer == null)
                 {
-                    singleCustomer = CustomerList.Where(w => w.Name == d.CustomerClientID).FirstOrDefault();
-				}
-                var singlePerson = PersonnelList.Where(w => w.ClientID == d.PersonClientID).FirstOrDefault();
-                if(singlePerson == null)
+                    singleCustomer = CustomerList.FirstOrDefault(w => w.Name == d.CustomerClientID);
+                }
+                var singlePerson = PersonnelList.FirstOrDefault(w => w.ClientID == d.PersonClientID);
+                if (singlePerson == null)
                 {
-                    singlePerson = PersonnelList.Where(w => w.CommonName.Trim() == d.PersonClientID.Trim()).FirstOrDefault();
-				}
-                CustomerData data = new CustomerData();
+                    var personClientTrim = d.PersonClientID?.Trim();
+                    singlePerson = PersonnelList.FirstOrDefault(w => ((w.CommonName ?? string.Empty).Trim()) == personClientTrim);
+                }
+
+                CustomerData data = null;
                 if (singleCustomer != null && singleCustomer.ID > 0 && singlePerson != null && singlePerson.ID > 0)
                 {
-                    data = customerDataList.Where(w => w.CustomerID == singleCustomer.ID && w.PersonnelID == singlePerson.ID && w.Period.Date == d.Period.Date).FirstOrDefault();
+                    data = customerDataList.FirstOrDefault(w => w.CustomerID == singleCustomer.ID && w.PersonnelID == singlePerson.ID && w.Period.Date == d.Period.Date);
                 }
                 if (singleCustomer != null && singleCustomer.ID > 0 && singlePerson != null && singlePerson.ID > 0)
                 {
-                    //check for hierarchy
                     var personnelDownline = context.GetDownstreamCustomerIDs(singlePerson.ID).ToList();
                     if (!personnelDownline.Contains(singleCustomer.ID))
                     {
@@ -535,11 +560,11 @@ namespace Genrev.DomainServices.Data
                         InsertCustomerData(d, singleCustomer.ID, singlePerson.ID);
                     }
                 }
-                }
+            }
 
-            return errors;
-        }
-        private void UpdateCustomerData(CustomerData data, ForecastDataStaging obj, int customerId, int personnelId)
+			return errors;
+		}
+		private void UpdateCustomerData(CustomerData data, ForecastDataStaging obj, int customerId, int personnelId)
         {
             data.CustomerID = customerId;
             data.PersonnelID = personnelId;

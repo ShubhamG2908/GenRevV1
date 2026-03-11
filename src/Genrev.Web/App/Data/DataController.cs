@@ -593,7 +593,7 @@ namespace Genrev.Web.App.Data
 
             DevExpress.Web.UploadedFile[] files = DevExpress.Web.Mvc.UploadControlExtension.GetUploadedFiles(
                 "uploadForecastData",
-                DataUploadValidation.Settings,
+                DataUploadValidation.ForecastSettings,
                 out errors,
                 (sender, e) =>
                 {

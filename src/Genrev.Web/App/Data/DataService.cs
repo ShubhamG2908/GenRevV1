@@ -501,12 +501,21 @@ namespace Genrev.Web.App.Data
 		{
 			var errors = new List<Dymeng.Validation.ValidationError>();
 
-			string path = AppService.Current.Settings.FileUploadDirectory;
-			string fileName = System.IO.Path.GetRandomFileName().Replace(".", "") + ".csv";
-			string fullPath = path + "\\" + fileName;
-			fullPath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~"), fullPath);
+            string path = AppService.Current.Settings.FileUploadDirectory;
+            string incomingExt = System.IO.Path.GetExtension(file.FileName) ?? ".csv";
+            incomingExt = incomingExt.ToLowerInvariant();
 
-			file.SaveAs(fullPath);
+            string saveExt = ".csv";
+            if (importType == ImportType.ForecastData && (incomingExt == ".xls" || incomingExt == ".xlsx" || incomingExt == ".xlsm"))
+            {
+                saveExt = incomingExt;
+            }
+
+            string fileName = System.IO.Path.GetRandomFileName().Replace(".", "") + saveExt;
+            string fullPath = path + "\\" + fileName;
+            fullPath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~"), fullPath);
+
+            file.SaveAs(fullPath);
 
 			var csvImportHelper = new CsvImportHelper(fullPath, importType, AppService.Current.DataContext);
 			var importHelper = new ImportCommitHelper(AppService.Current.DataContext);
@@ -515,20 +524,17 @@ namespace Genrev.Web.App.Data
 			{
 				errors = csvImportHelper.ImportToStaging();
 
-				if (importType != ImportType.ForecastData)
+				if (errors.Count == 0)
 				{
 					try
 					{
 						importHelper.UpsertStagingToLive(importType, AppService.Current.Account.ID, true);
 					}
-
 					catch (SqlException sqlEx)
 					{
-						
 						if (sqlEx.Number == 2601 || sqlEx.Number == 2627)
 						{
 							Log.Information("Import completed with duplicate-key(s): {Message}", sqlEx.Message);
-
 							return new List<Dymeng.Validation.ValidationError>();
 						}
 						else if (sqlEx.Number == 50000 || (sqlEx.Number >= 50001 && sqlEx.Number < 60000))

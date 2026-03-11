@@ -15,7 +15,7 @@
                  s.AutoStartUpload = true;
                  s.Width = Unit.Percentage(80);
                  s.CallbackRouteValues = new { Controller = "Data", Action = "UploadForecastData" };
-                 s.ValidationSettings.Assign(Genrev.Web.App.Data.DataUploadValidation.Settings);
+                 s.ValidationSettings.Assign(Genrev.Web.App.Data.DataUploadValidation.ForecastSettings);
              }
          ).GetHtml()
         </div>

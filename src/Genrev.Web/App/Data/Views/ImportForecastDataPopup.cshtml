@@ -28,7 +28,14 @@
 </div>
 <div class="dg-row" style="margin-top:30px;">
     <div class="dg-col-12" style="color:red;">
-        <b>Note</b>: The "Period" Date must be formatted as MM/DD/YYYY and should always represent the first day of each month, as the forecast data is structured on a monthly basis.
+        <b>Note</b>: 
+        <ol>
+            <li>The file must be a valid Excel file.</li>
+            <li>The "Period" Date must be formatted as MM/DD/YYYY and should always represent the first day of each month, as the forecast data is structured on a monthly basis.</li>
+            <li>Do not change the header column name.if you change it, it may break the import functionality.</li>
+            <li>Use cell B2 to declare the year for whatever year data it is.</li>
+            <li>Strategy will only be applicable for the first month.</li>
+        </ol>
     </div>
 </div>
 

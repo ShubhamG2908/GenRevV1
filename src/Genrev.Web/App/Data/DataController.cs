@@ -214,7 +214,7 @@ namespace Genrev.Web.App.Data
                         filename += "MonthlyData.csv";
                         break;
                     case "forecastData":
-                        filename += "ForecastData.csv";
+                        filename += "ForecastData.xlsx";
                         break;
                     case "areaOfResponsibility":
                         filename += "AreaOfResponsibility.csv";

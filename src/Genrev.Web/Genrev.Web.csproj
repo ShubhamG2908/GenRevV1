@@ -365,7 +365,7 @@
     <Content Include="App_Data\ImportTemplates\GRImportTemplate_Companies.csv" />
     <Content Include="App_Data\ImportTemplates\GRImportTemplate_Customers.csv" />
     <Content Include="App_Data\ImportTemplates\GRImportTemplate_CustomerTypes.csv" />
-    <Content Include="App_Data\ImportTemplates\GRImportTemplate_ForecastData.csv" />
+    <None Include="App_Data\ImportTemplates\GRImportTemplate_ForecastData.xlsx" />
     <Content Include="App_Data\ImportTemplates\GRImportTemplate_Industries.csv" />
     <Content Include="App_Data\ImportTemplates\GRImportTemplate_MonthlyData.csv" />
     <Content Include="App_Data\ImportTemplates\GRImportTemplate_Personnel.csv" />

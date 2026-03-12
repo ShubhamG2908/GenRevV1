@@ -475,12 +475,8 @@ namespace Genrev.DomainServices.Data
 
 		public List<ValidationError> ImportToForecastDataStaging(DataTable table)
 		{
-			var errors = validationHelper.ValidateForecastDataTable(table);
 
-			if (errors.Count > 0)
-			{
-				return errors;
-			}
+            var errors = new List<ValidationError>();
 			var CustomerList = context.Customers.ToList();
 			var PersonnelList = context.Personnel.ToList();
 			var customerDataList = context.CustomerData.ToList();
@@ -561,7 +557,7 @@ namespace Genrev.DomainServices.Data
                 d.RiskExplanation = (getCell(row, "RiskExplanation", 15) ?? getCell(row, "Risk Explanation", 15) ?? string.Empty).ToString();
 
 
-                var singleCustomer = CustomerList.FirstOrDefault(w => w.ClientID == d.CustomerClientID);
+                var singleCustomer = CustomerList.FirstOrDefault(w => w.Name == d.CustomerClientID);
 				if (singleCustomer == null)
 				{
 					singleCustomer = CustomerList.FirstOrDefault(w => w.Name == d.CustomerClientID);
@@ -577,17 +573,17 @@ namespace Genrev.DomainServices.Data
 								Message = $"Customer '{d.CustomerClientID}' does not exist in the Company."
 							});
 						}
-					}
-					else
-					{
-						errors.Add(new ValidationError
+						else
 						{
-							Message = $"Customer '{d.CustomerClientID}' does not exists in the Company."
-						});
+							errors.Add(new ValidationError
+							{
+								Message = $"Customer '{d.CustomerClientID}' does not exists in the Company."
+							});
+						}
 					}
 				}
 
-				var singlePerson = PersonnelList.FirstOrDefault(w => w.ClientID == d.PersonClientID);
+				var singlePerson = PersonnelList.FirstOrDefault(w => w.CommonName == d.PersonClientID);
 				if (singlePerson == null)
 				{
 					var personClientTrim = d.PersonClientID?.Trim();

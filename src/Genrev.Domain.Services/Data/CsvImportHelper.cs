@@ -121,7 +121,7 @@ namespace Genrev.DomainServices.Data
 
 			// Regex used to detect month name from header
 			var monthRegex = new Regex(
-				@"\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\b",
+				@"\b(Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|August|Sep|September|Sept|Oct|October|Nov|November|Dec|December)\b",
 				RegexOptions.IgnoreCase);
 
 			// Metric identification
@@ -215,14 +215,41 @@ namespace Genrev.DomainServices.Data
 				.Where(x => !string.IsNullOrEmpty(x.Value.Month))
 				.GroupBy(x => x.Value.Month);
 
+			var deafultGroup = columnIndexMapper.Where(x => string.IsNullOrEmpty(x.Value.Month)).ToList();
 			// Ensure strategy columns inserted only once per customer
 			HashSet<string> strategyInsertedCustomers = new HashSet<string>();
 
 			for (int i = 3; i < wide.Rows.Count; i++)
 			{
+				var customerName = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Customer").Key]?.ToString();
+
+				bool isEmptyRow = true;
+				bool isStrategyValueSet = false;
+				// Skip GRAND TOTALS row
+				if (!string.IsNullOrWhiteSpace(customerName) && customerName.ToUpper().Contains("TOTAL"))
+					continue;
 				foreach (var monthGroup in monthGroups)
 				{
+					
+
 					DataRow row = table.NewRow();
+
+					// Extract data for monthly data and update the "row" accordingly
+					foreach (var item in monthGroup.Select(x => new { x.Value.Metric, x.Key }).ToList())
+					{
+						var value = wide.Rows[i][item.Key];
+						if (string.IsNullOrWhiteSpace(value.ToString().Trim()) || value.ToString() == "#DIV/0!")
+							continue;
+
+						isEmptyRow = false;
+
+						row[item.Metric] = CleanNumber(wide.Rows[i][item.Key]);
+					}
+
+					// Skip the month entry
+					// if there is no valid record available
+					if (isEmptyRow)
+						continue;
 
 					int monthNumber = DateTime.ParseExact(
 						monthGroup.Key.Substring(0, 3),
@@ -231,85 +258,33 @@ namespace Genrev.DomainServices.Data
 
 					row["Period"] = new DateTime(year, monthNumber, 1).ToString("MM/dd/yyyy");
 
-					string customerId = "";
+					row["SalespersonID"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Salesperson").Key];
+					row["CustomerID"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Customer").Key];
 
-					string strategy = "";
-					string potential = "";
-					string currentOpp = "";
-					string futureOpp = "";
-					string marketShare = "";
-					string atRisk = "";
-					string riskExp = "";
 
-					// Read static columns
-					foreach (var map in columnIndexMapper)
+					// Set the default field for the 1st month only.
+					// No need to repeate it for any other month
+					if (!isStrategyValueSet)
 					{
-						object value = wide.Rows[i][map.Key];
+						row["Strategy"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Strategy").Key];
+						row["Potential"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Potential").Key]);
+						row["CurrentOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "CurrentOpportunity").Key]);
+						row["FutureOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "FutureOpportunity").Key]);
+						row["MarketShare"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "MarketShare").Key]);
+						row["AtRisk"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "AtRisk").Key]);
+						row["RiskExplanation"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "RiskExplanation").Key];
 
-						switch (map.Value.Metric)
-						{
-							case "Salesperson":
-								row["SalespersonID"] = value;
-								break;
-
-							case "Customer":
-								customerId = value?.ToString();
-								row["CustomerID"] = customerId;
-								break;
-
-							case "Strategy":
-								strategy = value?.ToString();
-								break;
-
-							case "Potential":
-								potential = CleanNumber(value?.ToString());
-								break;
-
-							case "CurrentOpportunity":
-								currentOpp = CleanNumber(value?.ToString());
-								break;
-
-							case "FutureOpportunity":
-								futureOpp = CleanNumber(value?.ToString());
-								break;
-
-							case "MarketShare":
-								marketShare = CleanNumber(value?.ToString());
-								break;
-
-							case "AtRisk":
-								atRisk = CleanNumber(value?.ToString());
-								break;
-
-							case "RiskExplanation":
-								riskExp = value?.ToString();
-								break;
-						}
+						isStrategyValueSet = true;
 					}
 
-					// Insert these fields only once per customer
-					if (!string.IsNullOrWhiteSpace(customerId) &&
-						!strategyInsertedCustomers.Contains(customerId))
+					// Remove any incorrect value
+					for (int v = 0; v < row.ItemArray.Count(); v++)
 					{
-						row["Strategy"] = strategy;
-						row["Potential"] = potential;
-						row["CurrentOpportunity"] = currentOpp;
-						row["FutureOpportunity"] = futureOpp;
-						row["MarketShare"] = marketShare;
-						row["AtRisk"] = atRisk;
-						row["RiskExplanation"] = riskExp;
-
-						strategyInsertedCustomers.Add(customerId);
+						if (row.ItemArray[v].ToString() == "#DIV/0!")
+							row.ItemArray[v] = "";
 					}
 
-					// Read month metrics
-					foreach (var col in monthGroup)
-					{
-						object value = wide.Rows[i][col.Key];
-
-						row[col.Value.Metric] = CleanNumber(value);
-					}
-
+					// Add the row in the table with valid month value
 					table.Rows.Add(row);
 				}
 			}
@@ -369,64 +344,7 @@ namespace Genrev.DomainServices.Data
 					table = ConvertForecasToCsvFormat(table);
 				}
 
-				for (int r = 1; r < table.Rows.Count; r++)
-				{
-					var row = table.Rows[r];
-					if (string.IsNullOrWhiteSpace(row[0]?.ToString()))
-					{
-						for (int c = 0; c < table.Columns.Count; c++)
-						{
-							var v = (table.Rows[r][c] ?? string.Empty).ToString().Trim();
-							if (!string.IsNullOrWhiteSpace(v))
-							{
-								row[0] = v;
-								break;
-							}
-						}
-					}
-					if (string.IsNullOrWhiteSpace(row[1]?.ToString()))
-					{
-						for (int c = 1; c < table.Columns.Count; c++)
-						{
-							var v = (table.Rows[r][c] ?? string.Empty).ToString().Trim();
-							if (!string.IsNullOrWhiteSpace(v))
-							{
-								row[1] = v;
-								break;
-							}
-						}
-					}
-					if (string.IsNullOrWhiteSpace(row[2]?.ToString()))
-					{
-						for (int c = 2; c < table.Columns.Count; c++)
-						{
-							var v = (table.Rows[r][c] ?? string.Empty).ToString().Trim();
-							if (string.IsNullOrWhiteSpace(v)) continue;
-							DateTime dt;
-							var m = System.Text.RegularExpressions.Regex.Match(v, "^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)([ -]?(\\d{2,4}))?$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-							if (m.Success)
-							{
-								int mon = DateTime.ParseExact(m.Groups[1].Value, "MMM", CultureInfo.InvariantCulture).Month;
-								int yr = DateTime.Now.Year;
-								if (m.Groups[2].Success && !string.IsNullOrWhiteSpace(m.Groups[2].Value))
-								{
-									int.TryParse(m.Groups[2].Value, out yr);
-									if (yr < 100) yr += 2000;
-								}
-								row[2] = new DateTime(yr, mon, 1).ToString("MM/dd/yyyy");
-								break;
-							}
-							if (DateTime.TryParse(v, out dt))
-							{
-								row[2] = dt.ToString("MM/dd/yyyy");
-								break;
-							}
-						}
-					}
-				}
-
 				table = DataTableTrimHelper.RemoveEmptyRows(table);
-				//table = DataTableTrimHelper.RemoveEmptyColumns(table);
 			}
 			catch (Exception e)
 			{

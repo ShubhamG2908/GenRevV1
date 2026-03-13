@@ -24,7 +24,7 @@
         forecastLock: '/client/scripts/app/forecastLock.v1.0',
         genrev: '/client/scripts/app/genrev.v1.4',
         owner: '/client/scripts/app/owner.v1.0',
-        personnel: '/client/scripts/app/personnel.v1.1',
+        personnel: '/client/scripts/app/personnel.v1.2',
         products: '/client/scripts/app/products.v1.0',
         preferences: '/client/scripts/app/preferences.v1.0',
         subscription: '/client/scripts/app/subscription.v1.0',

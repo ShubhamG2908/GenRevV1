@@ -589,7 +589,8 @@ define(function () {
                                 // this was the case also when trying to re-apply the events after
                                 // however if I clear and replace the entire grid via setSelection we're in decent shape
                                 // refactor later...
-                                personnel.overview.reportsToGrid.setSelection(personnel.overview.currentID(), true);                                
+                                personnel.overview.reportsToGrid.object.Refresh();
+                               
                             } else {
                                 App.Errors.ShowGeneral();
                             }
@@ -610,7 +611,11 @@ define(function () {
                     
                     grid.object.BeginCallback.AddHandler(function (s, e) { e.customArgs["personnelID"] = personnel.overview.currentID(); });
 
-                    $('[data-dym-cellClick="ReportsToGrid"]').click(function () { personnel.overview.reportsToGrid.events._fromSource.cellClick($(this)); });
+                    $(document).off("click", '[data-dym-cellClick="ReportsToGrid"]');
+
+                    $(document).on("click", '[data-dym-cellClick="ReportsToGrid"]', function () {
+                        personnel.overview.reportsToGrid.events._fromSource.cellClick($(this));
+                    });
                     
                 },  // end personnel.overview.reportsToGrid.initialize
 

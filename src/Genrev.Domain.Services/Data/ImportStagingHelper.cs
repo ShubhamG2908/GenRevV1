@@ -31,8 +31,6 @@ namespace Genrev.DomainServices.Data
             if (string.IsNullOrWhiteSpace(s)) return null;
 
             decimal d;
-            if (decimal.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out d)) return d;
-
             if (decimal.TryParse(s, NumberStyles.Any, CultureInfo.CurrentCulture, out d)) return d;
 
             return null;
@@ -45,8 +43,6 @@ namespace Genrev.DomainServices.Data
             if (string.IsNullOrWhiteSpace(s)) return null;
 
             double d;
-            if (double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out d)) return d;
-
             if (double.TryParse(s, NumberStyles.Any, CultureInfo.CurrentCulture, out d)) return d;
 
             return null;

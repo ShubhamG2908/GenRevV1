@@ -119,6 +119,7 @@
             col.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;            
             col.ReadOnly = Model.IsLocked;
             col.EditFormSettings.Visible = !Model.IsLocked ? DefaultBoolean.True : DefaultBoolean.False;
+            col.PropertiesEdit.DisplayFormatString = "{0:n2} %";
         });
         s.Columns.Add(col =>
         {

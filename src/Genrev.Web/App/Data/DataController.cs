@@ -214,7 +214,7 @@ namespace Genrev.Web.App.Data
                         filename += "MonthlyData.csv";
                         break;
                     case "forecastData":
-                        filename += "ForecastData.csv";
+                        filename += "ForecastData.xlsx";
                         break;
                     case "areaOfResponsibility":
                         filename += "AreaOfResponsibility.csv";
@@ -593,17 +593,35 @@ namespace Genrev.Web.App.Data
 
             DevExpress.Web.UploadedFile[] files = DevExpress.Web.Mvc.UploadControlExtension.GetUploadedFiles(
                 "uploadForecastData",
-                DataUploadValidation.Settings,
+                DataUploadValidation.ForecastSettings,
                 out errors,
                 (sender, e) =>
                 {
                     var validationErrors = _service.ProcessFileImport(Domain.Data.ImportType.ForecastData, e.UploadedFile);
                     e.UploadedFile.IsValid = validationErrors.Count == 0 ? true : false;
-                    if (validationErrors.Count > 0)
-                    {
-                        e.ErrorText = getCompiledValidationMessages(validationErrors);
-                    }
-                });
+
+					// Check if the first message indicates partial success
+					bool isPartialSuccess = validationErrors.Any() &&
+										  validationErrors[0].Message.Contains("completed with warnings");
+
+					if (isPartialSuccess)
+					{
+						// Treat as success but pass warnings
+						e.UploadedFile.IsValid = true;
+						e.CallbackData = "WARNING:" + getCompiledValidationMessages(validationErrors);
+					}
+					else if (validationErrors.Count > 0)
+					{
+						// Critical errors
+						e.UploadedFile.IsValid = false;
+						e.ErrorText = getCompiledValidationMessages(validationErrors);
+					}
+					else
+					{
+						// Complete success
+						e.UploadedFile.IsValid = true;
+					}
+				});
 
             return null;
         }

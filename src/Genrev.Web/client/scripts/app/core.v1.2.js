@@ -77,6 +77,23 @@
             } catch (err) { }
         },
 
+        Warning: {
+
+            NotImplemented: {
+                name: 'NotImplemented',
+                message: 'This has not yet been implemented'
+            },
+
+            Show: function(message) {
+                App.Alert(message, DialogIcons.Warning, "Warning");
+            },
+
+            ShowGeneral: function () {
+                App.Alert("We're sorry, we seem to have run into an issue with that request.  Please contact our support desk if this problem continues.", DialogIcons.Error, "Error");
+            }
+
+        }, 
+
         Errors: {
 
             NotImplemented: {

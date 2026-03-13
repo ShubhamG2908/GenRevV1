@@ -15,7 +15,7 @@
                  s.AutoStartUpload = true;
                  s.Width = Unit.Percentage(80);
                  s.CallbackRouteValues = new { Controller = "Data", Action = "UploadForecastData" };
-                 s.ValidationSettings.Assign(Genrev.Web.App.Data.DataUploadValidation.Settings);
+                 s.ValidationSettings.Assign(Genrev.Web.App.Data.DataUploadValidation.ForecastSettings);
              }
          ).GetHtml()
         </div>
@@ -28,7 +28,14 @@
 </div>
 <div class="dg-row" style="margin-top:30px;">
     <div class="dg-col-12" style="color:red;">
-        <b>Note</b>: The "Period" Date must be formatted as MM/DD/YYYY and should always represent the first day of each month, as the forecast data is structured on a monthly basis.
+        <b>Notes</b>: 
+        <ol>
+            <li>The file must be a valid Excel file.</li>
+            <li>The "Period" Date must be formatted as MM/DD/YYYY and should always represent the first day of each month, as the forecast data is structured on a monthly basis.</li>
+            <li>Do not change the header column name.if you change it, it may break the import functionality.</li>
+            <li>Please input the applicable fiscal year in cell B2 to define the reporting period for the dataset.</li>
+            <li>Strategy will only be applicable for the first month.</li>
+        </ol>
     </div>
 </div>
 

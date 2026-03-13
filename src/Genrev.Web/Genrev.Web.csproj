@@ -365,7 +365,6 @@
     <Content Include="App_Data\ImportTemplates\GRImportTemplate_Companies.csv" />
     <Content Include="App_Data\ImportTemplates\GRImportTemplate_Customers.csv" />
     <Content Include="App_Data\ImportTemplates\GRImportTemplate_CustomerTypes.csv" />
-    <Content Include="App_Data\ImportTemplates\GRImportTemplate_ForecastData.csv" />
     <Content Include="App_Data\ImportTemplates\GRImportTemplate_Industries.csv" />
     <Content Include="App_Data\ImportTemplates\GRImportTemplate_MonthlyData.csv" />
     <Content Include="App_Data\ImportTemplates\GRImportTemplate_Personnel.csv" />
@@ -399,7 +398,7 @@
     <Content Include="client\scripts\app\dailyDataManagement.v1.0.js" />
     <Content Include="client\scripts\app\drilldown.v1.0.js" />
     <Content Include="client\scripts\app\forecastLock.v1.0.js" />
-    <Content Include="client\scripts\app\forecast.v1.0.js" />
+    <Content Include="client\scripts\app\forecast.v1.1.js" />
     <Content Include="client\scripts\app\genrev.v1.4.js" />
     <Content Include="client\scripts\app\dashboard.v1.5.js" />
     <Content Include="client\scripts\app\data.v1.5.js" />
@@ -407,14 +406,14 @@
     <Content Include="client\scripts\app\customers.v1.1.js" />
     <Content Include="client\scripts\app\preferences.v1.0.js" />
     <Content Include="client\scripts\app\products.v1.0.js" />
-    <Content Include="client\scripts\app\personnel.v1.1.js" />
+    <Content Include="client\scripts\app\personnel.v1.2.js" />
     <Content Include="client\scripts\app\subscription.v1.0.js" />
     <Content Include="client\scripts\app\devex.v1.1.js" />
     <Content Include="client\scripts\app\test.v1.0.js" />
     <Content Include="client\scripts\config.v1.11.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="client\scripts\app\core.v1.1.js" />
+    <Content Include="client\scripts\app\core.v1.2.js" />
     <Content Include="client\scripts\lib\deepMerge.js" />
     <Content Include="client\scripts\lib\highcharts-nodata.v5.0.0.js" />
     <Content Include="client\scripts\lib\highcharts.v4.2.6.js" />
@@ -720,6 +719,7 @@
     <Content Include="App_Data\Uploads\yikxzkaapvg.csv" />
     <Content Include="App_Data\Uploads\ylnedrcrrbe.csv" />
     <Content Include="App_Data\Uploads\ywkjizfhnqo.csv" />
+    <Content Include="App_Data\ImportTemplates\GRImportTemplate_ForecastData.xlsx" />
     <None Include="client\scripts\_references.js" />
     <Content Include="Content\Site.css" />
     <Content Include="GenRevSP\CreateCompany.sql" />

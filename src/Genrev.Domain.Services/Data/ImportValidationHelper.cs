@@ -4,6 +4,8 @@ using Dymeng.Validation;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
+using System.Linq;
 
 namespace Genrev.DomainServices.Data
 {
@@ -666,16 +668,28 @@ namespace Genrev.DomainServices.Data
                 case ImportValidationError.TargetGPPMustBeNumeric:
                     error.Message = "Target GPP must be numeric.";
                     break;
-                case ImportValidationError.InvalidDateFormat:
-                    {
-                        if (IDs != null && IDs.Count > 0)
-                        {
-                            error.Message = $"Invalid date format at row: {string.Join(",", IDs).TrimEnd(',')}";
-                        }
-                        break;
-                    }
-                default:
-                    throw new ArgumentOutOfRangeException("The specificed error type is not registered");
+                case ImportValidationError.MarketShareMustBeNumeric:
+                case ImportValidationError.MarketShareMustBeZeroOrMore:
+                    error.Message = "Market Share must be numeric and must be blank, zero or more.";
+                    break;
+                case ImportValidationError.AtRiskMustBeNumeric:
+                case ImportValidationError.AtRiskMustBeZeroOrMore:
+                    error.Message = "At Risk must be numeric and must be blank, zero or more.";
+                    break;
+				case ImportValidationError.InvalidDateFormat:
+					{
+						if (IDs != null && IDs.Count > 0)
+						{
+							var list = IDs;
+							var toShow = list.Count > 30 ? list.Take(30).ToList() : list;
+							error.Message = $"Invalid date format at row: {string.Join(",", toShow)}";
+							if (list.Count > 30) error.Message += $"... ({list.Count} rows total)";
+						}
+						break;
+					}
+				default:
+                    error.Message = $"Unregistered validation error: {errorType}";
+                    break;
             }
 
             error.ID = (int)errorType;

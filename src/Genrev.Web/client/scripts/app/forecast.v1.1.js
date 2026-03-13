@@ -43,7 +43,11 @@ define(function () {
         },
         uploadEvents: {
             fileUploadComplete: function (s, e) {
-                if (!e.isValid) {
+                if(e.callbackData)
+                {
+                    App.Warning.Show("File imported with warnings:\n\n" + e.callbackData)
+                }
+                else if (!e.isValid) {
                     App.Errors.Show("Unable to import file:\n\n" + e.errorText);
                     return;
                 } else {

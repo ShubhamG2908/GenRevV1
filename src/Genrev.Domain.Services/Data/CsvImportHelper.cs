@@ -8,6 +8,7 @@ using System.Data.OleDb;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text.RegularExpressions;
 
 
@@ -312,7 +313,7 @@ namespace Genrev.DomainServices.Data
 			return "";
 		}
 
-		public List<ValidationError> ImportToStaging()
+		public List<ValidationError> ImportToStaging(int companyId)
 		{
 
 			var errors = new List<ValidationError>();
@@ -377,7 +378,7 @@ namespace Genrev.DomainServices.Data
 				case ImportType.ForecastData:
 					try
 					{
-						errors = stagingHelper.ImportToForecastDataStaging(table);
+						errors = stagingHelper.ImportToForecastDataStaging(table,companyId);
 					}
 					catch (Exception ex)
 					{

@@ -7,8 +7,8 @@ namespace Genrev.Domain.DataSets
 
         public int ID { get; set; }
         public DateTime DateCreated { get; set; }
-
-        public int CustomerID { get; set; }
+		public int CompanyID { get; set; }
+		public int CustomerID { get; set; }
         public int? PersonnelID { get; set; }
         public int? ProductID { get; set; }
 

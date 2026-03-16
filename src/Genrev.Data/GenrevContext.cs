@@ -116,8 +116,8 @@ namespace Genrev.Data
         public IEnumerable<Person> GetParentPersonnel(int personID) {
             return Services.General.GetParentPersonnel(this, personID);
         }
-        public int[] GetDownstreamCustomerIDs(int personID) {
-            return Services.General.GetDownstreamCustomerIDs(this, personID);
+        public int[] GetDownstreamCustomerIDs(int personID,int companyID) {
+            return Services.General.GetDownstreamCustomerIDs(this, personID, companyID);
         }
         public int[] GetDownstreamPersonnelIDs(int personID) {
             return Services.General.GetDownstreamPersonnelIDs(this, personID);

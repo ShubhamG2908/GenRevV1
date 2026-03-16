@@ -588,8 +588,8 @@ namespace Genrev.Web.App.Data
         [Authorize(Roles = "sysadmin")]
         public ActionResult UploadForecastData()
         {
-
-            string[] errors;
+			int companyId = AppService.Current.Account.PrimaryCompany.ID;
+			string[] errors;
 
             DevExpress.Web.UploadedFile[] files = DevExpress.Web.Mvc.UploadControlExtension.GetUploadedFiles(
                 "uploadForecastData",

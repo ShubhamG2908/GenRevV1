@@ -55,7 +55,8 @@ namespace Genrev.Web.App.Analysis
             {
                 foreach (var pId in personnelIds)
                 {
-                    var tempCustomers = context.GetDownstreamCustomerIDs(pId).ToList();
+                    int companyID = AppService.Current.Account.PrimaryCompany.ID;
+					var tempCustomers = context.GetDownstreamCustomerIDs(pId,companyID).ToList();
                     if (tempCustomers != null && tempCustomers.Count > 0)
                     {
                         customerIds.AddRange(tempCustomers);

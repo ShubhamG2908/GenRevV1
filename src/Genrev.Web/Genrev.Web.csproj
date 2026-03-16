@@ -724,9 +724,15 @@
     <Content Include="Content\Site.css" />
     <Content Include="GenRevSP\CreateCompany.sql" />
     <Content Include="GenRevSP\GenrevSPBackup_11032025.sql" />
+    <Content Include="GenRevSP\GetDownstreamCustomerID.sql" />
     <Content Include="GenRevSP\UpsertAccountTypesToLive_Company.sql" />
+    <Content Include="GenRevSP\UpsertAreaOfResponsibilitiesToLive.sql" />
+    <Content Include="GenRevSP\UpsertCustomersToLive.sql" />
+    <Content Include="GenRevSP\UpsertCustomerTypesToLive.sql" />
     <Content Include="GenRevSP\UpsertCustomerTypesToLive_Customer.sql" />
+    <Content Include="GenRevSP\UpsertIndustryTypesToLive.sql" />
     <Content Include="GenRevSP\UpsertIndustryTypesToLive_Industry.sql" />
+    <Content Include="GenRevSP\UpsertPersonnelToLive.sql" />
     <Content Include="GenRevSP\UpsertPersonnelToLive_Personnel.sql" />
     <Content Include="Global.asax" />
     <Content Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />

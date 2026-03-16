@@ -61,15 +61,26 @@ namespace Genrev.Data.Services
 
         }
 
-        internal static int[] GetDownstreamCustomerIDs(GenrevContext context, int personID) {
+   internal static int[] GetDownstreamCustomerIDs(GenrevContext context, int personID,int companyID) {
 
-            var ret = context.Database.SqlQuery<int>(
-                "GetDownstreamCustomerIDs @PersonID",
-                new SqlParameter() { ParameterName = "@PersonID", SqlDbType = SqlDbType.Int, SqlValue = personID });
+			var ret = context.Database.SqlQuery<int>(
+	   "GetDownstreamCustomerIDs @PersonID, @CompanyID",
+	   new SqlParameter()
+	   {
+		   ParameterName = "@PersonID",
+		   SqlDbType = SqlDbType.Int,
+		   Value = personID
+	   },
+	   new SqlParameter()
+	   {
+		   ParameterName = "@CompanyID",
+		   SqlDbType = SqlDbType.Int,
+		   Value = companyID
+	   });
 
-            return ret.ToArray();
+			return ret.ToArray();
 
-        }
+		}
 
         internal static int[] GetDownstreamPersonnelIDs(GenrevContext context, int personID) {
 

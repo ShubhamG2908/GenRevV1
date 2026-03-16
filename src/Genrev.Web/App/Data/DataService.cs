@@ -499,6 +499,7 @@ namespace Genrev.Web.App.Data
 
 		public List<Dymeng.Validation.ValidationError> ProcessFileImport(ImportType importType, DevExpress.Web.UploadedFile file)
 		{
+			int companyId = AppService.Current.Account.PrimaryCompany.ID;
 			var errors = new List<Dymeng.Validation.ValidationError>();
 
             string path = AppService.Current.Settings.FileUploadDirectory;
@@ -522,7 +523,7 @@ namespace Genrev.Web.App.Data
 
 			try
 			{
-				errors = csvImportHelper.ImportToStaging();
+				errors = csvImportHelper.ImportToStaging(companyId);
 
 				if (errors.Count == 0)
 				{

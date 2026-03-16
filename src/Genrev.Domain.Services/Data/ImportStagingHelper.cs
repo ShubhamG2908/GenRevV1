@@ -19,7 +19,7 @@ namespace Genrev.DomainServices.Data
         Genrev.Data.GenrevContext context;
 
 
-        public ImportStagingHelper(Genrev.Data.GenrevContext context)
+		public ImportStagingHelper(Genrev.Data.GenrevContext context)
         {
             this.context = context;
             validationHelper = new ImportValidationHelper();
@@ -469,7 +469,7 @@ namespace Genrev.DomainServices.Data
             return errors;
         }
 
-		public List<ValidationError> ImportToForecastDataStaging(DataTable table)
+		public List<ValidationError> ImportToForecastDataStaging(DataTable table,int companyId)
 		{
 
             var errors = new List<ValidationError>();
@@ -553,7 +553,7 @@ namespace Genrev.DomainServices.Data
                 d.RiskExplanation = (getCell(row, "RiskExplanation", 15) ?? getCell(row, "Risk Explanation", 15) ?? string.Empty).ToString();
 
 
-                var singleCustomer = CustomerList.FirstOrDefault(w => w.Name == d.CustomerClientID);
+                var singleCustomer = CustomerList.FirstOrDefault(w => w.Name == d.CustomerClientID && w.CompanyID == companyId);
 				if (singleCustomer == null)
 				{
 					singleCustomer = CustomerList.FirstOrDefault(w => w.Name == d.CustomerClientID);
@@ -579,8 +579,8 @@ namespace Genrev.DomainServices.Data
 					}
 				}
 
-				var singlePerson = PersonnelList.FirstOrDefault(w => w.CommonName == d.PersonClientID);
-				if (singlePerson == null)
+				var singlePerson = PersonnelList.FirstOrDefault(w => w.CommonName == d.PersonClientID && w.CompanyID == companyId);
+				if (singlePerson == null) 
 				{
 					var personClientTrim = d.PersonClientID?.Trim();
 
@@ -605,20 +605,21 @@ namespace Genrev.DomainServices.Data
                 }
                 if (singleCustomer != null && singleCustomer.ID > 0 && singlePerson != null && singlePerson.ID > 0)
                 {
-                    var personnelDownline = context.GetDownstreamCustomerIDs(singlePerson.ID).ToList();
+                    var personnelDownline = context.GetDownstreamCustomerIDs(singlePerson.ID,singlePerson.CompanyID).ToList();
                     if (!personnelDownline.Contains(singleCustomer.ID))
                     {
                         errors.Add(new ValidationError() { Message = singleCustomer.ClientID + " is not mapped with " + singlePerson.ClientID });
                         //return errors;
                         continue;
                     }
-                    if (data != null && data.ID > 0)
+
+					if (data != null && data.ID > 0)
                     {
-                        UpdateCustomerData(data, d, singleCustomer.ID, singlePerson.ID);
+                        UpdateCustomerData(data, d, singleCustomer.ID, singlePerson.ID,singleCustomer.CompanyID);
                     }
                     else
                     {
-                        InsertCustomerData(d, singleCustomer.ID, singlePerson.ID);
+                        InsertCustomerData(d, singleCustomer.ID, singlePerson.ID,singleCustomer.CompanyID);
                     }
                 }
             }
@@ -631,11 +632,12 @@ namespace Genrev.DomainServices.Data
 			}
 			return errors;
 		}
-		private void UpdateCustomerData(CustomerData data, ForecastDataStaging obj, int customerId, int personnelId)
+		private void UpdateCustomerData(CustomerData data, ForecastDataStaging obj, int customerId, int personnelId,int companyId)
         {
             data.CustomerID = customerId;
             data.PersonnelID = personnelId;
-            data.Period = obj.Period;
+            data.CompanyID = companyId;
+			data.Period = obj.Period;
             data.SalesForecast = obj.SalesForecast;
             data.SalesTarget = obj.SalesTarget;
             data.CostForecast = CustomerData.GetCost(obj.SalesForecast, obj.GPPForecast);
@@ -651,13 +653,14 @@ namespace Genrev.DomainServices.Data
             data.RiskExplanation = obj.RiskExplanation;
             context.SaveChanges();
         }
-        private void InsertCustomerData(ForecastDataStaging obj, int customerId, int personnelId)
+        private void InsertCustomerData(ForecastDataStaging obj, int customerId, int personnelId, int companyId)
         {
             CustomerData customerData = new CustomerData()
             {
                 CustomerID = customerId,
                 PersonnelID = personnelId,
-                Period = obj.Period,
+				CompanyID = companyId,
+				Period = obj.Period,
                 SalesForecast = obj.SalesForecast,
                 SalesTarget = obj.SalesTarget,
                 CostForecast = CustomerData.GetCost(obj.SalesForecast, obj.GPPForecast),

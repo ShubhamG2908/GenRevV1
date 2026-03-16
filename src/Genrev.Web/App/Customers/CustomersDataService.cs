@@ -70,10 +70,9 @@ namespace Genrev.Web.App.Customers
         public List<CustomerDDLVM> GetCustomerListItemsByPersonnelId(int personnelID)
         {
             var model = new List<CustomerDDLVM>();
-            //var persons = AppService.Current.Person.Personnel;
-            //var account = AppService.Current.Account;
+			int companyID = AppService.Current.Account.PrimaryCompany.ID;
 
-            var customerIDs = AppService.Current.DataContext.GetDownstreamCustomerIDs(personnelID);
+			var customerIDs = AppService.Current.DataContext.GetDownstreamCustomerIDs(personnelID, companyID);
             var mappedCustomers = AppService.Current.DataContext.Customers.Where(c => customerIDs.Any(z => z == c.ID)).ToList();
 
             //var person = account.PrimaryCompany.Personnel.Where(x => x.ID == personnelID).Single();

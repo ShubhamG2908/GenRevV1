@@ -141,7 +141,8 @@ namespace Genrev.Web
                 public int[] CustomerIDs {
                     get
                     {
-                        return AppService.Current.DataContext.GetDownstreamCustomerIDs(PersonID);
+						int companyID = AppService.Current.Account.PrimaryCompany.ID;
+						return AppService.Current.DataContext.GetDownstreamCustomerIDs(PersonID, companyID);
                     }
                 }
 

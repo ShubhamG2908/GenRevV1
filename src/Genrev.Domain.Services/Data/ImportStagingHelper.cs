@@ -735,7 +735,8 @@ namespace Genrev.DomainServices.Data
             "MM-dd-yyyy HH:mm:ss",            
             "MM-dd-yyyy hh:mm:ss tt",            
             "yyyy-MM-dd HH:mm:ss",
-            "MM-dd-yyyy",            
+            "MM-dd-yyyy",
+            "MM/dd/yyyy",
             };
 #endif
 

@@ -222,11 +222,12 @@ namespace Genrev.DomainServices.Data
 
 			for (int i = 3; i < wide.Rows.Count; i++)
 			{
-				var customerName = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Customer").Key]?.ToString();
-
 				bool isEmptyRow = true;
 				bool isStrategyValueSet = false;
 				// Skip GRAND TOTALS row
+				var customerName = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Customer").Key]?.ToString();
+				var salesperson = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Salesperson").Key]?.ToString();
+
 				if (!string.IsNullOrWhiteSpace(customerName) && customerName.ToUpper().Contains("TOTAL"))
 					continue;
 				foreach (var monthGroup in monthGroups)
@@ -249,7 +250,10 @@ namespace Genrev.DomainServices.Data
 
 					// Skip the month entry
 					// if there is no valid record available
-					if (isEmptyRow)
+					//if (isEmptyRow)
+					//	continue;
+
+					if (string.IsNullOrWhiteSpace(customerName) || string.IsNullOrWhiteSpace(salesperson))
 						continue;
 
 					int monthNumber = DateTime.ParseExact(
@@ -265,7 +269,7 @@ namespace Genrev.DomainServices.Data
 
 					// Set the default field for the 1st month only.
 					// No need to repeate it for any other month
-					if (!isStrategyValueSet)
+					if (monthGroup.Key.StartsWith("jan", StringComparison.OrdinalIgnoreCase))
 					{
 						row["Strategy"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Strategy").Key];
 						row["Potential"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Potential").Key]);

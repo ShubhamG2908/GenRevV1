@@ -618,51 +618,102 @@ namespace Genrev.DomainServices.Data
 
 					bool isStrategyOnly = (getCell(row, "IsStrategyOnly", 16) ?? "").ToString() == "true";
 
+					//	if (data != null && data.ID > 0)
+					//	{
+					//		if (isStrategyOnly)
+					//		{
+					//			// ✅ Only update strategy fields if incoming value is non-null/non-empty
+					//			// This prevents a Jan import from blanking out values set by a prior March import
+
+					//			if (!string.IsNullOrWhiteSpace(d.Strategy))
+					//				data.Strategy = d.Strategy;
+
+					//			if (d.Potential.HasValue)
+					//				data.Potential = d.Potential;
+
+					//			if (d.CurrentOpportunity.HasValue)
+					//				data.CurrentOpportunity = d.CurrentOpportunity;
+
+					//			if (d.FutureOpportunity.HasValue)
+					//				data.FutureOpportunity = d.FutureOpportunity;
+
+					//			if (d.MarketShare.HasValue)
+					//				data.MarketShare = d.MarketShare;
+
+					//			if (d.AtRisk.HasValue)
+					//				data.AtRisk = d.AtRisk;
+
+					//			if (!string.IsNullOrWhiteSpace(d.RiskExplanation))
+					//				data.RiskExplanation = d.RiskExplanation;
+
+					//			context.SaveChanges();
+					//		}
+					//		else
+					//		{
+					//			UpdateCustomerData(data, d, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
+					//		}
+					//	}
+					//	else
+					//	{
+					//		if (!isStrategyOnly)
+					//		{
+					//			InsertCustomerData(d, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
+					//		}
+					//		else
+					//		{
+					//			// No existing Jan record — insert with strategy fields only, sales fields left null
+					//			var strategyOnlyData = new ForecastDataStaging();
+					//			strategyOnlyData.Period = d.Period;
+					//			strategyOnlyData.Strategy = d.Strategy;
+					//			strategyOnlyData.MarketShare = d.MarketShare;
+					//			strategyOnlyData.AtRisk = d.AtRisk;
+					//			strategyOnlyData.RiskExplanation = d.RiskExplanation;
+					//                        strategyOnlyData.Potential = d.Potential;
+					//                        strategyOnlyData.CurrentOpportunity = d.CurrentOpportunity;
+					//                        strategyOnlyData.FutureOpportunity = d.FutureOpportunity;
+					//                        // SalesForecast, SalesTarget, GPPForecast, GPPTarget, CallsForecast, CallsTarget
+					//                        // are intentionally left null
+
+					//                        InsertCustomerData(strategyOnlyData, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
+					//		}
+					//	}
+					//}
+					//        }
 					if (data != null && data.ID > 0)
 					{
-						if (isStrategyOnly)
-						{
-							// Only update the 7 strategy fields — leave Sales, GPP, Calls untouched
-							data.Strategy = d.Strategy;
-							data.Potential = d.Potential;
-							//data.CurrentOpportunity = d.CurrentOpportunity;
-							//data.FutureOpportunity = d.FutureOpportunity;
-							data.MarketShare = d.MarketShare;
-							data.AtRisk = d.AtRisk;
-							data.RiskExplanation = d.RiskExplanation;
-							context.SaveChanges();
-						}
-						else
-						{
-							UpdateCustomerData(data, d, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
-						}
+						// ✅ Always use UpdateCustomerData for existing records.
+						// UpdateCustomerData null-guards ALL fields, so empty values
+						// from any import will never overwrite existing DB values.
+						UpdateCustomerData(data, d, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
 					}
 					else
 					{
 						if (!isStrategyOnly)
 						{
+							// Normal month row — insert all fields as-is
 							InsertCustomerData(d, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
 						}
 						else
 						{
-							// No existing Jan record — insert with strategy fields only, sales fields left null
+							// Jan strategy-only row, no existing record —
+							// insert strategy fields only, leave sales fields null
 							var strategyOnlyData = new ForecastDataStaging();
 							strategyOnlyData.Period = d.Period;
 							strategyOnlyData.Strategy = d.Strategy;
+							strategyOnlyData.Potential = d.Potential;
+							strategyOnlyData.CurrentOpportunity = d.CurrentOpportunity;
+							strategyOnlyData.FutureOpportunity = d.FutureOpportunity;
 							strategyOnlyData.MarketShare = d.MarketShare;
 							strategyOnlyData.AtRisk = d.AtRisk;
 							strategyOnlyData.RiskExplanation = d.RiskExplanation;
-							//strategyOnlyData.Potential = d.Potential;
-							//strategyOnlyData.CurrentOpportunity = d.CurrentOpportunity;
-							//strategyOnlyData.FutureOpportunity = d.FutureOpportunity;
-							// SalesForecast, SalesTarget, GPPForecast, GPPTarget, CallsForecast, CallsTarget
-							// are intentionally left null
+							// SalesForecast, SalesTarget, GPPForecast, GPPTarget,
+							// CallsForecast, CallsTarget intentionally left null
 
 							InsertCustomerData(strategyOnlyData, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
 						}
 					}
 				}
-            }
+			}
 			if (errors.Any())
 			{
 				errors.Insert(0, new ValidationError
@@ -674,25 +725,56 @@ namespace Genrev.DomainServices.Data
 		}
 		private void UpdateCustomerData(CustomerData data, ForecastDataStaging obj, int customerId, int personnelId,int companyId)
         {
-            data.CustomerID = customerId;
-            data.PersonnelID = personnelId;
-            data.CompanyID = companyId;
+			data.CustomerID = customerId;
+			data.PersonnelID = personnelId;
+			data.CompanyID = companyId;
 			data.Period = obj.Period;
-            data.SalesForecast = obj.SalesForecast;
-            data.SalesTarget = obj.SalesTarget;
-            data.CostForecast = CustomerData.GetCost(obj.SalesForecast, obj.GPPForecast);
-            data.CostTarget = CustomerData.GetCost(obj.SalesTarget, obj.GPPTarget);
-            data.CallsForecast = obj.CallsForecast;
-            data.CallsTarget = obj.CallsTarget;
-            data.Potential = obj.Potential;
-            data.CurrentOpportunity = obj.CurrentOpportunity;
-            data.FutureOpportunity = obj.FutureOpportunity;
-            data.Strategy = obj.Strategy;
-            data.MarketShare = obj.MarketShare;
-            data.AtRisk = obj.AtRisk;
-            data.RiskExplanation = obj.RiskExplanation;
-            context.SaveChanges();
-        }
+
+			// Only update if incoming value is NOT NULL
+			if (obj.SalesForecast.HasValue)
+				data.SalesForecast = obj.SalesForecast;
+
+			if (obj.SalesTarget.HasValue)
+				data.SalesTarget = obj.SalesTarget;
+
+			if (obj.GPPForecast.HasValue)
+				data.CostForecast = CustomerData.GetCost(obj.SalesForecast, obj.GPPForecast);
+
+			if (obj.GPPTarget.HasValue)
+				data.CostTarget = CustomerData.GetCost(obj.SalesTarget, obj.GPPTarget);
+
+			if (obj.CallsForecast.HasValue)
+				data.CallsForecast = obj.CallsForecast;
+
+			if (obj.CallsTarget.HasValue)
+				data.CallsTarget = obj.CallsTarget;
+
+			// Only update if incoming value is NOT NULL
+			// This prevents overwriting existing DB values
+
+			if (obj.Potential.HasValue)
+				data.Potential = obj.Potential;
+
+			if (obj.CurrentOpportunity.HasValue)
+				data.CurrentOpportunity = obj.CurrentOpportunity;
+
+			if (obj.FutureOpportunity.HasValue)
+				data.FutureOpportunity = obj.FutureOpportunity;
+
+			if (!string.IsNullOrWhiteSpace(obj.Strategy))
+				data.Strategy = obj.Strategy;
+
+			if (obj.MarketShare.HasValue)
+				data.MarketShare = obj.MarketShare;
+
+			if (obj.AtRisk.HasValue)
+				data.AtRisk = obj.AtRisk;
+
+			if (!string.IsNullOrWhiteSpace(obj.RiskExplanation))
+				data.RiskExplanation = obj.RiskExplanation;
+
+			context.SaveChanges();
+		}
         private void InsertCustomerData(ForecastDataStaging obj, int customerId, int personnelId, int companyId)
         {
             CustomerData customerData = new CustomerData()

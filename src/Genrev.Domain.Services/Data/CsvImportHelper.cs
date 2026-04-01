@@ -293,9 +293,9 @@ namespace Genrev.DomainServices.Data
 
 					row["SalespersonID"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Salesperson").Key];
 					row["CustomerID"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Customer").Key];
-					row["Potential"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Potential").Key]);
-					row["CurrentOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "CurrentOpportunity").Key]);
-					row["FutureOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "FutureOpportunity").Key]);
+					//row["Potential"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Potential").Key]);
+					//row["CurrentOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "CurrentOpportunity").Key]);
+					//row["FutureOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "FutureOpportunity").Key]);
 
 
 					// Set the default field for the 1st month only.
@@ -336,12 +336,13 @@ namespace Genrev.DomainServices.Data
 					if (monthGroup.Key.StartsWith("jan", StringComparison.OrdinalIgnoreCase))
 					{
 						row["Strategy"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Strategy").Key];
-						//row["Potential"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Potential").Key]);
-						//row["CurrentOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "CurrentOpportunity").Key]);
-						//row["FutureOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "FutureOpportunity").Key]);
+						row["Potential"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Potential").Key]);
+						row["CurrentOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "CurrentOpportunity").Key]);
+						row["FutureOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "FutureOpportunity").Key]);
 						row["MarketShare"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "MarketShare").Key]);
 						row["AtRisk"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "AtRisk").Key]);
 						row["RiskExplanation"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "RiskExplanation").Key];
+						row["IsStrategyOnly"] = "true";
 					}
 					// Remove any incorrect value
 					for (int v = 0; v < row.ItemArray.Count(); v++)
@@ -370,9 +371,9 @@ namespace Genrev.DomainServices.Data
 					strategyRow["SalespersonID"] = salesperson;
 					strategyRow["Period"] = janPeriod;
 					strategyRow["Strategy"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Strategy").Key];
-					//strategyRow["Potential"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Potential").Key]);
-					//strategyRow["CurrentOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "CurrentOpportunity").Key]);
-					//strategyRow["FutureOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "FutureOpportunity").Key]);
+					strategyRow["Potential"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Potential").Key]);
+					strategyRow["CurrentOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "CurrentOpportunity").Key]);
+					strategyRow["FutureOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "FutureOpportunity").Key]);
 					strategyRow["MarketShare"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "MarketShare").Key]);
 					strategyRow["AtRisk"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "AtRisk").Key]);
 					strategyRow["RiskExplanation"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "RiskExplanation").Key];

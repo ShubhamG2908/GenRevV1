@@ -119,6 +119,7 @@ namespace Genrev.DomainServices.Data
 			table.Columns.Add("MarketShare");
 			table.Columns.Add("AtRisk");
 			table.Columns.Add("RiskExplanation");
+			table.Columns.Add("IsStrategyOnly");
 
 			// Regex used to detect month name from header
 			var monthRegex = new Regex(
@@ -222,7 +223,6 @@ namespace Genrev.DomainServices.Data
 
 			for (int i = 3; i < wide.Rows.Count; i++)
 			{
-				bool isEmptyRow = true;
 				bool isStrategyValueSet = false;
 				// Skip GRAND TOTALS row
 				var customerName = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Customer").Key]?.ToString();
@@ -230,9 +230,37 @@ namespace Genrev.DomainServices.Data
 
 				if (!string.IsNullOrWhiteSpace(customerName) && customerName.ToUpper().Contains("TOTAL"))
 					continue;
+				//var janGroup = monthGroups.FirstOrDefault(g => g.Key.StartsWith("jan", StringComparison.OrdinalIgnoreCase));
+
+				//DataRow janRow = table.NewRow();
+				//janRow["Period"] = new DateTime(year, 1, 1).ToString("MM/dd/yyyy");
+				//janRow["SalespersonID"] = salesperson;
+				//janRow["CustomerID"] = customerName;
+
+				//// If Jan columns exist in the file, fill sales metrics from them
+				//if (janGroup != null)
+				//{
+				//	foreach (var item in janGroup.Select(x => new { x.Value.Metric, x.Key }))
+				//	{
+				//		var value = wide.Rows[i][item.Key];
+				//		if (!string.IsNullOrWhiteSpace(value?.ToString()) && value.ToString() != "#DIV/0!")
+				//			janRow[item.Metric] = CleanNumber(value);
+				//	}
+				//}
+
+				//// Always write strategy fields into January row
+				//janRow["Strategy"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Strategy").Key];
+				//janRow["Potential"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Potential").Key]);
+				//janRow["CurrentOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "CurrentOpportunity").Key]);
+				//janRow["FutureOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "FutureOpportunity").Key]);
+				//janRow["MarketShare"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "MarketShare").Key]);
+				//janRow["AtRisk"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "AtRisk").Key]);
+				//janRow["RiskExplanation"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "RiskExplanation").Key];
+
+
 				foreach (var monthGroup in monthGroups)
 				{
-					
+					bool isEmptyRow = true;
 
 					DataRow row = table.NewRow();
 
@@ -265,23 +293,56 @@ namespace Genrev.DomainServices.Data
 
 					row["SalespersonID"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Salesperson").Key];
 					row["CustomerID"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Customer").Key];
+					row["Potential"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Potential").Key]);
+					row["CurrentOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "CurrentOpportunity").Key]);
+					row["FutureOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "FutureOpportunity").Key]);
 
 
 					// Set the default field for the 1st month only.
 					// No need to repeate it for any other month
+					//if (monthGroup.Key.StartsWith("jan", StringComparison.OrdinalIgnoreCase))
+					//{
+					//	string janPeriod = new DateTime(year, 1, 1).ToString("MM/dd/yyyy");
+
+					//	// Find existing Jan row in the output table for this customer+salesperson
+					//	var existingJanRow = table.AsEnumerable().FirstOrDefault(r =>
+					//		r["CustomerID"].ToString() == customerName &&
+					//		r["SalespersonID"].ToString() == salesperson &&
+					//		r["Period"].ToString() == janPeriod);
+
+					//	if (existingJanRow != null)
+					//	{
+					//		// Update strategy fields on the existing row
+					//		existingJanRow["Strategy"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Strategy").Key];
+					//		existingJanRow["Potential"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Potential").Key]);
+					//		existingJanRow["CurrentOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "CurrentOpportunity").Key]);
+					//		existingJanRow["FutureOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "FutureOpportunity").Key]);
+					//		existingJanRow["MarketShare"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "MarketShare").Key]);
+					//		existingJanRow["AtRisk"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "AtRisk").Key]);
+					//		existingJanRow["RiskExplanation"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "RiskExplanation").Key];
+					//	}
+					//	else
+					//	{
+					//		// Jan row doesn't exist yet — set fields on current row being built
+					//		row["Strategy"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Strategy").Key];
+					//		row["Potential"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Potential").Key]);
+					//		row["CurrentOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "CurrentOpportunity").Key]);
+					//		row["FutureOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "FutureOpportunity").Key]);
+					//		row["MarketShare"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "MarketShare").Key]);
+					//		row["AtRisk"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "AtRisk").Key]);
+					//		row["RiskExplanation"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "RiskExplanation").Key];
+					//	}
+					//}
 					if (monthGroup.Key.StartsWith("jan", StringComparison.OrdinalIgnoreCase))
 					{
 						row["Strategy"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Strategy").Key];
-						row["Potential"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Potential").Key]);
-						row["CurrentOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "CurrentOpportunity").Key]);
-						row["FutureOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "FutureOpportunity").Key]);
+						//row["Potential"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Potential").Key]);
+						//row["CurrentOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "CurrentOpportunity").Key]);
+						//row["FutureOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "FutureOpportunity").Key]);
 						row["MarketShare"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "MarketShare").Key]);
 						row["AtRisk"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "AtRisk").Key]);
 						row["RiskExplanation"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "RiskExplanation").Key];
-
-						isStrategyValueSet = true;
 					}
-
 					// Remove any incorrect value
 					for (int v = 0; v < row.ItemArray.Count(); v++)
 					{
@@ -291,6 +352,32 @@ namespace Genrev.DomainServices.Data
 
 					// Add the row in the table with valid month value
 					table.Rows.Add(row);
+				}
+				string janPeriod = new DateTime(year, 1, 1).ToString("MM/dd/yyyy");
+
+				bool janRowAlreadyAdded = table.AsEnumerable().Any(r =>
+					r["CustomerID"].ToString() == customerName &&
+					r["SalespersonID"].ToString() == salesperson &&
+					r["Period"].ToString() == janPeriod);
+
+				if (!janRowAlreadyAdded)
+				{
+					if (string.IsNullOrWhiteSpace(customerName) || string.IsNullOrWhiteSpace(salesperson))
+						continue;
+
+					DataRow strategyRow = table.NewRow();
+					strategyRow["CustomerID"] = customerName;
+					strategyRow["SalespersonID"] = salesperson;
+					strategyRow["Period"] = janPeriod;
+					strategyRow["Strategy"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Strategy").Key];
+					//strategyRow["Potential"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "Potential").Key]);
+					//strategyRow["CurrentOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "CurrentOpportunity").Key]);
+					//strategyRow["FutureOpportunity"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "FutureOpportunity").Key]);
+					strategyRow["MarketShare"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "MarketShare").Key]);
+					strategyRow["AtRisk"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "AtRisk").Key]);
+					strategyRow["RiskExplanation"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "RiskExplanation").Key];
+					strategyRow["IsStrategyOnly"] = "true";
+					table.Rows.Add(strategyRow);
 				}
 			}
 

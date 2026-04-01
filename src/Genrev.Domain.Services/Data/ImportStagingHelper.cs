@@ -475,7 +475,7 @@ namespace Genrev.DomainServices.Data
             var errors = new List<ValidationError>();
 			var CustomerList = context.Customers.ToList();
 			var PersonnelList = context.Personnel.ToList();
-			var customerDataList = context.CustomerData.ToList();
+			//var customerDataList = context.CustomerData.ToList();
 			var missingCustomers = new HashSet<string>();
 			var missingSalespersons = new HashSet<string>();
 
@@ -599,11 +599,14 @@ namespace Genrev.DomainServices.Data
 				}
 
 				CustomerData data = null;
-                if (singleCustomer != null && singleCustomer.ID > 0 && singlePerson != null && singlePerson.ID > 0)
-                {
-                    data = customerDataList.FirstOrDefault(w => w.CustomerID == singleCustomer.ID && w.PersonnelID == singlePerson.ID && w.Period.Date == d.Period.Date);
-                }
-                if (singleCustomer != null && singleCustomer.ID > 0 && singlePerson != null && singlePerson.ID > 0)
+				if (singleCustomer != null && singleCustomer.ID > 0 && singlePerson != null && singlePerson.ID > 0)
+				{
+					data = context.CustomerData.FirstOrDefault(w =>
+						w.CustomerID == singleCustomer.ID &&
+						w.PersonnelID == singlePerson.ID &&
+						System.Data.Entity.DbFunctions.TruncateTime(w.Period) == System.Data.Entity.DbFunctions.TruncateTime(d.Period));
+				}
+				if (singleCustomer != null && singleCustomer.ID > 0 && singlePerson != null && singlePerson.ID > 0)
                 {
                     var personnelDownline = context.GetDownstreamCustomerIDs(singlePerson.ID,singlePerson.CompanyID).ToList();
                     if (!personnelDownline.Contains(singleCustomer.ID))
@@ -613,15 +616,52 @@ namespace Genrev.DomainServices.Data
                         continue;
                     }
 
+					bool isStrategyOnly = (getCell(row, "IsStrategyOnly", 16) ?? "").ToString() == "true";
+
 					if (data != null && data.ID > 0)
-                    {
-                        UpdateCustomerData(data, d, singleCustomer.ID, singlePerson.ID,singleCustomer.CompanyID);
-                    }
-                    else
-                    {
-                        InsertCustomerData(d, singleCustomer.ID, singlePerson.ID,singleCustomer.CompanyID);
-                    }
-                }
+					{
+						if (isStrategyOnly)
+						{
+							// Only update the 7 strategy fields — leave Sales, GPP, Calls untouched
+							data.Strategy = d.Strategy;
+							data.Potential = d.Potential;
+							//data.CurrentOpportunity = d.CurrentOpportunity;
+							//data.FutureOpportunity = d.FutureOpportunity;
+							data.MarketShare = d.MarketShare;
+							data.AtRisk = d.AtRisk;
+							data.RiskExplanation = d.RiskExplanation;
+							context.SaveChanges();
+						}
+						else
+						{
+							UpdateCustomerData(data, d, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
+						}
+					}
+					else
+					{
+						if (!isStrategyOnly)
+						{
+							InsertCustomerData(d, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
+						}
+						else
+						{
+							// No existing Jan record — insert with strategy fields only, sales fields left null
+							var strategyOnlyData = new ForecastDataStaging();
+							strategyOnlyData.Period = d.Period;
+							strategyOnlyData.Strategy = d.Strategy;
+							strategyOnlyData.MarketShare = d.MarketShare;
+							strategyOnlyData.AtRisk = d.AtRisk;
+							strategyOnlyData.RiskExplanation = d.RiskExplanation;
+							//strategyOnlyData.Potential = d.Potential;
+							//strategyOnlyData.CurrentOpportunity = d.CurrentOpportunity;
+							//strategyOnlyData.FutureOpportunity = d.FutureOpportunity;
+							// SalesForecast, SalesTarget, GPPForecast, GPPTarget, CallsForecast, CallsTarget
+							// are intentionally left null
+
+							InsertCustomerData(strategyOnlyData, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
+						}
+					}
+				}
             }
 			if (errors.Any())
 			{

@@ -342,7 +342,7 @@ namespace Genrev.DomainServices.Data
 						row["MarketShare"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "MarketShare").Key]);
 						row["AtRisk"] = CleanNumber(wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "AtRisk").Key]);
 						row["RiskExplanation"] = wide.Rows[i][deafultGroup.First(x => x.Value.Metric == "RiskExplanation").Key];
-						row["IsStrategyOnly"] = "true";
+						//row["IsStrategyOnly"] = "true";
 					}
 					// Remove any incorrect value
 					for (int v = 0; v < row.ItemArray.Count(); v++)

@@ -618,85 +618,18 @@ namespace Genrev.DomainServices.Data
 
 					bool isStrategyOnly = (getCell(row, "IsStrategyOnly", 16) ?? "").ToString() == "true";
 
-					//	if (data != null && data.ID > 0)
-					//	{
-					//		if (isStrategyOnly)
-					//		{
-					//			// ✅ Only update strategy fields if incoming value is non-null/non-empty
-					//			// This prevents a Jan import from blanking out values set by a prior March import
-
-					//			if (!string.IsNullOrWhiteSpace(d.Strategy))
-					//				data.Strategy = d.Strategy;
-
-					//			if (d.Potential.HasValue)
-					//				data.Potential = d.Potential;
-
-					//			if (d.CurrentOpportunity.HasValue)
-					//				data.CurrentOpportunity = d.CurrentOpportunity;
-
-					//			if (d.FutureOpportunity.HasValue)
-					//				data.FutureOpportunity = d.FutureOpportunity;
-
-					//			if (d.MarketShare.HasValue)
-					//				data.MarketShare = d.MarketShare;
-
-					//			if (d.AtRisk.HasValue)
-					//				data.AtRisk = d.AtRisk;
-
-					//			if (!string.IsNullOrWhiteSpace(d.RiskExplanation))
-					//				data.RiskExplanation = d.RiskExplanation;
-
-					//			context.SaveChanges();
-					//		}
-					//		else
-					//		{
-					//			UpdateCustomerData(data, d, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
-					//		}
-					//	}
-					//	else
-					//	{
-					//		if (!isStrategyOnly)
-					//		{
-					//			InsertCustomerData(d, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
-					//		}
-					//		else
-					//		{
-					//			// No existing Jan record — insert with strategy fields only, sales fields left null
-					//			var strategyOnlyData = new ForecastDataStaging();
-					//			strategyOnlyData.Period = d.Period;
-					//			strategyOnlyData.Strategy = d.Strategy;
-					//			strategyOnlyData.MarketShare = d.MarketShare;
-					//			strategyOnlyData.AtRisk = d.AtRisk;
-					//			strategyOnlyData.RiskExplanation = d.RiskExplanation;
-					//                        strategyOnlyData.Potential = d.Potential;
-					//                        strategyOnlyData.CurrentOpportunity = d.CurrentOpportunity;
-					//                        strategyOnlyData.FutureOpportunity = d.FutureOpportunity;
-					//                        // SalesForecast, SalesTarget, GPPForecast, GPPTarget, CallsForecast, CallsTarget
-					//                        // are intentionally left null
-
-					//                        InsertCustomerData(strategyOnlyData, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
-					//		}
-					//	}
-					//}
-					//        }
 					if (data != null && data.ID > 0)
 					{
-						// ✅ Always use UpdateCustomerData for existing records.
-						// UpdateCustomerData null-guards ALL fields, so empty values
-						// from any import will never overwrite existing DB values.
 						UpdateCustomerData(data, d, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
 					}
 					else
 					{
 						if (!isStrategyOnly)
 						{
-							// Normal month row — insert all fields as-is
 							InsertCustomerData(d, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
 						}
 						else
 						{
-							// Jan strategy-only row, no existing record —
-							// insert strategy fields only, leave sales fields null
 							var strategyOnlyData = new ForecastDataStaging();
 							strategyOnlyData.Period = d.Period;
 							strategyOnlyData.Strategy = d.Strategy;
@@ -706,8 +639,6 @@ namespace Genrev.DomainServices.Data
 							strategyOnlyData.MarketShare = d.MarketShare;
 							strategyOnlyData.AtRisk = d.AtRisk;
 							strategyOnlyData.RiskExplanation = d.RiskExplanation;
-							// SalesForecast, SalesTarget, GPPForecast, GPPTarget,
-							// CallsForecast, CallsTarget intentionally left null
 
 							InsertCustomerData(strategyOnlyData, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
 						}

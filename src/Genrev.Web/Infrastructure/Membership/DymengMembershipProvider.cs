@@ -11,8 +11,6 @@ namespace Genrev.Web.Infrastructure.Membership
 
     public class DymengMembershipProvider : ExtendedMembershipProvider
     {
-
-
         /*************************
         * 
         * FIELDS
@@ -38,11 +36,11 @@ namespace Genrev.Web.Infrastructure.Membership
 
         public DymengMembershipProvider() {
             _membershipRepository = new MembershipRepository();
-        }
+		}
 
-        public DymengMembershipProvider(IMembershipRepository membershipRepository) {
+        public DymengMembershipProvider(IMembershipRepository membershipRepository, Data.GenrevContext context) {
             _membershipRepository = membershipRepository;
-        }
+		}
 
         /*************************
         * 
@@ -59,12 +57,17 @@ namespace Genrev.Web.Infrastructure.Membership
 
         public override bool ValidateUser(string username, string password) {
             var user = _membershipRepository.GetUser(username);
-            if (user.GetPassword() == Domain.Services.Users.Helpers.HashPassword(password)) {
-                return true;
-            } else {
+
+			var userDbPassword = _membershipRepository.FetchHashPassword(username);
+
+			if (userDbPassword == null)
+            {
                 return false;
             }
-        }
+
+			var hashedPassword = Domain.Services.Users.Helpers.HashPassword(password);
+			return userDbPassword == hashedPassword;
+		}
 
         public override string GetPassword(string username, string answer) {
             return _membershipRepository.GetPassword(username);

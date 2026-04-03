@@ -605,9 +605,6 @@ namespace Genrev.DomainServices.Data
 						w.CustomerID == singleCustomer.ID &&
 						w.PersonnelID == singlePerson.ID &&
 						System.Data.Entity.DbFunctions.TruncateTime(w.Period) == System.Data.Entity.DbFunctions.TruncateTime(d.Period));
-				}
-				if (singleCustomer != null && singleCustomer.ID > 0 && singlePerson != null && singlePerson.ID > 0)
-                {
                     var personnelDownline = context.GetDownstreamCustomerIDs(singlePerson.ID,singlePerson.CompanyID).ToList();
                     if (!personnelDownline.Contains(singleCustomer.ID))
                     {
@@ -668,10 +665,10 @@ namespace Genrev.DomainServices.Data
 			if (obj.SalesTarget.HasValue)
 				data.SalesTarget = obj.SalesTarget;
 
-			if (obj.GPPForecast.HasValue)
+			if (obj.GPPForecast.HasValue && obj.SalesForecast.HasValue)
 				data.CostForecast = CustomerData.GetCost(obj.SalesForecast, obj.GPPForecast);
 
-			if (obj.GPPTarget.HasValue)
+			if (obj.GPPTarget.HasValue && obj.SalesTarget.HasValue)
 				data.CostTarget = CustomerData.GetCost(obj.SalesTarget, obj.GPPTarget);
 
 			if (obj.CallsForecast.HasValue)

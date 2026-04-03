@@ -363,9 +363,6 @@ namespace Genrev.DomainServices.Data
 
 				if (!janRowAlreadyAdded)
 				{
-					if (string.IsNullOrWhiteSpace(customerName) || string.IsNullOrWhiteSpace(salesperson))
-						continue;
-
 					DataRow strategyRow = table.NewRow();
 					strategyRow["CustomerID"] = customerName;
 					strategyRow["SalespersonID"] = salesperson;

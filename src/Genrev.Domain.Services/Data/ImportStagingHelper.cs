@@ -475,7 +475,7 @@ namespace Genrev.DomainServices.Data
             var errors = new List<ValidationError>();
 			var CustomerList = context.Customers.ToList();
 			var PersonnelList = context.Personnel.ToList();
-			var customerDataList = context.CustomerData.ToList();
+			//var customerDataList = context.CustomerData.ToList();
 			var missingCustomers = new HashSet<string>();
 			var missingSalespersons = new HashSet<string>();
 
@@ -599,12 +599,12 @@ namespace Genrev.DomainServices.Data
 				}
 
 				CustomerData data = null;
-                if (singleCustomer != null && singleCustomer.ID > 0 && singlePerson != null && singlePerson.ID > 0)
-                {
-                    data = customerDataList.FirstOrDefault(w => w.CustomerID == singleCustomer.ID && w.PersonnelID == singlePerson.ID && w.Period.Date == d.Period.Date);
-                }
-                if (singleCustomer != null && singleCustomer.ID > 0 && singlePerson != null && singlePerson.ID > 0)
-                {
+				if (singleCustomer != null && singleCustomer.ID > 0 && singlePerson != null && singlePerson.ID > 0)
+				{
+					data = context.CustomerData.FirstOrDefault(w =>
+						w.CustomerID == singleCustomer.ID &&
+						w.PersonnelID == singlePerson.ID &&
+						System.Data.Entity.DbFunctions.TruncateTime(w.Period) == System.Data.Entity.DbFunctions.TruncateTime(d.Period));
                     var personnelDownline = context.GetDownstreamCustomerIDs(singlePerson.ID,singlePerson.CompanyID).ToList();
                     if (!personnelDownline.Contains(singleCustomer.ID))
                     {
@@ -613,16 +613,35 @@ namespace Genrev.DomainServices.Data
                         continue;
                     }
 
+					bool isStrategyOnly = (getCell(row, "IsStrategyOnly", 16) ?? "").ToString() == "true";
+
 					if (data != null && data.ID > 0)
-                    {
-                        UpdateCustomerData(data, d, singleCustomer.ID, singlePerson.ID,singleCustomer.CompanyID);
-                    }
-                    else
-                    {
-                        InsertCustomerData(d, singleCustomer.ID, singlePerson.ID,singleCustomer.CompanyID);
-                    }
-                }
-            }
+					{
+						UpdateCustomerData(data, d, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
+					}
+					else
+					{
+						if (!isStrategyOnly)
+						{
+							InsertCustomerData(d, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
+						}
+						else
+						{
+							var strategyOnlyData = new ForecastDataStaging();
+							strategyOnlyData.Period = d.Period;
+							strategyOnlyData.Strategy = d.Strategy;
+							strategyOnlyData.Potential = d.Potential;
+							strategyOnlyData.CurrentOpportunity = d.CurrentOpportunity;
+							strategyOnlyData.FutureOpportunity = d.FutureOpportunity;
+							strategyOnlyData.MarketShare = d.MarketShare;
+							strategyOnlyData.AtRisk = d.AtRisk;
+							strategyOnlyData.RiskExplanation = d.RiskExplanation;
+
+							InsertCustomerData(strategyOnlyData, singleCustomer.ID, singlePerson.ID, singleCustomer.CompanyID);
+						}
+					}
+				}
+			}
 			if (errors.Any())
 			{
 				errors.Insert(0, new ValidationError
@@ -634,25 +653,56 @@ namespace Genrev.DomainServices.Data
 		}
 		private void UpdateCustomerData(CustomerData data, ForecastDataStaging obj, int customerId, int personnelId,int companyId)
         {
-            data.CustomerID = customerId;
-            data.PersonnelID = personnelId;
-            data.CompanyID = companyId;
+			data.CustomerID = customerId;
+			data.PersonnelID = personnelId;
+			data.CompanyID = companyId;
 			data.Period = obj.Period;
-            data.SalesForecast = obj.SalesForecast;
-            data.SalesTarget = obj.SalesTarget;
-            data.CostForecast = CustomerData.GetCost(obj.SalesForecast, obj.GPPForecast);
-            data.CostTarget = CustomerData.GetCost(obj.SalesTarget, obj.GPPTarget);
-            data.CallsForecast = obj.CallsForecast;
-            data.CallsTarget = obj.CallsTarget;
-            data.Potential = obj.Potential;
-            data.CurrentOpportunity = obj.CurrentOpportunity;
-            data.FutureOpportunity = obj.FutureOpportunity;
-            data.Strategy = obj.Strategy;
-            data.MarketShare = obj.MarketShare;
-            data.AtRisk = obj.AtRisk;
-            data.RiskExplanation = obj.RiskExplanation;
-            context.SaveChanges();
-        }
+
+			// Only update if incoming value is NOT NULL
+			if (obj.SalesForecast.HasValue)
+				data.SalesForecast = obj.SalesForecast;
+
+			if (obj.SalesTarget.HasValue)
+				data.SalesTarget = obj.SalesTarget;
+
+			if (obj.GPPForecast.HasValue && obj.SalesForecast.HasValue)
+				data.CostForecast = CustomerData.GetCost(obj.SalesForecast, obj.GPPForecast);
+
+			if (obj.GPPTarget.HasValue && obj.SalesTarget.HasValue)
+				data.CostTarget = CustomerData.GetCost(obj.SalesTarget, obj.GPPTarget);
+
+			if (obj.CallsForecast.HasValue)
+				data.CallsForecast = obj.CallsForecast;
+
+			if (obj.CallsTarget.HasValue)
+				data.CallsTarget = obj.CallsTarget;
+
+			// Only update if incoming value is NOT NULL
+			// This prevents overwriting existing DB values
+
+			if (obj.Potential.HasValue)
+				data.Potential = obj.Potential;
+
+			if (obj.CurrentOpportunity.HasValue)
+				data.CurrentOpportunity = obj.CurrentOpportunity;
+
+			if (obj.FutureOpportunity.HasValue)
+				data.FutureOpportunity = obj.FutureOpportunity;
+
+			if (!string.IsNullOrWhiteSpace(obj.Strategy))
+				data.Strategy = obj.Strategy;
+
+			if (obj.MarketShare.HasValue)
+				data.MarketShare = obj.MarketShare;
+
+			if (obj.AtRisk.HasValue)
+				data.AtRisk = obj.AtRisk;
+
+			if (!string.IsNullOrWhiteSpace(obj.RiskExplanation))
+				data.RiskExplanation = obj.RiskExplanation;
+
+			context.SaveChanges();
+		}
         private void InsertCustomerData(ForecastDataStaging obj, int customerId, int personnelId, int companyId)
         {
             CustomerData customerData = new CustomerData()
@@ -735,7 +785,8 @@ namespace Genrev.DomainServices.Data
             "MM-dd-yyyy HH:mm:ss",            
             "MM-dd-yyyy hh:mm:ss tt",            
             "yyyy-MM-dd HH:mm:ss",
-            "MM-dd-yyyy",            
+            "MM-dd-yyyy",
+            "MM/dd/yyyy",
             };
 #endif
 

@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Dymeng.Data.SqlClient;
+using Genrev.Data;
+using Genrev.Domain.Users;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
-using System.Data;
-using System.Data.SqlClient;
-using Dymeng.Data.SqlClient;
-using Genrev.Data;
 
 namespace Genrev.Web.Infrastructure.Membership
 {
@@ -16,7 +17,8 @@ namespace Genrev.Web.Infrastructure.Membership
         MembershipUser GetUser(string username);
         string GetPassword(string username);
         int CreateUserAndAccount(string username, string password, string email);
-    }
+		string FetchHashPassword(string username);
+	}
 
 
     public class MembershipRepository : IMembershipRepository
@@ -60,8 +62,22 @@ namespace Genrev.Web.Infrastructure.Membership
             return dataContext.Users.Where(x => x.Email == username).FirstOrDefault()?.MembershipDetail.Password;
         }
 
+		// Fix for CS0161: Ensure all code paths return a value.
+		// Fix for IDE0060: Remove unused parameter 'password' if not needed.
+		// If the method is not implemented, throw NotImplementedException.
+		public string FetchHashPassword(string username)
+		{
+			// Fetch password safely using FirstOrDefault to avoid exceptions
+			var userDbPassword = dataContext.WebMemberships
+				.Where(m => m.User.Email == username) // adjust if your schema differs
+				.Select(m => m.Password)
+				.FirstOrDefault();
 
-        public MembershipUser GetUser(string username) {
+			// Return null if not found
+			return userDbPassword;
+		}
+
+		public MembershipUser GetUser(string username) {
 
 
             var entity = dataContext.Users.Where(x => x.Email == username).FirstOrDefault()?.MembershipDetail;
